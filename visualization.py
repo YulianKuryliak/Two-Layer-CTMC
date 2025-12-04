@@ -74,9 +74,9 @@ def representative_and_bands(I_stack: np.ndarray):
     Given an (N_sim, K_time) stack, compute:
       - mean curve
       - index of representative (min MSE to mean)
-      - asymmetric RMS up/down bands relative to the representative
+      - interquartile envelopes (Q1 and Q3) across simulations at each time
     Returns:
-      idx_rep, I_mean, I_rep, sigma_up, sigma_dn, mse
+      idx_rep, I_mean, I_rep, q1, q3, mse
     """
     I_mean = I_stack.mean(axis=0)  # (K,)
     # MSE to mean per sim
@@ -84,10 +84,9 @@ def representative_and_bands(I_stack: np.ndarray):
     idx_rep = int(np.argmin(mse))
     I_rep = I_stack[idx_rep, :]
 
-    diff = I_stack - I_rep[None, :]
-    sigma_up = np.sqrt(np.mean(np.clip(diff, 0, None)**2, axis=0))
-    sigma_dn = np.sqrt(np.mean(np.clip(-diff, 0, None)**2, axis=0))
-    return idx_rep, I_mean, I_rep, sigma_up, sigma_dn, mse
+    q1 = np.quantile(I_stack, 0.25, axis=0)
+    q3 = np.quantile(I_stack, 0.75, axis=0)
+    return idx_rep, I_mean, I_rep, q1, q3, mse
 
 
 # ========= load all datasets =========
@@ -104,7 +103,7 @@ for name, d in datasets.items():
     d["t_grid"] = t_grid
 
     I_interp, I_stack = interp_stack_on_grid(d["raw"], t_grid)
-    idx_rep, I_mean, I_rep, sigma_up, sigma_dn, mse = representative_and_bands(I_stack)
+    idx_rep, I_mean, I_rep, q1, q3, mse = representative_and_bands(I_stack)
 
     # store results
     d["I_interp"] = I_interp
@@ -112,8 +111,8 @@ for name, d in datasets.items():
     d["idx_rep"]  = idx_rep
     d["I_mean"]   = I_mean
     d["I_rep"]    = I_rep
-    d["sigma_up"] = sigma_up
-    d["sigma_dn"] = sigma_dn
+    d["q1"]       = q1
+    d["q3"]       = q3
     d["mse"]      = mse
     # resolve representative sim_id
     rep_key = list(I_interp.keys())[idx_rep]
@@ -140,16 +139,14 @@ for name, d in datasets.items():
     # plot representative line
     plt.plot(t_grid, d["I_rep"], color=color, linewidth=2.8, label=f"{name} — representative")
 
-    # asymmetric RMS bands
-    plt.fill_between(t_grid, d["I_rep"], d["I_rep"] + d["sigma_up"],
-                     color=color, alpha=0.18)
-    plt.fill_between(t_grid, d["I_rep"] - d["sigma_dn"], d["I_rep"],
+    # interquartile bands
+    plt.fill_between(t_grid, d["q1"], d["q3"],
                      color=color, alpha=0.18)
 
 # axes & legend
 plt.xlabel("Time")
 plt.ylabel("Infected (I)")
-plt.title("Representative I-curves with asymmetric RMS bands (all datasets, own time ranges)")
+plt.title("Representative I-curves with interquartile bands (all datasets, own time ranges)")
 plt.grid(True, alpha=0.3)
 plt.legend(fontsize=9, ncol=2)
 plt.tight_layout()
