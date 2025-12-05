@@ -253,13 +253,13 @@ def run_many_uniform_and_save_per_community(
 # ==================
 if __name__ == "__main__":
     # --- network params (your network.py signature) ---
-    COMMUNITIES = 2          # n_communities
-    NODES_PER_COMM = 50       # community_size
+    COMMUNITIES = 5          # n_communities
+    NODES_PER_COMM = 100       # community_size
     MAX_INTER_LINKS = 5      # max_inter_links
     SEED = 42
 
     # --- epidemic params ---
-    BETA = 0.01
+    BETA = 0.004
     GAMMA = 0.0
     MODEL = 2                # 1=SIS, 2=SIR
 

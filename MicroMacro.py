@@ -568,6 +568,7 @@ class Orchestrator:
                 # sample and apply the macro transfer at t_event
                 i, j = self.macro.sample_transfer()
                 if j != i:
+                    self.micro_models[j].current_time = t_event
                     node = self.micro_models[j].import_infection()
                     # After import, update hazards again to reflect new state
                     S_post, I_post, _ = self._counts_arrays()
@@ -749,11 +750,11 @@ if __name__ == "__main__":
     run_experiments(
         runs=100,
         output_dir=r"data\Simulations_MicroMacro_hazard_updated",
-        k=2,             # number of communities
-        size=50,        # size of one community
+        k=5,             # number of communities
+        size=40,        # size of one community
         max_links=5,    # number of links between communities
         base_seed=42,
-        beta=0.01,      #infection rate
+        beta=0.008,      #infection rate
         gamma=0.0,       #recovery rate
         tau_micro=1.0,   # <-- set your step here; e.g., 0.1
         T_end=100.0,     # time end
