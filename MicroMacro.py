@@ -2,11 +2,18 @@ import os
 import csv
 import math
 import random
+import json
 import numpy as np
 import networkx as nx
 from typing import List, Tuple, Optional, Any
 
 from network import generate_two_scale_network
+from sim_db import log_run
+
+
+def load_config(path: str = "config.json") -> dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 # ---------------------------
@@ -694,7 +701,7 @@ def run_experiments(
     size: int = 50,
     max_links: int = 1,
     base_seed: int = 42,
-    beta: float = 0.01,
+    beta: float = 0.05,
     gamma: float = 0.0,
     tau_micro: float = 1.0,
     T_end: float = 100.0,
@@ -746,20 +753,58 @@ def run_experiments(
 
 
 if __name__ == "__main__":
-    # Example: tweak tau_micro to 1.0 or 0.1 as needed
+    cfg = load_config()
+    net_cfg = cfg["network"]
+    virus_cfg = cfg["virus"]
+    sim_common = cfg["simulation"]
+    sim_cfg = cfg["micromacro"]
+    sim_variant = cfg["micromacro_v1"]
+
+    k = int(net_cfg["communities"])
+    size = int(net_cfg["community_size"])
+    max_links = int(net_cfg["max_inter_links"])
+    base_seed = int(sim_common["base_seed"])
+    beta = float(virus_cfg["beta"])
+    gamma = float(virus_cfg["gamma"])
+    tau_micro = float(sim_cfg["tau_micro"])
+    T_end = float(sim_common["T_end"])
+    macro_T = float(sim_cfg["macro_T"])
+    model = int(virus_cfg["model"])
+    runs = int(sim_common["n_runs"])
+    output_dir = sim_variant["out_folder"]
+
     run_experiments(
-        runs=100,
-        output_dir=r"data\Simulations_MicroMacro_hazard_updated",
-        k=5,             # number of communities
-        size=40,        # size of one community
-        max_links=5,    # number of links between communities
-        base_seed=42,
-        beta=0.008,      #infection rate
-        gamma=0.0,       #recovery rate
-        tau_micro=1.0,   # <-- set your step here; e.g., 0.1
-        T_end=100.0,     # time end
-        macro_T=1,       # time step
-        model=2,         # 1 - SIS 2 - SIR
+        runs=runs,
+        output_dir=output_dir,
+        k=k,             # number of communities
+        size=size,        # size of one community
+        max_links=max_links,    # number of links between communities
+        base_seed=base_seed,
+        beta=beta,      #infection rate
+        gamma=gamma,       #recovery rate
+        tau_micro=tau_micro,   # <-- set your step here; e.g., 0.1
+        T_end=T_end,     # time end
+        macro_T=macro_T,       # time step
+        model=model,         # 1 - SIS 2 - SIR
+    )
+
+    log_run(
+        simulator="MicroMacro_v1",
+        sim_version="1.0.1",
+        network_params=net_cfg,
+        virus_params=virus_cfg,
+        sim_params={
+            "n_runs": runs,
+            "base_seed": base_seed,
+            "T_end": T_end,
+            "tau_micro": tau_micro,
+            "macro_T": macro_T,
+            "out_folder": output_dir,
+            "k": k,
+            "size": size,
+            "max_links": max_links,
+        },
+        output_path=output_dir,
     )
 
 
