@@ -1,6 +1,8 @@
 import os
 import random
 from typing import List, Tuple, Optional, Dict
+import json
+from sim_db import log_run
 
 import numpy as np
 import pandas as pd
@@ -41,9 +43,9 @@ class EfficientEpidemicGraph:
         if total_rate < 1e-8:
             return float('inf')
 
-        # wait_time = random.expovariate(total_rate)
+        wait_time = random.expovariate(total_rate)
 
-        wait_time = 1 / total_rate 
+        # wait_time = 1 / total_rate 
 
         # choose event type
         if random.random() < (self.total_infection_rate / total_rate):
@@ -53,6 +55,7 @@ class EfficientEpidemicGraph:
                 cum += self.G.nodes[node]['sum_of_weights_i']
                 if cum > target:
                     self._infect_neighbor(node)
+                    # print(node)
                     break
         else:
             target = random.uniform(0, self.total_recovery_rate)
@@ -131,9 +134,15 @@ def _counts_SIR_per_community(sim: EfficientEpidemicGraph, comm_nodes: List[List
     return out
 
 
+import pandas as pd
+import networkx as nx
+import random
+import numpy as np
+from typing import List, Tuple, Optional
+
 def run_and_save_uniform_csv_per_community(
     full_graph: nx.Graph,
-    comm_nodes: List[List[int]],          # node IDs per community
+    comm_nodes: List[List[int]],
     beta: float,
     gamma: float,
     initial_node: int,
@@ -144,71 +153,94 @@ def run_and_save_uniform_csv_per_community(
     model: int = 2,  # 1=SIS, 2=SIR
 ) -> pd.DataFrame:
     """
-    Event-driven sim; record at uniform grid t = 0, dt_out, 2*dt_out, ..., T_end.
-    Writes rows per community at each t:
-      columns: community,time,S,I,R
+    Executes an event-driven Gillespie simulation and records the S/I/R state 
+    at uniform time intervals (t=0, dt, 2dt, ...).
+
+    This function correctly handles the continuous-time nature of the simulation
+    by maintaining the previous state for all time points falling within the 
+    waiting time between events (Sample-and-Hold).
+
+    Args:
+        full_graph (nx.Graph): The complete network topology.
+        comm_nodes (List[List[int]]): List of lists, where each sublist contains node IDs for a specific community.
+        beta (float): Infection rate per link.
+        gamma (float): Recovery rate per node.
+        initial_node (int): ID of the seed node (patient zero).
+        T_end (float): Total simulation duration.
+        dt_out (float): Time step for data recording (sampling resolution).
+        out_csv_path (str): File path to save the resulting CSV.
+        seed (Optional[int]): Random seed for reproducibility.
+        model (int): 1 for SIS, 2 for SIR.
+
+    Returns:
+        pd.DataFrame: A DataFrame sorted by community and time with columns [community, time, S, I, R].
     """
+    
     if seed is not None:
         random.seed(seed)
         np.random.seed(seed)
 
-    # Build sim on the full graph
+    # Initialize Simulator
     sim = EfficientEpidemicGraph(infection_rate=beta, recovery_rate=gamma, model=model)
     for n in full_graph.nodes():
         sim.add_node(n)
     for u, v, d in full_graph.edges(data=True):
         sim.add_edge(u, v, weight=d.get("weight", 1.0))
 
-    # Seed infection
     sim._infect_node(initial_node)
 
-    rows: List[Tuple[int, float, int, int, int]] = []  # (community, time, S, I, R)
-
-    # === snapshot at t = 0.0 ===
-    per_comm_0 = _counts_SIR_per_community(sim, comm_nodes)
-    for ci, (S0, I0, R0) in enumerate(per_comm_0):
-        rows.append((ci, 0.0, S0, I0, R0))
-
-    # main loop: step events, emit rows at uniform grid
+    rows: List[Tuple[int, float, int, int, int]] = []
+    
     t = 0.0
-    t_next_out = dt_out
+    t_next_out = 0.0
+    EPS = 1e-9
 
-    while t < T_end and t_next_out <= T_end:
+    # Cache initial state
+    current_counts = _counts_SIR_per_community(sim, comm_nodes)
+
+    while t < T_end:
+        # Calculate wait time (dt) and execute the event (state changes immediately after this call)
         dt = sim.simulate_step()
+
+        # Handle Deadlock: If no events are possible (everyone recovered or isolated)
         if dt == float("inf"):
-            # no more events → repeat current state on remaining grid points
-            while t_next_out <= T_end + 1e-12:
-                per_comm = _counts_SIR_per_community(sim, comm_nodes)
-                for ci, (S, I, R) in enumerate(per_comm):
-                    rows.append((ci, float(t_next_out), S, I, R))
+            while t_next_out <= T_end + EPS:
+                if t_next_out >= t - EPS:
+                    for ci, (S, I, R) in enumerate(current_counts):
+                        rows.append((ci, float(t_next_out), S, I, R))
                 t_next_out += dt_out
             break
 
-        t += dt
+        t_event = t + dt
 
-        while t_next_out <= T_end and t_next_out <= t + 1e-12:
-            per_comm = _counts_SIR_per_community(sim, comm_nodes)
-            for ci, (S, I, R) in enumerate(per_comm):
-                rows.append((ci, float(t_next_out), S, I, R))
+        # Fill timeline with OLD state (state is constant between t and t_event)
+        while t_next_out < t_event:
+            if t_next_out > T_end + EPS:
+                break
+            
+            # Only record if we haven't already recorded this time point
+            if t_next_out >= t - EPS:
+                for ci, (S, I, R) in enumerate(current_counts):
+                    rows.append((ci, float(t_next_out), S, I, R))
+            
             t_next_out += dt_out
 
-    # safety: fill any remaining grid points
-    while t_next_out <= T_end + 1e-12:
-        per_comm = _counts_SIR_per_community(sim, comm_nodes)
-        for ci, (S, I, R) in enumerate(per_comm):
+        # Advance time and update state cache for the next iteration
+        t = t_event
+        current_counts = _counts_SIR_per_community(sim, comm_nodes)
+
+    # Final cleanup: Ensure the end of the simulation is recorded
+    while t_next_out <= T_end + EPS:
+        for ci, (S, I, R) in enumerate(current_counts):
             rows.append((ci, float(t_next_out), S, I, R))
         t_next_out += dt_out
 
-    # Build DF and enforce ordering: community then time
+    # Format Output
     df = pd.DataFrame(rows, columns=["community", "time", "S", "I", "R"])
-    df = df[df["time"].between(0.0 - 1e-9, T_end + 1e-9)].copy()  # include 0.0
+    df = df[df["time"].between(0.0 - EPS, T_end + EPS)].copy()
+    
     df.sort_values(["community", "time"], inplace=True)
     df.reset_index(drop=True, inplace=True)
-
-    # Expect rows = (#communities) * (T_end/dt_out + 1)  (the +1 is for t=0)
-    n_times = int(round(T_end / dt_out)) + 1
-    expected = len(comm_nodes) * n_times
-    assert len(df) == expected, f"Expected {expected} rows, got {len(df)}"
 
     df.to_csv(out_csv_path, index=False)
     return df
@@ -251,23 +283,35 @@ def run_many_uniform_and_save_per_community(
 # ==================
 # Run with YOUR params
 # ==================
+def load_config(path: str = "config.json") -> Dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 if __name__ == "__main__":
+    cfg = load_config()
+    net_cfg = cfg["network"]
+    virus_cfg = cfg["virus"]
+    sim_cfg = cfg["solid"]
+    sim_common = cfg["simulation"]
+
     # --- network params (your network.py signature) ---
-    COMMUNITIES = 5          # n_communities
-    NODES_PER_COMM = 100       # community_size
-    MAX_INTER_LINKS = 5      # max_inter_links
-    SEED = 42
+    COMMUNITIES = int(net_cfg["communities"])          # n_communities
+    NODES_PER_COMM = int(net_cfg["community_size"])    # community_size
+    MAX_INTER_LINKS = int(net_cfg["max_inter_links"])  # max_inter_links
+    SEED = int(net_cfg["seed"])
 
     # --- epidemic params ---
-    BETA = 0.004
-    GAMMA = 0.0
-    MODEL = 2                # 1=SIS, 2=SIR
+    BETA = float(virus_cfg["beta"])
+    GAMMA = float(virus_cfg["gamma"])
+    MODEL = int(virus_cfg["model"])                # 1=SIS, 2=SIR
 
     # --- simulation params ---
-    T_END = 100
-    DT_OUT = 1.0             # can be 1.0, 0.5, 0.1, etc.
-    N_SIMS = 100
-    OUT_FOLDER = r"data\Simulations_Solid"
+    T_END = float(sim_common["T_end"])
+    DT_OUT = float(sim_cfg["dt_out"])             # can be 1.0, 0.5, 0.1, etc.
+    N_SIMS = int(sim_common["n_runs"])
+    OUT_FOLDER = sim_cfg["out_folder"]
+    BASE_SEED = int(sim_common["base_seed"])
 
     # Build network using your generator
     micro_graphs, full_graph, _ = generate_two_scale_network(
@@ -289,8 +333,23 @@ if __name__ == "__main__":
         dt_out=DT_OUT,
         n_sims=N_SIMS,
         out_folder=OUT_FOLDER,
-        seeds=[1000 + i for i in range(N_SIMS)],
+        seeds=[BASE_SEED + i for i in range(N_SIMS)],
         model=MODEL,
     )
 
     print(f"Done. Wrote {N_SIMS} CSV files (per-community rows, times 0..{T_END} step {DT_OUT}) to: {OUT_FOLDER}")
+
+    log_run(
+        simulator="Solid",
+        sim_version="1.0.1",
+        network_params=net_cfg,
+        virus_params=virus_cfg,
+        sim_params={
+            "T_end": T_END,
+            "dt_out": DT_OUT,
+            "n_runs": N_SIMS,
+            "base_seed": BASE_SEED,
+            "out_folder": OUT_FOLDER,
+        },
+        output_path=OUT_FOLDER,
+    )

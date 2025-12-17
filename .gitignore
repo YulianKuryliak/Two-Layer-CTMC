@@ -2,3 +2,5 @@
 plots
 data
 __pycache__/
+simulations.db
+sim_db.py
