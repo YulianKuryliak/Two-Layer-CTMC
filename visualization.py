@@ -1,21 +1,24 @@
 import os
 import glob
+import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import datetime
 
 from matplotlib import cm
 
 # ========= settings =========
 folders = {
-    "Micro": r"data\Simulations_Solid",
+    "Micro": r"data\Simulations_Micro",
     # "SI": r"data\SI",
     "MicroMacro_2": r"data\Simulations_MicroMacro_2",
-    "MicroMacro_hazard": r"data\Simulations_MicroMacro_hazard_updated",
+    # "MicroMacro_hazard": r"data\Simulations_MicroMacro_hazard_updated",
 }
 pattern = "*.csv"
 GRID_POINTS = 1000  # resolution of the time grid INSIDE each dataset
+PLOT_TOTAL_DYNAMICS = True
+PLOT_PER_COMMUNITY = True
+PLOT_MICROMACRO_COMPARISON = False
 
 # ========= helpers =========
 def load_per_community_curves(folder: str, sim_id: str):
@@ -157,50 +160,67 @@ for name, d in datasets.items():
     # resolve representative sim_id
     rep_key = list(I_interp.keys())[idx_rep]
     d["rep_sim_id"] = rep_key
-    d["rep_comm_curves"] = load_per_community_curves(d["folder"], rep_key)
+    if PLOT_PER_COMMUNITY and name in {"Micro", "MicroMacro_2", "MicroMacro_hazard"}:
+        d["rep_comm_curves"] = load_per_community_curves(d["folder"], rep_key)
+
+# ========= output folder =========
+with open("config.json", "r", encoding="utf-8") as f:
+    cfg = json.load(f)
+net_cfg = cfg["network"]
+edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
+folder_name = (
+    f"k{net_cfg['communities']}_"
+    f"n{net_cfg['community_size']}_"
+    f"inter{net_cfg['inter_links']}_"
+    f"macro{net_cfg['macro_graph_type']}_"
+    f"micro{net_cfg['micro_graph_type']}_"
+    f"p{edge_prob_str}"
+)
+out_dir = os.path.join("plots", folder_name)
+os.makedirs(out_dir, exist_ok=True)
 
 # ========= visualization (all datasets on one plot) =========
-plt.figure(figsize=(11, 6))
+if PLOT_TOTAL_DYNAMICS:
+    plt.figure(figsize=(11, 6))
 
-# choose base colors
-base_colors = {
-    "Micro":             "#1f77b4",  # blue
-    "MicroMacro_2":        "#d62728",  # red
-    "MicroMacro_hazard": "#2ca02c",  # green
-}
+    # choose base colors
+    base_colors = {
+        "Micro":             "#1f77b4",  # blue
+        "MicroMacro_2":        "#d62728",  # red
+        "MicroMacro_hazard": "#2ca02c",  # green
+    }
 
-for name, d in datasets.items():
-    color = base_colors.get(name, None)
-    if color is None:
-        # fallback if a new dataset is added
-        colors = list(cm.tab20.colors)
-        color = colors[np.random.randint(len(colors))]
-    linestyle = "-"
+    for name, d in datasets.items():
+        color = base_colors.get(name, None)
+        if color is None:
+            # fallback if a new dataset is added
+            colors = list(cm.tab20.colors)
+            color = colors[np.random.randint(len(colors))]
+        linestyle = "-"
 
-    t_grid = d["t_grid"]
+        t_grid = d["t_grid"]
 
-    # plot representative line
-    plt.plot(t_grid, d["I_rep"], color=color, linewidth=2.8, linestyle=linestyle, label=f"{name} - representative")
+        # plot representative line
+        plt.plot(t_grid, d["I_rep"], color=color, linewidth=2.8, linestyle=linestyle, label=f"{name} - representative")
 
-    # interquartile bands
-    plt.fill_between(t_grid, d["q1"], d["q3"],
-                     color=color, alpha=0.18)
+        # interquartile bands
+        plt.fill_between(t_grid, d["q1"], d["q3"],
+                         color=color, alpha=0.18)
 
-# axes & legend
-plt.xlabel("Time")
-plt.ylabel("Infected (I)")
-plt.title("Representative I-curves with interquartile bands (all datasets, own time ranges)")
-plt.grid(True, alpha=0.3)
-plt.legend(fontsize=9, ncol=2)
-plt.tight_layout()
+    # axes & legend
+    plt.xlabel("Time")
+    plt.ylabel("Infected (I)")
+    plt.title("Representative I-curves with interquartile bands (all datasets, own time ranges)")
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=9, ncol=2)
+    plt.tight_layout()
 
-out_dir = r"plots"
-os.makedirs(out_dir, exist_ok=True)
-out_path = os.path.join(out_dir, "{}.png".format(datetime.now().strftime("%Y-%m-%d %H.%M")))
-plt.savefig(out_path, dpi=300, bbox_inches="tight")
+    out_path = os.path.join(out_dir, "MicroMacro_vs_Micro.png")
+    plt.savefig(out_path, dpi=300, bbox_inches="tight")
 
 # ========= per-community curves for each representative simulation =========
-for name, d in datasets.items():
+if PLOT_PER_COMMUNITY and "Micro" in datasets:
+    d = datasets["Micro"]
     rep_sim = d["rep_sim_id"]
     comm_curves = d["rep_comm_curves"]
 
@@ -224,19 +244,50 @@ for name, d in datasets.items():
 
     plt.xlabel("Time")
     plt.ylabel("Infected (I)")
-    plt.title(f"{name}: representative simulation {rep_sim} per-community I(t)")
+    plt.title(f"Micro: representative simulation {rep_sim} per-community I(t)")
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = os.path.join(
-        out_dir,
-        f"{name}_rep_{rep_sim}_per_community.png"
-    )
+    out_path_comm = os.path.join(out_dir, "Micro_community.png")
+    plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
+
+if PLOT_PER_COMMUNITY and any(k in datasets for k in ("MicroMacro_2", "MicroMacro_hazard")):
+    macro_key = "MicroMacro_2" if "MicroMacro_2" in datasets else "MicroMacro_hazard"
+    d = datasets[macro_key]
+    rep_sim = d["rep_sim_id"]
+    comm_curves = d["rep_comm_curves"]
+
+    plt.figure(figsize=(11, 6))
+    cmap = cm.get_cmap("tab10")
+
+    for idx, comm_id in enumerate(sorted(comm_curves.keys())):
+        cur = comm_curves[comm_id]
+        plt.plot(cur["time"], cur["I"],
+                 color=cmap(idx % 10),
+                 linewidth=1.8,
+                 label=f"Community {comm_id}")
+
+        start_t, end_t = infection_markers(cur)
+        if start_t is not None:
+            start_y = float(cur.loc[cur["time"] == start_t, "I"].iloc[0])
+            plt.scatter(start_t, start_y, color=cmap(idx % 10), marker="o", s=36, zorder=5)
+        if end_t is not None:
+            end_y = float(cur.loc[cur["time"] == end_t, "I"].iloc[0])
+            plt.scatter(end_t, end_y, color=cmap(idx % 10), marker="s", s=46, zorder=5)
+
+    plt.xlabel("Time")
+    plt.ylabel("Infected (I)")
+    plt.title(f"{macro_key}: representative simulation {rep_sim} per-community I(t)")
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=8, ncol=2)
+    plt.tight_layout()
+
+    out_path_comm = os.path.join(out_dir, "MicroMacro_community.png")
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 # ========= combined per-community plot for both MicroMacro versions =========
-if "MicroMacro_hazard" in datasets and "MicroMacro_2" in datasets:
+if PLOT_MICROMACRO_COMPARISON and "MicroMacro_hazard" in datasets and "MicroMacro_2" in datasets:
     d1 = datasets["MicroMacro_hazard"]
     d2 = datasets["MicroMacro_2"]
     comms = sorted(set(d1["rep_comm_curves"].keys()) & set(d2["rep_comm_curves"].keys()))
@@ -258,10 +309,7 @@ if "MicroMacro_hazard" in datasets and "MicroMacro_2" in datasets:
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = os.path.join(
-        out_dir,
-        "MicroMacro_v1_vs_v2_per_community.png"
-    )
+    out_path_comm = os.path.join(out_dir, "MicroMacro_community.png")
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 plt.show()

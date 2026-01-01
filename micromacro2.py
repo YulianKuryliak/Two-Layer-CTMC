@@ -97,10 +97,9 @@ class EfficientEpidemicGraph:
                 self.total_infection_rate -= w * self.infection_rate
 
         # set the new infected node's sum of susceptible neighbor weights
-        new_self_sum = self.G.nodes[node]['sum_of_weights_i'] + s
-        if -1e-12 < new_self_sum < 0:
-            new_self_sum = 0.0
-        self.G.nodes[node]['sum_of_weights_i'] = new_self_sum
+        if -1e-12 < s < 0:
+            s = 0.0
+        self.G.nodes[node]['sum_of_weights_i'] = s
         self._invalidate_cache()
 
     def _recover_node(self, node: int):
@@ -116,6 +115,10 @@ class EfficientEpidemicGraph:
         node_sum = self.G.nodes[node]['sum_of_weights_i']
         if node_sum != 0.0:
             self.total_infection_rate -= self.infection_rate * node_sum
+        if self.total_infection_rate < 0.0:
+            self.total_infection_rate = 0.0
+
+
 
         # Remove from infected set
         if node in self.infected_nodes:
@@ -761,7 +764,10 @@ def run_experiments(
     output_dir: str = r"data\Simulations_MicroMacro_hazard_updated",
     k: int = 2,
     size: int = 50,
-    max_links: int = 1,
+    inter_links: int = 1,
+    macro_graph_type: str = "complete",
+    micro_graph_type: str = "complete",
+    edge_prob: float = 0.1,
     base_seed: int = 42,
     beta: float = 0.01,
     gamma: float = 0.0,
@@ -774,7 +780,15 @@ def run_experiments(
 
     # ---- generate ONE fixed two-scale network for all runs ----
     net_seed = base_seed  # можна окремо параметризувати, але логіка проста: одна мережа
-    micro_graphs, full_graph, W = generate_two_scale_network(k, size, max_links, net_seed)
+    micro_graphs, full_graph, W = generate_two_scale_network(
+        n_communities=k,
+        community_size=size,
+        inter_links=inter_links,
+        seed=net_seed,
+        macro_graph_type=macro_graph_type,
+        micro_graph_type=micro_graph_type,
+        edge_prob=edge_prob,
+    )
 
     for run_id in range(1, runs + 1):
         seed = base_seed + run_id
@@ -824,7 +838,10 @@ if __name__ == "__main__":
 
     k = int(net_cfg["communities"])
     size = int(net_cfg["community_size"])
-    max_links = int(net_cfg["max_inter_links"])
+    inter_links = int(net_cfg["inter_links"])
+    macro_graph_type = str(net_cfg["macro_graph_type"])
+    micro_graph_type = str(net_cfg["micro_graph_type"])
+    edge_prob = float(net_cfg["edge_prob"])
     base_seed = int(sim_common["base_seed"])
     beta = float(virus_cfg["beta"])
     gamma = float(virus_cfg["gamma"])
@@ -840,7 +857,10 @@ if __name__ == "__main__":
         output_dir=output_dir,
         k=k,             # number of communities
         size=size,        # size of one community
-        max_links=max_links,    # number of links between communities
+        inter_links=inter_links,    # number of links between communities
+        macro_graph_type=macro_graph_type,
+        micro_graph_type=micro_graph_type,
+        edge_prob=edge_prob,
         base_seed=base_seed,
         beta=beta,      #infection rate
         gamma=gamma,       #recovery rate
@@ -864,7 +884,7 @@ if __name__ == "__main__":
             "out_folder": output_dir,
             "k": k,
             "size": size,
-            "max_links": max_links,
+            "inter_links": inter_links,
         },
         output_path=output_dir,
     )

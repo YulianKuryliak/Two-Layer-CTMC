@@ -4,7 +4,7 @@ Event-driven SIR/SIS simulators for two-layer (community + inter-community) cont
 
 ## What's here
 - `network.py` – builds a two-scale network (complete intra-community graphs plus random inter-community links).
-- `Solid_simulator.py` – baseline microscopic Gillespie SIR/SIS with uniform time sampling.
+- `Micro_simulator.py` – baseline microscopic Gillespie SIR/SIS with uniform time sampling.
 - `MicroMacro.py` – micro/macro v1 (hazard-based) approximation driven by a microscopic inner loop.
 - `micromacro2.py` – micro/macro v2 with cached hazards and O(1) S/I/R counters for faster but equivalent dynamics.
 - `visualization.py` – aggregates CSV outputs, finds representative runs, and plots per-community and aggregated I(t) curves.
@@ -18,22 +18,22 @@ Event-driven SIR/SIS simulators for two-layer (community + inter-community) cont
 
 ## Configure runs
 Edit `config.json` to set:
-- `network`: communities (`communities`), nodes per community (`community_size`), max inter links (`max_inter_links`), and RNG seed.
+- `network`: communities (`communities`), nodes per community (`community_size`), inter links (`inter_links`), macro topology (`macro_graph_type`), micro topology (`micro_graph_type`), random edge probability (`edge_prob`), and RNG seed.
 - `virus`: infection `beta`, recovery `gamma`, and `model` (`1` = SIS, `2` = SIR).
 - `simulation`: number of runs, base seed offset, and horizon `T_end`.
-- Variant-specific output folders and step sizes (`solid.dt_out`, `micromacro.tau_micro`, `micromacro.macro_T`, etc.).
+- Variant-specific output folders and step sizes (`micro.dt_out`, `micromacro.tau_micro`, `micromacro.macro_T`, etc.).
 
 ## Run simulators
 Each command writes per-run CSVs with columns `community,time,S,I,R` to the folder configured in `config.json`, and logs metadata into `simulations.db`.
 
 ```bash
-python Solid_simulator.py   # Full microscopic baseline
+python Micro_simulator.py   # Full microscopic baseline
 python MicroMacro.py        # Micro/Macro v1 (hazard-based)
 python micromacro2.py       # Micro/Macro v2 (optimized)
 ```
 
 ## Visualize results
-`visualization.py` reads the default folders (`data/Simulations_Solid`, `data/Simulations_MicroMacro_2`, `data/Simulations_MicroMacro_hazard_updated`), interpolates curves onto a common grid, selects a representative run per variant, and exports plots to `plots/`.
+`visualization.py` reads the default folders (`data/Simulations_Micro`, `data/Simulations_MicroMacro_2`, `data/Simulations_MicroMacro_hazard_updated`), interpolates curves onto a common grid, selects a representative run per variant, and exports plots to `plots/`.
 
 ```bash
 python visualization.py
