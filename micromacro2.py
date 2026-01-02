@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from network import generate_two_scale_network
+from MicroEngine import MicroEngine
 from sim_db import log_run
 
 
@@ -26,272 +27,27 @@ def load_config(path: str = "config.json") -> dict:
         return json.load(f)
 
 
-# ---------------------------
-# Low-level SSA (micro layer)
-# ---------------------------
-
-class EfficientEpidemicGraph:
-    """
-    Base event-driven SIR/SIS simulator on a static network using the Gillespie algorithm.
-
-    Tracks:
-      - self.infected_nodes: list of infected node ids
-      - per infected node i: nodes[i]['sum_of_weights_i'] = sum_{j susceptible} w_ij
-      - self.total_infection_rate = beta * sum_i sum_of_weights_i over infected i
-      - self.total_recovery_rate  = gamma * (# infected)
-    """
-    def __init__(self, infection_rate: float = 0.1, recovery_rate: float = 0.0, model: int = 2):
-        self.G = nx.Graph()
-        self.model = model                 # 1 = SIS, 2 = SIR
-        self.infection_rate = infection_rate
-        self.recovery_rate = recovery_rate
-        self.infected_nodes: List[int] = []
-        self.total_infection_rate = 0.0
-        self.total_recovery_rate = 0.0
-        self.S_count = 0
-        self.I_count = 0
-        self.R_count = 0
-        self._neighbors: dict[int, List[Tuple[int, float]]] = {}
-        self._cached_wait: Optional[float] = None
-        self._cached_event: Optional[Tuple[str, Any]] = None
-        self._cached_rng_before = None
-        self._cached_rng_after = None
-
-    def add_node(self, node_id: int):
-        self.G.add_node(node_id, infected=False, recovered=False, sum_of_weights_i=0.0)
-        self._neighbors[node_id] = []
-        self.S_count += 1
-
-    def add_edge(self, node1: int, node2: int, weight: float):
-        if not (weight >= 0 and math.isfinite(weight)):
-            raise ValueError("Edge weight must be non-negative and finite")
-        self.G.add_edge(node1, node2, weight=weight)
-        self._neighbors[node1].append((node2, weight))
-        self._neighbors[node2].append((node1, weight))
-        # topology change invalidates any cached event
-        self._invalidate_cache()
-
-    # -------------------------
-    # Infection & Recovery core
-    # -------------------------
-
-    def _infect_node(self, node: int = None):
-        """
-        Turn 'node' from susceptible into infected and update hazard bookkeeping.
-        """
-        if node is None:
-            node = random.choice(list(self.G.nodes))
-
-        if self.G.nodes[node]['infected'] or self.G.nodes[node]['recovered']:
-            return  # already infected or recovered: no-op
-
-        self.G.nodes[node]['infected'] = True
-        self.G.nodes[node]['recovered'] = False
-        self.infected_nodes.append(node)
-        self.total_recovery_rate += self.recovery_rate
-        self.S_count -= 1
-        self.I_count += 1
-
-        s = 0.0
-        for nbr, w in self._neighbors[node]:
-            nbr_data = self.G.nodes[nbr]
-            if (not nbr_data['infected']) and (not nbr_data['recovered']):
-                s += w
-                self.total_infection_rate += w * self.infection_rate
-            elif nbr_data['infected'] and nbr != node:
-                # the infected neighbor loses this susceptible edge (node switched to I)
-                new_sum = self.G.nodes[nbr]['sum_of_weights_i'] - w
-                if -1e-12 < new_sum < 0:  # clamp tiny negatives
-                    new_sum = 0.0
-                self.G.nodes[nbr]['sum_of_weights_i'] = new_sum
-                self.total_infection_rate -= w * self.infection_rate
-
-        # set the new infected node's sum of susceptible neighbor weights
-        if -1e-12 < s < 0:
-            s = 0.0
-        self.G.nodes[node]['sum_of_weights_i'] = s
-        self._invalidate_cache()
-
-    def _recover_node(self, node: int):
-        """
-        Recover 'node' from infected state.
-        SIS: node becomes susceptible again; infected neighbors gain a susceptible edge.
-        SIR: node becomes recovered; no neighbor gains susceptibility.
-        """
-        if not self.G.nodes[node]['infected']:
-            return
-
-        # Remove node's own infection hazard
-        node_sum = self.G.nodes[node]['sum_of_weights_i']
-        if node_sum != 0.0:
-            self.total_infection_rate -= self.infection_rate * node_sum
-        if self.total_infection_rate < 0.0:
-            self.total_infection_rate = 0.0
-
-
-
-        # Remove from infected set
-        if node in self.infected_nodes:
-            self.infected_nodes.remove(node)
-        self.total_recovery_rate -= self.recovery_rate
-        self.I_count -= 1
-
-        if self.model == 1:  # SIS
-            # Each INFECTED neighbor gains a susceptible edge to 'node'
-            for nbr, w in self._neighbors[node]:
-                if self.G.nodes[nbr]['infected']:
-                    new_sum = self.G.nodes[nbr]['sum_of_weights_i'] + w
-                    if -1e-12 < new_sum < 0:
-                        new_sum = 0.0
-                    self.G.nodes[nbr]['sum_of_weights_i'] = new_sum
-                    self.total_infection_rate += w * self.infection_rate
-
-            self.G.nodes[node]['infected'] = False
-            self.G.nodes[node]['recovered'] = False
-            self.G.nodes[node]['sum_of_weights_i'] = 0.0
-            self.S_count += 1
-
-        else:  # SIR
-            self.G.nodes[node]['infected'] = False
-            self.G.nodes[node]['recovered'] = True
-            self.G.nodes[node]['sum_of_weights_i'] = 0.0
-            self.R_count += 1
-
-        self._invalidate_cache()
-
-    # ---------------------------------
-    # Gillespie: sample vs. apply split
-    # ---------------------------------
-
-    def _sample_next_event(self) -> Tuple[float, Optional[Tuple[str, Any]]]:
-        """
-        SAMPLE the next event WITHOUT modifying graph state.
-
-        Returns:
-            (wait_time, event)
-            where event is:
-              ('infection', src_infected, dst_susceptible) OR ('recovery', node)
-        """
-        if not self.infected_nodes:
-            return float('inf'), None
-
-        total_rate = self.total_infection_rate + self.total_recovery_rate
-        if total_rate < 1e-12:
-            return float('inf'), None
-
-        # wait_time = 1/total_rate
-
-        wait_time = random.expovariate(total_rate)
-
-        # Infection vs recovery
-        if random.random() < (self.total_infection_rate / total_rate):
-            # pick infected source with prob ~ beta * sum_of_weights_i
-            target = random.uniform(0.0, self.total_infection_rate)
-            cum = 0.0
-            chosen_src = None
-            for node in self.infected_nodes:
-                cum += self.G.nodes[node]['sum_of_weights_i'] * self.infection_rate
-                if cum > target:
-                    chosen_src = node
-                    break
-            if chosen_src is None:
-                return wait_time, None
-
-            # pick susceptible neighbor of chosen_src with prob ~ w
-            neighbors = [n for n, _ in self._neighbors[chosen_src]
-                         if (not self.G.nodes[n]['infected']) and (not self.G.nodes[n]['recovered'])]
-            if not neighbors:
-                return wait_time, None
-
-            weight_map = dict(self._neighbors[chosen_src])
-            weights = np.array([weight_map[n] for n in neighbors], dtype=float)
-            wsum = float(weights.sum())
-            if wsum <= 0.0:
-                return wait_time, None
-            target2 = random.uniform(0.0, wsum)
-            cum2 = 0.0
-            chosen_dst = None
-            for w, n in zip(weights, neighbors):
-                cum2 += w
-                if cum2 > target2:
-                    chosen_dst = n
-                    break
-            if chosen_dst is None:
-                return wait_time, None
-
-            return wait_time, ('infection', chosen_src, chosen_dst)
-
-        else:
-            target = random.uniform(0.0, self.total_recovery_rate)
-            cum = 0.0
-            chosen = None
-            for node in self.infected_nodes:
-                cum += self.recovery_rate
-                if cum > target:
-                    chosen = node
-                    break
-            if chosen is None:
-                return wait_time, None
-            return wait_time, ('recovery', chosen)
-
-    def _apply_event(self, event: Tuple[str, Any]) -> Tuple[str, Optional[int], Optional[int]]:
-        """
-        APPLY a previously sampled event to the graph.
-
-        Returns:
-            (etype, node_for_logging, src_if_infection_else_None)
-        """
-        etype = event[0]
-        if etype == 'infection':
-            _, src, dst = event
-            self._infect_node(dst)
-            return 'infection', dst, src
-        elif etype == 'recovery':
-            _, node = event
-            self._recover_node(node)
-            return 'recovery', node, None
-        else:
-            return 'none', None, None
-
-    def simulate_step(self) -> Tuple[float, Optional[str], Optional[int]]:
-        """
-        Backwards-compatible single step.
-        """
-        wait_time, ev = self._sample_next_event()
-        if wait_time == float('inf') or ev is None:
-            return float('inf'), None, None
-        etype, node, _ = self._apply_event(ev)
-        return wait_time, etype, node
-
-
-class MicroModel(EfficientEpidemicGraph):
+class MicroModel(MicroEngine):
     """
     Micro-scale community simulator with horizon-safe advancing.
     """
-    def __init__(self, infection_rate: float, recovery_rate: float, model: int = 2):
-        super().__init__(infection_rate, recovery_rate, model)
+    def __init__(
+        self,
+        infection_rate: float,
+        recovery_rate: float,
+        model: int = 2,
+        rng: Optional[random.Random] = None,
+    ):
+        super().__init__(
+            infection_rate,
+            recovery_rate,
+            model,
+            track_counts=True,
+            cache_neighbors=True,
+            cache_events=True,
+            rng=rng,
+        )
         self.current_time = 0.0
-
-    def _invalidate_cache(self):
-        self._cached_wait = None
-        self._cached_event = None
-        self._cached_rng_before = None
-        self._cached_rng_after = None
-
-    def _ensure_next_event(self):
-        """
-        Cache the next event sampling (wait_time, event, rng_before, rng_after).
-        Preserves RNG sequence by storing pre/post RNG states.
-        """
-        if self._cached_wait is None:
-            rng_before = random.getstate()
-            wait_time, ev = self._sample_next_event()
-            rng_after = random.getstate()
-            self._cached_wait = wait_time
-            self._cached_event = ev
-            self._cached_rng_before = rng_before
-            self._cached_rng_after = rng_after
-        return self._cached_wait, self._cached_event, self._cached_rng_before, self._cached_rng_after
 
     def simulate_until(self, t_end: float) -> Tuple[int, int, int, List[Tuple[float, str, int, Optional[int]]]]:
         """
@@ -310,11 +66,11 @@ class MicroModel(EfficientEpidemicGraph):
 
             # Next event beyond horizon -> restore RNG and stop
             if self.current_time + wait_time > t_end:
-                random.setstate(rng_before)
+                self._set_rng_state(rng_before)
                 break
 
             # Apply the event
-            random.setstate(rng_after)
+            self._set_rng_state(rng_after)
             self.current_time += wait_time
             etype, node, src = self._apply_event(ev)
             if etype != 'none' and node is not None:
@@ -324,27 +80,12 @@ class MicroModel(EfficientEpidemicGraph):
         # if self.current_time < t_end:
         #     self.current_time = t_end
 
-        return self.S_count, self.I_count, self.R_count, events
-
-    def count_states(self) -> Tuple[int, int, int]:
-        return self.S_count, self.I_count, self.R_count
-
-    def import_infection(self) -> Optional[int]:
-        """
-        Introduce one new infection at random among susceptibles.
-        """
-        susceptibles = [n for n, d in self.G.nodes(data=True)
-                        if (not d['infected']) and (not d['recovered'])]
-        if not susceptibles:
-            return None
-        node = random.choice(susceptibles)
-        self._infect_node(node)
-        self._invalidate_cache()
-        return node
+        S, I, R = self.count_states()
+        return S, I, R, events
 
     # --- lightweight cloning for midpoint probing (no RNG leakage) ---
     def clone(self) -> "MicroModel":
-        m = MicroModel(self.infection_rate, self.recovery_rate, self.model)
+        m = MicroModel(self.infection_rate, self.recovery_rate, self.model, rng=self.rng)
         m.current_time = self.current_time
         # copy node states but avoid duplicating static topology (edges handled via _neighbors)
         m.G = nx.Graph()

@@ -10,10 +10,8 @@ from pathlib import Path
 # ========= settings =========
 BASE_DIR = Path(__file__).resolve().parent
 folders = {
-    "Micro": BASE_DIR / "data" / "Simulations_Micro",
-    # "SI": BASE_DIR / "data" / "SI",
-    "MicroMacro_2": BASE_DIR / "data" / "Simulations_MicroMacro_2",
-    # "MicroMacro_hazard": BASE_DIR / "data" / "Simulations_MicroMacro_hazard_updated",
+    "Simulations_MicroMacro_2": BASE_DIR / "data" / "Simulations_MicroMacro_2",
+    "Simulations_MicroMacro_2 copy": BASE_DIR / "data" / "Simulations_MicroMacro_2 copy",
 }
 pattern = "*.csv"
 GRID_POINTS = 1000  # resolution of the time grid INSIDE each dataset
@@ -163,7 +161,7 @@ for name, d in datasets.items():
     # resolve representative sim_id
     rep_key = list(I_interp.keys())[idx_rep]
     d["rep_sim_id"] = rep_key
-    if PLOT_PER_COMMUNITY and name in {"Micro", "MicroMacro_2", "MicroMacro_hazard"}:
+    if PLOT_PER_COMMUNITY and name in {"Micro", "Micro_copy_2"}:
         d["rep_comm_curves"] = load_per_community_curves(d["folder"], rep_key)
 
 # ========= output folder =========
@@ -188,9 +186,8 @@ if PLOT_TOTAL_DYNAMICS:
 
     # choose base colors
     base_colors = {
-        "Micro":             "#1f77b4",  # blue
-        "MicroMacro_2":        "#d62728",  # red
-        "MicroMacro_hazard": "#2ca02c",  # green
+        "Micro":       "#1f77b4",  # blue
+        "Micro_copy_2": "#ff7f0e",  # orange
     }
 
     for name, d in datasets.items():
@@ -218,7 +215,7 @@ if PLOT_TOTAL_DYNAMICS:
     plt.legend(fontsize=9, ncol=2)
     plt.tight_layout()
 
-    out_path = out_dir / "MicroMacro_vs_Micro.png"
+    out_path = out_dir / "Micro_vs_Micro_copy_2.png"
     plt.savefig(out_path, dpi=300, bbox_inches="tight")
 
 # ========= per-community curves for each representative simulation =========
@@ -255,9 +252,8 @@ if PLOT_PER_COMMUNITY and "Micro" in datasets:
     out_path_comm = out_dir / "Micro_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
-if PLOT_PER_COMMUNITY and any(k in datasets for k in ("MicroMacro_2", "MicroMacro_hazard")):
-    macro_key = "MicroMacro_2" if "MicroMacro_2" in datasets else "MicroMacro_hazard"
-    d = datasets[macro_key]
+if PLOT_PER_COMMUNITY and "Micro_copy_2" in datasets:
+    d = datasets["Micro_copy_2"]
     rep_sim = d["rep_sim_id"]
     comm_curves = d["rep_comm_curves"]
 
@@ -281,12 +277,12 @@ if PLOT_PER_COMMUNITY and any(k in datasets for k in ("MicroMacro_2", "MicroMacr
 
     plt.xlabel("Time")
     plt.ylabel("Infected (I)")
-    plt.title(f"{macro_key}: representative simulation {rep_sim} per-community I(t)")
+    plt.title(f"Micro_copy_2: representative simulation {rep_sim} per-community I(t)")
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = out_dir / "MicroMacro_community.png"
+    out_path_comm = out_dir / "Micro_copy_2_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 # ========= combined per-community plot for both MicroMacro versions =========

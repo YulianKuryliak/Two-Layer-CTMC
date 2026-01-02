@@ -126,4 +126,4 @@ def generate_two_scale_network(
     return micro_graphs, full_graph, W
 
 
-# (Existing classes EfficientEpidemicGraph, MicroModel, MacroEngine, Orchestrator remain unchanged...)
+# (Existing classes MicroEngine, MicroModel, MacroEngine, Orchestrator remain unchanged...)
