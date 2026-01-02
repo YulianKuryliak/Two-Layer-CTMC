@@ -1,7 +1,6 @@
 # micro_sim.py
 import os
 import json
-import math
 import random
 from typing import List, Tuple, Optional, Dict
 from pathlib import Path
@@ -21,6 +20,7 @@ from matplotlib.lines import Line2D
 
 # ваш генератор двошарової мережі
 from network import generate_two_scale_network  # ensure network.py provides this
+from MicroEngine import MicroEngine
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -32,191 +32,10 @@ def resolve_path(path_like: str) -> Path:
     return path if path.is_absolute() else (BASE_DIR / path)
 
 
-# =========================
-# Event-driven SIR/SIS core
-# =========================
-class EfficientEpidemicGraph:
-    """
-    Event-driven SIR/SIS on a static graph via Gillespie SSA.
-
-    total_infection_rate = beta * sum_{i in I} sum_of_weights_i
-    total_recovery_rate  = gamma * |I|
-    де sum_of_weights_i = sum_{j in S} w_ij  (для інфікованого i)
-    """
-    def __init__(self, infection_rate: float = 0.1, recovery_rate: float = 0.0, model: int = 2):
-        self.G = nx.Graph()
-        self.model = int(model)                 # 1 = SIS, 2 = SIR
-        self.infection_rate = float(infection_rate)
-        self.recovery_rate = float(recovery_rate)
-        self.infected_nodes: List[int] = []
-        self.total_infection_rate = 0.0
-        self.total_recovery_rate = 0.0
-
-    # ---------- graph building ----------
-    def add_node(self, node_id: int):
-        self.G.add_node(node_id, infected=False, recovered=False, sum_of_weights_i=0.0)
-
-    def add_edge(self, node1: int, node2: int, weight: float):
-        if not (weight >= 0 and math.isfinite(weight)):
-            raise ValueError("Edge weight must be non-negative and finite")
-        self.G.add_edge(node1, node2, weight=float(weight))
-
-    # ---------- core SSA primitives ----------
-    def _infect_node(self, node: int):
-        """S->I, оновити сумарні hazard-и інкрементально."""
-        nd = self.G.nodes[node]
-        if nd["infected"] or nd["recovered"]:
-            return
-
-        nd["infected"] = True
-        nd["recovered"] = False
-        self.infected_nodes.append(node)
-        self.total_recovery_rate += self.recovery_rate
-
-        # нова сума для зараженого вузла (ваги до S-сусідів)
-        s = 0.0
-        for nbr in self.G.neighbors(node):
-            w = self.G[node][nbr]["weight"]
-            nbrd = self.G.nodes[nbr]
-            if (not nbrd["infected"]) and (not nbrd["recovered"]):
-                s += w                               # цей реберний внесок тепер належить новому інфікованому
-                self.total_infection_rate += self.infection_rate * w
-            elif nbrd["infected"] and nbr != node:
-                # сусід-інфікований втрачає одного S-сусіда (цей вузол перейшов у I)
-                new_sum = nbrd["sum_of_weights_i"] - w
-                if -1e-12 < new_sum < 0:
-                    new_sum = 0.0
-                nbrd["sum_of_weights_i"] = new_sum
-                self.total_infection_rate -= self.infection_rate * w
-
-        # задати (а не додати) суму зараженого вузла
-        if -1e-12 < s < 0:
-            s = 0.0
-        self.G.nodes[node]["sum_of_weights_i"] = s
-
-        # клемпи
-        if self.total_infection_rate < 0:
-            self.total_infection_rate = 0.0
-
-    def _recover_node(self, node: int):
-        """I->S (SIS) або I->R (SIR), з правильним оновленням ставок."""
-        if node not in self.infected_nodes:
-            return
-
-        # 1) прибрати власний внесок вузла у total_infection_rate
-        node_sum = self.G.nodes[node]["sum_of_weights_i"]
-        if node_sum:
-            self.total_infection_rate -= self.infection_rate * node_sum
-            if self.total_infection_rate < 0:
-                self.total_infection_rate = 0.0
-
-        # 2) вийняти з інфікованих, зменшити recovery
-        self.infected_nodes.remove(node)
-        self.total_recovery_rate -= self.recovery_rate
-
-        if self.model == 1:  # SIS
-            # кожен інфікований сусід отримує нового S-сусіда -> зростає його sum_of_weights_i
-            for nbr in self.G.neighbors(node):
-                nbrd = self.G.nodes[nbr]
-                if nbrd["infected"]:
-                    w = self.G[node][nbr]["weight"]
-                    new_sum = nbrd["sum_of_weights_i"] + w
-                    if -1e-12 < new_sum < 0:
-                        new_sum = 0.0
-                    nbrd["sum_of_weights_i"] = new_sum
-                    self.total_infection_rate += self.infection_rate * w
-
-            # вузол знову S
-            self.G.nodes[node]["infected"] = False
-            self.G.nodes[node]["recovered"] = False
-            self.G.nodes[node]["sum_of_weights_i"] = 0.0
-
-        else:  # SIR
-            self.G.nodes[node]["infected"] = False
-            self.G.nodes[node]["recovered"] = True
-            self.G.nodes[node]["sum_of_weights_i"] = 0.0
-
-        if self.total_infection_rate < 0:
-            self.total_infection_rate = 0.0
-
-    def _infect_neighbor(self, src: int) -> Optional[int]:
-        """Обрати S-сусіда для зараження пропорційно вазі ребра (і застосувати)."""
-        neighbors = [
-            n for n in self.G.neighbors(src)
-            if (not self.G.nodes[n]["infected"]) and (not self.G.nodes[n]["recovered"])
-        ]
-        if not neighbors:
-            return None
-
-        weights = np.array([self.G[src][n]["weight"] for n in neighbors], dtype=float)
-        wsum = float(weights.sum())
-        if wsum <= 0.0:
-            return None
-
-        target = random.uniform(0.0, wsum)
-        cum = 0.0
-        for w, n in zip(weights, neighbors):
-            cum += w
-            if cum > target:
-                self._infect_node(n)
-                return n
-        return None
-
-    def simulate_step(self) -> Tuple[float, Optional[Tuple[str, int, Optional[int]]]]:
-        """
-        Зробити один SSA-крок. Повертає (wait_time, event_tuple).
-        event_tuple: ("infection", src, dst) або ("recovery", node, None)
-        """
-        if not self.infected_nodes:
-            return float("inf"), None
-
-        a_inf = self.total_infection_rate
-        a_rec = self.total_recovery_rate
-        a0 = a_inf + a_rec
-        if a0 < 1e-12:
-            return float("inf"), None
-
-        # Подієвий час
-        wait_time = random.expovariate(a0)
-
-        # Вибір типу події
-        if random.random() < (a_inf / a0):
-            # Обираємо джерело пропорційно β * sum_of_weights_i
-            target = random.uniform(0.0, a_inf)
-            cum = 0.0
-            src = None
-            dst = None
-            for node in self.infected_nodes:
-                cum += self.infection_rate * self.G.nodes[node]["sum_of_weights_i"]
-                if cum > target:
-                    src = node
-                    dst = self._infect_neighbor(node)  # застосування
-                    break
-            if (src is None) or (dst is None):
-                # у коректній бухгалтерії не повинно траплятись; на всяк випадок
-                return wait_time, None
-            return wait_time, ("infection", src, dst)
-
-        else:
-            # Вибір відновлення: усі інфіковані мають однакову ставку γ
-            target = random.uniform(0.0, a_rec)
-            cum = 0.0
-            chosen = None
-            for node in list(self.infected_nodes):
-                cum += self.recovery_rate
-                if cum > target:
-                    chosen = node
-                    self._recover_node(node)  # застосування
-                    break
-            if chosen is None:
-                return wait_time, None
-            return wait_time, ("recovery", chosen, None)
-
-
 # =========================================
 # Sampling & CSV saving (per-community rows)
 # =========================================
-def _counts_SIR_per_community(sim: EfficientEpidemicGraph, comm_nodes: List[List[int]]) -> List[Tuple[int, int, int]]:
+def _counts_SIR_per_community(sim: MicroEngine, comm_nodes: List[List[int]]) -> List[Tuple[int, int, int]]:
     infected_set = set(sim.infected_nodes)
     recovered_set = {n for n, a in sim.G.nodes(data=True) if a.get("recovered", False)}
     out: List[Tuple[int, int, int]] = []
@@ -335,7 +154,14 @@ def run_and_save_uniform_csv_per_community(
         np.random.seed(seed)
 
     # init simulator
-    sim = EfficientEpidemicGraph(infection_rate=beta, recovery_rate=gamma, model=model)
+    sim = MicroEngine(
+        infection_rate=beta,
+        recovery_rate=gamma,
+        model=model,
+        track_counts=False,
+        cache_neighbors=False,
+        cache_events=False,
+    )
     for n in full_graph.nodes():
         sim.add_node(n)
     for u, v, d in full_graph.edges(data=True):
@@ -370,7 +196,7 @@ def run_and_save_uniform_csv_per_community(
     EPS = 1e-9
 
     while t < T_end:
-        dt, event = sim.simulate_step()
+        dt, event = sim.simulate_step(return_details=True)
 
         if dt == float("inf"):
             # далі лише тримаємо останній стан
