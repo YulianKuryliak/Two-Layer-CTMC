@@ -5,11 +5,11 @@
     "inter_links": 5,
     "seed": 42,
     "macro_graph_type": "chain",
-    "micro_graph_type": "complete",
-    "edge_prob": 0.2 
+    "micro_graph_type": "random",
+    "edge_prob": 0.2
   },
   "virus": {
-    "beta": 0.005,
+    "beta": 0.01,
     "gamma": 0.0,
     "model": 2
   },
@@ -20,7 +20,9 @@
   },
   "micro": {
     "dt_out": 1.0,
-    "out_folder": "data/Simulations_Micro"
+    "out_folder": "data/Simulations_Micro",
+    "plots_first_infection": "plots/micro_first_infection",
+    "plots_all_communities": "plots/micro_all_communities"
   },
   "micromacro": {
     "tau_micro": 1.0,

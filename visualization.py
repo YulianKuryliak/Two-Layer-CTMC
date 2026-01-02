@@ -1,18 +1,19 @@
 import os
-import glob
 import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 from matplotlib import cm
+from pathlib import Path
 
 # ========= settings =========
+BASE_DIR = Path(__file__).resolve().parent
 folders = {
-    "Micro": r"data\Simulations_Micro",
-    # "SI": r"data\SI",
-    "MicroMacro_2": r"data\Simulations_MicroMacro_2",
-    # "MicroMacro_hazard": r"data\Simulations_MicroMacro_hazard_updated",
+    "Micro": BASE_DIR / "data" / "Simulations_Micro",
+    # "SI": BASE_DIR / "data" / "SI",
+    "MicroMacro_2": BASE_DIR / "data" / "Simulations_MicroMacro_2",
+    # "MicroMacro_hazard": BASE_DIR / "data" / "Simulations_MicroMacro_hazard_updated",
 }
 pattern = "*.csv"
 GRID_POINTS = 1000  # resolution of the time grid INSIDE each dataset
@@ -26,7 +27,8 @@ def load_per_community_curves(folder: str, sim_id: str):
     Load a single simulation CSV and return per-community I(t) curves.
     Returns dict[int -> DataFrame[time, I]] sorted by time.
     """
-    fpath = os.path.join(folder, f"{sim_id}.csv")
+    folder_path = Path(folder)
+    fpath = folder_path / f"{sim_id}.csv"
     df = pd.read_csv(fpath)
     required = {"community", "time", "S", "I", "R"}
     missing = required - set(df.columns)
@@ -67,9 +69,10 @@ def load_dataset(folder: str, pattern: str = "*.csv"):
         raw_curves: dict(sim_id -> DataFrame[time, I])
         t_min, t_max: min/max time across sims
     """
-    files = sorted(glob.glob(os.path.join(folder, pattern)))
+    folder_path = Path(folder)
+    files = sorted(folder_path.glob(pattern))
     if not files:
-        raise FileNotFoundError(f"No CSV files found in: {os.path.abspath(folder)}")
+        raise FileNotFoundError(f"No CSV files found in: {folder_path.resolve()}")
 
     raw_curves = {}
     tmins, tmaxs = [], []
@@ -87,7 +90,7 @@ def load_dataset(folder: str, pattern: str = "*.csv"):
                  .sort_values("time"))
         # keep only time & I
         cur = agg[["time", "I"]].drop_duplicates(subset="time").sort_values("time").reset_index(drop=True)
-        sim_id = os.path.splitext(os.path.basename(fpath))[0]
+        sim_id = fpath.stem
         raw_curves[sim_id] = cur
 
         tmins.append(cur["time"].min())
@@ -164,20 +167,20 @@ for name, d in datasets.items():
         d["rep_comm_curves"] = load_per_community_curves(d["folder"], rep_key)
 
 # ========= output folder =========
-with open("config.json", "r", encoding="utf-8") as f:
+with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
     cfg = json.load(f)
 net_cfg = cfg["network"]
 edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
 folder_name = (
-    f"k{net_cfg['communities']}_"
-    f"n{net_cfg['community_size']}_"
-    f"inter{net_cfg['inter_links']}_"
-    f"macro{net_cfg['macro_graph_type']}_"
-    f"micro{net_cfg['micro_graph_type']}_"
+    f"k_{net_cfg['communities']}_"
+    f"n_{net_cfg['community_size']}_"
+    f"inter_{net_cfg['inter_links']}_"
+    f"macro_{net_cfg['macro_graph_type']}_"
+    f"micro_{net_cfg['micro_graph_type']}_"
     f"p{edge_prob_str}"
 )
-out_dir = os.path.join("plots", folder_name)
-os.makedirs(out_dir, exist_ok=True)
+out_dir = BASE_DIR / "plots" / folder_name
+out_dir.mkdir(parents=True, exist_ok=True)
 
 # ========= visualization (all datasets on one plot) =========
 if PLOT_TOTAL_DYNAMICS:
@@ -215,7 +218,7 @@ if PLOT_TOTAL_DYNAMICS:
     plt.legend(fontsize=9, ncol=2)
     plt.tight_layout()
 
-    out_path = os.path.join(out_dir, "MicroMacro_vs_Micro.png")
+    out_path = out_dir / "MicroMacro_vs_Micro.png"
     plt.savefig(out_path, dpi=300, bbox_inches="tight")
 
 # ========= per-community curves for each representative simulation =========
@@ -249,7 +252,7 @@ if PLOT_PER_COMMUNITY and "Micro" in datasets:
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = os.path.join(out_dir, "Micro_community.png")
+    out_path_comm = out_dir / "Micro_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 if PLOT_PER_COMMUNITY and any(k in datasets for k in ("MicroMacro_2", "MicroMacro_hazard")):
@@ -283,7 +286,7 @@ if PLOT_PER_COMMUNITY and any(k in datasets for k in ("MicroMacro_2", "MicroMacr
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = os.path.join(out_dir, "MicroMacro_community.png")
+    out_path_comm = out_dir / "MicroMacro_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 # ========= combined per-community plot for both MicroMacro versions =========
@@ -309,7 +312,7 @@ if PLOT_MICROMACRO_COMPARISON and "MicroMacro_hazard" in datasets and "MicroMacr
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = os.path.join(out_dir, "MicroMacro_community.png")
+    out_path_comm = out_dir / "MicroMacro_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 plt.show()

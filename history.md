@@ -1,3 +1,9 @@
+## v1.0.3
+- Cross-platform path handling: resolve config/output/plot paths via pathlib and normalize Windows-style separators so runs work on Linux and Windows.
+- Config updates: added micro plot folder keys to `config.json` for first-infection and per-community outputs.
+- Visualization and simulator outputs now anchor paths relative to the script location for consistent behavior across OSes.
+- Run logging and network visualization now resolve paths relative to the repo to avoid OS-specific path issues.
+
 ## v1.0.2
 - Updated Micro simulator:
 	- Fixed bug in Microsimulator that blocked intra-infections of other communities till the end of outbreak in current one. 

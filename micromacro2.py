@@ -6,13 +6,23 @@ import numpy as np
 import networkx as nx
 from typing import List, Tuple, Optional, Any
 import json
+from pathlib import Path
 
 from network import generate_two_scale_network
 from sim_db import log_run
 
 
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def resolve_path(path_like: str) -> Path:
+    normalized = str(path_like).replace("\\", "/")
+    path = Path(normalized).expanduser()
+    return path if path.is_absolute() else (BASE_DIR / path)
+
+
 def load_config(path: str = "config.json") -> dict:
-    with open(path, "r", encoding="utf-8") as f:
+    with open(resolve_path(path), "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -728,7 +738,8 @@ def _export_discrete_grid_csv(
     Between grid points nothing is saved.
     Uses carry-forward of the last state at or before each grid point.
     """
-    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    csv_path = resolve_path(csv_path)
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Build the grid robustly against floating point drift
     n_steps = int(math.floor(T_end / tau_micro + 1e-12))
@@ -761,7 +772,7 @@ def _export_discrete_grid_csv(
 
 def run_experiments(
     runs: int = 100,
-    output_dir: str = r"data\Simulations_MicroMacro_hazard_updated",
+    output_dir: str = "data/Simulations_MicroMacro_hazard_updated",
     k: int = 2,
     size: int = 50,
     inter_links: int = 1,
@@ -776,7 +787,8 @@ def run_experiments(
     macro_T: float = 1.0,
     model: int = 2,
 ):
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = resolve_path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     # ---- generate ONE fixed two-scale network for all runs ----
     net_seed = base_seed  # можна окремо параметризувати, але логіка проста: одна мережа
@@ -817,7 +829,7 @@ def run_experiments(
         print(f"--- Run {run_id}/{runs} ends ---\n")
 
         # 3) export **ONLY** discrete grid t = τ, 2τ, ..., floor(T_end/τ)*τ
-        csv_path = os.path.join(output_dir, f"{run_id}.csv")
+        csv_path = output_dir / f"{run_id}.csv"
         _export_discrete_grid_csv(
             logs_per_comm=logs_2s,
             k=k,
@@ -872,7 +884,7 @@ if __name__ == "__main__":
 
     log_run(
         simulator="MicroMacro_v2",
-        sim_version="1.0.1",
+        sim_version="1.0.3",
         network_params=net_cfg,
         virus_params=virus_cfg,
         sim_params={

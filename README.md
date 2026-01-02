@@ -13,7 +13,8 @@ Event-driven SIR/SIS simulators for two-layer (community + inter-community) cont
 
 ## Quick start
 - Python 3.10+ recommended.
-- (Optional) `python -m venv .venv && .\.venv\Scripts\activate`
+- (Optional) Windows venv: `python -m venv .venv && .\.venv\Scripts\activate`
+- (Optional) Linux/macOS venv: `python -m venv .venv && source .venv/bin/activate`
 - Install deps: `pip install -r requirements.txt`
 
 ## Configure runs
@@ -21,7 +22,8 @@ Edit `config.json` to set:
 - `network`: communities (`communities`), nodes per community (`community_size`), inter links (`inter_links`), macro topology (`macro_graph_type`), micro topology (`micro_graph_type`), random edge probability (`edge_prob`), and RNG seed.
 - `virus`: infection `beta`, recovery `gamma`, and `model` (`1` = SIS, `2` = SIR).
 - `simulation`: number of runs, base seed offset, and horizon `T_end`.
-- Variant-specific output folders and step sizes (`micro.dt_out`, `micromacro.tau_micro`, `micromacro.macro_T`, etc.).
+- Variant-specific output folders and step sizes (`micro.dt_out`, `micro.out_folder`, `micro.plots_first_infection`, `micro.plots_all_communities`, `micromacro.tau_micro`, `micromacro.macro_T`, etc.).
+- Paths in `config.json` are resolved relative to the repo and accept either `/` or `\\` separators.
 
 ## Run simulators
 Each command writes per-run CSVs with columns `community,time,S,I,R` to the folder configured in `config.json`, and logs metadata into `simulations.db`.
