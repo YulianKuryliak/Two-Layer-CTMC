@@ -1,9 +1,18 @@
 import json
-import os
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Dict, List, Optional, Sequence, Tuple
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def resolve_path(path_like: str) -> Path:
+    normalized = str(path_like).replace("\\", "/")
+    path = Path(normalized).expanduser()
+    return path if path.is_absolute() else (BASE_DIR / path)
 
 
 def community_nodes_from_micrographs(micro_graphs: Sequence[nx.Graph]) -> List[List[int]]:
@@ -223,7 +232,7 @@ def draw_macro_graph(
 if __name__ == "__main__":
     from network import generate_two_scale_network
 
-    with open("config.json", "r", encoding="utf-8") as f:
+    with open(resolve_path("config.json"), "r", encoding="utf-8") as f:
         cfg = json.load(f)
     net_cfg = cfg["network"]
     save_plot = True
@@ -246,8 +255,8 @@ if __name__ == "__main__":
         seed=int(net_cfg["seed"]),
     )
     if save_plot:
-        out_dir = "plots"
-        os.makedirs(out_dir, exist_ok=True)
+        out_dir = resolve_path("plots")
+        out_dir.mkdir(parents=True, exist_ok=True)
         edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
         filename = (
             "network_"
@@ -258,6 +267,6 @@ if __name__ == "__main__":
             f"micro{net_cfg['micro_graph_type']}_"
             f"p{edge_prob_str}.png"
         )
-        out_path = os.path.join(out_dir, filename)
+        out_path = out_dir / filename
         plt.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.show()

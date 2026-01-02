@@ -4,6 +4,7 @@ import json
 import math
 import random
 from typing import List, Tuple, Optional, Dict
+from pathlib import Path
 
 # --- optional, no-op if missing
 try:
@@ -20,6 +21,15 @@ from matplotlib.lines import Line2D
 
 # ваш генератор двошарової мережі
 from network import generate_two_scale_network  # ensure network.py provides this
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def resolve_path(path_like: str) -> Path:
+    normalized = str(path_like).replace("\\", "/")
+    path = Path(normalized).expanduser()
+    return path if path.is_absolute() else (BASE_DIR / path)
 
 
 # =========================
@@ -316,6 +326,9 @@ def run_and_save_uniform_csv_per_community(
     all_communities_folder: str = "plots/micro_all_communities",
     plot_show: bool = False,
 ) -> pd.DataFrame:
+    out_csv_path = resolve_path(out_csv_path)
+    plot_folder = resolve_path(plot_folder)
+    all_communities_folder = resolve_path(all_communities_folder)
 
     if seed is not None:
         random.seed(seed)
@@ -344,11 +357,11 @@ def run_and_save_uniform_csv_per_community(
     plot_pos = None
     first_infected_comms: set[int] = {seed_comm}
     if plot_first_infection:
-        os.makedirs(plot_folder, exist_ok=True)
+        plot_folder.mkdir(parents=True, exist_ok=True)
         plot_pos = nx.spring_layout(full_graph, seed=plot_layout_seed)
         _print_community_counts(0.0, current_counts)
-        run_tag = os.path.splitext(os.path.basename(out_csv_path))[0]
-        out_path = os.path.join(plot_folder, f"{run_tag}_comm{seed_comm}_t0.png")
+        run_tag = out_csv_path.stem
+        out_path = plot_folder / f"{run_tag}_comm{seed_comm}_t0.png"
         _plot_network_state(full_graph, sim.infected_nodes, plot_pos, out_path, show=plot_show)
 
     rows: List[Tuple[int, float, int, int, int]] = []
@@ -399,9 +412,9 @@ def run_and_save_uniform_csv_per_community(
             for ci, (_, I, _) in enumerate(current_counts):
                 if I > 0 and (ci not in first_infected_comms):
                     first_infected_comms.add(ci)
-                    run_tag = os.path.splitext(os.path.basename(out_csv_path))[0]
+                    run_tag = out_csv_path.stem
                     t_str = f"{t_event:.6f}".replace(".", "p")
-                    out_path = os.path.join(plot_folder, f"{run_tag}_comm{ci}_t{t_str}.png")
+                    out_path = plot_folder / f"{run_tag}_comm{ci}_t{t_str}.png"
                     if plot_pos is None:
                         plot_pos = nx.spring_layout(full_graph, seed=plot_layout_seed)
                     _print_community_counts(t_event, current_counts)
@@ -421,9 +434,9 @@ def run_and_save_uniform_csv_per_community(
     df.to_csv(out_csv_path, index=False)
 
     if plot_all_communities:
-        os.makedirs(all_communities_folder, exist_ok=True)
-        run_tag = os.path.splitext(os.path.basename(out_csv_path))[0]
-        out_path = os.path.join(all_communities_folder, f"{run_tag}_all_communities.png")
+        all_communities_folder.mkdir(parents=True, exist_ok=True)
+        run_tag = out_csv_path.stem
+        out_path = all_communities_folder / f"{run_tag}_all_communities.png"
         _plot_all_communities_curves(
             df=df,
             infection_events=infection_events,
@@ -450,13 +463,14 @@ def run_many_uniform_and_save_per_community(
     all_communities_folder: str = "plots/micro_all_communities",
     plot_show: bool = False,
 ):
-    os.makedirs(out_folder, exist_ok=True)
+    out_folder_path = resolve_path(out_folder)
+    out_folder_path.mkdir(parents=True, exist_ok=True)
     node_list = list(full_graph.nodes)
 
     for i in range(n_sims):
         seed = None if seeds is None else seeds[i]
         initial_node = random.sample(node_list, 1)[0]  # uniform seed
-        out_csv = os.path.join(out_folder, f"{i+1}.csv")
+        out_csv = out_folder_path / f"{i+1}.csv"
 
         run_and_save_uniform_csv_per_community(
             full_graph=full_graph,
@@ -482,7 +496,7 @@ def run_many_uniform_and_save_per_community(
 # Run with YOUR params
 # ==================
 def load_config(path: str = "config.json") -> Dict:
-    with open(path, "r", encoding="utf-8") as f:
+    with open(resolve_path(path), "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -514,8 +528,8 @@ if __name__ == "__main__":
     SHOW_PLOTS = False
     PLOT_FIRST_INFECTION = False
     PLOT_ALL_COMMUNITIES = False
-    FIRST_INFECTION_FOLDER = "plots/micro_first_infection"
-    ALL_COMMUNITIES_FOLDER = "plots/micro_all_communities"
+    FIRST_INFECTION_FOLDER = sim_cfg.get("plots_first_infection", "plots/micro_first_infection")
+    ALL_COMMUNITIES_FOLDER = sim_cfg.get("plots_all_communities", "plots/micro_all_communities")
 
     N_SIMS = 1 if RUN_ONCE else int(sim_common["n_runs"])
     OUT_FOLDER = sim_cfg["out_folder"]
@@ -556,7 +570,7 @@ if __name__ == "__main__":
 
     log_run(
         simulator="Micro",
-        sim_version="1.1.0",
+        sim_version="1.0.3",
         network_params=net_cfg,
         virus_params=virus_cfg,
         sim_params={

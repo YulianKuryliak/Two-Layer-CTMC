@@ -4,3 +4,6 @@ data
 __pycache__/
 simulations.db
 sim_db.py
+*copy*
+test.py
+test.ipynb
