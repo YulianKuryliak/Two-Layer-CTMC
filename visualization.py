@@ -186,8 +186,8 @@ if PLOT_TOTAL_DYNAMICS:
 
     # choose base colors
     base_colors = {
-        "Micro":       "#1f77b4",  # blue
-        "Micro_copy_2": "#ff7f0e",  # orange
+        "Simulations_MicroMacro_2 copy":       "#1f77b4",  # blue
+        "Simulations_MicroMacro_2": "#ff7f0e",  # orange
     }
 
     for name, d in datasets.items():
