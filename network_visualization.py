@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Dict, List, Optional, Sequence, Tuple
 from pathlib import Path
+from two_layer_ctmc.network import generate_two_scale_network
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -230,7 +231,6 @@ def draw_macro_graph(
 
 
 if __name__ == "__main__":
-    from network import generate_two_scale_network
 
     with open(resolve_path("config.json"), "r", encoding="utf-8") as f:
         cfg = json.load(f)
@@ -255,18 +255,17 @@ if __name__ == "__main__":
         seed=int(net_cfg["seed"]),
     )
     if save_plot:
-        out_dir = resolve_path("plots")
-        out_dir.mkdir(parents=True, exist_ok=True)
         edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
-        filename = (
-            "network_"
-            f"k{net_cfg['communities']}_"
-            f"n{net_cfg['community_size']}_"
-            f"inter{net_cfg['inter_links']}_"
-            f"macro{net_cfg['macro_graph_type']}_"
-            f"micro{net_cfg['micro_graph_type']}_"
-            f"p{edge_prob_str}.png"
+        folder_name = (
+            f"k_{net_cfg['communities']}_"
+            f"n_{net_cfg['community_size']}_"
+            f"inter_{net_cfg['inter_links']}_"
+            f"macro_{net_cfg['macro_graph_type']}_"
+            f"micro_{net_cfg['micro_graph_type']}_"
+            f"p{edge_prob_str}"
         )
-        out_path = out_dir / filename
+        out_dir = resolve_path(Path("plots") / folder_name)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path = out_dir / "network.png"
         plt.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.show()

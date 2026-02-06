@@ -1,15 +1,17 @@
 {
   "network": {
-    "communities": 5,
-    "community_size": 100,
-    "inter_links": 5,
+    "communities": 4,
+    "community_size": 150,
+    "inter_links": 1,
     "seed": 42,
     "macro_graph_type": "chain",
-    "micro_graph_type": "random",
-    "edge_prob": 0.2
+    "micro_graph_type": "complete",
+    "micro_graph_type_unconnected": "random",
+    "micro_graph_type_connected": "random_connected",
+    "edge_prob": 0.03
   },
   "virus": {
-    "beta": 0.01,
+    "beta": 0.02,
     "gamma": 0.0,
     "model": 2
   },

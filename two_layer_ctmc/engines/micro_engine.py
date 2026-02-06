@@ -346,4 +346,3 @@ class MicroEngine:
         node = self.rng.choice(susceptibles)
         self._infect_node(node)
         return node
-
