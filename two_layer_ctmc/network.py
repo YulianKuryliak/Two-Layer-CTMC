@@ -1,9 +1,8 @@
+import random
+from typing import List, Optional, Tuple
+
 import networkx as nx
 import numpy as np
-import random
-import math
-import matplotlib.pyplot as plt
-from typing import List, Tuple, Optional, Any
 
 
 def generate_two_scale_network(
@@ -16,21 +15,8 @@ def generate_two_scale_network(
     edge_prob: float = 0.1,
 ) -> Tuple[List[nx.Graph], nx.Graph, np.ndarray]:
     """
-    Generate:
-      - micro_graphs: list of n_communities each a micrograph (complete or random)
-      - full_graph: union of all communities plus inter-community links
-      - W: k-by-k numpy array of inter-community link counts
-
-    Args:
-      n_communities: number of communities (k)
-      community_size: nodes per community
-      inter_links: number of inter-community links per macro edge
-      seed: optional random seed
-      macro_graph_type: "complete" or "chain"
-      micro_graph_type: "complete" or "random"
-      edge_prob: probability of edge existence for random micrographs
-    Returns:
-      micro_graphs, full_graph, W
+    Generate a two-layer network with micro graphs plus inter-community edges.
+    Returns (micro_graphs, full_graph, W).
     """
     if n_communities < 1:
         raise ValueError("n_communities must be >= 1")
@@ -54,20 +40,21 @@ def generate_two_scale_network(
         micro_graph_type = "complete"
     elif micro_graph_type in {"random", "erdos_renyi", "erdos-renyi", "er"}:
         micro_graph_type = "random"
+    elif micro_graph_type in {"chain", "path", "line"}:
+        micro_graph_type = "chain"
+    elif micro_graph_type in {"random_connected", "connected_random", "connected_er", "connected_erdos_renyi"}:
+        micro_graph_type = "random_connected"
     else:
-        raise ValueError("micro_graph_type must be 'complete' or 'random'")
+        raise ValueError("micro_graph_type must be 'complete', 'random', 'random_connected', or 'chain'")
 
-    if seed is not None:
-        random.seed(seed)
-        np.random.seed(seed)
+    rng = random.Random(seed)
 
     micro_graphs: List[nx.Graph] = []
     communities_nodes: List[List[int]] = []
     full_graph = nx.Graph()
     next_node = 0
 
-    # build isolated communities
-    for ci in range(n_communities):
+    for _ in range(n_communities):
         nodes = list(range(next_node, next_node + community_size))
         communities_nodes.append(nodes)
         Gc = nx.Graph()
@@ -79,8 +66,30 @@ def generate_two_scale_network(
         elif micro_graph_type == "random":
             for idx, u in enumerate(nodes):
                 for v in nodes[idx + 1:]:
-                    if random.random() < edge_prob:
+                    if rng.random() < edge_prob:
                         Gc.add_edge(u, v, weight=1.0)
+        elif micro_graph_type == "random_connected":
+            n = len(nodes)
+            if n > 1:
+                target_edges = int(round(edge_prob * n * (n - 1) / 2))
+                if target_edges < n - 1:
+                    raise ValueError("edge_prob too low to create a connected graph with exact average degree")
+                max_tries = 10_000
+                Gc = None
+                for _ in range(max_tries):
+                    seed_try = rng.randrange(1 << 30)
+                    candidate = nx.gnm_random_graph(n, target_edges, seed=seed_try)
+                    if nx.is_connected(candidate):
+                        mapping = {i: nodes[i] for i in range(n)}
+                        Gc = nx.relabel_nodes(candidate, mapping, copy=True)
+                        break
+                if Gc is None:
+                    raise RuntimeError("Failed to generate a connected random graph; increase edge_prob or max_tries")
+                for u, v in Gc.edges():
+                    Gc[u][v]["weight"] = 1.0
+        elif micro_graph_type == "chain":
+            for idx in range(len(nodes) - 1):
+                Gc.add_edge(nodes[idx], nodes[idx + 1], weight=1.0)
         else:
             raise RuntimeError(f"Unsupported micro_graph_type: {micro_graph_type}")
         micro_graphs.append(Gc)
@@ -88,10 +97,8 @@ def generate_two_scale_network(
         full_graph.add_edges_from(Gc.edges(data=True))
         next_node += community_size
 
-    # initialize inter-community weight matrix
     W = np.zeros((n_communities, n_communities), dtype=float)
 
-    # add inter-community edges according to macro topology
     if macro_graph_type == "complete":
         macro_pairs = [
             (i, j)
@@ -113,17 +120,16 @@ def generate_two_scale_network(
         if num_links == max_possible:
             choices = range(max_possible)
         else:
-            choices = random.sample(range(max_possible), k=num_links)
+            choices = rng.sample(range(max_possible), k=num_links)
         size_j = len(nodes_j)
         for idx in choices:
             u = nodes_i[idx // size_j]
             v = nodes_j[idx % size_j]
             full_graph.add_edge(u, v, weight=1.0)
-        # record count (undirected)
         W[i, j] = float(num_links)
         W[j, i] = float(num_links)
 
     return micro_graphs, full_graph, W
 
 
-# (Existing classes MicroEngine, MicroModel, MacroEngine, Orchestrator remain unchanged...)
+__all__ = ["generate_two_scale_network"]

@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+recursive-include two_layer_ctmc *.py
+global-exclude __pycache__ *.pyc
+prune data
+prune plots
+prune __pycache__
+exclude simulations.db
+exclude *.pdf

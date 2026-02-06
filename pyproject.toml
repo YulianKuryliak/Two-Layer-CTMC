@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "two-layer-ctmc"
+version = "0.1.0"
+description = "Event-driven SIR/SIS simulators for two-layer (community + inter-community) networks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+dependencies = [
+  "numpy>=1.21",
+  "networkx>=2.8",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: Other/Proprietary",
+  "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+analysis = ["pandas>=1.5", "matplotlib>=3.7"]
+
+[tool.setuptools]
+packages = [
+  "two_layer_ctmc",
+  "two_layer_ctmc.engines",
+  "two_layer_ctmc.orchestrators",
+  "two_layer_ctmc.simulators",
+]
+py-modules = ["MicroEngine", "MicroMacroEngine"]
