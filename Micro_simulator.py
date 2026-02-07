@@ -15,6 +15,7 @@ if __name__ == "__main__":
     virus_cfg = cfg["virus"]
     sim_cfg = cfg["micro"]
     sim_common = cfg["simulation"]
+    initial_node = sim_common.get("initial_node")
     paths = run_micro_batch_from_config()
     n_sims = len(paths)
     out_folder = paths[0].parent if paths else sim_cfg["out_folder"]
@@ -33,6 +34,7 @@ if __name__ == "__main__":
             "dt_out": DT_OUT,
             "n_runs": n_sims,
             "base_seed": int(sim_common["base_seed"]),
+            "initial_node": initial_node,
             "out_folder": str(out_folder),
         },
         output_path=str(out_folder),

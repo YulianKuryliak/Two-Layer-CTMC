@@ -224,13 +224,14 @@ def run_micro_batch_from_config(path: str | Path = "config.json") -> List[Path]:
         macro_graph_type=str(net_cfg["macro_graph_type"]),
         micro_graph_type=str(net_cfg["micro_graph_type"]),
         edge_prob=float(net_cfg["edge_prob"]),
+        initial_node=None if sim_common.get("initial_node") is None else int(sim_common["initial_node"]),
         base_dir=base_dir,
     )
 
 
 def run_micromacro_batch_from_config(
     path: str | Path = "config.json",
-    variant: str = "micromacro_v2",
+    variant: str = "micromacro",
 ) -> List[Path]:
     cfg, base_dir = load_config(path)
     net_cfg = cfg["network"]
@@ -257,6 +258,7 @@ def run_micromacro_batch_from_config(
         macro_graph_type=str(net_cfg["macro_graph_type"]),
         micro_graph_type=str(net_cfg["micro_graph_type"]),
         edge_prob=float(net_cfg["edge_prob"]),
+        initial_node=None if sim_common.get("initial_node") is None else int(sim_common["initial_node"]),
         base_dir=base_dir,
     )
 
