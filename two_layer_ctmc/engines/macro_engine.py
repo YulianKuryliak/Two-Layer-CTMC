@@ -8,7 +8,9 @@ class MacroEngine:
     """
     Macro-scale engine with susceptibility-aware, size-normalized hazards.
 
-    hazard_ij(t) = beta_macro * T * W[i,j] * (I_i / N_i) * (S_j / N_j)
+    hazard_ij(t) = beta_macro * T * W[i,j] * infectivity_i * susceptibility_j
+    infectivity_i = (I_i / N_i) ** alpha_i
+    susceptibility_j = (S_j / N_j)
     """
 
     def __init__(
@@ -17,6 +19,7 @@ class MacroEngine:
         beta_macro: float,
         T: float = 1.0,
         community_sizes: Optional[List[int]] = None,
+        alphas: Optional[List[float]] = None,
     ):
         self.W = W
         self.beta_macro = beta_macro
@@ -35,12 +38,18 @@ class MacroEngine:
             self.N = np.asarray(community_sizes, dtype=float)
             assert self.N.shape[0] == self.n, "community_sizes length must match W.shape[0]"
 
+        if alphas is None:
+            self.alphas = np.ones(self.n, dtype=float)
+        else:
+            self.alphas = np.asarray(alphas, dtype=float)
+            assert self.alphas.shape[0] == self.n, "alphas length must match W.shape[0]"
+
         self.hazards = np.zeros_like(W, dtype=float)
         self.total_hazard = 0.0
 
     def _compute_hazards_matrix(self, I_counts: List[int], S_counts: List[int]) -> np.ndarray:
         """
-        λ_ij = β T W_ij * (I_i / N_i) * (S_j / N_j)
+        λ_ij = β T W_ij * (I_i / N_i) ** alpha_i * (S_j / N_j)
         """
         I = np.asarray(I_counts, dtype=float).reshape(-1, 1)  # (n,1)
         S = np.asarray(S_counts, dtype=float).reshape(1, -1)  # (1,n)
@@ -48,7 +57,10 @@ class MacroEngine:
         N_i = self.N.reshape(-1, 1)  # (n,1)
         N_j = self.N.reshape(1, -1)  # (1,n)
 
-        np.matmul(I / N_i, S / N_j, out=self._frac_buffer)
+        # infectivity = 2 * N_i*(N_i-1)/ pow(N_i, 2) * I / N_i
+        infectivity = I / N_i
+        susceptibility = S / N_j
+        np.matmul(infectivity, susceptibility, out=self._frac_buffer)
         np.multiply(self.W, self._frac_buffer, out=self._hazards_buffer)
         self._hazards_buffer *= (self.beta_macro * self.T)
         return self._hazards_buffer

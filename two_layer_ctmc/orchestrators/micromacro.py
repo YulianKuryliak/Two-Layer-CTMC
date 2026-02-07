@@ -39,12 +39,14 @@ class Orchestrator:
 
         # Community sizes for normalized macro hazards
         community_sizes = [G.number_of_nodes() for G in micro_graphs]
+        alphas = self._compute_alphas(micro_graphs)
 
         self.macro = MacroEngine(
             W=W,
             beta_macro=beta_macro,
             T=macro_T,
             community_sizes=community_sizes,
+            alphas=alphas,
         )
         self.tau_micro = float(tau_micro)
         self.T_end = float(T_end)
@@ -71,6 +73,31 @@ class Orchestrator:
         self._pos = nx.spring_layout(self.full_graph, seed=layout_seed)
 
     # ----- helpers -----
+    @staticmethod
+    def _compute_alphas(micro_graphs: List[nx.Graph]) -> List[float]:
+        alphas = []
+        for G in micro_graphs:
+            n = G.number_of_nodes()
+            if n < 2:
+                alphas.append(1.0)
+                continue
+            A = nx.to_numpy_array(G, weight="weight", dtype=float)
+            deg = A.sum(axis=1)
+            inv_sqrt_deg = np.zeros_like(deg)
+            nonzero = deg > 0
+            inv_sqrt_deg[nonzero] = 1.0 / np.sqrt(deg[nonzero])
+            D_inv_sqrt = np.diag(inv_sqrt_deg)
+            L_norm = np.eye(n) - (D_inv_sqrt @ A @ D_inv_sqrt)
+            eigvals = np.linalg.eigvalsh(L_norm)
+            if eigvals.size < 2:
+                alphas.append(1.0)
+                continue
+            lambda2_tilde = float(np.sort(eigvals)[-2])
+            if lambda2_tilde <= 0.0:
+                alphas.append(1.0)
+                continue
+            alphas.append(1.0 / lambda2_tilde)
+        return alphas
 
     def _gather_state_per_community(self):
         state_per_community = []

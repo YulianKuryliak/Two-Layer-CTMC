@@ -13,19 +13,21 @@ from devtools.visualize import (
 # ========= settings =========
 cfg, base_dir = load_config()
 micro_out = resolve_path(cfg["micro"]["out_folder"], base_dir=base_dir)
-micromacro_out = resolve_path(cfg["micromacro_v2"]["out_folder"], base_dir=base_dir)
+micromacro_out = resolve_path(cfg["micromacro"]["out_folder"], base_dir=base_dir)
 
 folders = {
     "Micro": micro_out,
-    "MicroMacro_v2": micromacro_out,
+    "MicroMacro": micromacro_out,
 }
 pattern = "*.csv"
 GRID_POINTS = 1000  # resolution of the time grid INSIDE each dataset
 PLOT_TOTAL_DYNAMICS = True
 PLOT_PER_COMMUNITY = True
 PLOT_MICROMACRO_COMPARISON = True
+SHOW_MEDIAN_POINTS = True
+MEDIAN_POINT_STRIDE = 1
 
-include_per_community_for = ["Micro", "MicroMacro_v2"]
+include_per_community_for = ["Micro", "MicroMacro"]
 
 datasets = build_datasets_summary(
     folders=folders,
@@ -52,14 +54,16 @@ out_dir.mkdir(parents=True, exist_ok=True)
 if PLOT_TOTAL_DYNAMICS:
     base_colors = {
         "Micro": "#1f77b4",
-        "MicroMacro_v2": "#ff7f0e",
+        "MicroMacro": "#ff7f0e",
     }
-    out_path = out_dir / "Micro_vs_MicroMacro_v2.png"
+    out_path = out_dir / "Micro_vs_MicroMacro.png"
     plot_total_dynamics(
         datasets=datasets,
         out_path=out_path,
-        title="Micro vs MicroMacro_v2: representative I-curves with interquartile bands",
+        title="Micro vs MicroMacro: representative I-curves with interquartile bands",
         base_colors=base_colors,
+        show_median_points=SHOW_MEDIAN_POINTS,
+        median_point_stride=MEDIAN_POINT_STRIDE,
     )
 
 # ========= per-community curves for each representative simulation =========
@@ -74,21 +78,21 @@ if PLOT_PER_COMMUNITY and "Micro" in datasets:
         title=f"Micro: representative simulation {rep_sim} per-community I(t)",
     )
 
-if PLOT_PER_COMMUNITY and "MicroMacro_v2" in datasets:
-    d = datasets["MicroMacro_v2"]
+if PLOT_PER_COMMUNITY and "MicroMacro" in datasets:
+    d = datasets["MicroMacro"]
     rep_sim = d["rep_sim_id"]
     comm_curves = d["rep_comm_curves"]
-    out_path_comm = out_dir / "MicroMacro_v2_community.png"
+    out_path_comm = out_dir / "MicroMacro_community.png"
     plot_per_community_curves(
         comm_curves=comm_curves,
         out_path=out_path_comm,
-        title=f"MicroMacro_v2: representative simulation {rep_sim} per-community I(t)",
+        title=f"MicroMacro: representative simulation {rep_sim} per-community I(t)",
     )
 
-# ========= combined per-community plot for Micro vs MicroMacro_v2 =========
-if PLOT_MICROMACRO_COMPARISON and "Micro" in datasets and "MicroMacro_v2" in datasets:
+# ========= combined per-community plot for Micro vs MicroMacro =========
+if PLOT_MICROMACRO_COMPARISON and "Micro" in datasets and "MicroMacro" in datasets:
     d1 = datasets["Micro"]
-    d2 = datasets["MicroMacro_v2"]
+    d2 = datasets["MicroMacro"]
     comms = sorted(set(d1["rep_comm_curves"].keys()) & set(d2["rep_comm_curves"].keys()))
 
     plt.figure(figsize=(11, 6))
@@ -99,16 +103,16 @@ if PLOT_MICROMACRO_COMPARISON and "Micro" in datasets and "MicroMacro_v2" in dat
         cur1 = d1["rep_comm_curves"][comm_id]
         cur2 = d2["rep_comm_curves"][comm_id]
         plt.plot(cur1["time"], cur1["I"], color=c, linewidth=1.6, label=f"Comm {comm_id} micro")
-        plt.plot(cur2["time"], cur2["I"], color=c, linewidth=1.6, linestyle="--", label=f"Comm {comm_id} micromacro_v2")
+        plt.plot(cur2["time"], cur2["I"], color=c, linewidth=1.6, linestyle="--", label=f"Comm {comm_id} micromacro")
 
     plt.xlabel("Time")
     plt.ylabel("Infected (I)")
-    plt.title("Representative per-community I(t): Micro vs MicroMacro_v2")
+    plt.title("Representative per-community I(t): Micro vs MicroMacro")
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
 
-    out_path_comm = out_dir / "Micro_vs_MicroMacro_v2_community.png"
+    out_path_comm = out_dir / "Micro_vs_MicroMacro_community.png"
     plt.savefig(out_path_comm, dpi=300, bbox_inches="tight")
 
 plt.show()

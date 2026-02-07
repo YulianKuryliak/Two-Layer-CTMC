@@ -100,9 +100,10 @@ def representative_and_bands(I_stack: np.ndarray):
     idx_rep = int(np.argmin(mse))
     I_rep = I_stack[idx_rep, :]
 
+    median = np.median(I_stack, axis=0)
     q1 = np.quantile(I_stack, 0.25, axis=0)
     q3 = np.quantile(I_stack, 0.75, axis=0)
-    return idx_rep, I_mean, I_rep, q1, q3, mse
+    return idx_rep, I_mean, I_rep, median, q1, q3, mse
 
 
 def build_dataset_summary(
@@ -114,7 +115,7 @@ def build_dataset_summary(
     raw_curves, tmin, tmax = load_dataset(folder, pattern)
     t_grid = np.linspace(tmin, tmax, grid_points)
     I_interp, I_stack = interp_stack_on_grid(raw_curves, t_grid)
-    idx_rep, I_mean, I_rep, q1, q3, mse = representative_and_bands(I_stack)
+    idx_rep, I_mean, I_rep, median, q1, q3, mse = representative_and_bands(I_stack)
     rep_key = list(I_interp.keys())[idx_rep]
 
     summary = {
@@ -128,6 +129,7 @@ def build_dataset_summary(
         "idx_rep": idx_rep,
         "I_mean": I_mean,
         "I_rep": I_rep,
+        "median": median,
         "q1": q1,
         "q3": q3,
         "mse": mse,
@@ -161,6 +163,8 @@ def plot_total_dynamics(
     out_path: str | Path,
     title: str = "Representative I-curves with interquartile bands",
     base_colors: Dict[str, str] | None = None,
+    show_median_points: bool = False,
+    median_point_stride: int = 25,
 ):
     plt, cm = _require_matplotlib()
     out_path = Path(out_path)
@@ -182,6 +186,21 @@ def plot_total_dynamics(
             linestyle="-",
             label=f"{name} - representative",
         )
+        if show_median_points:
+            median = d.get("median")
+            if median is None:
+                median = np.median(d["I_stack"], axis=0)
+            idx = slice(None, None, max(1, int(median_point_stride)))
+            plt.scatter(
+                t_grid[idx],
+                median[idx],
+                color=color,
+                s=16,
+                marker="o",
+                alpha=0.85,
+                label=f"{name} - median",
+                zorder=4,
+            )
         plt.fill_between(t_grid, d["q1"], d["q3"], color=color, alpha=0.18)
 
     plt.xlabel("Time")

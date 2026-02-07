@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Why the micro--macro simulator lags on a chain of complete communities}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Setting (as in the code)}
+\begin{itemize}
+  \item Each community is a complete graph of size $N$ (config: $N=150$).
+  \item Communities are connected in a chain; between neighbors there is exactly one inter--community edge ($W_{ij}=1$).
+  \item Micro dynamics is SIR with $\gamma=0$ (pure SI), infection rate $\beta=0.02$.
+  \item Macro hazard (\texttt{MacroEngine}):
+  \begin{equation}
+    \lambda_{ij}(t)=\beta_{\rm macro}\,T\,W_{ij}\,\Big(\frac{I_i(t)}{N_i}\Big)^{\alpha_i}\,\Big(\frac{S_j(t)}{N_j}\Big),
+  \end{equation}
+  with $\alpha_i$ computed from the micro graph spectrum.
+\end{itemize}
+
+\section*{Micro dynamics inside a complete community}
+In the complete graph, every susceptible node has $I$ infected neighbors. Therefore the per--node infection rate is
+\begin{equation}
+  \text{rate}(\text{S}\to\text{I} \text{ for one node})=\beta I.
+\end{equation}
+The total infection rate is
+\begin{equation}
+  \Lambda_{\rm micro}(t)=\beta I(t)S(t)=\beta I(t)\big(N-I(t)\big).
+\end{equation}
+The mean--field ODE (exact in expectation for SI on $K_N$) is logistic:
+\begin{equation}
+  \frac{dI}{dt}=\beta I (N-I), \qquad I(0)=1.
+\end{equation}
+Hence $I(t)$ grows extremely quickly from $1$ to $O(N)$ on the time scale $O\!\left(\frac{\log N}{\beta N}\right)$.
+
+\section*{True inter--community hazard for one bridge edge}
+Let the inter--community edge connect nodes $u\in i$ and $v\in j$.
+The instantaneous transmission rate across this single edge is
+\begin{equation}
+  \lambda_{i\to j}^{\rm edge}(t)=\beta\,\mathbf{1}\{u\text{ infected}\}\,\mathbf{1}\{v\text{ susceptible}\}.
+\end{equation}
+Because the micro graph is complete, all nodes are exchangeable, so
+\begin{equation}
+  \mathbb{E}[\mathbf{1}\{u\text{ infected}\}]=\frac{I_i(t)}{N_i}, \quad
+  \mathbb{E}[\mathbf{1}\{v\text{ susceptible}\}]=\frac{S_j(t)}{N_j}.
+\end{equation}
+Thus the \emph{expected} edge hazard is
+\begin{equation}
+  \mathbb{E}[\lambda_{i\to j}^{\rm edge}(t)]\;=\;\beta\,\frac{I_i(t)}{N_i}\,\frac{S_j(t)}{N_j}.
+\end{equation}
+So, for a single bridge edge, the correct mean--field scaling is proportional to $I_i/N_i$ and $S_j/N_j$.
+
+\section*{Macro hazard used in the code}
+The macro hazard used by the micro--macro simulator is
+\begin{equation}
+  \lambda_{ij}^{\rm macro}(t)=\beta_{\rm macro}T W_{ij}\Big(\frac{I_i(t)}{N_i}\Big)^{\alpha_i}\Big(\frac{S_j(t)}{N_j}\Big).
+\end{equation}
+For a complete graph of size $N$, the normalized Laplacian has eigenvalues
+$0$ and $\frac{N}{N-1}$ (multiplicity $N-1$). The code uses
+\begin{equation}
+  \alpha_i = \frac{1}{\tilde\lambda_2} \approx \frac{N-1}{N} \approx 1,
+\end{equation}
+so $\lambda_{ij}^{\rm macro}(t)$ is essentially proportional to $I_i/N_i$ and $S_j/N_j$.
+
+\section*{Why the micro--macro run lags on a chain of complete communities}
+The observed lag comes from two interacting effects.
+
+\subsection*{1) Small macro rate for a single bridge edge}
+With $W_{ij}=1$ and large $N$, the macro hazard is tiny until $I_i$ becomes large. Using the configuration values:
+\begin{equation}
+  \lambda_{ij}^{\rm macro}(t)\;\approx\;\beta\frac{I_i(t)}{N}\frac{S_j(t)}{N}.
+\end{equation}
+At the beginning, $I_i=1$ and $S_j\approx N$, so
+\begin{equation}
+  \lambda_{ij}^{\rm macro}(0)\approx \beta\frac{1}{N}\approx \frac{0.02}{150}\approx 1.3\times 10^{-4},
+\end{equation}
+which corresponds to an expected waiting time on the order of $\sim 7.5\times 10^3$.
+Even after $I_i$ grows, the inter--community transmission remains the slowest part of the chain, and delays accumulate across successive communities.
+
+\subsection*{2) Midpoint quadrature underestimates the hazard integral when $I(t)$ grows fast}
+In the orchestrator, the macro clock is advanced via a midpoint rule on intervals of length
+$\Delta t=\tau_{\rm micro}=1$:
+\begin{equation}
+  \int_t^{t+\Delta t}\lambda(s)\,ds\;\approx\;\lambda\big(t+\tfrac{\Delta t}{2}\big)\,\Delta t.
+\end{equation}
+For the SI dynamics on a complete graph, $I(t)$ grows rapidly and the hazard
+$\lambda(t)$ is increasing and convex at early times. The midpoint rule error is
+\begin{equation}
+  \int_t^{t+\Delta t}\lambda(s)\,ds\;=\;\lambda\big(t+\tfrac{\Delta t}{2}\big)\,\Delta t\;-
+  \frac{\Delta t^3}{24}\,\lambda''(\xi),\quad \xi\in(t,t+\Delta t).
+\end{equation}
+If $\lambda''(\xi)>0$ (the convex regime), the integral is systematically \emph{underestimated}. Therefore the macro event time is pushed later than in the exact process. This bias is strongest precisely when $I(t)$ accelerates the most (early in each community), and it compounds along the chain.
+
+\section*{Conclusion}
+For a chain of complete communities connected by a single bridge edge, the micro--macro simulator is delayed because:
+\begin{itemize}
+  \item The inter--community hazard is intrinsically small ($W_{ij}=1$, large $N$), so cross--community spread is the dominant time scale.
+  \item The macro event timing uses a midpoint approximation over $\tau_{\rm micro}=1$, which underestimates the cumulative hazard during the rapid logistic growth phase inside each complete community.
+  \item In a chain, these delays add up across successive communities.
+\end{itemize}
+
+\end{document}

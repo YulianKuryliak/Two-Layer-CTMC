@@ -1,39 +1,34 @@
 {
   "network": {
-    "communities": 4,
-    "community_size": 150,
+    "communities": 7,
+    "community_size": 100,
     "inter_links": 1,
     "seed": 42,
     "macro_graph_type": "chain",
     "micro_graph_type": "complete",
-    "micro_graph_type_unconnected": "random",
-    "micro_graph_type_connected": "random_connected",
-    "edge_prob": 0.03
+    "edge_prob": 0.031
   },
   "virus": {
-    "beta": 0.02,
+    "beta": 0.005,
     "gamma": 0.0,
     "model": 2
   },
   "simulation": {
     "n_runs": 100,
     "base_seed": 42,
-    "T_end": 200
+    "T_end": 1000,
+    "initial_node": 0
   },
   "micro": {
     "dt_out": 1.0,
-    "out_folder": "data/Simulations_Micro",
-    "plots_first_infection": "plots/micro_first_infection",
-    "plots_all_communities": "plots/micro_all_communities"
+    "out_folder": "data/Simulations_Micro"
   },
   "micromacro": {
     "tau_micro": 1.0,
-    "macro_T": 1.0
+    "macro_T": 1.0,
+    "out_folder": "data/Simulations_MicroMacro"
   },
   "micromacro_v1": {
     "out_folder": "data/Simulations_MicroMacro_hazard_updated"
-  },
-  "micromacro_v2": {
-    "out_folder": "data/Simulations_MicroMacro_2"
   }
 }
