@@ -26,6 +26,7 @@ class MicroMacroSimulator:
         macro_T: float = 1.0,
         model: int = 2,
         full_graph: Optional[nx.Graph] = None,
+        verbose_steps: bool = False,
     ):
         self.W = W
         self.micro_graphs = micro_graphs
@@ -37,6 +38,7 @@ class MicroMacroSimulator:
         self.macro_T = macro_T
         self.model = model
         self.full_graph = full_graph
+        self.verbose_steps = bool(verbose_steps)
 
     def run(
         self,
@@ -60,6 +62,7 @@ class MicroMacroSimulator:
             model=self.model,
             full_graph=self.full_graph,
             layout_seed=seed if seed is not None else 0,
+            verbose_steps=self.verbose_steps,
         )
 
         if not orch.micro_models:
@@ -67,10 +70,27 @@ class MicroMacroSimulator:
         if not (0 <= initial_community < len(orch.micro_models)):
             raise ValueError("initial_community is out of range")
 
+        seeded_node: Optional[int] = initial_node
         if initial_node is None:
+            before = set(orch.micro_models[initial_community].infected_nodes)
             orch.micro_models[initial_community]._infect_node()
+            after = set(orch.micro_models[initial_community].infected_nodes)
+            delta = list(after - before)
+            seeded_node = int(delta[0]) if delta else None
         else:
             orch.micro_models[initial_community]._infect_node(initial_node)
+
+        orch.event_log.append(
+            {
+                "time": 0.0,
+                "wait_time": 0.0,
+                "event_type": "seed",
+                "mode": "seed",
+                "community": int(initial_community),
+                "node": seeded_node,
+                "src": None,
+            }
+        )
 
         return orch.run()
 

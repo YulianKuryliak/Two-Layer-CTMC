@@ -173,10 +173,11 @@ def resolve_output_path(output_arg):
 
     cfg, base_dir = load_config()
     net_cfg = cfg["network"]
+    community_size = int(net_cfg["community_size"])
     edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
     folder_name = (
         f"k_{net_cfg['communities']}_"
-        f"n_{net_cfg['community_size']}_"
+        f"n_{community_size}_"
         f"inter_{net_cfg['inter_links']}_"
         f"macro_{net_cfg['macro_graph_type']}_"
         f"micro_{net_cfg['micro_graph_type']}_"

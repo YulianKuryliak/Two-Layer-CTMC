@@ -10,6 +10,7 @@ if __name__ == "__main__":
     sim_common = cfg["simulation"]
     sim_cfg = cfg["micromacro"]
     initial_node = sim_common.get("initial_node")
+    community_size = int(net_cfg["community_size"])
 
     paths = run_micromacro_batch_from_config(variant="micromacro")
     runs = len(paths)
@@ -33,7 +34,7 @@ if __name__ == "__main__":
             "macro_T": macro_T,
             "out_folder": str(output_dir),
             "k": int(net_cfg["communities"]),
-            "size": int(net_cfg["community_size"]),
+            "size": community_size,
             "inter_links": int(net_cfg["inter_links"]),
         },
         output_path=str(output_dir),

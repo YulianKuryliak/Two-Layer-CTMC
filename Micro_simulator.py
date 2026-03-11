@@ -6,7 +6,7 @@ try:
     from sim_db import log_run  # noqa
 except Exception:
     def log_run(**kwargs):  # type: ignore
-        pass
+        pass    
 
 
 if __name__ == "__main__":
@@ -39,3 +39,7 @@ if __name__ == "__main__":
         },
         output_path=str(out_folder),
     )
+
+
+
+

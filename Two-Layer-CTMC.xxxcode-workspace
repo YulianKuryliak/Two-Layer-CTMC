@@ -1,0 +1,31 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "terminal.integrated.defaultProfile.windows": "Ubuntu-24.04 (WSL)",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
+        "python.terminal.activateEnvInSelectedTerminal": true,
+        "python.terminal.executeInFileDir": true,
+        "code-runner.useWSL": true,
+        "code-runner.executorMap": {
+            "python": "${workspaceFolder}/.venv/bin/python3 -u"
+        }
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Python: Запустити поточний файл",
+                "type": "python",
+                "request": "launch",
+                "program": "${file}",
+                "console": "integratedTerminal",
+                "justMyCode": true
+            }
+        ]
+    }
+}
