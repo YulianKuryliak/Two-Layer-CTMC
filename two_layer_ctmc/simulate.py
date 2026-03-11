@@ -42,6 +42,9 @@ def build_two_layer_network(
     macro_graph_type: str = "complete",
     micro_graph_type: str = "complete",
     edge_prob: float = 0.1,
+    leaf_count: int = 0,
+    leaf_degree: int = 1,
+    star_leaf_attachment: str = "random",
 ) -> TwoLayerNetwork:
     micro_graphs, full_graph, W = generate_two_scale_network(
         n_communities=n_communities,
@@ -51,6 +54,9 @@ def build_two_layer_network(
         macro_graph_type=macro_graph_type,
         micro_graph_type=micro_graph_type,
         edge_prob=edge_prob,
+        leaf_count=leaf_count,
+        leaf_degree=leaf_degree,
+        star_leaf_attachment=star_leaf_attachment,
     )
     community_nodes = [list(G.nodes()) for G in micro_graphs]
     return TwoLayerNetwork(
@@ -76,6 +82,9 @@ def simulate_micro(
     macro_graph_type: str = "complete",
     micro_graph_type: str = "complete",
     edge_prob: float = 0.1,
+    leaf_count: int = 0,
+    leaf_degree: int = 1,
+    star_leaf_attachment: str = "random",
     initial_node: Optional[int] = None,
 ) -> MicroSimulationResult:
     """
@@ -91,6 +100,9 @@ def simulate_micro(
             macro_graph_type=macro_graph_type,
             micro_graph_type=micro_graph_type,
             edge_prob=edge_prob,
+            leaf_count=leaf_count,
+            leaf_degree=leaf_degree,
+            star_leaf_attachment=star_leaf_attachment,
         )
 
     model_id = normalize_model(model)
@@ -126,6 +138,9 @@ def simulate_micromacro(
     macro_graph_type: str = "complete",
     micro_graph_type: str = "complete",
     edge_prob: float = 0.1,
+    leaf_count: int = 0,
+    leaf_degree: int = 1,
+    star_leaf_attachment: str = "random",
     initial_community: int = 0,
     initial_node: Optional[int] = None,
 ) -> MicroMacroSimulationResult:
@@ -142,6 +157,9 @@ def simulate_micromacro(
             macro_graph_type=macro_graph_type,
             micro_graph_type=micro_graph_type,
             edge_prob=edge_prob,
+            leaf_count=leaf_count,
+            leaf_degree=leaf_degree,
+            star_leaf_attachment=star_leaf_attachment,
         )
 
     model_id = normalize_model(model)

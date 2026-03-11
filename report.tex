@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\title{Why the Micro Simulator Appears Faster Than MicroMacro}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Scope}
+This note is a theoretical explanation for a synthetic two-layer stochastic network model used for software testing and visualization. It explains why the \texttt{Micro} simulator can show faster spread dynamics than \texttt{MicroMacro} under the current setup.
+
+\section*{Observed Setup (from your config)}
+\begin{itemize}
+\item Communities: $k=4$
+\item Community size: $N=100$
+\item Macro topology: chain
+\item Inter-community links: $W_{ij}=1$ for adjacent communities
+\item Intra-community graph: complete
+\item $\beta=0.005,\ \gamma=0,\ \tau_{\text{micro}}=1,\ T=1$
+\end{itemize}
+
+\section*{Core Reason 1: Different Inter-Community Rate Laws}
+\textbf{Micro (edge-level SSA):} cross-community infection is driven by actual infected--susceptible inter-community edges in the full graph. Once a bridge endpoint is infected, transmission over that active edge occurs at rate approximately $\beta$ (per active edge).
+
+\textbf{MicroMacro (community-level coupling):} macro transfer hazard is
+\[
+\lambda_{ij} \;=\; \beta_{\text{macro}}\,T\,W_{ij}\,\frac{I_i}{N_i}\,\frac{S_j}{N_j}.
+\]
+Early in an outbreak, $I_i/N_i$ is small. With $N_i=100$ and initially $I_i=1$, the prefactor is $0.01$, so macro transfer hazards are strongly suppressed at early times.
+
+Therefore, \texttt{MicroMacro} requires source-community prevalence to build before exporting effectively, while \texttt{Micro} can export as soon as bridge-node infection appears.
+
+\section*{Core Reason 2: Coupling via Time-Split Integration Adds Lag}
+\texttt{MicroMacro} advances with interval splitting (\(\tau_{\text{micro}}=1\)) and uses midpoint hazard accumulation for macro-event timing. This introduces a finite-step approximation error and a response delay when hazards increase rapidly inside an interval.
+
+In contrast, \texttt{Micro} is event-driven on the full graph without macro/micro splitting, so inter-community events occur at exact SSA event times.
+
+\section*{Core Reason 3: Chain Topology Amplifies Delays}
+With a chain macro graph and one inter-community link between neighbors, downstream communities can only activate through sequential transfer:
+\[
+0 \rightarrow 1 \rightarrow 2 \rightarrow 3.
+\]
+Any lag in one hop propagates to later communities. This stacking effect is stronger in \texttt{MicroMacro} because each hop depends on prevalence-weighted macro hazards and threshold crossing.
+
+\section*{Core Reason 4: Complete Intra-Community Graph Speeds Bridge Activation in Micro}
+Inside each community, the complete graph causes very fast mixing. In \texttt{Micro}, this quickly infects bridge-relevant nodes, enabling earlier direct export over real inter-community edges.
+
+In \texttt{MicroMacro}, fast intra-community growth does not immediately translate to export; export remains filtered through the normalized macro hazard.
+
+\section*{Secondary Visual Effect}
+There can also be a plotting-level right-shift if one output stream starts recording at $t=\tau_{\text{micro}}$ while the other includes $t=0$. That does not fully explain the dynamic gap, but it can make \texttt{MicroMacro} appear additionally delayed in plots.
+
+\section*{Summary}
+The faster dynamics in \texttt{Micro} are expected from model structure, not just randomness:
+\begin{itemize}
+\item edge-level immediate cross-community transmission vs. prevalence-normalized macro transfer;
+\item exact full-graph event timing vs. split-step macro coupling;
+\item chain-hop delay accumulation under sparse inter-community connectivity.
+\end{itemize}
+Under your current parameters (especially \(N=100\), \(W_{ij}=1\), chain coupling), these effects systematically bias \texttt{MicroMacro} toward slower apparent spread.
+
+\end{document}

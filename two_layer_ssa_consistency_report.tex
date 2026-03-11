@@ -1,0 +1,378 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{Why Inter-Community Events Differ in a Two-Layer Gillespie Simulator\\
+and How to Restore SSA-Consistency (with a Chain-of-Cliques Testbed)}
+\author{Technical report (mathematical analysis)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report explains why a two-layer (macro--micro) stochastic simulator can produce different
+\emph{inter-community} transmission events than a single-layer Gillespie SSA run on the full graph,
+even when parameters appear ``matched.'' We provide formal root causes and propose fixes that
+restore \emph{SSA-consistency} (i.e., exact equivalence in law to the full-network CTMC) for a
+community-structured network, with a focus on a \emph{chain of cliques} testbed.
+
+The analysis is grounded in the attached paper's design choices---macro rates of the form
+$\lambda_{ij}(t)=\beta\,w_{ij}\,C_i(t)\,S_j(t)\,T$ and hazard-integral timing on a micro-grid, as well as
+uniform seeding of imported infections at the micro layer \cite{paper}.
+\end{abstract}
+
+\section{Setup and notation}
+
+Let $G=(V,E)$ be the full (non-aggregated) graph. Each node $v\in V$ is in one of three states
+$X_v(t)\in\{S,I,R\}$. Edges may have weights $w_{uv}\ge 0$ (set $w_{uv}=1$ if unweighted).
+The full-network infection/activation process is a continuous-time Markov chain (CTMC) with two
+event types:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Infection along an edge} $(u,v)\in E$: if $X_u=I$ and $X_v=S$, then $v$ becomes infected.
+\item \textbf{Recovery at a node} $u$: if $X_u=I$, then $u$ recovers.
+\end{itemize}
+
+At state $x=(X_v)_{v\in V}$, the \emph{exact} SSA propensities are
+\begin{align}
+a_{\text{inf}}(x) &= \beta \sum_{(u,v)\in E} w_{uv}\,\mathbf{1}\{X_u=I,\,X_v=S\},\\
+a_{\text{rec}}(x) &= \gamma \sum_{u\in V}\mathbf{1}\{X_u=I\}.
+\end{align}
+The total rate is $\Theta(x)=a_{\text{inf}}(x)+a_{\text{rec}}(x)$; the next-event time is exponential
+$\Delta t\sim \mathrm{Exp}(\Theta(x))$, and the event channel is chosen with probability proportional to its
+propensity.
+
+\paragraph{Communities.}
+Assume a partition $V=\bigsqcup_{i=1}^M V_i$ into communities (metanodes). Let
+$E_{ij}=\{(u,v)\in E: u\in V_i,\, v\in V_j\}$ denote directed inter-community edges
+($i\ne j$). In a \emph{chain of cliques} testbed, each $G[V_i]$ is a complete graph, and $E_{ij}$ exists
+only for neighboring cliques in the chain.
+
+\section{What the current two-layer model does (and where exactness is lost)}
+
+The attached paper proposes a two-layer design \cite{paper}:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Micro layer:} each community runs its own Gillespie SIR engine (exact within-community dynamics).
+At the end of each micro step of length $\tau_{\text{micro}}$, it exports two scalars (paper: $C_i(t)=I_i(t)$
+and $S_i(t)=S_i(t)$ counts \cite{paper}; your current implementation uses fractions
+$\hat C_i=I_i/N_i$ and $\hat S_i=S_i/N_i$).
+\item \textbf{Macro layer:} inter-community transmissions occur as CTMC events with time-dependent rates
+$\lambda_{ij}(t)=\beta\,w_{ij}\,C_i(t)\,S_j(t)\,T$ \cite{paper}. Event times are sampled by a hazard-integral
+scheme on a discrete time grid \cite{paper}.
+\item \textbf{Import/seeding:} when a macro event $i\to j$ fires, the micro engine for community $j$ ``injects''
+one infected node, in the paper drawn \emph{uniformly at random from the susceptible list}
+\cite{paper}.
+\end{itemize}
+
+Even if parameters are tuned so that \emph{expected} flows roughly match, this construction is generally
+\emph{not equivalent in law} to the full-network SSA on $G$. The mismatch is concentrated in the
+inter-community infection channel for four interacting reasons (Sections \ref{sec:rootcauses}--\ref{sec:fixes}).
+
+\section{Why inter-community events differ (formal root causes)}
+\label{sec:rootcauses}
+
+\subsection{Root cause A: Macro intensities generally do not equal the true SSA propensities}
+
+In the \textbf{full-network SSA}, the instantaneous \emph{inter-community} infection propensity from
+community $i$ to $j$ is exactly
+\begin{equation}
+\label{eq:true_lambda}
+\lambda^{\star}_{ij}(x)=\beta\sum_{(u,v)\in E_{ij}} w_{uv}\,\mathbf{1}\{X_u=I,\,X_v=S\}.
+\end{equation}
+This is a \emph{sum over active cross-edges} (infectious source, susceptible target). It depends on the
+infection states of \emph{specific boundary nodes} that participate in $E_{ij}$.
+
+In the current \textbf{macro layer}, the rate is approximated by a low-dimensional product
+\begin{equation}
+\label{eq:approx_lambda}
+\lambda_{ij}(t)=\beta\,w_{ij}\,C_i(t)\,S_j(t)\,T
+\quad\text{(paper form)}\cite{paper}
+\end{equation}
+(or by using fractions $\hat C_i,\hat S_j$ in your current engine).
+In general, no choice of scalars $C_i,S_j$ and constants $(w_{ij},T)$ can make \eqref{eq:approx_lambda}
+equal to \eqref{eq:true_lambda} \emph{for all states}, because \eqref{eq:true_lambda} is sensitive to which
+nodes are infected/susceptible \emph{among the endpoints of inter edges}.
+
+\paragraph{Concrete chain-of-cliques example.}
+Suppose clique $i$ connects to clique $i{+}1$ by a \emph{single} bridge edge $(b_i,b_{i+1})$.
+Then
+\[
+\lambda^{\star}_{i,i+1}(x)=\beta\,\mathbf{1}\{X_{b_i}=I,\,X_{b_{i+1}}=S\}.
+\]
+But any macro rule based only on the \emph{fraction infected} $I_i/N_i$ and \emph{fraction susceptible}
+$S_{i+1}/N_{i+1}$ necessarily assigns a \emph{strictly positive} rate as soon as $I_i>0$ and $S_{i+1}>0$,
+even when $b_i$ is not yet infected. The full SSA rate is \emph{exactly zero} until the boundary node
+becomes infected. This produces unavoidable timing and frequency differences of inter-community events.
+
+\paragraph{Scaling issue with fractions.}
+If you export $\hat C_i=I_i/N_i$ and $\hat S_j=S_j/N_j$, then the product $\hat C_i\hat S_j$ is
+$\mathcal{O}(1)$, whereas the true propensity \eqref{eq:true_lambda} scales like the \emph{number (or total weight)
+of active cross edges}. Unless $w_{ij}T$ is redefined to absorb factors such as $|E_{ij}|N_iN_j$, the macro
+hazard will be systematically mis-scaled. Even with re-scaling, state-dependence on boundary nodes
+still remains (previous paragraph).
+
+\subsection{Root cause B: Loss of edge-conditioned target selection when importing infections}
+
+In the full SSA, after selecting the \emph{inter-community} channel $(i,j)$, the simulator must still
+select a \emph{specific edge} $(u,v)\in E_{ij}$ that fired, with probability
+\begin{equation}
+\label{eq:edge_choice}
+\Pr\{(u,v)\text{ fires}\mid i\to j\} \propto
+w_{uv}\,\mathbf{1}\{X_u=I,\,X_v=S\}.
+\end{equation}
+Equivalently, the target node $v\in V_j$ is chosen with probability proportional to the total incoming
+weight from infectious neighbors in $V_i$:
+\begin{equation}
+\label{eq:target_choice}
+\Pr\{v\text{ is infected}\mid i\to j\} \propto
+\sum_{u\in V_i:(u,v)\in E_{ij}} w_{uv}\,\mathbf{1}\{X_u=I\}.
+\end{equation}
+
+By contrast, the two-layer model in the paper injects an infected node in $V_j$ by drawing it
+\emph{uniformly from all susceptibles} \cite{paper}. This generally violates \eqref{eq:target_choice} because:
+(i) only \emph{boundary} susceptibles incident to $E_{ij}$ should be eligible, and (ii) eligibility/weights depend on
+which sources are currently infected. This changes not only \emph{who} is infected, but also \emph{future hazards},
+because boundary infections disproportionately affect subsequent inter-community transmission.
+
+For a chain of cliques with a single bridge node, uniform seeding is maximally wrong:
+the full SSA always infects the \emph{unique} bridge node on the destination side, while uniform seeding infects an
+interior node with probability $\approx 1-1/N_j$. This alone breaks SSA-equivalence even if event times were perfect.
+
+\subsection{Root cause C: Macro hazard-integral on a micro-grid biases waiting times when rates jump at event times}
+
+The hazard-integral scheme in the paper approximates
+$H(t)=\int_{t_0}^t\Theta(s)\,ds$ on a discrete grid and interpolates when a unit-rate exponential budget is reached
+\cite{paper}. This is appropriate when $\Theta(t)$ is smooth or at least well-approximated on the chosen grid.
+
+However, in an exact CTMC on the full network, the inter-community rate $\Theta_{\text{inter}}(t)$ is \emph{piecewise
+constant} and changes only at event times (internal infections/recoveries that flip boundary states, and inter events
+themselves). Therefore, between events the correct waiting time is exponential with a \emph{constant} rate.
+
+If the two-layer implementation updates $(C_i,S_i)$ only every $\tau_{\text{micro}}$, then the macro layer sees a
+rate that is effectively \emph{time-averaged} over each interval. This produces two biases:
+\begin{itemize}[leftmargin=*]
+\item \textbf{Timing bias:} events that should occur shortly after a boundary node becomes infected can be delayed
+until the next synchronization tick (rate too low), while events can also be triggered too early if the averaged
+rate is too high.
+\item \textbf{Ordering bias:} the competition between inter-community events and within-community events is altered,
+changing which events happen first (and thus changing future rates recursively).
+\end{itemize}
+
+\subsection{Root cause D: ``Interrupted exponential'' and residual-budget handling can be wrong if the state changes are not treated as CTMC event times}
+
+The paper discusses ``interrupted exponentials'' and provides a residual-budget method for deterministic imports
+\cite{paper}. The key theoretical point is: \emph{any time the underlying CTMC state changes, all propensities must be
+treated as updated immediately, and the next-event time must be sampled from the new state.}
+
+If an implementation (macro or micro) does one of the following, it biases inter-event times:
+\begin{itemize}[leftmargin=*]
+\item carries over an exponential waiting time drawn under an old rate without conditioning or budget-update,
+\item resets the hazard integral but fails to preserve the remaining budget $E-H$ correctly when rates jump,
+\item handles imports/events only at the ends of fixed steps instead of at their actual firing times $t^\star$,
+\end{itemize}
+then the waiting-time distribution deviates from the SSA law even if the average rate is ``close.''
+
+\section{Fixes that restore SSA-consistency}
+\label{sec:fixes}
+
+To match the full-network SSA \emph{exactly} (in distribution), you must ensure two properties:
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Exact macro intensities:} For every pair $(i,j)$, the macro intensity equals the true inter-edge propensity
+$\lambda^{\star}_{ij}(x)$ in \eqref{eq:true_lambda}.
+\item \textbf{Exact edge-conditioned seeding:} Conditional on an $(i,j)$ event, the chosen infected destination node (and
+source) follows the SSA edge-selection distribution \eqref{eq:edge_choice}--\eqref{eq:target_choice}.
+\end{enumerate}
+
+Once these hold, \textbf{timing} becomes straightforward: between CTMC state changes, all rates are constant,
+so standard SSA exponential draws apply; no hazard-integral grid is needed for exactness.
+
+\subsection{Fix 1: Define macro intensities as sums of true cross-edge propensities (exact)}
+\label{sec:fix1}
+
+Replace \eqref{eq:approx_lambda} by the exact definition \eqref{eq:true_lambda}:
+\begin{equation}
+\boxed{\;\lambda_{ij}(x)\;:=\;\lambda^{\star}_{ij}(x)=\beta\sum_{(u,v)\in E_{ij}} w_{uv}\,\mathbf{1}\{X_u=I,\,X_v=S\}\;}
+\end{equation}
+This is \emph{the} unique choice that reproduces the single-layer SSA channel probabilities for inter-community
+events.
+
+\paragraph{How to compute it cheaply.}
+You do \emph{not} need all node-level information on the macro layer. You only need enough micro exports to
+compute the active cross-edge sum. Two practical options:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Boundary-state export (exact, minimal for chain-of-cliques).}
+Let $B_i=\{u\in V_i:\exists v\notin V_i \text{ with } (u,v)\in E\}$ be boundary nodes of community $i$.
+Export $X_u$ only for $u\in B_i$ (or a bitmask). Then $\lambda^{\star}_{ij}$ can be updated by inspecting only
+edges $E_{ij}$, whose count is typically small.
+\item \textbf{Per-neighbor boundary counts (exact for structured cross-edges).}
+If $E_{ij}$ is complete bipartite between boundary subsets $B_{i\to j}\subseteq V_i$ and $B_{j\leftarrow i}\subseteq V_j$
+with uniform weights, then
+\begin{equation}
+\lambda^{\star}_{ij}(x)=\beta\,\bigl|I\cap B_{i\to j}\bigr|\,\bigl|S\cap B_{j\leftarrow i}\bigr|.
+\end{equation}
+So it suffices to export the two integers $|I\cap B_{i\to j}|$ and $|S\cap B_{j\leftarrow i}|$ per neighbor.
+In a chain-of-cliques with a single bridge node, these counts are $0$ or $1$.
+\end{itemize}
+
+\subsection{Fix 2: Change the import/seeding rule to match SSA edge-based selection (exact)}
+
+When an inter-community event $i\to j$ fires, do \emph{not} infect a uniformly random susceptible in $V_j$.
+Instead:
+\begin{enumerate}[leftmargin=*]
+\item Select a specific active cross edge $(u,v)\in E_{ij}$ with probability proportional to
+$w_{uv}\mathbf{1}\{X_u=I, X_v=S\}$ (Eq.~\eqref{eq:edge_choice}).
+\item Infect the \emph{specific} node $v$ in community $j$.
+\end{enumerate}
+This ensures that the conditional distribution of the destination node matches the full SSA exactly.
+
+\paragraph{Chain-of-cliques consequence.}
+If there is one bridge edge, the destination is deterministic: always infect the unique bridge node. This
+single change eliminates a dominant source of mismatch.
+
+\subsection{Fix 3: Replace micro-grid synchronization by an event-driven global coupling (exact)}
+\label{sec:fix3}
+
+To be SSA-consistent, the \emph{global} system must advance from one actual CTMC event time to the next.
+A clean way to do this while retaining the micro/macro modularity is the \textbf{Next Reaction Method}
+with a priority queue:
+
+\begin{itemize}[leftmargin=*]
+\item Each community $i$ maintains its own internal SSA clock and next internal event time $t^{(i)}_{\text{int}}$.
+\item The macro layer maintains the next inter-community event time $t_{\text{inter}}$ based on the current
+total inter rate $\Theta_{\text{inter}}=\sum_{i\ne j}\lambda^{\star}_{ij}(x)$.
+\item The next global event time is $t^\star=\min\bigl(\min_i t^{(i)}_{\text{int}},\; t_{\text{inter}}\bigr)$.
+Execute that event, update only affected propensities, and repeat.
+\end{itemize}
+
+\paragraph{Why this removes the need for hazard-integrals.}
+In an exact CTMC, propensities are constant between event times. Therefore, inter-event waiting times
+are exponential with constant rate; the hazard integral is only needed if you \emph{choose} to make rates vary
+continuously between events (e.g., via deterministic time-varying parameters). In your current simulator,
+the problematic ``time dependence'' largely comes from sampling/exporting on a grid, not from true continuous
+parameter drift.
+
+\subsection{Fix 4: Correct residual-budget handling when deterministic imports exist (exact, if you keep deterministic imports)}
+If the macro layer schedules imports at deterministic calendar times $T_{\text{imp}}$ (as in the paper's micro-layer
+discussion \cite{paper}), then the internal SSA in a community must decide whether the next internal event occurs
+before the next import. Two exact approaches exist:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Restart-at-import (exact, simplest):} draw the next internal event time under the current internal rate.
+If an import happens earlier, apply the import, update the state (and thus internal rate), and \emph{draw anew}
+from the updated state. This is exact because the CTMC is memoryless given the new state.
+\item \textbf{Residual-budget method (exact, numerically stable):} keep an exponential budget $E\sim\mathrm{Exp}(1)$
+and subtract used hazard $\Theta_{\text{int}}\delta$ when an import arrives first, as described in the paper \cite{paper}.
+\end{itemize}
+
+The key is to treat imports at their \emph{true firing times} and update propensities immediately.
+
+\section{What extra micro-level state must be exported for exactness?}
+
+A single scalar per community (infected fraction / susceptible fraction) cannot encode inter-edge propensities.
+For exact SSA-consistency on a community-structured graph you minimally need, per community $i$:
+
+\begin{enumerate}[leftmargin=*]
+\item For each neighbor community $j$, enough information to compute
+$\sum_{(u,v)\in E_{ij}} w_{uv}\mathbf{1}\{X_u=I, X_v=S\}$.
+\end{enumerate}
+
+A practical ``lowest sufficient'' export depends on inter-edge structure:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{General case:} export boundary node states for nodes incident to inter edges (bitmask), and maintain
+the explicit list of inter edges $E_{ij}$ on the macro layer. Then updates are $O(\deg_{\text{inter}})$ per boundary
+state flip.
+\item \textbf{Chain of cliques (common construction):} each clique has a small boundary set (often 1--2 nodes). Exporting
+the states of those nodes is sufficient and extremely cheap.
+\item \textbf{Aggregated but exact for complete bipartite cross-links:} export per-neighbor counts
+$|I\cap B_{i\to j}|$ and $|S\cap B_{i\to j}|$ (or weighted sums if weights vary but factorize).
+\end{itemize}
+
+\section{SSA-consistent two-layer algorithm (pseudocode)}
+
+\begin{algorithm}[h]
+\caption{Exact micro--macro SSA for inter-community transmission (SSA-consistent)}
+\begin{algorithmic}[1]
+\State \textbf{Precompute:} communities $V_i$; inter-edge lists $E_{ij}$; boundary nodes.
+\State \textbf{Initialize:} micro states $X$; compute internal rates $\Theta^{(i)}_{\text{int}}$ for each community.
+\State \textbf{Initialize inter rates:} $\lambda_{ij} \gets \beta\sum_{(u,v)\in E_{ij}} w_{uv}\mathbf{1}\{X_u=I,X_v=S\}$.
+\State \textbf{Sample clocks:} for each $i$, sample $t^{(i)}_{\text{int}} \gets t + \mathrm{Exp}(\Theta^{(i)}_{\text{int}})$;
+sample $t_{\text{inter}} \gets t + \mathrm{Exp}(\Theta_{\text{inter}})$ where $\Theta_{\text{inter}}=\sum_{i\ne j}\lambda_{ij}$.
+\While{not finished}
+  \State $t^\star \gets \min\bigl(\min_i t^{(i)}_{\text{int}},\; t_{\text{inter}}\bigr)$.
+  \If{$t^\star = t_{\text{inter}}$}
+     \State Choose pair $(i,j)$ with prob.\ $\lambda_{ij}/\Theta_{\text{inter}}$.
+     \State Choose edge $(u,v)\in E_{ij}$ with prob.\ $\propto w_{uv}\mathbf{1}\{X_u=I,X_v=S\}$.
+     \State Set $X_v \gets I$ (infect the \emph{specific} node).
+     \State Update only affected internal rates in community $j$ and boundary-derived $\lambda_{\cdot\cdot}$.
+     \State Resample $t^{(j)}_{\text{int}}$ from updated $\Theta^{(j)}_{\text{int}}$ (restart clock).
+     \State Resample $t_{\text{inter}} \gets t^\star + \mathrm{Exp}(\Theta_{\text{inter}})$.
+  \Else
+     \State Let $i$ be the argmin. Execute the next internal SSA event in community $i$ at $t^\star$
+            (infection on an intra edge or recovery).
+     \State Update $X$ within $V_i$; if a boundary node changed state, update affected $\lambda_{ij}$ by inspecting
+            its inter edges.
+     \State Resample $t^{(i)}_{\text{int}} \gets t^\star + \mathrm{Exp}(\Theta^{(i)}_{\text{int}})$.
+     \State \textbf{If} any $\lambda_{ij}$ changed, resample $t_{\text{inter}} \gets t^\star + \mathrm{Exp}(\Theta_{\text{inter}})$.
+  \EndIf
+  \State $t \gets t^\star$.
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Why this matches the full-network SSA.}
+The algorithm exactly simulates the same CTMC as the full SSA, but exploits structure:
+intra-community events are handled by fast micro engines, while the macro engine only tracks inter-edge channels.
+The key is that \emph{rates and selections are defined at the same granularity as the CTMC} (edges/nodes), so the
+law of events is unchanged.
+
+\section{If you insist on keeping a fixed micro step $\tau_{\text{micro}}$}
+
+Exactness is generally impossible with fixed-step synchronization unless $\tau_{\text{micro}}\to 0$ and additional
+assumptions hold (e.g., boundary states are well-approximated by community-wide fractions). However, you can
+reduce mismatch (not eliminate it) by:
+
+\begin{itemize}[leftmargin=*]
+\item updating macro rates at \emph{every} internal micro event that changes a boundary node (event-driven within the step),
+\item using the exact inter-edge sum \eqref{eq:true_lambda} computed from boundary states at those times,
+\item sampling inter-event times with a hazard budget that accounts for \emph{all} rate jumps at their true times
+(piecewise-constant hazard, no midpoint averaging).
+\end{itemize}
+
+But note: once you do this, you have effectively moved to the event-driven coupling of Section \ref{sec:fix3}.
+
+\section{Summary of fixes vs.\ what each corrects}
+
+\begin{center}
+\begin{tabular}{@{}p{0.33\linewidth}p{0.60\linewidth}@{}}
+\toprule
+\textbf{Fix} & \textbf{Corrects} \\
+\midrule
+Exact macro intensities $\lambda_{ij}=\sum_{E_{ij}}$ & Makes inter-community rates equal true SSA propensities; removes wrong scaling from using fractions and removes dependence loss on boundary nodes. \\
+Edge-based seeding (pick $(u,v)$) & Restores correct conditional distribution of infected node; crucial in chain-of-cliques (bridge node). \\
+Event-driven coupling (global SSA/NRM) & Removes discretization/synchronization bias in waiting times and event ordering; eliminates need for midpoint hazard integration in this setting. \\
+Correct residual-budget / restart handling & Prevents ``interrupted exponential'' bugs when deterministic imports occur; preserves correct waiting-time distribution after rate jumps. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{References}
+\begin{thebibliography}{1}
+\bibitem{paper}
+Y.~Kuryliak and M.~Emmerich,
+\emph{Towards complexity reduction of large-scale epidemic simulation in two-scale networks},
+MoMLeT-2025. (Attached paper.)
+\end{thebibliography}
+
+\end{document}

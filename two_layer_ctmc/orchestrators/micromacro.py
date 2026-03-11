@@ -27,6 +27,7 @@ class Orchestrator:
         model: int = 2,
         full_graph: Optional[nx.Graph] = None,
         layout_seed: Optional[int] = 0,
+        verbose_steps: bool = False,
     ):
         self.micro_models: List[MicroModel] = []
         for G in micro_graphs:
@@ -50,6 +51,7 @@ class Orchestrator:
         )
         self.tau_micro = float(tau_micro)
         self.T_end = float(T_end)
+        self.verbose_steps = bool(verbose_steps)
 
         self.times: List[float] = []
         self.I_total: List[int] = []
@@ -173,6 +175,9 @@ class Orchestrator:
             dt = min(self.tau_micro, self.T_end - t)
             t_mid = t + 0.5 * dt
 
+            if self.verbose_steps:
+                print("t = {:.4f}, next dt = {:.4f}, t_mid = {:.4f}".format(t, dt, t_mid))
+
             # --- midpoint hazard via micro snapshots (no RNG leakage) ---
             rng_state = random.getstate()
             clones = [m.clone() for m in self.micro_models]
@@ -223,6 +228,9 @@ class Orchestrator:
             if int_accum + total_hazard_mid * dt >= thresh_int:
                 # A MACRO EVENT occurs inside the interval at t_event
                 t_event = t + (thresh_int - int_accum) / total_hazard_mid
+
+                if self.verbose_steps:
+                    print(">>> MACRO EVENT at t = {:.4f} <<<".format(t_event))
 
                 # advance real micros to t_event; buffer events
                 pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []

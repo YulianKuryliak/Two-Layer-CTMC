@@ -1,10 +1,10 @@
-import json
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Dict, List, Optional, Sequence, Tuple
 from pathlib import Path
 from two_layer_ctmc.network import generate_two_scale_network
+from devtools.config import load_config
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -14,6 +14,10 @@ def resolve_path(path_like: str) -> Path:
     normalized = str(path_like).replace("\\", "/")
     path = Path(normalized).expanduser()
     return path if path.is_absolute() else (BASE_DIR / path)
+
+
+def _community_size_from_cfg(net_cfg: dict) -> int:
+    return int(net_cfg["community_size"])
 
 
 def community_nodes_from_micrographs(micro_graphs: Sequence[nx.Graph]) -> List[List[int]]:
@@ -231,20 +235,22 @@ def draw_macro_graph(
 
 
 if __name__ == "__main__":
-
-    with open(resolve_path("config.json"), "r", encoding="utf-8") as f:
-        cfg = json.load(f)
+    cfg, _ = load_config()
     net_cfg = cfg["network"]
     save_plot = True
+    community_size = _community_size_from_cfg(net_cfg)
 
     micro_graphs, full_graph, W = generate_two_scale_network(
         n_communities=int(net_cfg["communities"]),
-        community_size=int(net_cfg["community_size"]),
+        community_size=community_size,
         inter_links=int(net_cfg["inter_links"]),
         seed=int(net_cfg["seed"]),
         macro_graph_type=str(net_cfg["macro_graph_type"]),
         micro_graph_type=str(net_cfg["micro_graph_type"]),
         edge_prob=float(net_cfg["edge_prob"]),
+        leaf_count=int(net_cfg.get("leaf_count", 0)),
+        leaf_degree=int(net_cfg.get("leaf_degree", 1)),
+        star_leaf_attachment=str(net_cfg.get("star_leaf_attachment", "random")),
     )
 
     draw_two_scale_network(
@@ -258,7 +264,7 @@ if __name__ == "__main__":
         edge_prob_str = str(net_cfg["edge_prob"]).replace(".", "p")
         folder_name = (
             f"k_{net_cfg['communities']}_"
-            f"n_{net_cfg['community_size']}_"
+            f"n_{community_size}_"
             f"inter_{net_cfg['inter_links']}_"
             f"macro_{net_cfg['macro_graph_type']}_"
             f"micro_{net_cfg['micro_graph_type']}_"
