@@ -1,12 +1,15 @@
 import csv
+import io
 import json
 import random
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
 import numpy as np
 
 from devtools.config import load_config, resolve_path
+from sim_db import export_sir_csv, ingest_run_payload, make_run_uid
 from two_layer_ctmc.network import generate_two_scale_network
 from two_layer_ctmc.simulate import normalize_model
 from two_layer_ctmc.simulators import MicroMacroSimulator, MicroSimulator
@@ -46,6 +49,14 @@ def _write_micro_csv(rows: Iterable[tuple], csv_path: Path) -> None:
         writer.writerows(rows)
 
 
+def _micro_rows_to_csv_bytes(rows: Iterable[tuple]) -> bytes:
+    with io.StringIO() as buf:
+        writer = csv.writer(buf)
+        writer.writerow(["community", "time", "S", "I", "R"])
+        writer.writerows(rows)
+        return buf.getvalue().encode("utf-8")
+
+
 def _export_discrete_grid_csv(
     logs_per_comm: dict,
     k: int,
@@ -76,6 +87,30 @@ def _export_discrete_grid_csv(
 
             for t_out, idx in zip(grid, idxs):
                 writer.writerow([community, float(t_out), int(Ss[idx]), int(Is[idx]), int(Rs[idx])])
+
+
+def _discrete_grid_rows(
+    logs_per_comm: dict,
+    k: int,
+    tau_micro: float,
+    T_end: float,
+) -> List[tuple]:
+    n_steps = int(np.floor(T_end / tau_micro + 1e-12))
+    grid = np.array([(i + 1) * tau_micro for i in range(n_steps)], dtype=float)
+    out: List[tuple] = []
+    for community in range(k):
+        times = np.asarray(logs_per_comm[community]["times"], dtype=float)
+        Ss = np.asarray(logs_per_comm[community]["S"], dtype=int)
+        Is = np.asarray(logs_per_comm[community]["I"], dtype=int)
+        Rs = np.asarray(logs_per_comm[community]["R"], dtype=int)
+
+        order = np.argsort(times)
+        times, Ss, Is, Rs = times[order], Ss[order], Is[order], Rs[order]
+        idxs = np.searchsorted(times, grid, side="right") - 1
+        idxs = np.clip(idxs, 0, len(times) - 1)
+        for t_out, idx in zip(grid, idxs):
+            out.append((community, float(t_out), int(Ss[idx]), int(Is[idx]), int(Rs[idx])))
+    return out
 
 
 def _bridge_nodes_by_community(full_graph, comm_nodes: List[List[int]]) -> Dict[int, set[int]]:
@@ -140,6 +175,26 @@ def _metrics_from_micro_transmissions(
     return metrics
 
 
+def _events_from_micro_transmissions(transmission_events: list[dict]) -> List[dict]:
+    out: List[dict] = []
+    for event in transmission_events:
+        if "time" not in event:
+            continue
+        out.append(
+            {
+                "time": float(event["time"]),
+                "mode": "micro",
+                "kind": "infection",
+                "src_community": event.get("src_community"),
+                "dst_community": event.get("dst_community"),
+                "src_node": event.get("src_node"),
+                "dst_node": event.get("dst_node"),
+            }
+        )
+    out.sort(key=lambda row: row["time"])
+    return out
+
+
 def _metrics_from_micromacro_events(
     event_log: list[dict],
     n_communities: int,
@@ -173,6 +228,10 @@ def _metrics_from_micromacro_events(
                     metrics[src_comm]["t_export"] = event_time
 
     return metrics
+
+
+def _run_uid_to_filename(run_uid: str) -> str:
+    return run_uid.replace(":", "_")
 
 
 def _write_metrics_files(
@@ -333,8 +392,10 @@ def run_micro_batch(
     leaf_degree: int = 1,
     star_leaf_attachment: str = "random",
     initial_node: Optional[int] = None,
+    export_csv: bool = False,
+    db_path: str | Path = "simulations.db",
     base_dir: Optional[Path] = None,
-) -> List[Path]:
+) -> List[str]:
     out_folder_path = resolve_path(out_folder, base_dir=base_dir)
     model_id = normalize_model(model)
 
@@ -360,9 +421,26 @@ def run_micro_batch(
         model=model_id,
     )
     bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
+    runtime_config = {
+        "network": {
+            "communities": n_communities,
+            "community_size": community_size,
+            "inter_links": inter_links,
+            "seed": seed,
+            "macro_graph_type": macro_graph_type,
+            "micro_graph_type": micro_graph_type,
+            "edge_prob": edge_prob,
+            "leaf_count": leaf_count,
+            "leaf_degree": leaf_degree,
+            "star_leaf_attachment": star_leaf_attachment,
+        },
+        "simulation": {"T_end": T_end, "base_seed": base_seed, "n_runs": n_runs},
+        "virus": {"beta": beta, "gamma": gamma, "model": model_id},
+        "micro": {"dt_out": dt_out, "out_folder": str(out_folder)},
+    }
 
     nodes = list(full_graph.nodes())
-    output_paths: List[Path] = []
+    run_uids: List[str] = []
     run_seeds = _seed_list(n_runs, seeds, base_seed)
     for run_idx in range(n_runs):
         run_seed = run_seeds[run_idx]
@@ -377,17 +455,40 @@ def run_micro_batch(
             initial_node=seed_node,
             rng=rng,
         )
-        csv_path = out_folder_path / f"{run_idx + 1}.csv"
-        _write_micro_csv(result["rows"], csv_path)
+        sir_bytes = _micro_rows_to_csv_bytes(result["rows"])
+        created_at = datetime.utcnow().isoformat() + "Z"
+        run_uid = make_run_uid(
+            simulator="Micro",
+            config=runtime_config,
+            run_seed=run_seed,
+            created_at=created_at,
+            run_index=run_idx + 1,
+        )
         metrics = _metrics_from_micro_transmissions(
             transmission_events=result.get("transmission_events", []),
             n_communities=n_communities,
             bridge_nodes=bridge_nodes,
         )
-        _write_metrics_files(simulator="Micro", sim_csv_path=csv_path, metrics=metrics)
-        output_paths.append(csv_path)
+        events = _events_from_micro_transmissions(result.get("transmission_events", []))
+        ingest_run_payload(
+            simulator="Micro",
+            sim_version="1.0.3",
+            config={**runtime_config, "simulation": {**runtime_config["simulation"], "initial_node": seed_node}},
+            sir_csv_bytes=sir_bytes,
+            community_metrics=metrics,
+            infection_events=events,
+            run_uid=run_uid,
+            created_at=created_at,
+            run_seed=run_seed,
+            db_path=db_path,
+        )
+        if export_csv:
+            csv_path = out_folder_path / f"{_run_uid_to_filename(run_uid)}.csv"
+            export_sir_csv(run_uid, csv_path, db_path=db_path)
+            _write_metrics_files(simulator="Micro", sim_csv_path=csv_path, metrics=metrics)
+        run_uids.append(run_uid)
 
-    return output_paths
+    return run_uids
 
 
 def run_micromacro_batch(
@@ -418,8 +519,10 @@ def run_micromacro_batch(
     verbose_steps: bool = False,
     initial_community: int = 0,
     initial_node: Optional[int] = None,
+    export_csv: bool = False,
+    db_path: str | Path = "simulations.db",
     base_dir: Optional[Path] = None,
-) -> List[Path]:
+) -> List[str]:
     out_folder_path = resolve_path(out_folder, base_dir=base_dir)
     model_id = normalize_model(model)
     beta_macro = beta_micro if beta_macro is None else beta_macro
@@ -453,7 +556,37 @@ def run_micromacro_batch(
     comm_nodes = [list(G.nodes()) for G in micro_graphs]
     bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
 
-    output_paths: List[Path] = []
+    run_uids: List[str] = []
+    runtime_config = {
+        "network": {
+            "communities": n_communities,
+            "community_size": community_size,
+            "inter_links": inter_links,
+            "seed": seed,
+            "macro_graph_type": macro_graph_type,
+            "micro_graph_type": micro_graph_type,
+            "edge_prob": edge_prob,
+            "leaf_count": leaf_count,
+            "leaf_degree": leaf_degree,
+            "star_leaf_attachment": star_leaf_attachment,
+        },
+        "simulation": {
+            "T_end": T_end,
+            "base_seed": base_seed,
+            "n_runs": n_runs,
+            "initial_community": initial_community,
+            "initial_node": initial_node,
+        },
+        "virus": {"beta": beta_micro, "gamma": gamma, "model": model_id},
+        "micromacro": {
+            "tau_micro": tau_micro,
+            "macro_T": macro_T,
+            "out_folder": str(out_folder),
+            "print_infection_events": print_infection_events,
+            "export_infection_events_csv": export_infection_events_csv,
+            "verbose_steps": verbose_steps,
+        },
+    }
     run_seeds = _seed_list(n_runs, seeds, base_seed)
     for run_idx in range(n_runs):
         run_seed = run_seeds[run_idx]
@@ -463,20 +596,22 @@ def run_micromacro_batch(
             initial_node=initial_node,
         )
         _, _, logs, event_log = result
-        csv_path = out_folder_path / f"{run_idx + 1}.csv"
-        _export_discrete_grid_csv(
+        rows = _discrete_grid_rows(
             logs_per_comm=logs,
             k=n_communities,
             tau_micro=tau_micro,
             T_end=T_end,
-            csv_path=csv_path,
+        )
+        sir_bytes = _micro_rows_to_csv_bytes(rows)
+        created_at = datetime.utcnow().isoformat() + "Z"
+        run_uid = make_run_uid(
+            simulator="MicroMacro",
+            config=runtime_config,
+            run_seed=run_seed,
+            created_at=created_at,
+            run_index=run_idx + 1,
         )
         infection_events = _extract_micromacro_infection_events(event_log)
-        if export_infection_events_csv:
-            _write_micromacro_infection_events_csv(
-                sim_csv_path=csv_path,
-                infection_events=infection_events,
-            )
         if print_infection_events:
             _print_micromacro_infection_events(run_idx + 1, infection_events)
 
@@ -485,18 +620,39 @@ def run_micromacro_batch(
             n_communities=n_communities,
             bridge_nodes=bridge_nodes,
         )
-        _write_metrics_files(simulator="MicroMacro", sim_csv_path=csv_path, metrics=metrics)
-        output_paths.append(csv_path)
+        ingest_run_payload(
+            simulator="MicroMacro",
+            sim_version="1.0.3",
+            config=runtime_config,
+            sir_csv_bytes=sir_bytes,
+            community_metrics=metrics,
+            infection_events=infection_events,
+            run_uid=run_uid,
+            created_at=created_at,
+            run_seed=run_seed,
+            db_path=db_path,
+        )
+        if export_csv:
+            csv_path = out_folder_path / f"{_run_uid_to_filename(run_uid)}.csv"
+            export_sir_csv(run_uid, csv_path, db_path=db_path)
+            _write_metrics_files(simulator="MicroMacro", sim_csv_path=csv_path, metrics=metrics)
+            if export_infection_events_csv:
+                _write_micromacro_infection_events_csv(
+                    sim_csv_path=csv_path,
+                    infection_events=infection_events,
+                )
+        run_uids.append(run_uid)
 
-    return output_paths
+    return run_uids
 
 
-def run_micro_batch_from_config(path: str | Path = "config.json") -> List[Path]:
+def run_micro_batch_from_config(path: str | Path = "config.json") -> List[str]:
     cfg, base_dir = load_config(path)
     net_cfg = cfg["network"]
     virus_cfg = cfg["virus"]
     sim_cfg = cfg["micro"]
     sim_common = cfg["simulation"]
+    storage_cfg = cfg.get("storage", {})
     initial_node = _initial_node_from_config(sim_common=sim_common, net_cfg=net_cfg)
 
     return run_micro_batch(
@@ -519,6 +675,8 @@ def run_micro_batch_from_config(path: str | Path = "config.json") -> List[Path]:
         leaf_degree=int(net_cfg.get("leaf_degree", 1)),
         star_leaf_attachment=str(net_cfg.get("star_leaf_attachment", "random")),
         initial_node=initial_node,
+        export_csv=bool(storage_cfg.get("export_csv", False)),
+        db_path=resolve_path(storage_cfg.get("db_path", "simulations.db"), base_dir=base_dir),
         base_dir=base_dir,
     )
 
@@ -526,13 +684,14 @@ def run_micro_batch_from_config(path: str | Path = "config.json") -> List[Path]:
 def run_micromacro_batch_from_config(
     path: str | Path = "config.json",
     variant: str = "micromacro",
-) -> List[Path]:
+) -> List[str]:
     cfg, base_dir = load_config(path)
     net_cfg = cfg["network"]
     virus_cfg = cfg["virus"]
     sim_common = cfg["simulation"]
     sim_cfg = cfg["micromacro"]
     variant_cfg = cfg.get(variant, {})
+    storage_cfg = cfg.get("storage", {})
     initial_node = _initial_node_from_config(sim_common=sim_common, net_cfg=net_cfg)
 
     return run_micromacro_batch(
@@ -560,6 +719,8 @@ def run_micromacro_batch_from_config(
         export_infection_events_csv=bool(sim_cfg.get("export_infection_events_csv", True)),
         verbose_steps=bool(sim_cfg.get("verbose_steps", False)),
         initial_node=initial_node,
+        export_csv=bool(storage_cfg.get("export_csv", False)),
+        db_path=resolve_path(storage_cfg.get("db_path", "simulations.db"), base_dir=base_dir),
         base_dir=base_dir,
     )
 
