@@ -7,8 +7,8 @@ Event-driven SIR/SIS simulators for two-layer (community + inter-community) cont
 - `two_layer_ctmc/network.py` – packaged two-scale network generator for pip users.
 - `two_layer_ctmc/simulate.py` – simulation-first helpers (no CSV output or plotting).
 - `network.py` – repo-level network generator used by CSV scripts.
-- `Micro_simulator.py` – runner for microscopic Gillespie SIR/SIS with uniform time sampling (CSV output).
-- `micromacro.py` – runner for micro/macro simulation (CSV output).
+- `Micro_simulator.py` – runner for microscopic Gillespie SIR/SIS (DB-first storage).
+- `micromacro.py` – runner for micro/macro simulation (DB-first storage).
 - `micro_simulation.py` – micro runner logic (used by `Micro_simulator.py`).
 - `micromacro_simulation.py` – micro/macro runner logic (used by `micromacro.py`).
 - `visualization.py` – aggregates CSV outputs and plots per-community and aggregated I(t) curves.
@@ -41,7 +41,7 @@ result = simulate_micro(
 )
 ```
 
-## Batch runs (CSV output)
+## Batch runs (DB-first)
 Use the config file format already in the repo, or call the API directly (devtools are repo-only):
 
 ```python
@@ -58,6 +58,8 @@ run_micro_batch(
     community_size=40,
     inter_links=2,
     seed=7,
+    export_csv=False,
+    db_path="simulations.db",
 )
 ```
 
@@ -130,14 +132,18 @@ from two_layer_ctmc import MicroEngine, MicroSimulator, MicroMacroSimulator, Orc
 - `T_end`: float `> 0`; simulation horizon.
 - `initial_node`: integer node id or `null`.
 
+`storage`:
+- `db_path`: SQLite DB path (default `simulations.db`).
+- `export_csv`: `true|false`; if `false`, results are written only to DB. If `true`, CSVs are exported from DB using unique file names based on `run_uid`.
+
 `micro`:
-- `dt_out`: float `> 0`; output sampling step for micro CSV export.
-- `out_folder`: output folder path for micro runs.
+- `dt_out`: float `> 0`; output sampling step for micro export.
+- `out_folder`: output folder path used only when `storage.export_csv=true`.
 
 `micromacro`:
 - `tau_micro`: float `> 0`; micro-step for state export.
 - `macro_T`: float `> 0`; macro update period.
-- `out_folder`: output folder path for MicroMacro runs.
+- `out_folder`: output folder path used only when `storage.export_csv=true`.
 - `print_infection_events`: `true|false`; print each infection/transfer event with timestamp.
 - `export_infection_events_csv`: `true|false`; write `events/*_infection_events.csv`.
 - `verbose_steps`: `true|false`; verbose internal micro/macro step logs.
@@ -150,7 +156,7 @@ Path handling:
 - Both `/` and `\\` separators are accepted.
 
 ## Run simulators
-These repo-level scripts write per-run CSVs with columns `community,time,S,I,R` to the folder configured in `config.json`, and optionally log metadata if `sim_db.py` is available.
+These repo-level scripts write runs directly into `simulations.db` (table `runs` + metrics/events + SIR blob). Optional CSV export is controlled by `storage.export_csv`.
 
 ```bash
 python Micro_simulator.py   # Full microscopic baseline
@@ -165,8 +171,76 @@ python visualization.py
 ```
 
 ## Data and logging
-- CSV layout: one file per run; rows are uniform time samples (`t=0, dt, 2dt, …, T_end`) for every community.
-- Run metadata (simulator name, version, params, output folder, runtime if provided) can be stored in `simulations.db`; see `sim_db.list_runs()` for inspection.
+- Primary storage is SQLite (`simulations.db`).
+- SIR time series are stored in `sir_artifacts` as compressed CSV blob.
+- CSV files are optional exports and are generated with unique names (`run_uid`) to avoid overwrite.
+
+## Database v1 (searchable runs)
+The project now supports a normalized SQLite schema in `simulations.db` with:
+- `runs` (indexed flattened config + metadata),
+- `community_metrics`,
+- `infection_events`,
+- `sir_artifacts` (full SIR CSV stored as compressed blob).
+
+Python API (`sim_db.py`):
+- `ingest_run_payload(...)` (DB-first)
+- `ingest_run_bundle(...)` / `ingest_paths_from_batch(...)` (fallback/compat)
+- `search_by_config(...)`
+- `search_by_filters(...)`
+- `get_distinct_configs(...)`
+- `get_run_details(...)`
+- `export_sir_csv(...)`
+
+Direct SQL examples:
+
+```sql
+-- Topology search
+SELECT run_uid, simulator, created_at
+FROM runs
+WHERE macro_graph_type = 'star'
+  AND micro_graph_type = 'clique_leaves'
+ORDER BY created_at DESC;
+
+-- All config variants for a network size
+SELECT DISTINCT communities, community_size, inter_links, macro_graph_type, micro_graph_type
+FROM runs
+WHERE network_size_total = 101
+ORDER BY communities, community_size;
+
+-- Bridge and export timings
+SELECT run_uid, community, t_bridge, t_export
+FROM community_metrics
+JOIN runs USING(run_uid)
+ORDER BY run_uid, community;
+
+-- Inter-community transmissions
+SELECT run_uid, time, mode, kind, src_community, dst_community
+FROM infection_events
+WHERE src_community IS NOT NULL AND dst_community IS NOT NULL AND src_community <> dst_community
+ORDER BY time;
+```
+
+Example searches:
+
+```python
+from sim_db import search_by_config, search_by_filters, get_distinct_configs
+
+# 1) Search by (partial) config
+runs = search_by_config({"network": {"community_size": 100}, "virus": {"model": 2}})
+
+# 2) Table-like filtering + list config variants for same network size
+runs = search_by_filters({"network_size_total": 101, "simulator": "Micro"})
+variants = get_distinct_configs(
+    filter_by={"network_size_total": 101},
+    fields=["communities", "community_size", "macro_graph_type", "micro_graph_type"],
+)
+```
+
+Backfill first N runs from existing output folders:
+
+```bash
+python db_backfill_v1.py --limit 100
+```
 
 ## Reproducibility tips
 - Use `base_seed` in `config.json` to keep runs reproducible; seeds auto-increment per run.

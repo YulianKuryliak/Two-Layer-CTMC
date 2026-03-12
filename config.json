@@ -1,26 +1,30 @@
 {
   "network": {
-    "communities": 2, // int >= 1
-    "community_size": 100, // int >= 1
+    "communities": 5, // int >= 1
+    "community_size": 200, // int >= 1
     "inter_links": 1, // int >= 0
     "seed": 42, // int
-    "macro_graph_type": "star", // "complete" | "chain" | "star"
-    "micro_graph_type": "clique_leaves", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
+    "macro_graph_type": "chain", // "complete" | "chain" | "star"
+    "micro_graph_type": "random", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
     "edge_prob": 0.031, // float in [0, 1]
     "leaf_count": 0, // int >= 0 (used when micro_graph_type="clique_leaves")
     "leaf_degree": 1, // int in [0, community_size] (used when micro_graph_type="clique_leaves")
     "star_leaf_attachment": "random" // "random" | "node0" | "random_nonzero" (used when macro_graph_type="star")
   },
   "virus": {
-    "beta": 0.005, // float >= 0
+    "beta": 0.002, // float >= 0
     "gamma": 0.0, // float >= 0
     "model": 2 // 1=SIS | 2=SIR
   },
   "simulation": {
-    "n_runs": 10000, // int >= 1
+    "n_runs": 500, // int >= 1
     "base_seed": 42, // int
     "T_end": 1000, // float > 0
     "initial_node": 0 // int node id | null - random
+  },
+  "storage": {
+    "db_path": "simulations.db", // sqlite path
+    "export_csv": false // true | false
   },
   "micro": {
     "dt_out": 1.0, // float > 0

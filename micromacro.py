@@ -12,9 +12,9 @@ if __name__ == "__main__":
     initial_node = sim_common.get("initial_node")
     community_size = int(net_cfg["community_size"])
 
-    paths = run_micromacro_batch_from_config(variant="micromacro")
-    runs = len(paths)
-    output_dir = paths[0].parent if paths else sim_cfg["out_folder"]
+    run_uids = run_micromacro_batch_from_config(variant="micromacro")
+    runs = len(run_uids)
+    output_dir = sim_cfg["out_folder"]
     base_seed = int(sim_common["base_seed"])
     tau_micro = float(sim_cfg["tau_micro"])
     T_end = float(sim_common["T_end"])
@@ -39,3 +39,6 @@ if __name__ == "__main__":
         },
         output_path=str(output_dir),
     )
+
+    if run_uids:
+        print(f"DB v1 ingest completed for {len(run_uids)} MicroMacro runs.")

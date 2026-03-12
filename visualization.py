@@ -1,6 +1,5 @@
 import json
-import shutil
-import tempfile
+import sqlite3
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -9,23 +8,17 @@ from matplotlib.lines import Line2D
 
 from devtools.config import load_config, resolve_path
 from devtools.visualize import (
-    build_datasets_summary,
+    interp_stack_on_grid,
     plot_per_community_curves,
     plot_total_dynamics,
+    representative_and_bands,
 )
+from sim_db import load_sir_dataframe, search_by_filters
 
 
 # ========= settings =========
 cfg, base_dir = load_config()
-micro_out = resolve_path(cfg["micro"]["out_folder"], base_dir=base_dir)
-micromacro_out = resolve_path(cfg["micromacro"]["out_folder"], base_dir=base_dir)
-
-folders = {
-    "Micro": micro_out,
-    "MicroMacro": micromacro_out,
-}
-
-pattern = "*.csv"
+db_path = resolve_path(cfg.get("storage", {}).get("db_path", "simulations.db"), base_dir=base_dir)
 GRID_POINTS = 1000  # interpolation grid resolution inside each dataset
 PLOT_TOTAL_DYNAMICS = True
 PLOT_PER_COMMUNITY = True
@@ -36,11 +29,32 @@ MEDIAN_POINT_STRIDE = 1
 APPLY_METRIC_TIME_CUTOFF = True
 METRIC_TIME_CUTOFF = float(cfg["simulation"]["T_end"])
 
-# Quick mode: use subset of files + smaller interpolation grid for faster runs.
+# Quick mode: use subset of runs + smaller interpolation grid for faster runs.
 QUICK_MODE = False
-QUICK_MAX_FILES_PER_DATASET = 300
+QUICK_MAX_RUNS_PER_DATASET = 100
 QUICK_GRID_POINTS = 300
 BRIDGE_DENSITY_FIRST_N_COMMUNITIES = 1  # None -> show all communities
+
+QUERY_FIELDS = [
+    "communities",
+    "community_size",
+    "inter_links",
+    "seed",
+    "macro_graph_type",
+    "micro_graph_type",
+    "edge_prob",
+    "leaf_count",
+    "leaf_degree",
+    "star_leaf_attachment",
+    "beta",
+    "gamma",
+    "model",
+    "T_end",
+    "initial_node",
+    "dt_out",
+    "tau_micro",
+    "macro_T",
+]
 
 
 def _to_float_or_none(value):
@@ -102,71 +116,61 @@ def _read_metrics_rows_csv(path: Path):
     return rows
 
 
-def _load_metrics_for_simulation(folder: Path, sim_id: str, max_time: float | None):
-    metrics_path = folder / "metrics" / f"{sim_id}_metrics.json"
-    metrics_csv_path = folder / "metrics" / f"{sim_id}_metrics.csv"
-
-    if metrics_path.exists():
-        rows = _read_metrics_rows_json(metrics_path)
-    elif metrics_csv_path.exists():
-        rows = _read_metrics_rows_csv(metrics_csv_path)
-    else:
-        raise FileNotFoundError(
-            f"Missing metrics file for run {sim_id} in {folder / 'metrics'} "
-            f"(expected {metrics_path.name} or {metrics_csv_path.name})"
+def _load_metrics_for_simulation(run_uid: str, max_time: float | None):
+    with sqlite3.connect(db_path) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT community, t0, t_bridge, t_export
+            FROM community_metrics
+            WHERE run_uid = ?
+            ORDER BY community
+            """,
+            (run_uid,),
         )
-
+        rows = cur.fetchall()
     out = {}
-    for row in rows:
-        comm = int(row["community"])
+    for community, t0, t_bridge, t_export in rows:
+        comm = int(community)
         out[comm] = {
-            "t0": _sanitize_time(row.get("t0"), max_time=max_time),
-            "t_bridge": _sanitize_time(row.get("t_bridge"), max_time=max_time),
-            "t_export": _sanitize_time(row.get("t_export"), max_time=max_time),
+            "t0": _sanitize_time(t0, max_time=max_time),
+            "t_bridge": _sanitize_time(t_bridge, max_time=max_time),
+            "t_export": _sanitize_time(t_export, max_time=max_time),
         }
     return out
 
 
-def _load_all_metrics_rows(folder: Path):
-    metrics_dir = folder / "metrics"
-    if not metrics_dir.exists():
-        return []
-
-    json_files = sorted(metrics_dir.glob("*_metrics.json"))
-    if json_files:
-        rows = []
-        for path in json_files:
-            rows.extend(_read_metrics_rows_json(path))
-        return rows
-
-    csv_files = sorted(metrics_dir.glob("*_metrics.csv"))
-    rows = []
-    for path in csv_files:
-        rows.extend(_read_metrics_rows_csv(path))
-    return rows
-
-
-def _collect_metric_density_samples(folder: Path, max_time: float | None):
-    rows = _load_all_metrics_rows(folder)
+def _collect_metric_density_samples(run_uids: list[str], max_time: float | None):
     by_metric: dict[str, dict[int, list[float]]] = {
         "t_bridge": {},
         "bridge_to_export": {},
         "start_to_export": {},
     }
 
-    for row in rows:
-        comm = int(row["community"])
-        t_bridge = _sanitize_time(row.get("t_bridge"), max_time=max_time)
-        t_export = _sanitize_time(row.get("t_export"), max_time=max_time)
+    with sqlite3.connect(db_path) as conn:
+        cur = conn.cursor()
+        for run_uid in run_uids:
+            cur.execute(
+                """
+                SELECT community, t_bridge, t_export
+                FROM community_metrics
+                WHERE run_uid = ?
+                """,
+                (run_uid,),
+            )
+            for community, t_bridge_raw, t_export_raw in cur.fetchall():
+                comm = int(community)
+                t_bridge = _sanitize_time(t_bridge_raw, max_time=max_time)
+                t_export = _sanitize_time(t_export_raw, max_time=max_time)
 
-        if t_bridge is not None:
-            by_metric["t_bridge"].setdefault(comm, []).append(t_bridge)
+                if t_bridge is not None:
+                    by_metric["t_bridge"].setdefault(comm, []).append(t_bridge)
 
-        if t_bridge is not None and t_export is not None and t_export >= t_bridge:
-            by_metric["bridge_to_export"].setdefault(comm, []).append(t_export - t_bridge)
+                if t_bridge is not None and t_export is not None and t_export >= t_bridge:
+                    by_metric["bridge_to_export"].setdefault(comm, []).append(t_export - t_bridge)
 
-        if t_export is not None:
-            by_metric["start_to_export"].setdefault(comm, []).append(t_export)
+                if t_export is not None:
+                    by_metric["start_to_export"].setdefault(comm, []).append(t_export)
 
     return by_metric
 
@@ -267,70 +271,161 @@ def _build_output_dir():
     return out_dir
 
 
-def _prepare_quick_mode_folders(src_folders: dict[str, Path], file_glob: str, max_files: int):
-    temp_root = Path(tempfile.mkdtemp(prefix="viz_quick_"))
-    quick_folders: dict[str, Path] = {}
+def _dataset_filters_from_config(simulator: str):
+    net = cfg.get("network", {})
+    virus = cfg.get("virus", {})
+    sim = cfg.get("simulation", {})
+    micro = cfg.get("micro", {})
+    mm = cfg.get("micromacro", {})
 
-    for name, src_folder in src_folders.items():
-        dst_folder = temp_root / name
-        dst_folder.mkdir(parents=True, exist_ok=True)
-        quick_folders[name] = dst_folder
+    filters = {"simulator": simulator}
+    if "communities" in net:
+        filters["communities"] = int(net["communities"])
+    if "community_size" in net:
+        filters["community_size"] = int(net["community_size"])
+    if "inter_links" in net:
+        filters["inter_links"] = int(net["inter_links"])
+    if "seed" in net:
+        filters["seed"] = int(net["seed"])
+    if "macro_graph_type" in net:
+        filters["macro_graph_type"] = str(net["macro_graph_type"])
+    if "micro_graph_type" in net:
+        filters["micro_graph_type"] = str(net["micro_graph_type"])
+    if "edge_prob" in net:
+        filters["edge_prob"] = float(net["edge_prob"])
+    if "leaf_count" in net:
+        filters["leaf_count"] = int(net["leaf_count"])
+    if "leaf_degree" in net:
+        filters["leaf_degree"] = int(net["leaf_degree"])
+    if "star_leaf_attachment" in net:
+        filters["star_leaf_attachment"] = str(net["star_leaf_attachment"])
+    if "beta" in virus:
+        filters["beta"] = float(virus["beta"])
+    if "gamma" in virus:
+        filters["gamma"] = float(virus["gamma"])
+    if "model" in virus:
+        filters["model"] = int(virus["model"])
+    if "T_end" in sim:
+        filters["T_end"] = float(sim["T_end"])
+    if "initial_node" in sim and sim["initial_node"] is not None:
+        filters["initial_node"] = int(sim["initial_node"])
+    if simulator == "Micro":
+        if "dt_out" in micro:
+            filters["dt_out"] = float(micro["dt_out"])
+    else:
+        if "tau_micro" in mm:
+            filters["tau_micro"] = float(mm["tau_micro"])
+        if "macro_T" in mm:
+            filters["macro_T"] = float(mm["macro_T"])
+    return filters
 
-        csv_files = sorted(src_folder.glob(file_glob))[:max_files]
-        selected_ids = set()
-        for csv_path in csv_files:
-            shutil.copy2(csv_path, dst_folder / csv_path.name)
-            selected_ids.add(csv_path.stem)
 
-        src_metrics = src_folder / "metrics"
-        if src_metrics.exists():
-            dst_metrics = dst_folder / "metrics"
-            dst_metrics.mkdir(parents=True, exist_ok=True)
-            for sim_id in selected_ids:
-                json_path = src_metrics / f"{sim_id}_metrics.json"
-                csv_path = src_metrics / f"{sim_id}_metrics.csv"
-                if json_path.exists():
-                    shutil.copy2(json_path, dst_metrics / json_path.name)
-                elif csv_path.exists():
-                    shutil.copy2(csv_path, dst_metrics / csv_path.name)
+def _find_ambiguous_unset_fields(simulator: str, runs: list[dict], used_filters: dict):
+    if len(runs) <= 1:
+        return {}
+    ambiguous = {}
+    for field in QUERY_FIELDS:
+        if field in used_filters:
+            continue
+        values = {row.get(field) for row in runs}
+        if len(values) > 1:
+            normalized = sorted(values, key=lambda x: (x is None, str(x)))
+            ambiguous[field] = normalized[:10]
+    return ambiguous
 
-    return quick_folders, temp_root
+
+def _build_dataset_summary_from_runs(runs: list[dict], *, grid_points: int):
+    if not runs:
+        raise FileNotFoundError("No runs found in DB for current config filters")
+
+    raw_curves = {}
+    rep_comm_curves = {}
+    tmins = []
+    tmaxs = []
+    run_uids = []
+
+    for row in runs:
+        run_uid = str(row["run_uid"])
+        run_uids.append(run_uid)
+        df = load_sir_dataframe(run_uid, db_path=db_path)
+        agg = (
+            df.groupby("time", as_index=False)[["S", "I", "R"]]
+            .sum()
+            .sort_values("time")
+        )
+        cur = agg[["time", "I"]].drop_duplicates(subset="time").sort_values("time").reset_index(drop=True)
+        raw_curves[run_uid] = cur
+        tmins.append(float(cur["time"].min()))
+        tmaxs.append(float(cur["time"].max()))
+
+    tmin = float(np.max(tmins))
+    tmax = float(np.min(tmaxs))
+    t_grid = np.linspace(tmin, tmax, grid_points)
+    I_interp, I_stack = interp_stack_on_grid(raw_curves, t_grid)
+    idx_rep, I_mean, I_rep, median, q1, q3, mse = representative_and_bands(I_stack)
+    rep_key = list(I_interp.keys())[idx_rep]
+
+    rep_df = load_sir_dataframe(rep_key, db_path=db_path)
+    for comm_id, grp in rep_df.groupby("community"):
+        rep_comm_curves[int(comm_id)] = grp.sort_values("time")[["time", "I"]].reset_index(drop=True)
+
+    return {
+        "raw": raw_curves,
+        "tmin": tmin,
+        "tmax": tmax,
+        "t_grid": t_grid,
+        "I_interp": I_interp,
+        "I_stack": I_stack,
+        "idx_rep": idx_rep,
+        "I_mean": I_mean,
+        "I_rep": I_rep,
+        "median": median,
+        "q1": q1,
+        "q3": q3,
+        "mse": mse,
+        "rep_sim_id": rep_key,
+        "rep_comm_curves": rep_comm_curves,
+        "run_uids": run_uids,
+    }
 
 
 def main():
-    folders_for_run = folders
     grid_points = GRID_POINTS
-    temp_quick_root: Path | None = None
+    max_runs = None
 
     if QUICK_MODE:
-        folders_for_run, temp_quick_root = _prepare_quick_mode_folders(
-            src_folders=folders,
-            file_glob=pattern,
-            max_files=QUICK_MAX_FILES_PER_DATASET,
-        )
         grid_points = QUICK_GRID_POINTS
+        max_runs = QUICK_MAX_RUNS_PER_DATASET
         print(
-            f"[Visualization] QUICK_MODE enabled: up to {QUICK_MAX_FILES_PER_DATASET} CSV per dataset, "
+            f"[Visualization] QUICK_MODE enabled: up to {QUICK_MAX_RUNS_PER_DATASET} runs per dataset, "
             f"grid_points={grid_points}"
         )
 
-    include_per_community_for = ("Micro", "MicroMacro")
+    datasets = {}
+    for simulator in ("Micro", "MicroMacro"):
+        filters = _dataset_filters_from_config(simulator)
+        runs = search_by_filters(filters, sort="created_at DESC", limit=max_runs or 100000, db_path=db_path)
+        if not runs:
+            raise FileNotFoundError(f"No runs found in DB for simulator={simulator} and current config filters")
 
-    try:
-        datasets = build_datasets_summary(
-            folders=folders_for_run,
-            pattern=pattern,
-            grid_points=grid_points,
-            include_per_community_for=include_per_community_for,
-        )
+        ambiguous = _find_ambiguous_unset_fields(simulator, runs, filters)
+        if ambiguous:
+            print(f"[Visualization] Ambiguous query for {simulator}.")
+            print("[Visualization] Unspecified parameters vary across matched runs:")
+            for key, vals in ambiguous.items():
+                print(f"  - {key}: {vals}")
+            print("[Visualization] Add these parameters to config and rerun.")
+            return
+        datasets[simulator] = _build_dataset_summary_from_runs(runs, grid_points=grid_points)
 
-        out_dir = _build_output_dir()
-        max_time = _metric_time_limit()
+    out_dir = _build_output_dir()
+    max_time = _metric_time_limit()
 
-        print(f"[Visualization] Matplotlib backend: {plt.get_backend()}")
-        print(f"[Visualization] Output directory: {out_dir}")
-        if max_time is not None:
-            print(f"[Visualization] Metric time cutoff: {max_time}")
+    print(f"[Visualization] Matplotlib backend: {plt.get_backend()}")
+    print(f"[Visualization] Output directory: {out_dir}")
+    print(f"[Visualization] DB source: {db_path}")
+    if max_time is not None:
+        print(f"[Visualization] Metric time cutoff: {max_time}")
 
         if PLOT_TOTAL_DYNAMICS:
             base_colors = {
@@ -397,11 +492,7 @@ def main():
                 d = datasets[name]
                 rep_sim = d["rep_sim_id"]
                 comm_curves = d["rep_comm_curves"]
-                comm_metrics = _load_metrics_for_simulation(
-                    folder=folders_for_run[name],
-                    sim_id=rep_sim,
-                    max_time=max_time,
-                )
+                comm_metrics = _load_metrics_for_simulation(run_uid=rep_sim, max_time=max_time)
 
                 for comm_id in sorted(comm_curves.keys()):
                     color = comm_to_color[comm_id]
@@ -454,8 +545,8 @@ def main():
 
         if PLOT_METRIC_DENSITIES:
             density_data = {
-                name: _collect_metric_density_samples(folder=folder, max_time=max_time)
-                for name, folder in folders_for_run.items()
+                name: _collect_metric_density_samples(run_uids=datasets[name]["run_uids"], max_time=max_time)
+                for name in datasets.keys()
             }
 
             metric_specs = [
@@ -470,7 +561,7 @@ def main():
                 for name, metric_map in density_data.items():
                     by_comm = metric_map.get(metric_key, {})
                     comm_ids = sorted(by_comm.keys())
-                    if metric_key == "t_bridge" and BRIDGE_DENSITY_FIRST_N_COMMUNITIES is not None:
+                    if BRIDGE_DENSITY_FIRST_N_COMMUNITIES is not None:
                         comm_ids = comm_ids[:BRIDGE_DENSITY_FIRST_N_COMMUNITIES]
                     for comm_id in comm_ids:
                         series[f"{name} C{comm_id}"] = by_comm[comm_id]
@@ -492,13 +583,10 @@ def main():
                 f"({plt.get_backend()}). Open saved PNG files from the output directory."
             )
 
-        for name, d in datasets.items():
-            print(f"[{name}] Representative simulation: {d['rep_sim_id']}")
-            print(f"[{name}] Time grid range used: [{d['tmin']:.3f}, {d['tmax']:.3f}] with {grid_points} points")
-            print(f"[{name}] Mean MSE across sims: {np.mean(d['mse']):.6f}, best MSE: {np.min(d['mse']):.6f}")
-    finally:
-        if temp_quick_root is not None:
-            shutil.rmtree(temp_quick_root, ignore_errors=True)
+    for name, d in datasets.items():
+        print(f"[{name}] Representative simulation: {d['rep_sim_id']}")
+        print(f"[{name}] Time grid range used: [{d['tmin']:.3f}, {d['tmax']:.3f}] with {grid_points} points")
+        print(f"[{name}] Mean MSE across sims: {np.mean(d['mse']):.6f}, best MSE: {np.min(d['mse']):.6f}")
 
 
 if __name__ == "__main__":
