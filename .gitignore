@@ -6,7 +6,6 @@ build/
 dist/
 *.egg-info/
 simulations.db
-sim_db.py
+# sim_db.py
 *copy*
-test.py
-test.ipynb
+*test*

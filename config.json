@@ -5,14 +5,14 @@
     "inter_links": 1, // int >= 0
     "seed": 42, // int
     "macro_graph_type": "chain", // "complete" | "chain" | "star"
-    "micro_graph_type": "random", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
+    "micro_graph_type": "random_connected", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
     "edge_prob": 0.031, // float in [0, 1]
     "leaf_count": 0, // int >= 0 (used when micro_graph_type="clique_leaves")
     "leaf_degree": 1, // int in [0, community_size] (used when micro_graph_type="clique_leaves")
     "star_leaf_attachment": "random" // "random" | "node0" | "random_nonzero" (used when macro_graph_type="star")
   },
   "virus": {
-    "beta": 0.002, // float >= 0
+    "beta": 0.01, // float >= 0
     "gamma": 0.0, // float >= 0
     "model": 2 // 1=SIS | 2=SIR
   },
