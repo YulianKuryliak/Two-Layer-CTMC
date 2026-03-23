@@ -2,6 +2,7 @@ import csv
 import io
 import json
 import random
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
@@ -9,7 +10,6 @@ from typing import Dict, Iterable, List, Optional
 import numpy as np
 
 from devtools.config import load_config, resolve_path
-from sim_db import export_sir_csv, ingest_run_payload, make_run_uid
 from two_layer_ctmc.network import generate_two_scale_network
 from two_layer_ctmc.simulate import normalize_model
 from two_layer_ctmc.simulators import MicroMacroSimulator, MicroSimulator
@@ -234,6 +234,13 @@ def _run_uid_to_filename(run_uid: str) -> str:
     return run_uid.replace(":", "_")
 
 
+def _sim_db_api():
+    # Lazy import: avoids importing heavy DB stack during module import/startup.
+    from sim_db import export_sir_csv, ingest_run_payload, make_run_uid
+
+    return export_sir_csv, ingest_run_payload, make_run_uid
+
+
 def _write_metrics_files(
     *,
     simulator: str,
@@ -391,36 +398,48 @@ def run_micro_batch(
     leaf_count: int = 0,
     leaf_degree: int = 1,
     star_leaf_attachment: str = "random",
+    initial_community: int = 0,
     initial_node: Optional[int] = None,
+    regenerate_network_each_run: bool = True,
+    phase_timing: bool = False,
     export_csv: bool = False,
     db_path: str | Path = "simulations.db",
     base_dir: Optional[Path] = None,
 ) -> List[str]:
+    export_sir_csv, ingest_run_payload, make_run_uid = _sim_db_api()
     out_folder_path = resolve_path(out_folder, base_dir=base_dir)
     model_id = normalize_model(model)
+    regenerate_network_each_run = bool(regenerate_network_each_run)
+    phase_timing = bool(phase_timing)
 
-    micro_graphs, full_graph, _ = generate_two_scale_network(
-        n_communities=n_communities,
-        community_size=community_size,
-        inter_links=inter_links,
-        seed=seed,
-        macro_graph_type=macro_graph_type,
-        micro_graph_type=micro_graph_type,
-        edge_prob=edge_prob,
-        leaf_count=leaf_count,
-        leaf_degree=leaf_degree,
-        star_leaf_attachment=star_leaf_attachment,
-    )
-    comm_nodes = [list(G.nodes()) for G in micro_graphs]
+    def _build_sim_and_bridges(*, network_seed: Optional[int], timing_label: str):
+        t_network_start = time.perf_counter()
+        micro_graphs, full_graph, _ = generate_two_scale_network(
+            n_communities=n_communities,
+            community_size=community_size,
+            inter_links=inter_links,
+            seed=network_seed,
+            macro_graph_type=macro_graph_type,
+            micro_graph_type=micro_graph_type,
+            edge_prob=edge_prob,
+            leaf_count=leaf_count,
+            leaf_degree=leaf_degree,
+            star_leaf_attachment=star_leaf_attachment,
+        )
+        t_network_done = time.perf_counter()
+        if phase_timing:
+            print(f"[timing] network_build[{timing_label}]={t_network_done - t_network_start:.3f}s")
 
-    sim = MicroSimulator(
-        full_graph=full_graph,
-        comm_nodes=comm_nodes,
-        infection_rate=beta,
-        recovery_rate=gamma,
-        model=model_id,
-    )
-    bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
+        comm_nodes = [list(G.nodes()) for G in micro_graphs]
+        sim = MicroSimulator(
+            full_graph=full_graph,
+            comm_nodes=comm_nodes,
+            infection_rate=beta,
+            recovery_rate=gamma,
+            model=model_id,
+        )
+        bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
+        return sim, comm_nodes, bridge_nodes
     runtime_config = {
         "network": {
             "communities": n_communities,
@@ -434,32 +453,82 @@ def run_micro_batch(
             "leaf_degree": leaf_degree,
             "star_leaf_attachment": star_leaf_attachment,
         },
-        "simulation": {"T_end": T_end, "base_seed": base_seed, "n_runs": n_runs},
+        "simulation": {
+            "T_end": T_end,
+            "base_seed": base_seed,
+            "n_runs": n_runs,
+            "initial_community": initial_community,
+            "initial_node": initial_node,
+        },
         "virus": {"beta": beta, "gamma": gamma, "model": model_id},
-        "micro": {"dt_out": dt_out, "out_folder": str(out_folder)},
+        "micro": {
+            "dt_out": dt_out,
+            "out_folder": str(out_folder),
+            "phase_timing": phase_timing,
+        },
     }
-
-    nodes = list(full_graph.nodes())
     run_uids: List[str] = []
+    shared_sim = None
+    shared_comm_nodes = None
+    shared_bridge_nodes = None
+    if not regenerate_network_each_run:
+        shared_sim, shared_comm_nodes, shared_bridge_nodes = _build_sim_and_bridges(network_seed=seed, timing_label="shared")
+
     run_seeds = _seed_list(n_runs, seeds, base_seed)
     for run_idx in range(n_runs):
         run_seed = run_seeds[run_idx]
+        if regenerate_network_each_run:
+            if seed is not None:
+                network_seed = int(seed) + run_idx
+            else:
+                network_seed = run_seed
+            sim, comm_nodes, bridge_nodes = _build_sim_and_bridges(network_seed=network_seed, timing_label=f"run_{run_idx + 1}")
+        else:
+            network_seed = seed
+            sim = shared_sim
+            comm_nodes = shared_comm_nodes
+            bridge_nodes = shared_bridge_nodes
+
+        if sim is None or comm_nodes is None or bridge_nodes is None:
+            raise RuntimeError("Micro simulator initialization failed")
+        if not (0 <= int(initial_community) < len(comm_nodes)):
+            raise ValueError("initial_community is out of range")
+
         rng = random.Random(run_seed)
         seed_node = initial_node
-        if seed_node is None and nodes:
-            seed_node = rng.choice(nodes)
+        if seed_node is None and comm_nodes[int(initial_community)]:
+            seed_node = int(rng.choice(comm_nodes[int(initial_community)]))
 
+        t_loop_start = time.perf_counter()
         result = sim.run(
             T_end=T_end,
             dt_out=dt_out,
             initial_node=seed_node,
             rng=rng,
         )
+        t_loop_done = time.perf_counter()
+        if phase_timing:
+            print(f"[timing] main_loop[run_{run_idx + 1}]={t_loop_done - t_loop_start:.3f}s")
+
+        t_post_start = time.perf_counter()
         sir_bytes = _micro_rows_to_csv_bytes(result["rows"])
         created_at = datetime.utcnow().isoformat() + "Z"
+        run_config = {
+            **runtime_config,
+            "network": {
+                **runtime_config["network"],
+                "seed": network_seed,
+                "regenerate_each_run": regenerate_network_each_run,
+            },
+            "simulation": {
+                **runtime_config["simulation"],
+                "initial_community": int(initial_community),
+                "initial_node": seed_node,
+            },
+        }
         run_uid = make_run_uid(
             simulator="Micro",
-            config=runtime_config,
+            config=run_config,
             run_seed=run_seed,
             created_at=created_at,
             run_index=run_idx + 1,
@@ -473,7 +542,7 @@ def run_micro_batch(
         ingest_run_payload(
             simulator="Micro",
             sim_version="1.0.3",
-            config={**runtime_config, "simulation": {**runtime_config["simulation"], "initial_node": seed_node}},
+            config=run_config,
             sir_csv_bytes=sir_bytes,
             community_metrics=metrics,
             infection_events=events,
@@ -486,6 +555,9 @@ def run_micro_batch(
             csv_path = out_folder_path / f"{_run_uid_to_filename(run_uid)}.csv"
             export_sir_csv(run_uid, csv_path, db_path=db_path)
             _write_metrics_files(simulator="Micro", sim_csv_path=csv_path, metrics=metrics)
+        if phase_timing:
+            t_post_done = time.perf_counter()
+            print(f"[timing] post_processing_save[run_{run_idx + 1}]={t_post_done - t_post_start:.3f}s")
         run_uids.append(run_uid)
 
     return run_uids
@@ -517,44 +589,56 @@ def run_micromacro_batch(
     print_infection_events: bool = True,
     export_infection_events_csv: bool = True,
     verbose_steps: bool = False,
+    regenerate_network_each_run: bool = True,
+    phase_timing: bool = False,
     initial_community: int = 0,
     initial_node: Optional[int] = None,
     export_csv: bool = False,
     db_path: str | Path = "simulations.db",
     base_dir: Optional[Path] = None,
 ) -> List[str]:
+    export_sir_csv, ingest_run_payload, make_run_uid = _sim_db_api()
     out_folder_path = resolve_path(out_folder, base_dir=base_dir)
     model_id = normalize_model(model)
     beta_macro = beta_micro if beta_macro is None else beta_macro
+    regenerate_network_each_run = bool(regenerate_network_each_run)
+    phase_timing = bool(phase_timing)
 
-    micro_graphs, full_graph, W = generate_two_scale_network(
-        n_communities=n_communities,
-        community_size=community_size,
-        inter_links=inter_links,
-        seed=seed,
-        macro_graph_type=macro_graph_type,
-        micro_graph_type=micro_graph_type,
-        edge_prob=edge_prob,
-        leaf_count=leaf_count,
-        leaf_degree=leaf_degree,
-        star_leaf_attachment=star_leaf_attachment,
-    )
+    def _build_sim_and_bridges(*, network_seed: Optional[int], timing_label: str):
+        t_network_start = time.perf_counter()
+        micro_graphs, full_graph, W = generate_two_scale_network(
+            n_communities=n_communities,
+            community_size=community_size,
+            inter_links=inter_links,
+            seed=network_seed,
+            macro_graph_type=macro_graph_type,
+            micro_graph_type=micro_graph_type,
+            edge_prob=edge_prob,
+            leaf_count=leaf_count,
+            leaf_degree=leaf_degree,
+            star_leaf_attachment=star_leaf_attachment,
+        )
+        t_network_done = time.perf_counter()
+        if phase_timing:
+            print(f"[timing] network_build[{timing_label}]={t_network_done - t_network_start:.3f}s")
 
-    sim = MicroMacroSimulator(
-        W=W,
-        micro_graphs=micro_graphs,
-        beta_micro=beta_micro,
-        gamma=gamma,
-        beta_macro=beta_macro,
-        tau_micro=tau_micro,
-        T_end=T_end,
-        macro_T=macro_T,
-        model=model_id,
-        full_graph=full_graph,
-        verbose_steps=verbose_steps,
-    )
-    comm_nodes = [list(G.nodes()) for G in micro_graphs]
-    bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
+        sim = MicroMacroSimulator(
+            W=W,
+            micro_graphs=micro_graphs,
+            beta_micro=beta_micro,
+            gamma=gamma,
+            beta_macro=beta_macro,
+            tau_micro=tau_micro,
+            T_end=T_end,
+            macro_T=macro_T,
+            model=model_id,
+            full_graph=full_graph,
+            verbose_steps=verbose_steps,
+            phase_timing=phase_timing,
+        )
+        comm_nodes = [list(G.nodes()) for G in micro_graphs]
+        bridge_nodes = _bridge_nodes_by_community(full_graph=full_graph, comm_nodes=comm_nodes)
+        return sim, bridge_nodes
 
     run_uids: List[str] = []
     runtime_config = {
@@ -563,6 +647,7 @@ def run_micromacro_batch(
             "community_size": community_size,
             "inter_links": inter_links,
             "seed": seed,
+            "regenerate_each_run": regenerate_network_each_run,
             "macro_graph_type": macro_graph_type,
             "micro_graph_type": micro_graph_type,
             "edge_prob": edge_prob,
@@ -585,16 +670,39 @@ def run_micromacro_batch(
             "print_infection_events": print_infection_events,
             "export_infection_events_csv": export_infection_events_csv,
             "verbose_steps": verbose_steps,
+            "phase_timing": phase_timing,
         },
     }
+
+    shared_sim = None
+    shared_bridge_nodes = None
+    if not regenerate_network_each_run:
+        shared_sim, shared_bridge_nodes = _build_sim_and_bridges(network_seed=seed, timing_label="shared")
+
     run_seeds = _seed_list(n_runs, seeds, base_seed)
     for run_idx in range(n_runs):
         run_seed = run_seeds[run_idx]
+        if regenerate_network_each_run:
+            if seed is not None:
+                network_seed = int(seed) + run_idx
+            else:
+                network_seed = run_seed
+            sim, bridge_nodes = _build_sim_and_bridges(network_seed=network_seed, timing_label=f"run_{run_idx + 1}")
+        else:
+            network_seed = seed
+            sim = shared_sim
+            bridge_nodes = shared_bridge_nodes
+
+        if sim is None or bridge_nodes is None:
+            raise RuntimeError("MicroMacro simulator initialization failed")
+
         result = sim.run(
             seed=run_seed,
             initial_community=initial_community,
             initial_node=initial_node,
         )
+
+        t_post_start = time.perf_counter()
         _, _, logs, event_log = result
         rows = _discrete_grid_rows(
             logs_per_comm=logs,
@@ -604,9 +712,13 @@ def run_micromacro_batch(
         )
         sir_bytes = _micro_rows_to_csv_bytes(rows)
         created_at = datetime.utcnow().isoformat() + "Z"
+        run_config = {
+            **runtime_config,
+            "network": {**runtime_config["network"], "seed": network_seed},
+        }
         run_uid = make_run_uid(
             simulator="MicroMacro",
-            config=runtime_config,
+            config=run_config,
             run_seed=run_seed,
             created_at=created_at,
             run_index=run_idx + 1,
@@ -623,7 +735,7 @@ def run_micromacro_batch(
         ingest_run_payload(
             simulator="MicroMacro",
             sim_version="1.0.3",
-            config=runtime_config,
+            config=run_config,
             sir_csv_bytes=sir_bytes,
             community_metrics=metrics,
             infection_events=infection_events,
@@ -641,19 +753,28 @@ def run_micromacro_batch(
                     sim_csv_path=csv_path,
                     infection_events=infection_events,
                 )
+        if phase_timing:
+            t_post_done = time.perf_counter()
+            print(f"[timing] post_processing_save[run_{run_idx + 1}]={t_post_done - t_post_start:.3f}s")
         run_uids.append(run_uid)
 
     return run_uids
 
 
 def run_micro_batch_from_config(path: str | Path = "config.json") -> List[str]:
+    t_cfg_start = time.perf_counter()
     cfg, base_dir = load_config(path)
+    t_cfg_done = time.perf_counter()
     net_cfg = cfg["network"]
     virus_cfg = cfg["virus"]
     sim_cfg = cfg["micro"]
     sim_common = cfg["simulation"]
     storage_cfg = cfg.get("storage", {})
+    phase_timing = bool(sim_cfg.get("phase_timing", False))
+    if phase_timing:
+        print(f"[timing] load_config={t_cfg_done - t_cfg_start:.3f}s")
     initial_node = _initial_node_from_config(sim_common=sim_common, net_cfg=net_cfg)
+    initial_community = int(sim_common.get("initial_community", 0))
 
     return run_micro_batch(
         beta=float(virus_cfg["beta"]),
@@ -674,7 +795,10 @@ def run_micro_batch_from_config(path: str | Path = "config.json") -> List[str]:
         leaf_count=int(net_cfg.get("leaf_count", 0)),
         leaf_degree=int(net_cfg.get("leaf_degree", 1)),
         star_leaf_attachment=str(net_cfg.get("star_leaf_attachment", "random")),
+        initial_community=initial_community,
         initial_node=initial_node,
+        regenerate_network_each_run=bool(net_cfg.get("regenerate_each_run", True)),
+        phase_timing=phase_timing,
         export_csv=bool(storage_cfg.get("export_csv", False)),
         db_path=resolve_path(storage_cfg.get("db_path", "simulations.db"), base_dir=base_dir),
         base_dir=base_dir,
@@ -685,13 +809,18 @@ def run_micromacro_batch_from_config(
     path: str | Path = "config.json",
     variant: str = "micromacro",
 ) -> List[str]:
+    t_cfg_start = time.perf_counter()
     cfg, base_dir = load_config(path)
+    t_cfg_done = time.perf_counter()
     net_cfg = cfg["network"]
     virus_cfg = cfg["virus"]
     sim_common = cfg["simulation"]
     sim_cfg = cfg["micromacro"]
     variant_cfg = cfg.get(variant, {})
     storage_cfg = cfg.get("storage", {})
+    phase_timing = bool(sim_cfg.get("phase_timing", False))
+    if phase_timing:
+        print(f"[timing] load_config={t_cfg_done - t_cfg_start:.3f}s")
     initial_node = _initial_node_from_config(sim_common=sim_common, net_cfg=net_cfg)
 
     return run_micromacro_batch(
@@ -718,6 +847,8 @@ def run_micromacro_batch_from_config(
         print_infection_events=bool(sim_cfg.get("print_infection_events", True)),
         export_infection_events_csv=bool(sim_cfg.get("export_infection_events_csv", True)),
         verbose_steps=bool(sim_cfg.get("verbose_steps", False)),
+        regenerate_network_each_run=bool(net_cfg.get("regenerate_each_run", True)),
+        phase_timing=phase_timing,
         initial_node=initial_node,
         export_csv=bool(storage_cfg.get("export_csv", False)),
         db_path=resolve_path(storage_cfg.get("db_path", "simulations.db"), base_dir=base_dir),

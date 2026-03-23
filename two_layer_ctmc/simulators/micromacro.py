@@ -1,4 +1,5 @@
 import random
+import time
 from typing import List, Optional
 
 import networkx as nx
@@ -27,6 +28,7 @@ class MicroMacroSimulator:
         model: int = 2,
         full_graph: Optional[nx.Graph] = None,
         verbose_steps: bool = False,
+        phase_timing: bool = False,
     ):
         self.W = W
         self.micro_graphs = micro_graphs
@@ -39,6 +41,16 @@ class MicroMacroSimulator:
         self.model = model
         self.full_graph = full_graph
         self.verbose_steps = bool(verbose_steps)
+        self.phase_timing = bool(phase_timing)
+
+        self.community_sizes: Optional[List[int]] = None
+        self.alphas: Optional[List[float]] = None
+        if full_graph is not None:
+            cs = full_graph.graph.get("community_sizes")
+            al = full_graph.graph.get("alphas")
+            if isinstance(cs, list) and isinstance(al, list):
+                self.community_sizes = [int(x) for x in cs]
+                self.alphas = [float(x) for x in al]
 
     def run(
         self,
@@ -46,6 +58,7 @@ class MicroMacroSimulator:
         initial_community: int = 0,
         initial_node: Optional[int] = None,
     ) -> MicroMacroSimulationResult:
+        t_init_start = time.perf_counter()
         if seed is not None:
             random.seed(seed)
             np.random.seed(seed)
@@ -60,10 +73,14 @@ class MicroMacroSimulator:
             T_end=self.T_end,
             macro_T=self.macro_T,
             model=self.model,
+            community_sizes=self.community_sizes,
+            alphas=self.alphas,
             full_graph=self.full_graph,
-            layout_seed=seed if seed is not None else 0,
             verbose_steps=self.verbose_steps,
         )
+        t_init_done = time.perf_counter()
+        if self.phase_timing:
+            print(f"[timing] orchestrator_init={t_init_done - t_init_start:.3f}s")
 
         if not orch.micro_models:
             return ([], [], {}, [])
@@ -92,7 +109,12 @@ class MicroMacroSimulator:
             }
         )
 
-        return orch.run()
+        t_loop_start = time.perf_counter()
+        result = orch.run()
+        t_loop_done = time.perf_counter()
+        if self.phase_timing:
+            print(f"[timing] main_loop={t_loop_done - t_loop_start:.3f}s")
+        return result
 
 
 __all__ = ["MicroMacroSimulator"]

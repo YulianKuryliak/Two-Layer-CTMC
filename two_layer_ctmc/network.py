@@ -5,6 +5,32 @@ import networkx as nx
 import numpy as np
 
 
+def _compute_micro_alphas(micro_graphs: List[nx.Graph]) -> List[float]:
+    alphas: List[float] = []
+    for G in micro_graphs:
+        n = G.number_of_nodes()
+        if n < 2:
+            alphas.append(1.0)
+            continue
+        A = nx.to_numpy_array(G, weight="weight", dtype=float)
+        deg = A.sum(axis=1)
+        inv_sqrt_deg = np.zeros_like(deg)
+        nonzero = deg > 0
+        inv_sqrt_deg[nonzero] = 1.0 / np.sqrt(deg[nonzero])
+        D_inv_sqrt = np.diag(inv_sqrt_deg)
+        L_norm = np.eye(n) - (D_inv_sqrt @ A @ D_inv_sqrt)
+        eigvals = np.linalg.eigvalsh(L_norm)
+        if eigvals.size < 2:
+            alphas.append(1.0)
+            continue
+        lambda2_tilde = float(np.sort(eigvals)[-2])
+        if lambda2_tilde <= 0.0:
+            alphas.append(1.0)
+            continue
+        alphas.append(1.0 / lambda2_tilde)
+    return alphas
+
+
 def generate_two_scale_network(
     n_communities: int,
     community_size: int,
@@ -246,6 +272,10 @@ def generate_two_scale_network(
             full_graph.add_edge(u, v, weight=1.0)
         W[i, j] = float(num_links)
         W[j, i] = float(num_links)
+
+    # Attach reusable network-level metadata for simulator/orchestrator initialization.
+    full_graph.graph["community_sizes"] = [G.number_of_nodes() for G in micro_graphs]
+    full_graph.graph["alphas"] = _compute_micro_alphas(micro_graphs)
 
     return micro_graphs, full_graph, W
 

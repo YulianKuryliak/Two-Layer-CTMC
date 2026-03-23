@@ -1,9 +1,10 @@
 {
   "network": {
     "communities": 5, // int >= 1
-    "community_size": 200, // int >= 1
+    "community_size": 1000, // int >= 1
     "inter_links": 1, // int >= 0
     "seed": 42, // int
+    "regenerate_each_run": true, // true | false (if true, rebuild network per run)
     "macro_graph_type": "chain", // "complete" | "chain" | "star"
     "micro_graph_type": "random_connected", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
     "edge_prob": 0.031, // float in [0, 1]
@@ -12,14 +13,15 @@
     "star_leaf_attachment": "random" // "random" | "node0" | "random_nonzero" (used when macro_graph_type="star")
   },
   "virus": {
-    "beta": 0.01, // float >= 0
+    "beta": 0.01, // float >= 0 
     "gamma": 0.0, // float >= 0
     "model": 2 // 1=SIS | 2=SIR
   },
   "simulation": {
-    "n_runs": 500, // int >= 1
+    "n_runs": 20, // int >= 1
     "base_seed": 42, // int
     "T_end": 1000, // float > 0
+    "initial_community": 0, // int in [0, communities-1]
     "initial_node": 0 // int node id | null - random
   },
   "storage": {
@@ -28,15 +30,17 @@
   },
   "micro": {
     "dt_out": 1.0, // float > 0
-    "out_folder": "data/Simulations_Micro" // relative or absolute path
+    "out_folder": "data/Simulations_Micro", // relative or absolute path
+    "phase_timing": false // true | false
   },
   "micromacro": {
     "tau_micro": 1.0, // float > 0
     "macro_T": 1.0, // float > 0
     "out_folder": "data/Simulations_MicroMacro", // relative or absolute path
-    "print_infection_events": true, // true | false
-    "export_infection_events_csv": true, // true | false
-    "verbose_steps": false // true | false
+    "print_infection_events": false, // true | false
+    "export_infection_events_csv": false, // true | false
+    "verbose_steps": false, // true | false
+    "phase_timing": false // true | false
   },
   "micromacro_v1": {
     "out_folder": "data/Simulations_MicroMacro_hazard_updated" // relative or absolute path

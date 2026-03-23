@@ -29,6 +29,7 @@ class MacroEngine:
         self._hazards_buffer = np.zeros_like(W, dtype=float)
         self._flat = np.zeros(W.size, dtype=float)
         self._flat_cumsum = np.zeros(W.size, dtype=float)
+        self._flat_dirty = True
 
         # Sizes N_i of each community i
         if community_sizes is None:
@@ -68,9 +69,7 @@ class MacroEngine:
     def update_hazards(self, I_counts: List[int], S_counts: List[int]):
         self.hazards = self._compute_hazards_matrix(I_counts, S_counts)
         self.total_hazard = float(self.hazards.sum())
-        flat = self.hazards.ravel()
-        np.copyto(self._flat, flat)
-        np.cumsum(self._flat, out=self._flat_cumsum)
+        self._flat_dirty = True
 
     def total_hazard_given(self, I_counts: List[int], S_counts: List[int]) -> float:
         return float(self._compute_hazards_matrix(I_counts, S_counts).sum())
@@ -82,6 +81,11 @@ class MacroEngine:
         """
         if self.total_hazard <= 0.0:
             return -1, -1
+        if self._flat_dirty:
+            flat = self.hazards.ravel()
+            np.copyto(self._flat, flat)
+            np.cumsum(self._flat, out=self._flat_cumsum)
+            self._flat_dirty = False
         thresh = random.random() * self.total_hazard
         idx = int(np.searchsorted(self._flat_cumsum, thresh))
         i, j = divmod(idx, self.n)

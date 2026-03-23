@@ -25,8 +25,9 @@ class Orchestrator:
         T_end: float,
         macro_T: float = 1.0,
         model: int = 2,
+        community_sizes: Optional[List[int]] = None,
+        alphas: Optional[List[float]] = None,
         full_graph: Optional[nx.Graph] = None,
-        layout_seed: Optional[int] = 0,
         verbose_steps: bool = False,
     ):
         self.micro_models: List[MicroModel] = []
@@ -38,9 +39,11 @@ class Orchestrator:
                 m.add_edge(u, v, weight=data.get("weight", 1.0))
             self.micro_models.append(m)
 
-        # Community sizes for normalized macro hazards
-        community_sizes = [G.number_of_nodes() for G in micro_graphs]
-        alphas = self._compute_alphas(micro_graphs)
+        # Community sizes / alphas for normalized macro hazards.
+        if community_sizes is None:
+            community_sizes = [G.number_of_nodes() for G in micro_graphs]
+        if alphas is None:
+            alphas = self._compute_alphas(micro_graphs)
 
         self.macro = MacroEngine(
             W=W,
@@ -57,22 +60,6 @@ class Orchestrator:
         self.I_total: List[int] = []
         self.logs = {i: {"times": [], "S": [], "I": [], "R": []} for i in range(len(self.micro_models))}
         self.event_log: List[dict] = []
-
-        if full_graph is not None:
-            self.full_graph = full_graph.copy()
-        else:
-            self.full_graph = nx.Graph()
-            for m in self.micro_models:
-                self.full_graph.add_nodes_from(m.G.nodes())
-                self.full_graph.add_edges_from(m.G.edges())
-
-        self._node_to_comm: dict[int, int] = {}
-        for idx, m in enumerate(self.micro_models):
-            for n in m.G.nodes():
-                self._node_to_comm[n] = idx
-
-        # fixed layout (kept, but plotting calls removed for data collection use-case)
-        self._pos = nx.spring_layout(self.full_graph, seed=layout_seed)
 
     # ----- helpers -----
     @staticmethod
@@ -101,15 +88,6 @@ class Orchestrator:
             alphas.append(1.0 / lambda2_tilde)
         return alphas
 
-    def _gather_state_per_community(self):
-        state_per_community = []
-        for m in self.micro_models:
-            S_nodes = [n for n, d in m.G.nodes(data=True) if (not d["infected"]) and (not d["recovered"])]
-            I_nodes = [n for n, d in m.G.nodes(data=True) if d["infected"]]
-            R_nodes = [n for n, d in m.G.nodes(data=True) if d["recovered"]]
-            state_per_community.append({"S": S_nodes, "I": I_nodes, "R": R_nodes})
-        return state_per_community
-
     def _counts_arrays(self) -> Tuple[List[int], List[int], List[int]]:
         S_arr, I_arr, R_arr = [], [], []
         for m in self.micro_models:
@@ -119,6 +97,59 @@ class Orchestrator:
             R_arr.append(R)
         return S_arr, I_arr, R_arr
 
+    def _append_comm_log_if_changed(self, comm: int, time: float, S: int, I: int, R: int) -> None:
+        log = self.logs[comm]
+        if log["times"] and log["S"][-1] == S and log["I"][-1] == I and log["R"][-1] == R:
+            return
+        log["times"].append(time)
+        log["S"].append(S)
+        log["I"].append(I)
+        log["R"].append(R)
+
+    def _densify_logs_from_global_times(self) -> None:
+        if not self.times:
+            return
+        dense_times = list(self.times)
+        for comm, sparse in self.logs.items():
+            sparse_times = sparse["times"]
+            sparse_S = sparse["S"]
+            sparse_I = sparse["I"]
+            sparse_R = sparse["R"]
+            if not sparse_times:
+                self.logs[comm] = {
+                    "times": dense_times.copy(),
+                    "S": [0] * len(dense_times),
+                    "I": [0] * len(dense_times),
+                    "R": [0] * len(dense_times),
+                }
+                continue
+
+            idx = 0
+            cur_S = sparse_S[0]
+            cur_I = sparse_I[0]
+            cur_R = sparse_R[0]
+            n_sparse = len(sparse_times)
+
+            out_S: List[int] = []
+            out_I: List[int] = []
+            out_R: List[int] = []
+            for t in dense_times:
+                while idx + 1 < n_sparse and sparse_times[idx + 1] <= t:
+                    idx += 1
+                    cur_S = sparse_S[idx]
+                    cur_I = sparse_I[idx]
+                    cur_R = sparse_R[idx]
+                out_S.append(cur_S)
+                out_I.append(cur_I)
+                out_R.append(cur_R)
+
+            self.logs[comm] = {
+                "times": dense_times.copy(),
+                "S": out_S,
+                "I": out_I,
+                "R": out_R,
+            }
+
     # --- logging with correct hazard snapshot (batch) ---
     def _log_micro_events_batch(
         self,
@@ -126,9 +157,9 @@ class Orchestrator:
         pending: List[Tuple[int, float, str, int, Optional[int]]],  # (community, ev_time, etype, node, src)
         last_event_time: float,
     ) -> float:
+        if not pending:
+            return last_event_time
         total_hazard_snapshot = float(hazard_matrix.sum())
-        hazard_snapshot = hazard_matrix.copy()
-        states_snapshot = self._gather_state_per_community()
         for community, ev_time, etype, node, src in pending:
             self.event_log.append(
                 {
@@ -139,9 +170,7 @@ class Orchestrator:
                     "community": community,
                     "node": node,
                     "src": src,
-                    "hazard_matrix": hazard_snapshot,
                     "total_hazard": total_hazard_snapshot,
-                    "states": states_snapshot,
                 }
             )
             last_event_time = ev_time
@@ -161,15 +190,13 @@ class Orchestrator:
         self.times.append(0.0)
         self.I_total.append(sum(I0))
         for idx, (S, I, R) in enumerate(zip(S0, I0, R0)):
-            self.logs[idx]["times"].append(0.0)
-            self.logs[idx]["S"].append(S)
-            self.logs[idx]["I"].append(I)
-            self.logs[idx]["R"].append(R)
+            self._append_comm_log_if_changed(idx, 0.0, S, I, R)
         # <<< end initial snapshot >>>
 
         # Gillespie integral threshold for macro events
         thresh_int = -math.log(random.random())
         int_accum = 0.0
+        clones = [m.clone() for m in self.micro_models]
 
         while t < self.T_end:
             dt = min(self.tau_micro, self.T_end - t)
@@ -180,11 +207,12 @@ class Orchestrator:
 
             # --- midpoint hazard via micro snapshots (no RNG leakage) ---
             rng_state = random.getstate()
-            clones = [m.clone() for m in self.micro_models]
-            for clone in clones:
+            for clone, source in zip(clones, self.micro_models):
+                clone.refresh_from(source)
                 clone.simulate_until(t_mid)
-            S_mid = [clone.count_states()[0] for clone in clones]
-            I_mid = [clone.count_states()[1] for clone in clones]
+            mid_states = [clone.count_states() for clone in clones]
+            S_mid = [state[0] for state in mid_states]
+            I_mid = [state[1] for state in mid_states]
             random.setstate(rng_state)
 
             total_hazard_mid = self.macro.total_hazard_given(I_mid, S_mid)
@@ -202,10 +230,7 @@ class Orchestrator:
                         pending_micro.append((idx, ev_time, ev_type, node, src))
 
                     # per-community SIR time series
-                    self.logs[idx]["times"].append(t_next)
-                    self.logs[idx]["S"].append(S)
-                    self.logs[idx]["I"].append(I)
-                    self.logs[idx]["R"].append(R)
+                    self._append_comm_log_if_changed(idx, t_next, S, I, R)
 
                 # global series
                 self.times.append(t_next)
@@ -259,7 +284,11 @@ class Orchestrator:
                     self.micro_models[j].current_time = t_event
                     node = self.micro_models[j].import_infection()
                     # After import, update hazards again to reflect new state
-                    S_post, I_post, _ = self._counts_arrays()
+                    S_post = list(S_event)
+                    I_post = list(I_event)
+                    if node is not None:
+                        S_post[j] -= 1
+                        I_post[j] += 1
                     self.macro.update_hazards(I_post, S_post)
 
                     self.event_log.append(
@@ -271,9 +300,7 @@ class Orchestrator:
                             "community": j,
                             "src": i,
                             "node": node,
-                            "hazard_matrix": self.macro.hazards.copy(),
                             "total_hazard": self.macro.total_hazard,
-                            "states": self._gather_state_per_community(),
                         }
                     )
                     last_event_time = t_event
@@ -283,10 +310,7 @@ class Orchestrator:
                 self.I_total.append(sum(m.count_states()[1] for m in self.micro_models))
                 for idx, m in enumerate(self.micro_models):
                     S, I, R = m.count_states()
-                    self.logs[idx]["times"].append(t_event)
-                    self.logs[idx]["S"].append(S)
-                    self.logs[idx]["I"].append(I)
-                    self.logs[idx]["R"].append(R)
+                    self._append_comm_log_if_changed(idx, t_event, S, I, R)
 
                 # advance time & reset integral
                 t = t_event
@@ -308,10 +332,7 @@ class Orchestrator:
                         pending_micro.append((idx, ev_time, ev_type, node, src))
 
                     # per-community SIR time series
-                    self.logs[idx]["times"].append(t_next)
-                    self.logs[idx]["S"].append(S)
-                    self.logs[idx]["I"].append(I)
-                    self.logs[idx]["R"].append(R)
+                    self._append_comm_log_if_changed(idx, t_next, S, I, R)
 
                 self.times.append(t_next)
                 self.I_total.append(sum(I_list))
@@ -330,6 +351,7 @@ class Orchestrator:
 
                 t = t_next
 
+        self._densify_logs_from_global_times()
         return self.times, self.I_total, self.logs, self.event_log
 
 

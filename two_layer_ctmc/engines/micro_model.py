@@ -76,3 +76,20 @@ class MicroModel(MicroEngine):
         m._neighbors = self._neighbors  # topology is static; share reference
         m._invalidate_cache()
         return m
+
+    def refresh_from(self, src: "MicroModel") -> None:
+        self.current_time = src.current_time
+        self.infected_nodes = list(src.infected_nodes)
+        self.total_infection_rate = src.total_infection_rate
+        self.total_recovery_rate = src.total_recovery_rate
+        self.S_count = src.S_count
+        self.I_count = src.I_count
+        self.R_count = src.R_count
+        self._neighbors = src._neighbors
+        for node in self.G.nodes():
+            dst = self.G.nodes[node]
+            srcd = src.G.nodes[node]
+            dst["infected"] = srcd["infected"]
+            dst["recovered"] = srcd["recovered"]
+            dst["sum_of_weights_i"] = srcd["sum_of_weights_i"]
+        self._invalidate_cache()
