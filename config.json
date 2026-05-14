@@ -6,7 +6,7 @@
     "seed": 42, // int
     "regenerate_each_run": true, // true | false (if true, rebuild network per run)
     "macro_graph_type": "chain", // "complete" | "chain" | "star"
-    "micro_graph_type": "random_connected", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
+    "micro_graph_type": "complete", // "complete" | "random" | "random_connected" | "chain" | "clique_leaves"
     "edge_prob": 0.031, // float in [0, 1]
     "leaf_count": 0, // int >= 0 (used when micro_graph_type="clique_leaves")
     "leaf_degree": 1, // int in [0, community_size] (used when micro_graph_type="clique_leaves")

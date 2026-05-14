@@ -199,157 +199,135 @@ class Orchestrator:
         clones = [m.clone() for m in self.micro_models]
 
         while t < self.T_end:
-            dt = min(self.tau_micro, self.T_end - t)
-            t_mid = t + 0.5 * dt
+            t_grid = min(t + self.tau_micro, self.T_end)
 
-            if self.verbose_steps:
-                print("t = {:.4f}, next dt = {:.4f}, t_mid = {:.4f}".format(t, dt, t_mid))
-
-            # --- midpoint hazard via micro snapshots (no RNG leakage) ---
-            rng_state = random.getstate()
-            for clone, source in zip(clones, self.micro_models):
-                clone.refresh_from(source)
-                clone.simulate_until(t_mid)
-            mid_states = [clone.count_states() for clone in clones]
-            S_mid = [state[0] for state in mid_states]
-            I_mid = [state[1] for state in mid_states]
-            random.setstate(rng_state)
-
-            total_hazard_mid = self.macro.total_hazard_given(I_mid, S_mid)
-
-            if total_hazard_mid <= 0.0:
-                t_next = t + dt
-                pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []
-                S_list: List[int] = []
-                I_list: List[int] = []
-                for idx, m in enumerate(self.micro_models):
-                    S, I, R, events = m.simulate_until(t_next)
-                    S_list.append(S)
-                    I_list.append(I)
-                    for ev_time, ev_type, node, src in events:
-                        pending_micro.append((idx, ev_time, ev_type, node, src))
-
-                    # per-community SIR time series
-                    self._append_comm_log_if_changed(idx, t_next, S, I, R)
-
-                # global series
-                self.times.append(t_next)
-                self.I_total.append(sum(I_list))
-
-                # recompute hazards at t_next (snapshot)
-                self.macro.update_hazards(I_list, S_list)
-
-                # Now log buffered micro events with the t_next snapshot
-                last_event_time = self._log_micro_events_batch(
-                    hazard_matrix=self.macro.hazards,
-                    pending=pending_micro,
-                    last_event_time=last_event_time,
-                )
-
-                t = t_next
-                continue
-
-            # midpoint rectangle accumulation: check if threshold crosses in this [t, t+dt]
-            if int_accum + total_hazard_mid * dt >= thresh_int:
-                # A MACRO EVENT occurs inside the interval at t_event
-                t_event = t + (thresh_int - int_accum) / total_hazard_mid
+            while t < t_grid:
+                dt = t_grid - t
+                t_mid = t + 0.5 * dt
 
                 if self.verbose_steps:
-                    print(">>> MACRO EVENT at t = {:.4f} <<<".format(t_event))
+                    print("t = {:.4f}, next dt = {:.4f}, t_mid = {:.4f}".format(t, dt, t_mid))
 
-                # advance real micros to t_event; buffer events
-                pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []
-                S_event: List[int] = []
-                I_event: List[int] = []
-                for idx, micro_model in enumerate(self.micro_models):
-                    S, I, R, events = micro_model.simulate_until(t_event)
-                    S_event.append(S)
-                    I_event.append(I)
-                    for ev_time, ev_type, node, src in events:
-                        pending_micro.append((idx, ev_time, ev_type, node, src))
+                # --- midpoint hazard via micro snapshots (no RNG leakage) ---
+                rng_state = random.getstate()
+                for clone, source in zip(clones, self.micro_models):
+                    clone.refresh_from(source)
+                    clone.simulate_until(t_mid)
+                mid_states = [clone.count_states() for clone in clones]
+                S_mid = [state[0] for state in mid_states]
+                I_mid = [state[1] for state in mid_states]
+                random.setstate(rng_state)
 
-                # recompute hazards at t_event (snapshot)
-                self.macro.update_hazards(I_event, S_event)
+                total_hazard_mid = self.macro.total_hazard_given(I_mid, S_mid)
 
-                # log the buffered micro events using the t_event snapshot
-                last_event_time = self._log_micro_events_batch(
-                    hazard_matrix=self.macro.hazards,
-                    pending=pending_micro,
-                    last_event_time=last_event_time,
-                )
+                if total_hazard_mid <= 0.0:
+                    pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []
+                    S_list: List[int] = []
+                    I_list: List[int] = []
+                    for idx, m in enumerate(self.micro_models):
+                        S, I, R, events = m.simulate_until(t_grid)
+                        S_list.append(S)
+                        I_list.append(I)
+                        for ev_time, ev_type, node, src in events:
+                            pending_micro.append((idx, ev_time, ev_type, node, src))
+                        self._append_comm_log_if_changed(idx, t_grid, S, I, R)
 
-                # sample and apply the macro transfer at t_event
-                i, j = self.macro.sample_transfer()
-                if j != i:
-                    self.micro_models[j].current_time = t_event
-                    node = self.micro_models[j].import_infection()
-                    # After import, update hazards again to reflect new state
-                    S_post = list(S_event)
-                    I_post = list(I_event)
-                    if node is not None:
-                        S_post[j] -= 1
-                        I_post[j] += 1
-                    self.macro.update_hazards(I_post, S_post)
-
-                    self.event_log.append(
-                        {
-                            "time": t_event,
-                            "wait_time": t_event - last_event_time,
-                            "event_type": "transfer",
-                            "mode": "macro",
-                            "community": j,
-                            "src": i,
-                            "node": node,
-                            "total_hazard": self.macro.total_hazard,
-                        }
+                    self.times.append(t_grid)
+                    self.I_total.append(sum(I_list))
+                    self.macro.update_hazards(I_list, S_list)
+                    last_event_time = self._log_micro_events_batch(
+                        hazard_matrix=self.macro.hazards,
+                        pending=pending_micro,
+                        last_event_time=last_event_time,
                     )
-                    last_event_time = t_event
+                    t = t_grid
+                    break
 
-                # Log state at t_event
-                self.times.append(t_event)
-                self.I_total.append(sum(m.count_states()[1] for m in self.micro_models))
+                # midpoint rectangle accumulation: check if threshold crosses in [t, t_grid]
+                if int_accum + total_hazard_mid * dt >= thresh_int:
+                    # A MACRO EVENT occurs inside the current sub-interval at t_event
+                    t_event = t + (thresh_int - int_accum) / total_hazard_mid
+
+                    if self.verbose_steps:
+                        print(">>> MACRO EVENT at t = {:.4f} <<<".format(t_event))
+
+                    pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []
+                    S_event: List[int] = []
+                    I_event: List[int] = []
+                    for idx, micro_model in enumerate(self.micro_models):
+                        S, I, R, events = micro_model.simulate_until(t_event)
+                        S_event.append(S)
+                        I_event.append(I)
+                        for ev_time, ev_type, node, src in events:
+                            pending_micro.append((idx, ev_time, ev_type, node, src))
+
+                    self.macro.update_hazards(I_event, S_event)
+                    last_event_time = self._log_micro_events_batch(
+                        hazard_matrix=self.macro.hazards,
+                        pending=pending_micro,
+                        last_event_time=last_event_time,
+                    )
+
+                    # sample and apply the macro transfer at t_event
+                    i, j = self.macro.sample_transfer()
+                    if j != i:
+                        self.micro_models[j].current_time = t_event
+                        node = self.micro_models[j].import_infection()
+                        S_post = list(S_event)
+                        I_post = list(I_event)
+                        if node is not None:
+                            S_post[j] -= 1
+                            I_post[j] += 1
+                        self.macro.update_hazards(I_post, S_post)
+
+                        self.event_log.append(
+                            {
+                                "time": t_event,
+                                "wait_time": t_event - last_event_time,
+                                "event_type": "transfer",
+                                "mode": "macro",
+                                "community": j,
+                                "src": i,
+                                "node": node,
+                                "total_hazard": self.macro.total_hazard,
+                            }
+                        )
+                        last_event_time = t_event
+
+                    self.times.append(t_event)
+                    self.I_total.append(sum(m.count_states()[1] for m in self.micro_models))
+                    for idx, m in enumerate(self.micro_models):
+                        S, I, R = m.count_states()
+                        self._append_comm_log_if_changed(idx, t_event, S, I, R)
+
+                    t = t_event
+                    thresh_int = -math.log(random.random())
+                    int_accum = 0.0
+                    continue
+
+                # NO MACRO EVENT before grid boundary: advance micros to t_grid
+                pending_micro = []
+                S_list = []
+                I_list = []
                 for idx, m in enumerate(self.micro_models):
-                    S, I, R = m.count_states()
-                    self._append_comm_log_if_changed(idx, t_event, S, I, R)
-
-                # advance time & reset integral
-                t = t_event
-                # draw fresh macro threshold and reset integral accumulator
-                thresh_int = -math.log(random.random())
-                int_accum = 0.0
-
-            else:
-                # NO MACRO EVENT in this interval: advance micros to t+dt; buffer events
-                t_next = t + dt
-                pending_micro: List[Tuple[int, float, str, int, Optional[int]]] = []
-                S_list: List[int] = []
-                I_list: List[int] = []
-                for idx, m in enumerate(self.micro_models):
-                    S, I, R, events = m.simulate_until(t_next)
+                    S, I, R, events = m.simulate_until(t_grid)
                     S_list.append(S)
                     I_list.append(I)
                     for ev_time, ev_type, node, src in events:
                         pending_micro.append((idx, ev_time, ev_type, node, src))
+                    self._append_comm_log_if_changed(idx, t_grid, S, I, R)
 
-                    # per-community SIR time series
-                    self._append_comm_log_if_changed(idx, t_next, S, I, R)
-
-                self.times.append(t_next)
+                self.times.append(t_grid)
                 self.I_total.append(sum(I_list))
-
-                # accumulate hazard integral with midpoint rectangle
                 int_accum += total_hazard_mid * dt
-
-                # recompute hazards at t_next and then log buffered micro events
                 self.macro.update_hazards(I_list, S_list)
-
                 last_event_time = self._log_micro_events_batch(
                     hazard_matrix=self.macro.hazards,
                     pending=pending_micro,
                     last_event_time=last_event_time,
                 )
-
-                t = t_next
+                t = t_grid
+                break
 
         self._densify_logs_from_global_times()
         return self.times, self.I_total, self.logs, self.event_log

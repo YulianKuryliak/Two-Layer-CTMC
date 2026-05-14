@@ -9,7 +9,7 @@ class MacroEngine:
     Macro-scale engine with susceptibility-aware, size-normalized hazards.
 
     hazard_ij(t) = beta_macro * T * W[i,j] * infectivity_i * susceptibility_j
-    infectivity_i = (I_i / N_i) ** alpha_i
+    infectivity_i = (I_i / N_i)
     susceptibility_j = (S_j / N_j)
     """
 
