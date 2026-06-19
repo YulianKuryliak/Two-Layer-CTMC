@@ -1,0 +1,721 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black}
+\setlist[itemize]{topsep=3pt,itemsep=2pt,parsep=0pt}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt,parsep=0pt}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{0.8em}{}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\Bin}{\mathrm{Bin}}
+\newcommand{\dint}{\,\mathrm{d}}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \bfseries Feedback Report on the Two-Scale Stochastic Epidemic Simulator Manuscript}\par
+    \vspace{0.5em}
+    {\large Toward a Journal Paper in Applied Mathematics or Computer Science}\par
+    \vspace{0.8em}
+    {\normalsize Prepared by Michael Emmerich from the attached draft ``Notes on Macro layer of Two-Scale Stochastic Simulator''}\par
+    \vspace{0.3em}
+    {\normalsize May 2026}\par
+\end{center}
+
+\vspace{1em}
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!60,title=Main diagnosis]
+The manuscript contains the core of a publishable idea: a two-scale continuous-time stochastic simulator that preserves exact within-community CTMC dynamics while replacing inter-community transmission by macro-level stochastic hazards.  The most promising journal-paper angle is not simply ``another metapopulation model'', but a mathematically controlled study of when the macro abstraction is accurate and when it creates systematic timing bias.  To become a journal paper, the draft needs a sharper theorem-level narrative, cleaner notation, a unified benchmark section, and carefully stated assumptions for each proposition.
+\end{tcolorbox}
+
+\tableofcontents
+\newpage
+
+\section{Executive assessment}
+
+The draft is promising because it tries to connect three ingredients that are often treated separately:
+\begin{enumerate}
+    \item an exact full-network continuous-time Markov chain (CTMC) reference process;
+    \item exact event-driven local simulation ins ide communities;
+    \item an approximate but event-driven macro layer for inter-community transmission.
+\end{enumerate}
+This is a good basis for a paper in applied mathematics, scientific computing, computational epidemiology, or computer science simulation.
+
+The current draft is, however, still closer to research notes than to a journal article.  The key issues are:
+\begin{itemize}
+    \item several sections are duplicated or marked as in progress;
+    \item some propositions are true only under assumptions that are not yet stated explicitly;
+    \item the macro event process is described as a non-homogeneous Poisson process, but because its intensity depends on stochastic microstates it should more carefully be called a point process with predictable stochastic intensity, or, conditionally on the micro paths, an NHPP;
+    \item the bridge-finding formula depends on the initial seeding convention; the formula in the draft is correct under random initial seeding over all clique nodes, but changes if the initial infected node is fixed outside the bridge set;
+    \item the mean-field early-export bias argument is intuitively right, but the proof must be stated conditionally and with Jensen's inequality applied to the accumulated hazard, not only to the instantaneous hazard;
+    \item the numerical section must be turned into a reproducible experimental design with parameter tables, error metrics, and ablation studies.
+\end{itemize}
+
+My recommendation is to develop the paper around the following central message:
+
+\begin{quote}
+    A two-scale simulator can be locally exact inside communities and still be structurally biased at community interfaces.  The bias is caused by replacing boundary-node information by aggregate infectious fractions.  This bias can be characterized analytically on bridge-clique motifs and measured numerically on chains of communities.
+\end{quote}
+
+This message is mathematically clear, computationally relevant, and suitable for either an applied mathematics or computer science readership.
+
+\section{Recommended journal-paper positioning}
+
+\subsection{Possible paper identity}
+
+A strong title should signal both the algorithmic and mathematical sides.  Possible titles:
+\begin{enumerate}
+    \item \emph{A Two-Scale Event-Driven Stochastic Simulator for Epidemics on Community-Structured Networks}
+    \item \emph{Fast Continuous-Time Stochastic Simulation for Large Community Structured Networks}
+\end{enumerate}
+
+For an applied mathematics journal, I would emphasize the CTMC reference process, random time-change representation, exactness conditional on imports, and provable bias/bounds for bridge motifs.  For a computer science journal, I would emphasize the simulator architecture, algorithmic complexity, runtime improvement, reproducible benchmarks, and empirical error/runtime trade-off.
+
+\subsection{What should be claimed as novel}
+
+The safest novelty claim is not that the paper invents metapopulation modeling, Gillespie simulation, or multiscale epidemic simulation.  Those are established areas.  The novelty should be framed more narrowly and more defensibly:
+\begin{itemize}
+    \item a continuous-time two-scale simulator that keeps local CTMC dynamics exact while using macro-level stochastic hazards for inter-community transmission;
+    \item a decomposition of approximation error into rate abstraction, import placement, and synchronization/numerical timing error;
+    \item analytically tractable benchmark motifs showing how bridge-node bottlenecks produce premature macro-level hazard accumulation;
+    \item numerical experiments measuring when the approximation is acceptable and when it fails.
+\end{itemize}
+
+A good contribution statement would be:
+\begin{quote}
+We formulate a two-scale event-driven stochastic simulator for epidemic spread on partitioned networks.  We prove that the micro layer is exact conditional on the import process, identify the interface-level sources of approximation error, and analyze bridge-clique benchmarks where aggregate macro hazards can produce systematic timing bias.  We complement the analysis with numerical experiments comparing the two-scale simulator against full-network Gillespie simulation in terms of arrival-time distributions and runtime.
+\end{quote}
+
+\section{Recommended structure of the journal paper}
+
+The current draft has good material, but the order should be changed.  I recommend the following structure.
+
+\subsection{Proposed outline}
+
+\begin{enumerate}
+    \item \textbf{Introduction.}
+    Explain the data asymmetry problem, computational bottleneck, and why event timing matters.  End with precise contributions.
+
+    \item \textbf{Related work.}
+    Separate metapopulation models, exact stochastic simulation algorithms, temporal/hazard-integral formulations, and multiscale/agent-based epidemic simulators.
+
+    \item \textbf{Full-network CTMC reference model.}
+    Define the microscopic graph, node states, infection/recovery channels, inter-community edges, and the exact generator.  This is essential: without a formal reference process, approximation error cannot be defined rigorously.
+
+    \item \textbf{Two-scale simulator.}
+    Define the partition into communities, local micro CTMCs, macro state summaries, macro hazards, event selection, import placement, and synchronization algorithm.
+
+    \item \textbf{Approximation-error decomposition.}
+    Present conditional micro-layer exactness, rate abstraction error, import placement error, and numerical timing error.
+
+    \item \textbf{Analytical benchmark motifs.}
+    Use the clique-bridge-leaf and chain-of-cliques benchmarks.  Keep only one version of each benchmark.  Move informal or generated explanatory material to an appendix or remove it.
+
+    \item \textbf{Numerical experiments.}
+    Give parameter tables, Monte Carlo protocol, metrics, plots, and runtime comparison.
+
+    \item \textbf{Discussion and limitations.}
+    Explain when the method is suitable: well-mixed communities, broad boundary interfaces, rare exports, sufficient scale separation.  Explain when it fails: narrow bridges, strong boundary-state correlations, high export rates, poor placement rules.
+
+    \item \textbf{Conclusion.}
+    Summarize the mathematical and computational contribution and future work.
+\end{enumerate}
+
+\subsection{What to remove or move}
+
+The printed draft contains reading-status boxes, an ``In Progress'' section, and a large ``Other notes, ideas, generated sections'' block.  These are useful for collaboration, but they must not appear in a journal submission.  The current Sections 6--11 appear to duplicate and expand material already present in Sections 4.3--4.6.  Choose one coherent version and delete the other, or move exploratory text to an appendix.
+
+A good rule is: every section in the submitted paper must either define the model, prove a claim, report an experiment, or interpret results.  Anything else should be removed.
+
+\section{Notation and modeling corrections}
+
+\subsection{Avoid symbol overloading}
+
+The draft uses $S_i(t)$ both as a susceptible count/fraction and also informally as a set of susceptible nodes.  This will confuse readers.  Use distinct notation:
+\begin{align*}
+    V_i &:= \text{node set of community } i,\\
+    S_i(t), I_i(t), R_i(t) &:= \text{sets of susceptible, infectious, recovered nodes},\\
+    s_i(t), i_i(t), r_i(t) &:= \text{counts},\\
+    \bar s_i(t)=s_i(t)/N_i,\quad \bar i_i(t)=i_i(t)/N_i &:= \text{fractions}.
+\end{align*}
+Then write the macro hazard as
+\begin{equation}
+    \lambda_{ij}(t)=\beta_{\mathrm{out}} W_{ij}\,\bar i_i(t)\,\bar s_j(t),
+\end{equation}
+where $W_{ij}$ is an aggregate coupling weight.  Use $\beta_{\mathrm{in}}$ for within-community infection and $\beta_{\mathrm{out}}$ for inter-community infection unless they are intentionally the same.
+
+\subsection{Clarify the scaling of the macro weight}
+
+The macro hazard must have the same physical units as the microscopic cross-edge intensity.  Suppose the microscopic cross-community intensity is
+\begin{equation}
+    a_{ij}^*(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}} w_{uv}\,\1\{x_u=I,x_v=S\}.
+\end{equation}
+If $E_{ij}$ is complete bipartite with unit weights, then
+\begin{equation}
+    a_{ij}^*(x)=\beta_{\mathrm{out}}\,i_i(t)s_j(t).
+\end{equation}
+To reproduce this using fractions $\bar i_i=i_i/N_i$ and $\bar s_j=s_j/N_j$, one needs
+\begin{equation}
+    W_{ij}=N_iN_j.
+\end{equation}
+If $W_{ij}$ instead denotes the number of cross edges, then the macro formula is an average or mean-field approximation, not an exact identity.  This distinction should be made explicit.
+
+\subsection{Macro events are conditionally NHPP, not autonomously NHPP}
+
+A subtle but important point: the macro intensity $\Theta(t)=\sum_{i\ne j}\lambda_{ij}(t)$ depends on the stochastic microstate.  Therefore the macro event process is not an ordinary deterministic-intensity NHPP unless the micro trajectories are fixed.  A precise statement is:
+
+\begin{quote}
+Conditional on the micro-layer trajectories and hence on the predictable path of $\Theta(t)$, macro events are generated by the usual cumulative-hazard construction.  Unconditionally, the macro layer is a point process with stochastic predictable intensity $\Theta(t)$.
+\end{quote}
+
+This is not just a stylistic correction.  It prevents reviewers from objecting that an NHPP must have a deterministic intensity function.
+
+\subsection{State the import placement rule explicitly}
+
+The paper must specify what happens when a macro event $i\to j$ occurs.  Possible placement rules:
+\begin{enumerate}
+    \item uniform over susceptible nodes in $V_j$;
+    \item degree-weighted over susceptible nodes in $V_j$;
+    \item boundary-weighted, using partial information about cross-community exposure;
+    \item exact edge-conditioned placement, used only as an oracle/reference.
+\end{enumerate}
+The import placement rule is not a minor implementation detail.  It changes the subsequent local CTMC path.
+
+\section{Core mathematical development}
+
+This section gives proof-ready versions of the central propositions.  They can be copied into the paper after adapting notation.
+
+\subsection{Full-network CTMC reference process}
+
+Start by defining the exact process.  Let $G=(V,E)$ be a finite graph with node states in $\{S,I,R\}$.  Let $V=\bigsqcup_{i=1}^M V_i$ be a partition into communities.  Write $E_{ii}$ for within-community edges and $E_{ij}$ for directed or oriented cross-community edges from $V_i$ to $V_j$.  For a configuration $x\in\{S,I,R\}^V$, define infection and recovery propensities by
+\begin{align}
+    a_{u\to v}(x) &= \beta_{uv}\,\1\{x_u=I,x_v=S\},\qquad (u,v)\in E,\\
+    a_{u}^{\mathrm{rec}}(x) &= \gamma_u\,\1\{x_u=I\}.
+\end{align}
+Then the full-network CTMC is the process whose generator acts on bounded test functions $f$ as
+\begin{align}
+    (\mathcal L f)(x)
+    &=\sum_{(u,v)\in E}\beta_{uv}\1\{x_u=I,x_v=S\}\bigl[f(x^{v:I})-f(x)\bigr] \\
+    &\quad +\sum_{u\in V}\gamma_u\1\{x_u=I\}\bigl[f(x^{u:R})-f(x)\bigr].
+\end{align}
+Here $x^{v:I}$ is obtained from $x$ by changing node $v$ to infectious, and $x^{u:R}$ by changing node $u$ to recovered.  This generator gives the precise reference object for all later accuracy claims.
+
+\subsection{Conditional micro-layer exactness}
+
+\begin{proposition}[Conditional micro-layer exactness]
+Fix the initial state in every community.  Also fix, for every community $j$, an exogenous import schedule
+\begin{equation}
+    \mathcal I_j=\{(\tau_{j,\ell},v_{j,\ell})\}_{\ell\ge 1},
+\end{equation}
+where $\tau_{j,\ell}$ is an import time and $v_{j,\ell}\in V_j$ is the target node.  Between import times, let the two-scale micro layer in $V_j$ simulate exactly the CTMC induced by the within-community edges $E_{jj}$, and at each import time apply the prescribed exogenous jump $S\to I$ when the target is susceptible.  Then, conditional on the same import schedule, the two-scale micro process in $V_j$ has the same law as the restriction of the full-network CTMC to $V_j$ with cross-community infections replaced by that exogenous schedule.
+\end{proposition}
+
+\begin{proof}
+Between two consecutive import times, the only active transitions in $V_j$ are exactly the within-community infection and recovery transitions.  These have the same propensities in the two-scale micro simulator and in the restricted full-network CTMC.  At an import time, both processes apply the same prescribed state change to the same target node.  The finite-dimensional distributions are therefore obtained by concatenating identical CTMC transition kernels between identical deterministic jumps.  Hence the conditional laws coincide.  Any remaining error relative to the full-network CTMC must come from the distribution of the import schedule: its event times, source-destination labels, and target nodes.
+\end{proof}
+
+\subsection{Rate abstraction error}
+
+\begin{proposition}[Necessary condition for exact macro-rate abstraction]
+Let
+\begin{equation}
+    a_{ij}^*(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}} w_{uv}\1\{x_u=I,x_v=S\}
+\end{equation}
+be the exact microscopic intensity of infections from community $i$ to community $j$.  Suppose the macro model uses
+\begin{equation}
+    \lambda_{ij}(x)=\beta_{\mathrm{out}}W_{ij}\,\bar i_i(x)\,\bar s_j(x).
+\end{equation}
+If $\lambda_{ij}(x)=a_{ij}^*(x)$ for all configurations in a state space $\Omega$, then $a_{ij}^*(x)$ must be determined solely by $(\bar i_i(x),\bar s_j(x),W_{ij})$ on $\Omega$.  In particular, if two configurations $x,y\in\Omega$ have the same values of $\bar i_i$, $\bar s_j$, and $W_{ij}$ but different values of $a_{ij}^*$, then this macro rate cannot be exact for both.
+\end{proposition}
+
+\begin{proof}
+The macro expression $\lambda_{ij}$ is a function only of $\bar i_i$, $\bar s_j$, $W_{ij}$, and $\beta_{\mathrm{out}}$.  Therefore two configurations with the same values of these quantities receive the same macro rate.  If their microscopic cross-community intensities differ, one scalar macro rate cannot equal both microscopic intensities.  Thus exactness requires that the microscopic intensity be measurable with respect to the retained macro variables.
+\end{proof}
+
+\begin{remark}[Useful counterexample]
+Take one bridge edge from a special node $b\in V_i$ to a susceptible node in $V_j$.  Compare two states with the same number of infected nodes in $V_i$: in state $x$, the bridge node is infected; in state $y$, another non-bridge node is infected.  The macro fraction $\bar i_i$ is the same in both states, but the exact export intensity is positive in $x$ and zero in $y$.  Hence aggregate infectious fraction alone cannot be an exact sufficient statistic.
+\end{remark}
+
+\subsection{Import placement error}
+
+\begin{proposition}[Correct target distribution]
+Condition on an inter-community infection event $i\to j$ occurring at state $x$.  In the full-network CTMC, the conditional probability that the target is node $v\in V_j$ is
+\begin{equation}
+    \pi_{ij}^*(v\mid x)=
+    \frac{\1\{x_v=S\}\sum_{u\in V_i:(u,v)\in E_{ij}}\beta_{uv}\1\{x_u=I\}}
+    {a_{ij}^*(x)},
+\end{equation}
+provided $a_{ij}^*(x)>0$.  A two-scale import placement rule $\Pi_{ij}(\cdot\mid x)$ reproduces the immediate post-import microstate law if and only if $\Pi_{ij}(\cdot\mid x)=\pi_{ij}^*(\cdot\mid x)$.
+\end{proposition}
+
+\begin{proof}
+Given that an $i\to j$ event occurred, the full CTMC selects one active cross edge with probability proportional to its propensity.  Summing the probabilities of all active incoming edges ending at $v$ gives $\pi_{ij}^*(v\mid x)$.  The post-event microstate in $V_j$ is obtained by changing exactly the selected target node to state $I$.  Therefore the law of the post-event state is identical under the two mechanisms precisely when the target-node distributions are identical.
+\end{proof}
+
+\subsection{Numerical hazard timing error}
+
+The draft currently states this as an observation.  It can be strengthened slightly.
+
+\begin{proposition}[Simple timing perturbation bound]
+Let $H(t)=\int_{t_0}^t \Theta(s)\dint s$ be the exact cumulative macro hazard and let $\widehat H(t)$ be the numerically accumulated hazard.  Suppose $t^*$ and $\widehat t$ satisfy
+\begin{equation}
+    H(t^*)=E,\qquad \widehat H(\widehat t)=E.
+\end{equation}
+If $|H(t)-\widehat H(t)|\le \eta$ on an interval containing $t^*$ and $\widehat t$, and if $\Theta(t)\ge \theta_{\min}>0$ on that interval, then
+\begin{equation}
+    |\widehat t-t^*|\le \frac{\eta}{\theta_{\min}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since $H$ is increasing with derivative at least $\theta_{\min}$,
+\begin{equation}
+    |H(\widehat t)-H(t^*)|\ge \theta_{\min}|\widehat t-t^*|.
+\end{equation}
+But $H(t^*)=E=\widehat H(\widehat t)$, hence
+\begin{equation}
+    |H(\widehat t)-H(t^*)|=|H(\widehat t)-\widehat H(\widehat t)|\le \eta.
+\end{equation}
+Combining the two inequalities gives the bound.
+\end{proof}
+
+This bound is simple but useful.  It tells readers that synchronization error is controlled by the cumulative-hazard quadrature error, provided the hazard is not locally zero.
+
+\section{Clique-bridge-leaf benchmark: corrected proof details}
+
+\subsection{Benchmark definition}
+
+Let the source community be a clique $K_n$.  Let $B\subset K_n$ be the bridge set, $|B|=k$.  Let $A$ be a leaf node outside the clique, connected only to the bridge nodes.  Consider the SI model first.  Let
+\begin{equation}
+    B_I(t)=\sum_{b\in B}\1\{X_b(t)=I\}
+\end{equation}
+be the number of infected bridge nodes.  If $A$ is susceptible, the exact import hazard into $A$ is
+\begin{equation}
+    a_{01}^{\mathrm{micro}}(t)=\beta_{\mathrm{out}}B_I(t)
+\end{equation}
+for unit bridge-leaf weights.  If $A$ is already infected, the import hazard is zero or irrelevant.
+
+\begin{proof}[Proof of the bridge-dependent hazard]
+Each infected bridge node creates one active infectious edge to the susceptible leaf.  Each such edge fires at rate $\beta_{\mathrm{out}}$.  Independent exponential infection clocks on parallel active edges combine by summing their rates.  Therefore the total import rate is $\beta_{\mathrm{out}}B_I(t)$.
+\end{proof}
+
+\subsection{Two-phase structure for one bridge}
+
+\begin{proposition}[Two-phase structure for one bridge]
+Assume $k=1$, SI dynamics, unit bridge-leaf edge rate $\beta_{\mathrm{out}}$, and no recovery.  Let $T_B$ be the infection time of the bridge and $T_A$ the infection time of the leaf.  Then
+\begin{equation}
+    T_A=T_B+Z,
+\end{equation}
+where, conditionally on the history up to $T_B$, $Z\sim\Exp(\beta_{\mathrm{out}})$.  Consequently,
+\begin{equation}
+    \E[T_A]=\E[T_B]+\frac{1}{\beta_{\mathrm{out}}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Before $T_B$, the bridge node is susceptible, so there is no active infectious edge from the clique to the leaf.  Hence the leaf cannot be infected.  At time $T_B$, the unique bridge becomes infectious.  In the SI model it remains infectious forever.  From that time onward, the leaf has exactly one active infectious neighbor through the bridge-leaf edge, with rate $\beta_{\mathrm{out}}$.  The waiting time for this edge to fire is therefore exponential with mean $1/\beta_{\mathrm{out}}$.  The strong Markov property at $T_B$ gives the decomposition.
+\end{proof}
+
+\subsection{Expected bridge-finding time: state the seeding convention}
+
+This is the place where the draft needs the most care.  The formula depends on whether the initial infected node is uniformly random over the clique or fixed outside the bridge set.
+
+\begin{proposition}[Bridge-finding time under uniformly random initial seed]
+Consider SI dynamics on $K_n$ with infection rate $\beta_{\mathrm{in}}$ along each active edge.  Let $B$ be a bridge set with $|B|=k$.  Suppose the initial infected node is uniformly random over all $n$ clique nodes.  Let
+\begin{equation}
+    T_B=\inf\{t:B_I(t)>0\}.
+\end{equation}
+Then
+\begin{equation}
+    \E[T_B]=\sum_{m=1}^{n-k}
+    \frac{\binom{n-k}{m}}{\binom{n}{m}}
+    \frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+\end{equation}
+For $k=1$, this reduces to
+\begin{equation}
+    \E[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}n},
+    \qquad H_{n-1}=\sum_{m=1}^{n-1}\frac{1}{m}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+When $m$ nodes are infected in the clique, the total rate of the next infection is $\beta_{\mathrm{in}}m(n-m)$.  Hence the expected residence time in state $m$ is $1/(\beta_{\mathrm{in}}m(n-m))$.  Under the uniformly random initial seed convention and the symmetry of the clique, conditional on there being $m$ infected nodes, the infected set is uniformly distributed over all $m$-subsets of the $n$ nodes.  The probability that none of the $k$ bridge nodes is infected is therefore
+\begin{equation}
+    \frac{\binom{n-k}{m}}{\binom{n}{m}}.
+\end{equation}
+The process spends time in state $m$ before bridge activation exactly on this event.  Summing expected residence times over $m$ gives the formula.  For $k=1$,
+\begin{equation}
+    \frac{\binom{n-1}{m}}{\binom{n}{m}}=\frac{n-m}{n},
+\end{equation}
+so
+\begin{equation}
+    \E[T_B]=\sum_{m=1}^{n-1}\frac{n-m}{n}\frac{1}{\beta_{\mathrm{in}}m(n-m)}
+    =\frac{1}{\beta_{\mathrm{in}}n}\sum_{m=1}^{n-1}\frac{1}{m}
+    =\frac{H_{n-1}}{\beta_{\mathrm{in}}n}.
+\end{equation}
+\end{proof}
+
+\begin{proposition}[Bridge-finding time under a fixed non-bridge initial seed]
+If instead the initial infected node is fixed and is not a bridge node, then
+\begin{equation}
+    \E[T_B]=\sum_{m=1}^{n-k}
+    \frac{\binom{n-k-1}{m-1}}{\binom{n-1}{m-1}}
+    \frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+\end{equation}
+For $k=1$, this becomes
+\begin{equation}
+    \E[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}(n-1)}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The initial seed is already infected and is outside the bridge set.  Conditional on $m$ infected nodes, the remaining $m-1$ infected nodes are uniformly distributed among the $n-1$ nodes other than the seed.  No bridge has been infected if these $m-1$ nodes are all chosen from the $n-k-1$ non-bridge, non-seed nodes.  This has probability
+\begin{equation}
+    \frac{\binom{n-k-1}{m-1}}{\binom{n-1}{m-1}}.
+\end{equation}
+Multiplying by the residence time in state $m$ and summing yields the formula.  For $k=1$, the probability simplifies to $(n-m)/(n-1)$, yielding $H_{n-1}/(\beta_{\mathrm{in}}(n-1))$.
+\end{proof}
+
+\begin{tcolorbox}[colback=yellow!8,colframe=yellow!50!black,title=Important correction]
+The draft's formula $H_{n-1}/(\beta n)$ is correct only if the initial infected node is uniformly random over all $n$ clique nodes, so that the bridge is initially infected with probability $1/n$ and $T_B=0$ in that case.  If the experiment always starts from a known non-bridge seed, the denominator should be $n-1$, not $n$.  The paper must state which convention is used and align the simulations with that convention.
+\end{tcolorbox}
+
+\subsection{Several bridge nodes: crossing-time bounds}
+
+\begin{proposition}[Crossing-time bounds for several bridge nodes]
+Assume that after the first bridge activation the number of infected bridge nodes satisfies
+\begin{equation}
+    1\le B_I(t)\le k
+\end{equation}
+until the leaf is infected.  Let $T_{\mathrm{cross}}=T_A-T_B$.  Then
+\begin{equation}
+    \frac{1}{\beta_{\mathrm{out}}k}\le \E[T_{\mathrm{cross}}]\le \frac{1}{\beta_{\mathrm{out}}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+After $T_B$, the cumulative export hazard up to time $T_B+t$ is
+\begin{equation}
+    H(t)=\int_0^t \beta_{\mathrm{out}}B_I(T_B+s)\dint s.
+\end{equation}
+Since $1\le B_I\le k$, we have
+\begin{equation}
+    \beta_{\mathrm{out}}t\le H(t)\le \beta_{\mathrm{out}}kt.
+\end{equation}
+The crossing time is the first time this hazard exceeds an independent exponential threshold $E\sim\Exp(1)$.  Thus, pathwise,
+\begin{equation}
+    \frac{E}{\beta_{\mathrm{out}}k}\le T_{\mathrm{cross}}\le \frac{E}{\beta_{\mathrm{out}}}.
+\end{equation}
+Taking expectations and using $\E[E]=1$ gives the result.
+\end{proof}
+
+\section{Mean-field hazard and early-export bias}
+
+\subsection{Conditional-mean statement}
+
+The macro bridge hazard
+\begin{equation}
+    \lambda^{\mathrm{macro}}(t)=\beta_{\mathrm{out}}k\frac{I(t)}{n}
+\end{equation}
+is a conditional mean only under exchangeability assumptions.  The proposition should state those assumptions.
+
+\begin{proposition}[Macro hazard as conditional mean under exchangeability]
+Assume SI dynamics on a clique and a uniformly random initial seed over all $n$ nodes.  Conditional on $I(t)=m$, the infected set is uniformly distributed among all $m$-subsets of the clique.  Hence
+\begin{equation}
+    \E[B_I(t)\mid I(t)=m]=k\frac{m}{n},
+\end{equation}
+and therefore
+\begin{equation}
+    \E[a_{01}^{\mathrm{micro}}(t)\mid I(t)=m]
+    =\beta_{\mathrm{out}}k\frac{m}{n}
+    =\lambda^{\mathrm{macro}}(t).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By exchangeability, each bridge node has probability $m/n$ of belonging to the infected set conditional on $m$ infected nodes.  Summing over the $k$ bridge nodes gives $\E[B_I(t)\mid I(t)=m]=km/n$.  Multiplication by $\beta_{\mathrm{out}}$ gives the hazard identity.
+\end{proof}
+
+If the initial seed is fixed outside the bridge set, replace $km/n$ by $k(m-1)/(n-1)$ for $m\ge 1$.
+
+\subsection{Bias proof using survival functions}
+
+The draft's Jensen argument is good, but it should be written conditionally on the aggregate infection-count path or on a suitable sigma-algebra.  A clean statement is the following.
+
+\begin{proposition}[Mean-field hazard gives smaller survival under conditional averaging]
+Let
+\begin{equation}
+    X_t=\int_0^t \beta_{\mathrm{out}}B_I(s)\dint s
+\end{equation}
+be the exact accumulated bridge hazard up to time $t$.  Let $\mathcal F_t^I$ denote the information retained by the macro model, for example the aggregate path $\{I(s):0\le s\le t\}$.  Suppose that the macro accumulated hazard is
+\begin{equation}
+    \bar X_t=\E[X_t\mid \mathcal F_t^I].
+\end{equation}
+Then the exact conditional survival probability satisfies
+\begin{equation}
+    \E[\exp(-X_t)\mid \mathcal F_t^I]\ge \exp(-\bar X_t).
+\end{equation}
+Consequently, after taking expectations,
+\begin{equation}
+    S^{\mathrm{micro}}(t)\ge S^{\mathrm{macro}}(t),
+\end{equation}
+where $S^{\mathrm{micro}}(t)=\E[\exp(-X_t)]$ and $S^{\mathrm{macro}}(t)=\E[\exp(-\bar X_t)]$.
+\end{proposition}
+
+\begin{proof}
+The function $x\mapsto \exp(-x)$ is convex.  Jensen's inequality conditional on $\mathcal F_t^I$ gives
+\begin{equation}
+    \E[\exp(-X_t)\mid \mathcal F_t^I]
+    \ge \exp\bigl(-\E[X_t\mid\mathcal F_t^I]\bigr)
+    =\exp(-\bar X_t).
+\end{equation}
+Taking expectations gives the unconditional inequality.
+\end{proof}
+
+\begin{corollary}[Expected import-time ordering]
+If the above survival inequality holds for all $t\ge 0$, then
+\begin{equation}
+    \E[T_A^{\mathrm{micro}}]\ge \E[T_A^{\mathrm{macro}}]
+\end{equation}
+whenever the expectations are finite.
+\end{corollary}
+
+\begin{proof}
+For a nonnegative random time $T$, $\E[T]=\int_0^\infty \Prob(T>t)\dint t$.  Integrating the survival inequality over time gives the claim.
+\end{proof}
+
+\begin{remark}[Interpretation]
+The macro hazard can start accumulating as soon as $I(t)>0$, whereas the exact bridge hazard remains zero until at least one bridge node is infected.  This is the mathematical source of premature leakage.  The effect is strongest for small $k$, slow internal spreading to the boundary, or large export rates.
+\end{remark}
+
+\section{Chain-of-cliques benchmark}
+
+\subsection{Arrival-time decomposition}
+
+Let $T_i$ be the first time community $i$ becomes infected and define local delays
+\begin{equation}
+    \Delta T_i=T_{i+1}-T_i,\\qquad i=0,\ldots,L-2.
+\end{equation}
+Then
+\begin{equation}
+    T_{L-1}=\sum_{i=0}^{L-2}\Delta T_i.
+\end{equation}
+By linearity of expectation,
+\begin{equation}
+    \E[T_{L-1}]=\sum_{i=0}^{L-2}\E[\Delta T_i].
+\end{equation}
+No independence assumption is needed for this identity.
+
+If the chain is homogeneous and each newly activated community is initialized in the same distribution, then the delays are identically distributed and
+\begin{equation}
+    \E[T_{L-1}]=(L-1)\E[\Delta T].
+\end{equation}
+This last step does require identical transition laws.  The manuscript should state the seeding rule that ensures this.  If imports always enter through boundary nodes, the next community may not start from a uniform seed, and the bridge-finding formula may change.
+
+\subsection{Local timing shift accumulation}
+
+\begin{proposition}[Accumulation of expected local timing shift]
+Suppose a homogeneous chain has local delays $\Delta T_i^{\mathrm{micro}}$ and $\Delta T_i^{\mathrm{MM}}$ such that
+\begin{equation}
+    \E[\Delta T_i^{\mathrm{MM}}-\Delta T_i^{\mathrm{micro}}]=\delta
+\end{equation}
+for all $i=0,\ldots,L-2$.  Then
+\begin{equation}
+    \E[T_{L-1}^{\mathrm{MM}}-T_{L-1}^{\mathrm{micro}}]=(L-1)\delta.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Subtract the two decompositions and use linearity of expectation:
+\begin{equation}
+    \E[T_{L-1}^{\mathrm{MM}}-T_{L-1}^{\mathrm{micro}}]
+    =\sum_{i=0}^{L-2}\E[\Delta T_i^{\mathrm{MM}}-\Delta T_i^{\mathrm{micro}}]
+    =(L-1)\delta.
+\end{equation}
+\end{proof}
+
+This proposition is correct and useful, but it should be treated as a diagnostic identity rather than a deep theorem.  Its value is in motivating the chain benchmark: small local timing errors can become visible after repeated transitions.
+
+\section{Numerical experiments needed for a journal submission}
+
+\subsection{Minimum reproducible protocol}
+
+Every numerical benchmark should include the following information:
+\begin{longtable}{p{0.28\textwidth}p{0.62\textwidth}}
+\toprule
+\textbf{Item} & \textbf{What to report}\\
+\midrule
+Network parameters & Number of communities $L$, clique size $n$, number of bridge nodes $k$, cross-edge weights, internal topology.\\
+Epidemic parameters & $\beta_{\mathrm{in}}$, $\beta_{\mathrm{out}}$, $\gamma$, SI/SIR choice, initial seed distribution.\\
+Macro parameters & $W_{ij}$ definition, calibration factor if any, import placement rule, synchronization interval $\tau_{\mathrm{micro}}$.\\
+Monte Carlo design & Number of replications, random seed policy, stopping criterion or time horizon.\\
+Outputs & Arrival times $T_i$, local delays $\Delta T_i$, export times, final outbreak sizes, prevalence curves.\\
+Distributional metrics & Mean error, median error, 0.9-quantile error, Wasserstein distance $W_1$, Kolmogorov--Smirnov distance $D_{KS}$.\\
+Runtime metrics & Runtime of full Gillespie, runtime of MicroMacro, speedup, memory use if relevant.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Ablation studies}
+
+To convince reviewers, the experiments should separate the different error sources:
+\begin{enumerate}
+    \item \textbf{Rate abstraction only:} use macro event timing with aggregate rate, but use exact boundary-informed placement if possible.
+    \item \textbf{Placement error only:} use exact event times but compare uniform placement versus edge-conditioned placement.
+    \item \textbf{Synchronization error:} vary $\tau_{\mathrm{micro}}$ and show convergence of timing distributions as $\tau_{\mathrm{micro}}\to 0$.
+    \item \textbf{Bridge bottleneck stress test:} vary $k\in\{1,2,5,10,20\}$ for fixed $n$.
+    \item \textbf{Export-rate stress test:} vary $\beta_{\mathrm{out}}/\beta_{\mathrm{in}}$.  Premature leakage should be more visible when export is fast relative to bridge-finding time.
+\end{enumerate}
+
+\subsection{How to present representative trajectories}
+
+The current draft asks whether the pointwise median curve is the right representative curve.  I would avoid relying on a single representative trajectory.  For stochastic epidemic simulations, better options are:
+\begin{itemize}
+    \item plot empirical CDFs of arrival times $T_i$ and $T_{L-1}$;
+    \item plot median and interquartile bands of $I_i(t)$ over replications;
+    \item align trajectories by activation time and compare local growth after activation separately from arrival-time error;
+    \item select a representative run by choosing the replication whose vector of arrival times is closest to the componentwise median vector, not by pointwise curve MSE.
+\end{itemize}
+
+For the chain benchmark, the arrival-time distributions are more important than the visual shape of the infection curves, because clique outbreaks saturate quickly after activation.
+
+\section{Writing and presentation improvements}
+
+\subsection{Immediate edits}
+
+Before sharing the manuscript externally, make these edits:
+\begin{itemize}
+    \item remove all reading-status boxes;
+    \item remove the ``In Progress'' section heading;
+    \item remove duplicated paragraphs, especially in the introduction where the same motivation sentence appears twice;
+    \item replace ``data avaliability'' by ``data availability'';
+    \item replace ``Coefficients $\beta$ and $\gamma$ - are'' by ``The coefficients $\beta$ and $\gamma$ are'';
+    \item replace ``There is inverse approach'' by ``An alternative representation is'';
+    \item consistently use ``within-community'' and ``between-community'' rather than alternating with ``intra-node'' and ``inter-node'';
+    \item avoid saying the macro layer gives ``exact timing'' unless you mean exact timing for the approximate macro intensity.  It is not exact timing for the full microscopic model.
+\end{itemize}
+
+\subsection{Suggested abstract}
+
+\begin{quote}
+We study a two-scale continuous-time stochastic simulation framework for epidemic spreading on community-structured networks.  The method preserves exact event-driven CTMC dynamics within communities while replacing explicit cross-community edges by macro-level stochastic hazards driven by aggregate community states.  We formalize the full-network Gillespie CTMC as a reference process and decompose the approximation error of the two-scale simulator into rate abstraction, import placement, and numerical synchronization components.  On analytically tractable clique-bridge-leaf motifs, we show that aggregate mean-field hazards are conditional means of the exact bridge hazards under exchangeability assumptions, but may nevertheless create premature export timing through Jensen-type survival effects.  We extend the analysis to chains of cliques, where local timing shifts accumulate across successive community activations.  Numerical experiments compare arrival-time distributions and runtime against full-network simulation, identifying regimes in which the two-scale approximation is accurate and regimes in which narrow boundary bottlenecks induce systematic bias.
+\end{quote}
+
+\subsection{Suggested contribution list}
+
+\begin{enumerate}
+    \item A formal two-scale CTMC simulation framework with exact local micro dynamics and macro-level inter-community hazards.
+    \item A generator-level reference model and a decomposition of approximation error into rate abstraction, import placement, and synchronization error.
+    \item Analytical benchmark results for clique-bridge-leaf motifs, including bridge-finding times, crossing-time bounds, and mean-field timing bias.
+    \item Chain-of-cliques benchmarks showing how local arrival-time shifts can accumulate over multiple communities.
+    \item Monte Carlo experiments quantifying distributional accuracy and runtime speedup relative to full-network Gillespie simulation.
+\end{enumerate}
+
+\section{Applied mathematics versus computer science route}
+
+\subsection{Applied mathematics route}
+
+For an applied mathematics paper, emphasize:
+\begin{itemize}
+    \item the full CTMC generator and random time-change formulation;
+    \item exactness conditional on imports;
+    \item sufficient conditions under which the macro hazard is exact or asymptotically accurate;
+    \item bridge-bottleneck counterexamples and bias inequalities;
+    \item convergence of synchronization error as $\tau_{\mathrm{micro}}\to 0$.
+\end{itemize}
+
+The paper should have fewer implementation details and more theorem/proof structure.  The numerical section should validate the mathematical claims rather than dominate the paper.
+
+\subsection{Computer science route}
+
+For a computer science or scientific-computing paper, emphasize:
+\begin{itemize}
+    \item algorithm design and pseudocode;
+    \item runtime complexity and memory use;
+    \item data structures for local propensity updates;
+    \item reproducibility and open-source code;
+    \item empirical comparison across network families;
+    \item accuracy-speed trade-offs.
+\end{itemize}
+
+The paper should include pseudocode for the full simulator and separate pseudocode for local micro updates, macro hazard accumulation, event selection, and import placement.
+
+\section{Suggested theorem/proof package for the paper}
+
+A clean applied-math version could contain the following formal results:
+\begin{enumerate}
+    \item \textbf{Proposition 1:} Conditional micro-layer exactness.
+    \item \textbf{Proposition 2:} Necessary and sufficient condition for exact macro-rate abstraction: the exact cross-community intensity must be measurable with respect to the retained macro variables.
+    \item \textbf{Proposition 3:} Correct import placement distribution and placement-error criterion.
+    \item \textbf{Proposition 4:} Synchronization timing error bound in terms of cumulative-hazard approximation error.
+    \item \textbf{Proposition 5:} Exact bridge-dependent hazard on the clique-bridge-leaf motif.
+    \item \textbf{Proposition 6:} Expected bridge-finding time, with separate formulas for random initial seed and fixed non-bridge seed.
+    \item \textbf{Proposition 7:} Crossing-time bounds for several bridge nodes.
+    \item \textbf{Proposition 8:} Mean-field macro hazard as conditional mean under exchangeability.
+    \item \textbf{Proposition 9:} Jensen survival inequality and early-export bias.
+    \item \textbf{Proposition 10:} Accumulation of local timing shifts in a homogeneous chain.
+\end{enumerate}
+This is enough mathematical material for a solid paper, provided the experiments are made rigorous.
+
+\section{Checklist for the next manuscript version}
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!60,title=Revision checklist]
+\begin{enumerate}
+    \item Remove collaboration markers and duplicate/generated sections.
+    \item Add a formal full-network CTMC reference model before introducing the approximation.
+    \item Separate $\beta_{\mathrm{in}}$ and $\beta_{\mathrm{out}}$ unless they are intentionally identical.
+    \item Define $W_{ij}$ and its scaling unambiguously.
+    \item Replace ``NHPP'' by ``conditionally NHPP'' or ``stochastic intensity point process'' where appropriate.
+    \item State the import placement rule and analyze its effect.
+    \item Correct the bridge-finding formula according to the initial seeding convention.
+    \item Rewrite the mean-field bias proof using conditional Jensen's inequality.
+    \item Add pseudocode for the simulator.
+    \item Add parameter tables and Monte Carlo details to every numerical experiment.
+    \item Report distributional error metrics, not only mean curves.
+    \item Add runtime and speedup results.
+    \item Decide whether the paper is primarily applied mathematics or computer science and tune the presentation accordingly.
+\end{enumerate}
+\end{tcolorbox}
+
+\section{Concluding recommendation}
+
+The manuscript has enough substance for a journal paper, but it should be narrowed and sharpened.  The strongest version is a paper about \emph{interface error in two-scale stochastic epidemic simulation}.  The main mathematical insight is that exact local simulation does not guarantee exact global event timing: the interface between communities is where the approximation lives.  The clique-bridge-leaf benchmark is an excellent minimal example because it exposes the difference between a true bridge-dependent hazard and a macro mean-field hazard.  The chain-of-cliques benchmark then shows how this local timing error can become a system-level propagation error.
+
+A publishable paper should therefore make the following promise to the reader and then deliver it:
+\begin{quote}
+We build a computationally cheaper two-scale simulator, prove what part of it is exact, identify precisely what part is approximate, and quantify when the approximation is safe or biased.
+\end{quote}
+
+That is a strong and coherent story for either applied mathematics or computer science.
+
+\end{document}

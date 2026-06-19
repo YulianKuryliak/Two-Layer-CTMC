@@ -2,6 +2,7 @@ import csv
 import io
 import json
 import random
+import re
 import time
 from datetime import datetime
 from pathlib import Path
@@ -232,6 +233,24 @@ def _metrics_from_micromacro_events(
 
 def _run_uid_to_filename(run_uid: str) -> str:
     return run_uid.replace(":", "_")
+
+
+def _format_float_for_id(value: float) -> str:
+    text = f"{float(value):g}"
+    return text.replace(".", "p").replace("-", "m")
+
+
+def _build_scenario_id(*, runtime_config: dict) -> str:
+    net = runtime_config.get("network", {})
+    vir = runtime_config.get("virus", {})
+    macro_top = str(net.get("macro_graph_type", "na")).strip().lower()
+    communities = int(net.get("communities", -1))
+    community_size = int(net.get("community_size", -1))
+    inter_links = int(net.get("inter_links", -1))
+    beta = _format_float_for_id(float(vir.get("beta", 0.0)))
+    parts = [macro_top, f"L{communities}", f"n{community_size}", f"k{inter_links}", f"beta{beta}"]
+    raw = "_".join(parts)
+    return re.sub(r"[^a-zA-Z0-9_]", "_", raw)
 
 
 def _sim_db_api():
@@ -467,6 +486,7 @@ def run_micro_batch(
             "phase_timing": phase_timing,
         },
     }
+    scenario_id = _build_scenario_id(runtime_config=runtime_config)
     run_uids: List[str] = []
     shared_sim = None
     shared_comm_nodes = None
@@ -507,6 +527,7 @@ def run_micro_batch(
             rng=rng,
         )
         t_loop_done = time.perf_counter()
+        runtime_seconds = float(t_loop_done - t_loop_start)
         if phase_timing:
             print(f"[timing] main_loop[run_{run_idx + 1}]={t_loop_done - t_loop_start:.3f}s")
 
@@ -539,6 +560,17 @@ def run_micro_batch(
             bridge_nodes=bridge_nodes,
         )
         events = _events_from_micro_transmissions(result.get("transmission_events", []))
+        transmission_events = result.get("transmission_events", [])
+        n_total_events = len(transmission_events)
+        n_micro_events = n_total_events
+        n_macro_events = 0
+        n_inter_events = sum(
+            1
+            for ev in transmission_events
+            if ev.get("src_community") is not None
+            and ev.get("dst_community") is not None
+            and int(ev["src_community"]) != int(ev["dst_community"])
+        )
         ingest_run_payload(
             simulator="Micro",
             sim_version="1.0.3",
@@ -549,6 +581,14 @@ def run_micro_batch(
             run_uid=run_uid,
             created_at=created_at,
             run_seed=run_seed,
+            runtime_seconds=runtime_seconds,
+            scenario_id=scenario_id,
+            scenario_group_id=scenario_id,
+            replication_id=run_idx + 1,
+            n_total_events=n_total_events,
+            n_micro_events=n_micro_events,
+            n_macro_events=n_macro_events,
+            n_inter_events=n_inter_events,
             db_path=db_path,
         )
         if export_csv:
@@ -673,6 +713,7 @@ def run_micromacro_batch(
             "phase_timing": phase_timing,
         },
     }
+    scenario_id = _build_scenario_id(runtime_config=runtime_config)
 
     shared_sim = None
     shared_bridge_nodes = None
@@ -696,11 +737,14 @@ def run_micromacro_batch(
         if sim is None or bridge_nodes is None:
             raise RuntimeError("MicroMacro simulator initialization failed")
 
+        t_loop_start = time.perf_counter()
         result = sim.run(
             seed=run_seed,
             initial_community=initial_community,
             initial_node=initial_node,
         )
+        t_loop_done = time.perf_counter()
+        runtime_seconds = float(t_loop_done - t_loop_start)
 
         t_post_start = time.perf_counter()
         _, _, logs, event_log = result
@@ -732,6 +776,10 @@ def run_micromacro_batch(
             n_communities=n_communities,
             bridge_nodes=bridge_nodes,
         )
+        n_micro_events = sum(1 for ev in event_log if str(ev.get("mode", "")).lower() == "micro")
+        n_macro_events = sum(1 for ev in event_log if str(ev.get("mode", "")).lower() == "macro")
+        n_total_events = n_micro_events + n_macro_events
+        n_inter_events = n_macro_events
         ingest_run_payload(
             simulator="MicroMacro",
             sim_version="1.0.3",
@@ -742,6 +790,14 @@ def run_micromacro_batch(
             run_uid=run_uid,
             created_at=created_at,
             run_seed=run_seed,
+            runtime_seconds=runtime_seconds,
+            scenario_id=scenario_id,
+            scenario_group_id=scenario_id,
+            replication_id=run_idx + 1,
+            n_total_events=n_total_events,
+            n_micro_events=n_micro_events,
+            n_macro_events=n_macro_events,
+            n_inter_events=n_inter_events,
             db_path=db_path,
         )
         if export_csv:

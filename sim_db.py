@@ -460,6 +460,13 @@ def _init_v1_schema(conn: sqlite3.Connection) -> None:
             output_csv_path TEXT,
             metrics_path TEXT,
             events_path TEXT,
+            scenario_id TEXT,
+            scenario_group_id TEXT,
+            replication_id INTEGER,
+            n_total_events INTEGER,
+            n_micro_events INTEGER,
+            n_macro_events INTEGER,
+            n_inter_events INTEGER,
             runtime_seconds REAL,
             notes TEXT
         );
@@ -481,6 +488,13 @@ def _init_v1_schema(conn: sqlite3.Connection) -> None:
         "verbose_steps": "INTEGER",
         "micro_out_folder": "TEXT",
         "micromacro_out_folder": "TEXT",
+        "scenario_id": "TEXT",
+        "scenario_group_id": "TEXT",
+        "replication_id": "INTEGER",
+        "n_total_events": "INTEGER",
+        "n_micro_events": "INTEGER",
+        "n_macro_events": "INTEGER",
+        "n_inter_events": "INTEGER",
     }
     for col, col_type in runs_columns_to_add.items():
         if col not in existing_cols:
@@ -545,6 +559,88 @@ def _init_v1_schema(conn: sqlite3.Connection) -> None:
         """
     )
 
+    # Benchmark analysis artifacts (scenario-level timing comparison outputs).
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS benchmark_analyses (
+            analysis_uid TEXT PRIMARY KEY,
+            created_at TEXT NOT NULL,
+            censoring_mode TEXT NOT NULL,
+            t_max REAL,
+            paired_mode INTEGER NOT NULL,
+            notes TEXT
+        );
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS benchmark_summary_metrics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_uid TEXT NOT NULL,
+            scenario_id TEXT NOT NULL,
+            variable TEXT NOT NULL,
+            community INTEGER,
+            metric TEXT NOT NULL,
+            value REAL,
+            FOREIGN KEY(analysis_uid) REFERENCES benchmark_analyses(analysis_uid) ON DELETE CASCADE,
+            UNIQUE(analysis_uid, scenario_id, variable, community, metric)
+        );
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS benchmark_curve_points (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_uid TEXT NOT NULL,
+            scenario_id TEXT NOT NULL,
+            model TEXT NOT NULL,
+            curve_kind TEXT NOT NULL,
+            community INTEGER,
+            x REAL,
+            y REAL,
+            bin_left REAL,
+            bin_right REAL,
+            FOREIGN KEY(analysis_uid) REFERENCES benchmark_analyses(analysis_uid) ON DELETE CASCADE
+        );
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS benchmark_boxplot_stats (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_uid TEXT NOT NULL,
+            scenario_id TEXT NOT NULL,
+            model TEXT NOT NULL,
+            community INTEGER NOT NULL,
+            n_total INTEGER NOT NULL,
+            n_reached INTEGER NOT NULL,
+            q25 REAL,
+            q50 REAL,
+            q75 REAL,
+            iqr REAL,
+            whisker_low REAL,
+            whisker_high REAL,
+            outlier_count INTEGER NOT NULL,
+            FOREIGN KEY(analysis_uid) REFERENCES benchmark_analyses(analysis_uid) ON DELETE CASCADE,
+            UNIQUE(analysis_uid, scenario_id, model, community)
+        );
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS benchmark_paired_deltas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_uid TEXT NOT NULL,
+            scenario_id TEXT NOT NULL,
+            replication_id INTEGER NOT NULL,
+            community INTEGER NOT NULL,
+            delta_t REAL,
+            FOREIGN KEY(analysis_uid) REFERENCES benchmark_analyses(analysis_uid) ON DELETE CASCADE,
+            UNIQUE(analysis_uid, scenario_id, replication_id, community)
+        );
+        """
+    )
+
     cur.execute(
         """
         CREATE INDEX IF NOT EXISTS idx_runs_search
@@ -567,6 +663,17 @@ def _init_v1_schema(conn: sqlite3.Connection) -> None:
     cur.execute("CREATE INDEX IF NOT EXISTS idx_runs_output_csv_path ON runs(output_csv_path);")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_metrics_run_community ON community_metrics(run_uid, community);")
     cur.execute("CREATE INDEX IF NOT EXISTS idx_events_run_time_kind_mode ON infection_events(run_uid, time, kind, mode);")
+    cur.execute(
+        "CREATE INDEX IF NOT EXISTS idx_runs_pairing ON runs(scenario_id, replication_id, simulator, run_seed);"
+    )
+    cur.execute(
+        "CREATE INDEX IF NOT EXISTS idx_bench_summary_lookup "
+        "ON benchmark_summary_metrics(analysis_uid, scenario_id, variable, community);"
+    )
+    cur.execute(
+        "CREATE INDEX IF NOT EXISTS idx_bench_curve_lookup "
+        "ON benchmark_curve_points(analysis_uid, scenario_id, model, curve_kind, community, x);"
+    )
 
 
 def init_db(db_path: Path | str = "simulations.db") -> Path:
@@ -700,6 +807,13 @@ _RUN_FILTER_FIELDS = {
     "output_csv_path",
     "metrics_path",
     "events_path",
+    "scenario_id",
+    "scenario_group_id",
+    "replication_id",
+    "n_total_events",
+    "n_micro_events",
+    "n_macro_events",
+    "n_inter_events",
     "runtime_seconds",
     "notes",
 }
@@ -718,6 +832,13 @@ def ingest_run_bundle(
     status: str = "completed",
     config_source: str = "runtime",
     runtime_seconds: float | None = None,
+    scenario_id: str | None = None,
+    scenario_group_id: str | None = None,
+    replication_id: int | None = None,
+    n_total_events: int | None = None,
+    n_micro_events: int | None = None,
+    n_macro_events: int | None = None,
+    n_inter_events: int | None = None,
     notes: str | None = None,
     run_seed: int | None = None,
     db_path: Path | str = "simulations.db",
@@ -770,7 +891,10 @@ def ingest_run_bundle(
             "dt_out", "tau_micro", "macro_T", "network_size_total", "topology_key", "topology_is_hub_leaf",
             "print_infection_events", "export_infection_events_csv", "verbose_steps",
             "micro_out_folder", "micromacro_out_folder",
-            "output_csv_path", "metrics_path", "events_path", "runtime_seconds", "notes",
+            "output_csv_path", "metrics_path", "events_path",
+            "scenario_id", "scenario_group_id", "replication_id",
+            "n_total_events", "n_micro_events", "n_macro_events", "n_inter_events",
+            "runtime_seconds", "notes",
         ]
         run_values = (
             run_uid,
@@ -817,6 +941,13 @@ def ingest_run_bundle(
             str(csv_path),
             str(metrics_file) if metrics_file is not None else None,
             str(events_file) if events_file is not None else None,
+            scenario_id,
+            scenario_group_id,
+            replication_id,
+            n_total_events,
+            n_micro_events,
+            n_macro_events,
+            n_inter_events,
             runtime_seconds,
             notes,
         )
@@ -871,6 +1002,13 @@ def ingest_run_bundle(
                 output_csv_path=excluded.output_csv_path,
                 metrics_path=excluded.metrics_path,
                 events_path=excluded.events_path,
+                scenario_id=excluded.scenario_id,
+                scenario_group_id=excluded.scenario_group_id,
+                replication_id=excluded.replication_id,
+                n_total_events=excluded.n_total_events,
+                n_micro_events=excluded.n_micro_events,
+                n_macro_events=excluded.n_macro_events,
+                n_inter_events=excluded.n_inter_events,
                 runtime_seconds=excluded.runtime_seconds,
                 notes=excluded.notes;
             """,
@@ -988,6 +1126,13 @@ def ingest_run_payload(
     status: str = "completed",
     config_source: str = "runtime",
     runtime_seconds: float | None = None,
+    scenario_id: str | None = None,
+    scenario_group_id: str | None = None,
+    replication_id: int | None = None,
+    n_total_events: int | None = None,
+    n_micro_events: int | None = None,
+    n_macro_events: int | None = None,
+    n_inter_events: int | None = None,
     notes: str | None = None,
     run_seed: int | None = None,
     output_csv_path: str | None = None,
@@ -1031,7 +1176,10 @@ def ingest_run_payload(
             "dt_out", "tau_micro", "macro_T", "network_size_total", "topology_key", "topology_is_hub_leaf",
             "print_infection_events", "export_infection_events_csv", "verbose_steps",
             "micro_out_folder", "micromacro_out_folder",
-            "output_csv_path", "metrics_path", "events_path", "runtime_seconds", "notes",
+            "output_csv_path", "metrics_path", "events_path",
+            "scenario_id", "scenario_group_id", "replication_id",
+            "n_total_events", "n_micro_events", "n_macro_events", "n_inter_events",
+            "runtime_seconds", "notes",
         ]
         run_values = (
             run_uid,
@@ -1078,6 +1226,13 @@ def ingest_run_payload(
             output_csv_path,
             metrics_path,
             events_path,
+            scenario_id,
+            scenario_group_id,
+            replication_id,
+            n_total_events,
+            n_micro_events,
+            n_macro_events,
+            n_inter_events,
             runtime_seconds,
             notes,
         )
@@ -1132,6 +1287,13 @@ def ingest_run_payload(
                 output_csv_path=excluded.output_csv_path,
                 metrics_path=excluded.metrics_path,
                 events_path=excluded.events_path,
+                scenario_id=excluded.scenario_id,
+                scenario_group_id=excluded.scenario_group_id,
+                replication_id=excluded.replication_id,
+                n_total_events=excluded.n_total_events,
+                n_micro_events=excluded.n_micro_events,
+                n_macro_events=excluded.n_macro_events,
+                n_inter_events=excluded.n_inter_events,
                 runtime_seconds=excluded.runtime_seconds,
                 notes=excluded.notes;
             """,

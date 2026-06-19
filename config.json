@@ -1,7 +1,7 @@
 {
   "network": {
     "communities": 5, // int >= 1
-    "community_size": 1000, // int >= 1
+    "community_size": 100, // int >= 1
     "inter_links": 1, // int >= 0
     "seed": 42, // int
     "regenerate_each_run": true, // true | false (if true, rebuild network per run)
@@ -13,12 +13,12 @@
     "star_leaf_attachment": "random" // "random" | "node0" | "random_nonzero" (used when macro_graph_type="star")
   },
   "virus": {
-    "beta": 0.01, // float >= 0 
+    "beta": 0.005, // float >= 0 
     "gamma": 0.0, // float >= 0
     "model": 2 // 1=SIS | 2=SIR
   },
   "simulation": {
-    "n_runs": 20, // int >= 1
+    "n_runs": 1000, // int >= 1
     "base_seed": 42, // int
     "T_end": 1000, // float > 0
     "initial_community": 0, // int in [0, communities-1]

@@ -1,9 +1,15 @@
 import argparse
 import csv
 import math
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+
+# Allow running this script from any working directory.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from devtools.config import load_config, resolve_path
 
@@ -90,6 +96,23 @@ def collect_distributions(folder):
     return points
 
 
+def collect_last_community_arrival_times(folder):
+    """
+    Return list of T_last values per run:
+    first time when the last community has I(t) > 0.
+    """
+    values = []
+    for csv_path in iter_csv_files(folder):
+        series_by_comm = load_series_by_community(csv_path)
+        if not series_by_comm:
+            continue
+        last_community = max(series_by_comm.keys())
+        t_last = entry_timeseries(series_by_comm[last_community])
+        if t_last is not None:
+            values.append(float(t_last))
+    return values
+
+
 def plot_distributions(micro_points, micromacro_points, output_path):
     communities = sorted(set(micro_points) | set(micromacro_points))
     if not communities:
@@ -167,6 +190,39 @@ def plot_distributions(micro_points, micromacro_points, output_path):
     fig.savefig(output_path, dpi=200)
 
 
+def plot_tlast_pdf(micro_tlast, micromacro_tlast, output_path):
+    if not micro_tlast and not micromacro_tlast:
+        raise RuntimeError("No valid T_last values found in either dataset.")
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    if micro_tlast:
+        ax.hist(
+            micro_tlast,
+            bins=30,
+            density=True,
+            alpha=0.5,
+            color="#2ca02c",
+            label="Micro",
+        )
+    if micromacro_tlast:
+        ax.hist(
+            micromacro_tlast,
+            bins=30,
+            density=True,
+            alpha=0.5,
+            color="#1f77b4",
+            label="MicroMacro",
+        )
+    ax.set_title("PDF of T_last (time to reach last community from start)")
+    ax.set_xlabel("T_last")
+    ax.set_ylabel("Density")
+    ax.grid(True, alpha=0.2)
+    ax.legend()
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=200)
+
+
 def resolve_output_path(output_arg):
     if output_arg:
         return Path(output_arg)
@@ -213,6 +269,12 @@ def main():
     output_path = resolve_output_path(args.output)
     plot_distributions(micro_points, micromacro_points, output_path)
     print(f"Saved plot to {output_path}")
+
+    micro_tlast = collect_last_community_arrival_times(args.micro_dir)
+    micromacro_tlast = collect_last_community_arrival_times(args.micromacro_dir)
+    tlast_pdf_path = output_path.parent / "tlast_pdf.png"
+    plot_tlast_pdf(micro_tlast, micromacro_tlast, tlast_pdf_path)
+    print(f"Saved T_last PDF plot to {tlast_pdf_path}")
 
 
 if __name__ == "__main__":
