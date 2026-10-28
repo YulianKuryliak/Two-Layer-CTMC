@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite this dataset together with the associated article; add the deposit DOI when assigned."
+type: dataset
+title: "Supporting data: Two-scale stochastic simulation of epidemics on community networks with aggregate inter-community coupling"
+authors:
+  - family-names: Kuryliak
+    given-names: Yulian
+  - family-names: Emmerich
+    given-names: Michael T. M.
+date-released: 2026-10-22
+version: "2026-10-22"

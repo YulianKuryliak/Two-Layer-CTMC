@@ -1,0 +1,13 @@
+{
+  "chain_pairs": 19200,
+  "chain_cells": 48,
+  "common_30000_full_observed": 19198,
+  "common_30000_twoscale_observed": 19200,
+  "largest_terminal_w1_pct": 40.88324313976721,
+  "spearman_rho_vs_w1": 0.9135909683022144,
+  "configurations_below_rho_0p25": 18,
+  "largest_w1_below_rho_0p25": 4.524224168294414,
+  "chain_clique_w1_pct": 3.343147021597143,
+  "simulations_run": false,
+  "bootstrap_or_permutation_recomputed": false
+}

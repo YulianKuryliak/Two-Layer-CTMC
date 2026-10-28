@@ -1,0 +1,30 @@
+{
+  "backup": "outlook_backup_20261023T185910Z",
+  "before_main_sha256": "bff490f1d9cc69d4e4bbbae420e814103d065d46996363ae8a278fe5ec13d30d",
+  "replacements": [
+    {
+      "old": "\\section{Conclusions}",
+      "new": "\\textbf{Outlook.}\nA natural next step is evaluation on empirical social networks~\\cite{yin2017higherorder} and geographically explicit synthetic contact networks~\\cite{jiang2024synthetic}, with communities defined by organizational membership or place of residence. Available node-level connections would provide both a full-network reference and aggregated intercommunity weights $W_{ij}$. A complementary approach is to construct local contact networks from demographic data and connect communities using mobility-informed weights~\\cite{tizzoni2014mobility}, with explicit assumptions linking travel flows to contact intensities. Initial studies could use static network aggregates; retaining contact times would require a temporal-network extension. Such studies should examine sensitivity to community definitions, contact weights, disease parameters, and incomplete observations, while distinguishing approximation error from uncertainty in network construction. This evaluation warrants a dedicated follow-up study; validation against observed spreading outcomes would require additional evidence.\n\n\\section{Conclusions}"
+    },
+    {
+      "old": "\\bibliography{references_fixed,references_missing}",
+      "new": "\\bibliography{references_fixed,references_missing,references_outlook}"
+    },
+    {
+      "old": "% Balance the final columns with the native IEEE reference trigger.\n\\IEEEtriggeratref{5}",
+      "new": "% Let the expanded bibliography flow naturally into the author biographies."
+    }
+  ],
+  "citation_keys": [
+    "yin2017higherorder",
+    "jiang2024synthetic",
+    "tizzoni2014mobility"
+  ],
+  "bibliography_sha256": "c3e8d43d0afc7ceee1ae945c16fd8ccdfda62229ec716a8a0cc89e719c052225",
+  "sources": [
+    "https://doi.org/10.1145/3097983.3098069",
+    "https://doi.org/10.1038/s41597-024-03970-1",
+    "https://doi.org/10.1371/journal.pcbi.1003716"
+  ],
+  "scope": "User-approved Outlook paragraph and references; no changes to existing scientific claims or results."
+}

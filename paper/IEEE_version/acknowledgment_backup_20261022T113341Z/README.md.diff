@@ -1,0 +1,10 @@
+diff --git a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/README.md b/paper/IEEE_version/README.md
+index 899e2e8..00cc29e 100755
+--- a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/README.md
++++ b/paper/IEEE_version/README.md
+@@ -46,4 +46,4 @@ latexmk -r paper/IEEE_version/.latexmkrc -cd -pdf -interaction=nonstopmode -halt
+ 
+ ## Незавершені частини перед поданням
+ 
+-У `Data availability` залишається `[To be completed]`. Немає біографій авторів. Декларацію ШІ ще потрібно узгодити з IEEE (Acknowledgment, конкретні частини роботи й обсяг допомоги). Авторські декларації та зміст інших розділів під час роботи над версткою не редагувалися.
++У `Data availability` залишається `[To be completed]`. Немає біографій авторів. Окрему декларацію ШІ замінено на Acknowledgment з дослівним останнім формулюванням користувача: ChatGPT, Codex і Claude, Sections I–VIII, Appendices A–C та опис допомоги. Використано «The authors directed the research». Інші декларації не змінювалися. Точна погоджена заміна й бекап зафіксовані в `acknowledgment_change.json`.

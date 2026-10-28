@@ -1,0 +1,49 @@
+{
+  "title": "Supporting data for the two-scale community-network study",
+  "created_utc": "2026-10-22T13:45:10.524725+00:00",
+  "article_sha256": "a0535b37f59bb5826d730b0dd3746263c5939865c5f4211a65555a00194ddfed",
+  "authors": [
+    "Yulian Kuryliak",
+    "Michael T. M. Emmerich"
+  ],
+  "licence": "All rights reserved",
+  "deposition_status": "local preparation only; no DOI or public deposit assigned",
+  "clique_leaf": {
+    "pairs": 10000,
+    "n": 100,
+    "k": 2,
+    "beta": 0.005,
+    "horizon": 1000
+  },
+  "source_leaf": {
+    "cells": 42,
+    "pairs": 16800,
+    "n": 1000,
+    "beta": 0.003,
+    "horizon": 30000
+  },
+  "chains": {
+    "cells": 48,
+    "pairs": 19200,
+    "L": 10,
+    "sizes": [
+      50,
+      100,
+      250,
+      1000
+    ],
+    "beta": 0.003,
+    "common_horizon": 30000,
+    "extended_full_runs": 2,
+    "extended_full_horizon": 40000
+  },
+  "raw_members": 54949,
+  "raw_archives": [
+    "raw/clique_leaf.tar",
+    "raw/source_leaf.tar",
+    "raw/chains.tar"
+  ],
+  "source_copy_hashes_verified": true,
+  "raw_symlinks_materialised": true,
+  "simulations_run": false
+}

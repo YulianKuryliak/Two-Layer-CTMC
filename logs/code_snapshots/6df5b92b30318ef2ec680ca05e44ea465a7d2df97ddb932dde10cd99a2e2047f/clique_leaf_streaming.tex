@@ -1,0 +1,56 @@
+
+% Editable PGFPlots version of clique_leaf_endpoint_and_mechanism.
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=1.55cm},
+  set layers=standard,
+  paper axis, width=.24\linewidth, height=3.7cm, scale only axis,
+  legend style={font=\scriptsize, draw=none},
+]
+\nextgroupplot[
+  title={\textbf{a} Export times},
+  xlabel={total export time}, ylabel={empirical CDF},
+  xmin=0, xmax=600, ymin=0, ymax=1.01,
+  legend style={at={(.98,.36)}, anchor=south east},
+  extra description/.code={
+    \DrawExactECDF{figures_pgfplots/leaf_clique_export_full_path.dat}{FullBlue}{\pgfsetdash{}{0pt}}
+    \DrawExactECDF{figures_pgfplots/leaf_clique_export_twoscale_path.dat}{ScaleOrange}{\pgfsetdash{{3pt}{3pt}}{0pt}}
+  },
+]
+  \addlegendimage{color=FullBlue, solid, no markers, line width=.8pt}
+  \addlegendentry{Full}
+  \addlegendimage{color=ScaleOrange, dashed, no markers, line width=.8pt}
+  \addlegendentry{TwoScale}
+  \node[anchor=south east, align=right, fill=white, draw=black!20, inner sep=2pt, font=\scriptsize]
+    at (rel axis cs:.97,.07) {$W_1=3.249$\\$D_{\rm KS}=0.0142$};
+\nextgroupplot[
+  title={\textbf{b} Export minus bridge},
+  xlabel={$T_{\mathrm{export}}-T_B$}, ylabel={empirical CDF},
+  xmin=-20, xmax=100, ymin=0, ymax=.55,
+  extra description/.code={
+    \DrawExactECDF{figures_pgfplots/leaf_clique_signed_delay_full_path.dat}{FullBlue}{\pgfsetdash{}{0pt}}
+    \DrawExactECDF{figures_pgfplots/leaf_clique_signed_delay_twoscale_path.dat}{ScaleOrange}{\pgfsetdash{{3pt}{3pt}}{0pt}}
+  },
+]
+  \path[fill=black!8] (axis cs:-20,0) rectangle (axis cs:0,.55);
+  \addplot+[black!75, no markers, line width=.35pt] coordinates {(0,0) (0,.55)};
+
+
+  \node[anchor=north west, font=\scriptsize, text=black!65] at (axis cs:-18,.51) {export before bridge};
+\nextgroupplot[
+  title={\textbf{c} Bridge bypass},
+  ylabel={bridge-bypass runs (\%)},
+  xmin=.5, xmax=2.5, ymin=-.03, ymax=1.35, clip=false,
+  xtick={1,2}, xticklabels={Full,TwoScale},
+]
+  \addplot+[
+    only marks, mark=*, mark size=1.7pt, color=black!80,
+    error bars/.cd, y dir=both, y explicit,
+  ] table[x=x,y=rate_pct,
+      y error minus expr=\thisrow{rate_pct}-\thisrow{low_pct},
+      y error plus expr=\thisrow{high_pct}-\thisrow{rate_pct}]
+      {figures_pgfplots/leaf_clique_bypass.dat};
+  \node[anchor=south, align=center, font=\scriptsize] at (axis cs:1,.14) {0/10000\\(0.00\%)};
+  \node[anchor=south, align=center, font=\scriptsize] at (axis cs:2,1.18) {98/10000\\(0.98\%)};
+\end{groupplot}
+\end{tikzpicture}

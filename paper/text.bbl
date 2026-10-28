@@ -1,0 +1,49 @@
+\begin{thebibliography}{}
+
+\bibitem[Anderson, 2007]{anderson2007}
+Anderson, D.~F. (2007).
+\newblock A modified next reaction method for simulating chemical systems with
+  time dependent propensities and delays.
+\newblock {\em The Journal of Chemical Physics}, 127(21):214107.
+
+\bibitem[Balcan et~al., 2010]{balcan2010modeling}
+Balcan, D., Colizza, V., Gon{\c{c}}alves, B., Hu, H., Ramasco, J.~J., and
+  Vespignani, A. (2010).
+\newblock Modeling the spatial spread of infectious diseases: The global
+  epidemic and mobility computational model.
+\newblock {\em Journal of Computational Science}, 1(3):132--145.
+
+\bibitem[Colizza and Vespignani, 2008]{colizza2008}
+Colizza, V. and Vespignani, A. (2008).
+\newblock Epidemic modeling in metapopulation systems with heterogeneous
+  coupling pattern: Theory and simulations.
+\newblock {\em Journal of Theoretical Biology}, 251(3):450--467.
+
+\bibitem[Gillespie, 1977]{gillespie1977exact}
+Gillespie, D.~T. (1977).
+\newblock Exact stochastic simulation of coupled chemical reactions.
+\newblock {\em The Journal of Physical Chemistry}, 81(25):2340--2361.
+
+\bibitem[Kerr et~al., 2021]{kerr2021}
+Kerr, C.~C., Stuart, R.~M., Mistry, D., Abeysuriya, R.~G., Rosenfeld, K., Hart,
+  G.~R., N{\'u}{\~n}ez, R.~C., Cohen, J.~A., Selvaraj, P., Hagedorn, B.,
+  George, L., Jastrz{\k{e}}bski, M., Izzo, A.~S., Fowler, G., Palmer, A.,
+  Delport, D., Scott, N., Kelly, S.~L., Bennette, C.~S., Wagner, B.~G., Chang,
+  S.~T., Oron, A.~P., Wenger, E.~A., Panovska-Griffiths, J., Famulare, M., and
+  Klein, D.~J. (2021).
+\newblock Covasim: An agent-based model of covid-19 dynamics and interventions.
+\newblock {\em PLoS Computational Biology}, 17(7):e1009149.
+
+\bibitem[Kuryliak et~al., 2025]{kuryliak2025simulating}
+Kuryliak, Y., Emmerich, M.~T., and Dosyn, D. (2025).
+\newblock Simulating epidemic peak dynamics on complex networks using efficient
+  gillespie algorithms.
+\newblock {\em Infection, Genetics and Evolution}, 132:105768.
+
+\bibitem[Vestergaard and G{\'e}nois, 2015]{vestergaard2015}
+Vestergaard, C.~L. and G{\'e}nois, M. (2015).
+\newblock Temporal gillespie algorithm: Fast simulation of contagion processes
+  on time-varying networks.
+\newblock {\em PLoS Computational Biology}, 11(10):e1004579.
+
+\end{thebibliography}

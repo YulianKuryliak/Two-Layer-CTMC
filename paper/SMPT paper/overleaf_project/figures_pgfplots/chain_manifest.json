@@ -1,0 +1,22 @@
+{
+  "purpose": "Editable LaTeX figures from immutable saved corrected-chain data",
+  "inputs": {
+    "output/analysis/chain_corrected_figures_20261008/cell_summary.csv": "f26074b3031142dbd1f27848ce6cc50319571d243b421f3991ef9d15cf2ef0c3",
+    "output/analysis/chain_corrected_figures_20261008/median_layer_metrics.csv": "3b8adf7d0560a6d36cacb71ddd7c2301bb56128c475bc69b8517d00ad06deeb6",
+    "output/analysis/chain_corrected_figures_20261008/trajectory_cdf_cache/aspl1_k1.npz": "4f1cde51567e50d539e45a3e386776d998c3bdefe6cc9d29332fcc18307a88ca"
+  },
+  "accuracy": {
+    "median_limit": 40.307303343994505,
+    "w1_limit": 40.88324313976721,
+    "cells": 48
+  },
+  "chain_heatmap": {
+    "median_limit": 14.28295105051232,
+    "w1_limit": 13.83377890219645,
+    "cells": 108
+  },
+  "paired_runs_per_cell": 400,
+  "rho": ".003*sigma_full; manuscript definition, not the alternative CSV rho column",
+  "verification": "17-digit tables round-trip to source within 2e-15 relative tolerance; exact configuration coverage; no statistical recomputation or simulations",
+  "uncertainty": "Clique-chain bands are IQR; descriptor horizontal intervals are saved 95% bootstrap intervals; hatches use saved W1 permutation p>=.05 only"
+}

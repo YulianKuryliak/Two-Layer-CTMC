@@ -1,0 +1,32 @@
+{
+  "body_preserved_except_citation_layout_and_approved_acknowledgment": true,
+  "approved_acknowledgment_replacement": true,
+  "labels": 50,
+  "citation_commands": 26,
+  "unique_cited_keys": 25,
+  "numbered_equations": 12,
+  "figures": 7,
+  "tables": 3,
+  "algorithms": 1,
+  "abstract_words": 239,
+  "plot_tables_sha256_match": 37,
+  "original_template_files_unchanged": 56,
+  "pages": 17,
+  "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+  "pdf_sha256": "461b29212ba581e96a4a51dc62bc5e5d97bdf2d55b802cd1532ba090a28dcd01",
+  "main_tex_sha256": "a0535b37f59bb5826d730b0dd3746263c5939865c5f4211a65555a00194ddfed",
+  "appendices_restored": [
+    "A",
+    "B",
+    "C"
+  ],
+  "limitations": [
+    "Data availability placeholder and missing author biographies remain; other declarations were not edited."
+  ],
+  "simulations_run": false,
+  "backup": "paper/IEEE_version/acknowledgment_backup_20261022T113341Z",
+  "visual_checks": [
+    "Acknowledgment wording, heading, paragraph division and reference columns on page17"
+  ],
+  "exact_user_text": true
+}

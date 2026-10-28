@@ -1,0 +1,32 @@
+--- /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/restore_appendix_B_20261023T195931Z/main.tex
++++ /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/main.tex
+@@ -980,7 +980,7 @@
+ 
+ The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
+ 
+-\yulian{}{Sampling variability must be considered when interpreting the Wasserstein distance. \michael{For independent samples of size $R$ from an exponential distribution with mean $\mu$, the large-$R$ approximation is $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, giving about $8.9\%$ for $R=400$ (Appendix~\ref*{app:floor}). This is an illustrative sampling baseline, not the critical value for our paired permutation tests.}{For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}).} Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.}
++\yulian{Sampling variability must be considered when interpreting the Wasserstein distance. \michael{For independent samples of size $R$ from an exponential distribution with mean $\mu$, the large-$R$ approximation is $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, giving about $8.9\%$ for $R=400$ (Appendix~\ref*{app:floor}). This is an illustrative sampling baseline, not the critical value for our paired permutation tests.}{For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}).} Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.}{}
+ 
+ Unlike the temporal distance, every premature export directly indicates a violation of the admissible transmission order. For example, at ASPL 4 and $k=1$, such violations occurred in 19.75\% of runs, although the time distributions remained relatively close.
+ 
+@@ -1430,16 +1430,16 @@
+ \end{tabular}
+ \end{table}
+ 
+-\yulian{}{\section{Sampling floor of the Wasserstein distance}
++\yulian{\section{Sampling floor of the Wasserstein distance}
+ \label{app:floor}
+ 
+ Let $F_R$ and $G_R$ be empirical CDFs of two independent samples of size $R$ from the same continuous law $F$. Then $W_1=\int|F_R-G_R|\,dx$, and $\sqrt{R}\,(F_R-G_R)$ is approximately $\sqrt{2}$ times a Brownian bridge evaluated at $F(x)$ \cite{delbarrio1999}. Since $\mathbb{E}|B(u)|=\sqrt{2u(1-u)/\pi}$ for a Brownian bridge $B$,
+ \[
+ \mathbb{E}[W_1]\approx\frac{2}{\sqrt{\pi R}}\int\sqrt{F(x)\bigl(1-F(x)\bigr)}\,dx .
+ \]
+-For an exponential law with mean $\mu$, the integral equals $\mu\pi/2$, so that $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, which is 8.9\% for $R=400$ and 1.8\% for $R=10\,000$. Arrival times that are sums of several crossings are less dispersed relative to their mean, and their floor is correspondingly lower; the permutation floors of the chain configurations ranged from 1.6\% to 5.9\%.
+-
+-\section{Reproducibility details}
++For an exponential law with mean $\mu$, the integral equals $\mu\pi/2$, so that $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, which is 8.9\% for $R=400$ and 1.8\% for $R=10\,000$. Arrival times that are sums of several crossings are less dispersed relative to their mean, and their floor is correspondingly lower; the permutation floors of the chain configurations ranged from 1.6\% to 5.9\%.}{}
++
++\yulian{}{\section{Reproducibility details}
+ \label{app:repro}
+ 
+ Seeds are derived deterministically from the experiment parameters. Each \TS{} engine draws from a private pseudorandom stream; midpoint probes copy the stream state of their engine and do not advance it. Two \Full{} runs ($n=50$, ASPL 6, $k=1$) had not reached the tenth community by $T=30\,000$. They were rerun to $T=40\,000$ with the same graphs, initial nodes and event seeds. Their event histories up to 30\,000 were verified to match the saved runs, and their terminal arrivals occurred at about 31\,059 and 31\,007. No horizon value was substituted for an unobserved event. The permutation and bootstrap analyses of the chain configurations, the descriptor $\sigma_T$ and Figures~\ref{fig:accuracy_map}--\ref{fig:descriptor} were computed from the saved runs by the scripts \path{extrascripts/analysis/smpt_twoscale_paper_metrics.py} and \path{extrascripts/visualization/smpt_twoscale_paper_figures.py}.}

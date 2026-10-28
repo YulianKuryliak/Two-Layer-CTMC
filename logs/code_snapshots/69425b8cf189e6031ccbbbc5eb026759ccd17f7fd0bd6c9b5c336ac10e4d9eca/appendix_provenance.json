@@ -1,0 +1,13 @@
+{
+  "source": "paper/SMPT paper/main-SMPT-twoscale.tex",
+  "source_sha256": "6eaf889ce7ed02a19ce10b06ed9d8e6c960c872ca121e89af62e48914fabd2d1",
+  "recovered_block_sha256": "cac65399d5ba745e22a1e5859c233fff8581312d22a144a8f3d8c0cadcdfcead",
+  "source_lines": "520-567",
+  "changes": [
+    "IEEE appendices command",
+    "split long formula",
+    "IEEE numerical citation",
+    "compact single-column verification table with shortened headers"
+  ],
+  "original_main_unchanged": true
+}

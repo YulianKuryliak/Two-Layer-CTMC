@@ -1,0 +1,997 @@
+{
+  "data/chains/cell_summary.csv": {
+    "rows": 48,
+    "columns": [
+      {
+        "name": "n",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "aspl",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mean_degree",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "R",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mean_full_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_mm_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_full_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_mm_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rel_w1_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rel_w1_null95_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rel_w1_null_median_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rel_w1_perm_p",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_shift_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_shift_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_shift_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_shift_perm_p",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_shift_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "first_cross_shift_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "first_cross_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "first_cross_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_cross_shift_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_cross_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_cross_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_minus_first_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_minus_first_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "later_minus_first_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_access_full",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rho",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "sigma_full",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "rho_sigma",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_chain_bypass_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_chain_bypass_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_full_runtime_s",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_mm_runtime_s",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "extended_runs",
+        "dtype": "int64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/chains/layer_metrics.csv": {
+    "rows": 108,
+    "columns": [
+      {
+        "name": "target_ASPL",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "community",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "pairs_available",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_observed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mm_observed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "both_observed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_completion_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_completion_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_full",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_mm",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "signed_relative_mean_shift_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "local_delta_relative_mean_shift_percent",
+        "dtype": "float64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/chains/median_layer_metrics.csv": {
+    "rows": 108,
+    "columns": [
+      {
+        "name": "target_ASPL",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "community",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "paired_runs",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "median_full",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "median_mm",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "signed_relative_median_shift_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_percent",
+        "dtype": "float64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/chains/per_run.csv.gz": {
+    "rows": 19200,
+    "columns": [
+      {
+        "name": "n",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "aspl",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mean_degree",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "network_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "replicate_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_runtime_s",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_runtime_s",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "extended",
+        "dtype": "bool",
+        "missing": 0
+      },
+      {
+        "name": "full_T0",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T1",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T2",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T3",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T4",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T5",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T6",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T7",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T8",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB0",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB1",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB2",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB3",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB4",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB5",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB6",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB7",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_TB8",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_sd",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T0",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T1",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T2",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T3",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T4",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T5",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T6",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T7",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T8",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_T9",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB0",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB1",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB2",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB3",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB4",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB5",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB6",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB7",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_TB8",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_horizon",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_horizon",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "repeat_imports",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "repeat_imports_to_endpoint",
+        "dtype": "int64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/chains/terminal_metrics.csv": {
+    "rows": 48,
+    "columns": [
+      {
+        "name": "n",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "target_ASPL",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "checkpoint_count",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "paired_observed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "extended_full_to40000",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "signed_median_shift_percent",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_percent",
+        "dtype": "float64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/clique_leaf/observations.csv.gz": {
+    "rows": 20000,
+    "columns": [
+      {
+        "name": "family",
+        "dtype": "str",
+        "missing": 0
+      },
+      {
+        "name": "benchmark",
+        "dtype": "str",
+        "missing": 0
+      },
+      {
+        "name": "replication_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "simulator",
+        "dtype": "str",
+        "missing": 0
+      },
+      {
+        "name": "bridge_infection_time",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "bridge_to_export_delay",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "total_export_time",
+        "dtype": "float64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/source_leaf/cell_summary.csv": {
+    "rows": 42,
+    "columns": [
+      {
+        "name": "target_aspl",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "actual_aspl_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mean_degree",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "network_lineages",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "paired_runs",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_completion",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mm_completion",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_export_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_export_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_export_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_export_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_export_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_export_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "signed_relative_bias_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "signed_relative_bias_pct_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "signed_relative_bias_pct_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_pct_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "relative_w1_pct_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bridge_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bridge_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bridge_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bypass_pct",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bypass_pct_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bypass_pct_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_delay_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_delay_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_delay_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_delay_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_delay_mean_ci_low",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_delay_mean_ci_high",
+        "dtype": "float64",
+        "missing": 0
+      }
+    ]
+  },
+  "data/source_leaf/paired_runs.csv.gz": {
+    "rows": 16800,
+    "columns": [
+      {
+        "name": "target_aspl",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "lineage_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "interface_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "event_id",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "actual_aspl",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "initial_node",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "bridges_json",
+        "dtype": "str",
+        "missing": 0
+      },
+      {
+        "name": "graph_path",
+        "dtype": "str",
+        "missing": 0
+      },
+      {
+        "name": "full_event_seed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "mm_event_seed",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "full_export",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_export",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "mm_bridge",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bypass",
+        "dtype": "bool",
+        "missing": 0
+      },
+      {
+        "name": "mm_bypass",
+        "dtype": "bool",
+        "missing": 0
+      },
+      {
+        "name": "full_observed",
+        "dtype": "bool",
+        "missing": 0
+      },
+      {
+        "name": "mm_observed",
+        "dtype": "bool",
+        "missing": 0
+      },
+      {
+        "name": "raw_member",
+        "dtype": "str",
+        "missing": 0
+      }
+    ]
+  },
+  "data/tables/table_3_clique_verification.csv": {
+    "rows": 8,
+    "columns": [
+      {
+        "name": "n",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "k",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "pairs",
+        "dtype": "int64",
+        "missing": 0
+      },
+      {
+        "name": "beta",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "exact_bridge_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge_mean",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "full_bridge_sem",
+        "dtype": "float64",
+        "missing": 0
+      },
+      {
+        "name": "exact_wait_mean",
+        "dtype": "float64",
+        "missing": 4
+      },
+      {
+        "name": "full_wait_mean",
+        "dtype": "float64",
+        "missing": 4
+      },
+      {
+        "name": "full_wait_sem",
+        "dtype": "float64",
+        "missing": 4
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+.venv
+plots
+data
+__pycache__/
+build/
+dist/
+*.egg-info/
+simulations.db
+# sim_db.py
+*copy*
+*test*
+!/tests/
+!/tests/test_residual_import_clock.py
+.codex

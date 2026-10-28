@@ -1,0 +1,38 @@
+{
+  "analysis": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008",
+  "inputs": {
+    "cell_summary": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/cell_summary.csv",
+    "per_run": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/per_run.csv.gz",
+    "layer_metrics": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/layer_metrics.csv",
+    "median_layer_metrics": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/median_layer_metrics.csv",
+    "terminal_metrics": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/terminal_metrics.csv",
+    "cdf_cache": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/analysis/chain_corrected_figures_20261008/trajectory_cdf_cache"
+  },
+  "source_scripts_sha256": {
+    "plot_l10_aspl_chain_random_initial.py": "13c9390a0b8acc7ff1a8f599daae3192849c48cad01c029ab8d72f497348a369",
+    "plot_l10_aspl_chain_median_heatmap.py": "c5ac0cce1ca1a51d14588dcada8ed9aca9983e35fdbbd57712d212a7c6030b3b",
+    "plot_l10_aspl_chain_labeled_heatmap.py": "cc615e2b2388a826f0c086b57d0de47802913a330b7bd12faddcfb83eea31fef",
+    "plot_l10_aspl_chain_size_heatmap.py": "1ff6b1e4a27c7a31075dbfd710cc610d4486f7fafcfbced1a86447c46eb0137c",
+    "plot_l10_aspl_chain_trajectory_cdf.py": "5e92ac3500cbbf3bd5bf758a71e5878c4cafe821cd267d123ef7e3ad21c379b2",
+    "plot_chain_cliques_n1000_k1_article.py": "2cd307998059730ca860a14a5e168c0e93f1452eb188ddca49a08f73fbf34973",
+    "smpt_twoscale_paper_figures.py": "303edc3089d8e864eef51b52c61f3710ef83a11a64d691bf88867ef9c54bd176"
+  },
+  "figures": [
+    "aspl_chain_arrival_error_map.png",
+    "aspl_chain_arrival_error_map_labeled.png",
+    "aspl_chain_completion_map.png",
+    "aspl_chain_last_arrival_ecdf.png",
+    "aspl_chain_local_transition_error.png",
+    "aspl_chain_median_arrival_error_map_labeled.png",
+    "aspl_chain_size_terminal_arrival_heatmap.png",
+    "aspl_chain_trajectory_cdf_all.png",
+    "aspl_chain_trajectory_cdf_k1.png",
+    "aspl_chain_trajectory_cdf_k5.png",
+    "chain_cliques_n1000_k1_propagation_cdf_random_initial.png",
+    "contact_sheet.png",
+    "fig_accuracy_map.png",
+    "fig_descriptor.png"
+  ],
+  "contact_sheet": "contact_sheet.png",
+  "validation": "400 observed paired arrivals in every ordinary-arrival cell; PNGs verified with Pillow"
+}

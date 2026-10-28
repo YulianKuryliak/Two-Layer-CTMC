@@ -1,0 +1,16 @@
+{
+  "replaced_figure_bodies": {
+    "clique_leaf": 2,
+    "source_sweep": 2,
+    "chain_cliques": 2,
+    "chain_heatmap": 2,
+    "accuracy": 2,
+    "descriptor": 2
+  },
+  "plot_code": "inline in main-SMPT_UK.tex",
+  "numeric_tables": "figures_pgfplots/*.dat",
+  "preconversion_main_sha256": "16d7235af3f840634f6f17932301eb6044d49de70fc4f4d3af10c8fd52f77b6f",
+  "previous_main_sha256": "d0194b2838d82af1f1611fdfc6d89ef72009d77add7a93e93faa3e5726e21268",
+  "current_main_sha256": "71636d982e261f96280dfbd2499df9a3eb59e16945c7a6ceeaa569bfd444cf49",
+  "scope": "PGFPlots setup, figure bodies, obsolete legacy legend explanations only; inherited duplicate Results retained"
+}

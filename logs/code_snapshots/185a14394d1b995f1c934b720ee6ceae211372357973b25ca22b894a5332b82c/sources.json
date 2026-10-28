@@ -1,0 +1,42 @@
+{
+  "attribution": "Source: Insee. Mobility 2022 release 2025-06-26; COG geography 2025-01-01, page updated 2025-03-04.",
+  "mobility_page": "https://www.insee.fr/fr/statistiques/8582949",
+  "geography_page": "https://www.insee.fr/fr/information/8377162",
+  "license": "Licence Ouverte / Open Licence 2.0 (unless otherwise specified by INSEE)",
+  "license_source": "https://www.insee.fr/fr/information/2008466",
+  "files": [
+    {
+      "path": "raw/mobility_2022.zip",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/8582949/base-flux-mobilite-domicile-lieu-travail-2022_csv.zip",
+      "sha256": "e3a4aa5907887fa08ec53ef655b76aac721928961f12bdd65713d1f8a0a4315b",
+      "bytes": 12151852,
+      "retrieved_utc": "2026-10-16T13:00:33.312704+00:00"
+    },
+    {
+      "path": "raw/v_commune_2025.csv",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/8377162/v_commune_2025.csv",
+      "sha256": "3f8d2913fb0bdee1f72f54706854dc0cd626ed4089bd5761ec9292db0cb12e7e",
+      "bytes": 3569959,
+      "retrieved_utc": "2026-10-16T13:00:37.604496+00:00"
+    },
+    {
+      "path": "raw/v_departement_2025.csv",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/8377162/v_departement_2025.csv",
+      "sha256": "513900ca23edc682ef9b912d7bfc317129eac3a7d71ff19bc22b40ea4838e6eb",
+      "bytes": 6076,
+      "retrieved_utc": "2026-10-16T13:00:38.126938+00:00"
+    },
+    {
+      "path": "raw/mobility_method.pdf",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/8582949/fiche-depl-dom-travail.pdf",
+      "sha256": "dc04b079e3100d6ee9d3d050fbd5abe8a7eb25f98e705914512f5db89277ca3e",
+      "bytes": 272640,
+      "retrieved_utc": "2026-10-16T13:00:39.004926+00:00"
+    }
+  ],
+  "main_paper": {
+    "path": "paper/SMPT paper/main-SMPT.tex",
+    "sha256": "e51f48673fb28bdac8784ea3728d4398ced30f9c3b0859d62eef796eaea268f1"
+  },
+  "download_note": "Certificate-chain verification retained; Windows Schannel best-effort revocation used in WSL when system Linux trust cannot validate enterprise TLS interception."
+}

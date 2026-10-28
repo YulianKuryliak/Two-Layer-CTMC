@@ -1,0 +1,16 @@
+{
+  "source_change": "Only unnumbered Code availability section inserted",
+  "compiler": "pdfLaTeX",
+  "pages": 22,
+  "build": "success",
+  "new_undefined_or_duplicate_refs": false,
+  "appendices_absent_with_reserved_labels": [
+    "app:clique",
+    "app:floor",
+    "app:repro"
+  ],
+  "uk_source_edited": false,
+  "simulations_run": false,
+  "zip_members": 166,
+  "source_sha256": "c931bd6ad5f0ae5c20bb71ffbc6f66cf2ae321dd6cbf553ac1325819446c2d7e"
+}

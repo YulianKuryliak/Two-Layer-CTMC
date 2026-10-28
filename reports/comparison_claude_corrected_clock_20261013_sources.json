@@ -1,0 +1,66 @@
+{
+  "created_utc": "2026-10-13T15:01:20.578116+00:00",
+  "response_mode": "inline with full table attachment",
+  "source_hashes": {
+    "output/analysis/chain_corrected_figures_20261008/cell_comparison.csv": "ea2744c2a1e37040bcfcef72a0cddc88817506f7ae748ca63692261fcaa2f875",
+    "output/analysis/chain_corrected_figures_20261008/old_reference/cell_summary.csv": "97b2de25162ae77cfa2a5493f1fb06af290ea81639e3ac0c986b7b67b4a2b27a",
+    "output/analysis/chain_corrected_figures_20261008/cell_summary.csv": "f26074b3031142dbd1f27848ce6cc50319571d243b421f3991ef9d15cf2ef0c3",
+    "output/analysis/chain_corrected_figures_20261008/analysis_manifest.json": "62e240d287410f970e26407c57f47fed849601be3bb8761f94cb7aea0c6a1d20"
+  },
+  "checks": [
+    "48 unique cells",
+    "selected columns agree with old/new summary CSVs",
+    "deltas equal new-old",
+    "Full medians unchanged",
+    "no W1 significance-classification changes"
+  ],
+  "changed_w1_significance_cells": 0,
+  "rounding": {
+    "markdown": "percent2 decimals, deltas3 decimals",
+    "csv": "9 significant digits"
+  },
+  "simulation": false,
+  "article_changed": false,
+  "summary": [
+    [
+      "Медіана відносної W₁ серед 48 конфігурацій",
+      "8.89%",
+      "9.07%"
+    ],
+    [
+      "Діапазон відносної W₁",
+      "1.13–41.28%",
+      "1.11–40.88%"
+    ],
+    [
+      "Медіана абсолютного відносного зсуву медіанного T₉ серед конфігурацій",
+      "8.31%",
+      "8.53%"
+    ],
+    [
+      "Конфігурації з відмінністю від Full, p<0.05 за W₁",
+      "33 / 48",
+      "33 / 48"
+    ],
+    [
+      "Рангова кореляція W₁ з ρ, усі конфігурації",
+      "0.9146",
+      "0.9136"
+    ],
+    [
+      "Рангова кореляція W₁ з ρ, ASPL≥3",
+      "0.9802",
+      "0.9776"
+    ],
+    [
+      "Сильніший зсув наступних переходів: від’ємний інтервал різниці, k=1",
+      "9 / 16",
+      "9 / 16"
+    ],
+    [
+      "Сильніший зсув наступних переходів: від’ємний інтервал різниці, k=5",
+      "3 / 16",
+      "4 / 16"
+    ]
+  ]
+}

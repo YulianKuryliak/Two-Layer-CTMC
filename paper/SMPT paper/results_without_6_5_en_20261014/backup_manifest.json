@@ -1,0 +1,27 @@
+[
+  {
+    "path": "paper\\SMPT paper\\main-SMPT.tex",
+    "sha256": "f56f7f9b969a780b813578333bd65d2f84854221f46cc00df1629fb05bedeacd",
+    "bytes": 118116
+  },
+  {
+    "path": "paper\\SMPT paper\\main-SMPT.pdf",
+    "sha256": "324b069a2471ca67e4d168f93e1ad150a496bb36007336ac249c6db205ebfd4a",
+    "bytes": 911014
+  },
+  {
+    "path": "paper\\SMPT paper\\main-SMPT.txt",
+    "sha256": "5baa74b7b50cc92ab88433b573ac5dad8cb66ecb9107e9f9a9973ee80fbd02b5",
+    "bytes": 98708
+  },
+  {
+    "path": "paper\\SMPT paper\\main-SMPT_editable_figures.zip",
+    "sha256": "dd0d08dee0b6d67aa49258e7eec2bc84600068e9c5101166867ce07445f84209",
+    "bytes": 1962430
+  },
+  {
+    "path": "paper\\SMPT paper\\main-SMPT_build_README.md",
+    "sha256": "71b1437b1677168c9e16342b70950081be76bc33f51d29f41cbfdb5a2a9fdd15",
+    "bytes": 1974
+  }
+]

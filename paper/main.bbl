@@ -1,0 +1,113 @@
+\begin{thebibliography}{}
+
+\bibitem[Ajelli et~al., 2010]{ajelli2010}
+Ajelli, M., Gon{\c{c}}alves, B., Balcan, D., Colizza, V., Hu, H., Ramasco,
+  J.~J., Merler, S., and Vespignani, A. (2010).
+\newblock Comparing large-scale computational approaches to epidemic modeling:
+  Agent-based versus structured metapopulation models.
+\newblock {\em BMC Infectious Diseases}, 10:190.
+
+\bibitem[Anderson, 2007]{anderson2007}
+Anderson, D.~F. (2007).
+\newblock A modified next reaction method for simulating chemical systems with
+  time dependent propensities and delays.
+\newblock {\em The Journal of Chemical Physics}, 127(21):214107.
+
+\bibitem[Balcan et~al., 2009]{balcan2009}
+Balcan, D., Colizza, V., Gon{\c{c}}alves, B., Hu, H., Ramasco, J.~J., and
+  Vespignani, A. (2009).
+\newblock Multiscale mobility networks and the spatial spreading of infectious
+  diseases.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  106(51):21484--21489.
+
+\bibitem[Balcan et~al., 2010]{balcan2010modeling}
+Balcan, D., Colizza, V., Gon{\c{c}}alves, B., Hu, H., Ramasco, J.~J., and
+  Vespignani, A. (2010).
+\newblock Modeling the spatial spread of infectious diseases: The global
+  epidemic and mobility computational model.
+\newblock {\em Journal of Computational Science}, 1(3):132--145.
+
+\bibitem[Barbosa et~al., 2018]{barbosa2018human}
+Barbosa, H., Barthelemy, M., Ghoshal, G., James, C.~R., Lenormand, M., Louail,
+  T., Menezes, R., Ramasco, J.~J., Simini, F., and Tomasini, M. (2018).
+\newblock Human mobility: Models and applications.
+\newblock {\em Physics Reports}, 734:1--74.
+
+\bibitem[Chang et~al., 2021]{chang2021}
+Chang, S., Pierson, E., Koh, P.~W., Gerardin, J., Redbird, B., Grusky, D., and
+  Leskovec, J. (2021).
+\newblock Mobility network models of covid-19 explain inequities and inform
+  reopening.
+\newblock {\em Nature}, 589:82--87.
+
+\bibitem[Colizza et~al., 2007]{colizza2007reaction}
+Colizza, V., Pastor-Satorras, R., and Vespignani, A. (2007).
+\newblock Reaction--diffusion processes and metapopulation models in
+  heterogeneous networks.
+\newblock {\em Nature Physics}, 3(4):276--282.
+
+\bibitem[Colizza and Vespignani, 2008]{colizza2008}
+Colizza, V. and Vespignani, A. (2008).
+\newblock Epidemic modeling in metapopulation systems with heterogeneous
+  coupling pattern: Theory and simulations.
+\newblock {\em Journal of Theoretical Biology}, 251(3):450--467.
+
+\bibitem[Danon et~al., 2011]{danon2011}
+Danon, L., Ford, A.~P., House, T., Jewell, C.~P., Keeling, M.~J., Roberts,
+  G.~O., Ross, J.~V., and Vernon, M.~C. (2011).
+\newblock Networks and the epidemiology of infectious disease.
+\newblock {\em Interdisciplinary Perspectives on Infectious Diseases},
+  2011:284909.
+
+\bibitem[Eubank et~al., 2004]{eubank2004}
+Eubank, S., Guclu, H., Kumar, V. S.~A., Marathe, M.~V., Srinivasan, A.,
+  Toroczkai, Z., and Wang, N. (2004).
+\newblock Modelling disease outbreaks in realistic urban social networks.
+\newblock {\em Nature}, 429(6988):180--184.
+
+\bibitem[Gillespie, 1977]{gillespie1977exact}
+Gillespie, D.~T. (1977).
+\newblock Exact stochastic simulation of coupled chemical reactions.
+\newblock {\em The Journal of Physical Chemistry}, 81(25):2340--2361.
+
+\bibitem[Keeling and Eames, 2005]{keeling2005}
+Keeling, M.~J. and Eames, K. T.~D. (2005).
+\newblock Networks and epidemic models.
+\newblock {\em Journal of The Royal Society Interface}, 2(4):295--307.
+
+\bibitem[Kerr et~al., 2021]{kerr2021}
+Kerr, C.~C., Stuart, R.~M., Mistry, D., Abeysuriya, R.~G., Rosenfeld, K., Hart,
+  G.~R., N{\'u}{\~n}ez, R.~C., Cohen, J.~A., Selvaraj, P., Hagedorn, B.,
+  George, L., Jastrzebski, M., Izzo, A.~S., Fowler, G., Palmer, A., Delport,
+  D., Scott, N., Kelly, S.~L., Bennette, C.~S., Wagner, B.~G., Chang, S.~T.,
+  Oron, A.~P., Wenger, E.~A., Panovska-Griffiths, J., Famulare, M., and Klein,
+  D.~J. (2021).
+\newblock Covasim: An agent-based model of covid-19 dynamics and interventions.
+\newblock {\em PLoS Computational Biology}, 17(7):e1009149.
+
+\bibitem[Kiss et~al., 2017]{kiss2017}
+Kiss, I.~Z., Miller, J.~C., and Simon, P.~L. (2017).
+\newblock {\em Mathematics of Epidemics on Networks: From Exact to Approximate
+  Models}.
+\newblock Springer, Cham.
+
+\bibitem[Kuryliak et~al., 2025]{kuryliak2025simulating}
+Kuryliak, Y., Emmerich, M. T.~M., and Dosyn, D. (2025).
+\newblock Simulating epidemic peak dynamics on complex networks using efficient
+  gillespie algorithms.
+\newblock {\em Infection, Genetics and Evolution}, 132:105768.
+
+\bibitem[Pastor-Satorras et~al., 2015]{pastorsatorras2015}
+Pastor-Satorras, R., Castellano, C., Van~Mieghem, P., and Vespignani, A.
+  (2015).
+\newblock Epidemic processes in complex networks.
+\newblock {\em Reviews of Modern Physics}, 87(3):925--979.
+
+\bibitem[Vestergaard and G{\'e}nois, 2015]{vestergaard2015}
+Vestergaard, C.~L. and G{\'e}nois, M. (2015).
+\newblock Temporal gillespie algorithm: Fast simulation of contagion processes
+  on time-varying networks.
+\newblock {\em PLoS Computational Biology}, 11(10):e1004579.
+
+\end{thebibliography}

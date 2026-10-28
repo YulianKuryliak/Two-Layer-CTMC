@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-16T13:15:53.565730+00:00",
+  "unit_tests": "5/5 PASS; includes independent sparse membership-matrix block sum",
+  "national_networkx_loader": "PASS: 34858 nodes, 743711 edges; 448147 intra-department edges",
+  "simulator_API": "Both public wrapper constructors PASS; no .run calls; neutral alphas and true community sizes",
+  "source_hashes": "PASS",
+  "main_paper_unchanged": true,
+  "previous_school_document_and_artifacts_unchanged": true,
+  "fingerprint_skip_checks": "Downloader, preparation and figures PASS; no prepared artifacts rewritten",
+  "scientific_review": "PASS after resolving external-origin support, recipient law, reachability/censoring categories, scale dependence of raw rho, workforce-size confounding and strict <200 definition",
+  "source_diff_review": "Seven new source/document git no-index diffs reviewed; whitespace checks PASS",
+  "pdf_build": "Stable LuaLaTeX/latexmk",
+  "pdf_pages": 9,
+  "pdf_overfull_boxes": 0,
+  "pdf_missing_glyphs": 0,
+  "pdf_font_or_reference_warnings": 0,
+  "visual_review": "Both standalone charts and PDF pages 1,4,8 inspected in final build",
+  "simulations_run": false,
+  "limitations": [
+    "Spatial municipality-state proxy, not individuals within cities",
+    "Symmetrized employment connectivity, not measured face-to-face contact or trip frequency",
+    "France outside Mayotte; external destinations retained separately; no external-origin sample",
+    "No beta calibration, epidemic trajectories, timing-error estimates, or national rho",
+    "167 isolates and 56 disconnected local graphs retained"
+  ],
+  "artifact_sha256": {
+    "article.tex": "1180bc5c96b4a1fb1c9887b7ab0f4aac198497031f0ecdb8a7827c6c7e0c7844",
+    "article.pdf": "5347412f452de01f67195301d18b01d6783af06cca2d6111fc42b9e326a6c59d",
+    "article.txt": "5e713fda1d9f7ad63c155aac872027c33096b5842f7a1b52266f1ccfadd71b6b",
+    "prepared/manifest.json": "4e377762dff3714aeaeb80ab98d1ac49268790e3e25f36635a0e663e8a5b4185",
+    "figures/manifest.json": "cef786a85430d294bacc6d94f27aa4e8fd7ce21d50a9f07c9c8f8d7790075bb0"
+  }
+}

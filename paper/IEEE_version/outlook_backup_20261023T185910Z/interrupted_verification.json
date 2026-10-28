@@ -1,0 +1,29 @@
+{
+  "body_preserved_except_citation_layout_and_approved_acknowledgment_and_outlook": true,
+  "approved_outlook_added": true,
+  "approved_acknowledgment_replacement": true,
+  "approved_author_biographies_added": true,
+  "labels": 50,
+  "citation_commands": 29,
+  "unique_cited_keys": 28,
+  "numbered_equations": 12,
+  "figures": 7,
+  "tables": 3,
+  "algorithms": 1,
+  "abstract_words": 239,
+  "plot_tables_sha256_match": 37,
+  "original_template_files_unchanged": 56,
+  "pages": 18,
+  "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+  "pdf_sha256": "4f718ac473d04358bd7b7ca998618b36d4ddec0c670546bdeca41666aa6c7ec9",
+  "main_tex_sha256": "08178cb2f6197663eaaacee5d3412d72b999d4b2b9d61a28796801892ec6568d",
+  "appendices_restored": [
+    "A",
+    "B",
+    "C"
+  ],
+  "limitations": [
+    "Data availability placeholder remains; author photos have not been supplied; other declarations were not edited."
+  ],
+  "simulations_run": false
+}

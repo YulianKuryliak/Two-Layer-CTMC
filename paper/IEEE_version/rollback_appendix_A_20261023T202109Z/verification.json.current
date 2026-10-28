@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "action": "Revert only the last appendix A rewrite, as requested",
+  "restored_source": "paper/IEEE_version/appendix_A_clarity_20261023T201200Z",
+  "main_exactly_matches_pre_rewrite": true,
+  "overleaf_mirror_matches": true,
+  "README_and_verification_restored": true,
+  "appendix_B_retained": true,
+  "appendix_C_still_inactive": true,
+  "pdf_zip_rebuilt": false,
+  "simulations_run": false,
+  "main_tex_sha256": "10cdfd956584af5ac49903e4d6fcb49fe85cd7c50dff7f1a7e6acb540b365678"
+}

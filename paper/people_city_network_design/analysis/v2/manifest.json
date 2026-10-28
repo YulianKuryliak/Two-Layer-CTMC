@@ -1,0 +1,23 @@
+{
+  "start_utc": "2026-10-16T14:18:04.834019+00:00",
+  "end_utc": "2026-10-16T14:18:11.439015+00:00",
+  "fingerprints": {
+    "paper/people_city_network_design/sources.json": "51c1885343e215125c6dac041ad2581ae6c0bc7d1bbe964ceee7f74f3ab0c38f",
+    "paper/people_city_network_design/raw/population_2022_geography2025.zip": "cb4b918862289527232ad79fb3b712d5f4635c6de5bae762e8d22a132717ed83",
+    "paper/people_city_network_design/raw/urban_units_2025.zip": "bc43d62e67c5dc6ae25a20fc3bd440dd37408ef8313b543aa1e9cb366be44840",
+    "paper/national_network_preparation/prepared/nodes.csv": "0014c560223d687a0cc51cbd0ac457b04a164bf3a4e2d9e0b71a3546e05efe5a",
+    "paper/national_network_preparation/prepared/F_domestic.npz": "50174bb2a311ee3877916ff0edeec84df371f4042a9a869286425220074d17fc",
+    "paper/people_city_network_design/analyze_design.py": "62c3444ecc785ab2978dfa3388837614ea349f9ac26fb29ae27afaf6b4f97023"
+  },
+  "artifacts": {
+    "commune_inputs.csv": "0ba0eb0121de6a859dcf0b5dc3d89b3433ad87d1aef5b65b4d422364dd9118eb",
+    "partition_groups.csv": "da3b43b71268dbb9835bda0f3ba522a482b7be94d52d629afd98fe03b2ca6a88",
+    "partition_summary.csv": "7b9e5974dbb698899b2fd68e4f9a35dfe568eef00503ed38531c3e026cf62df9",
+    "partition_table.tex": "f433f41de8dbfd74116061e36c3f6f848b3c3ca732a0245cf78d1233e115400e",
+    "summary.json": "7aa1c9134d3977282c70398988fbe774b09f0fdd57072846d65cf5ad636678d7"
+  },
+  "simulations_run": false,
+  "numpy": "2.5.0",
+  "pandas": "3.0.3",
+  "status": "complete"
+}

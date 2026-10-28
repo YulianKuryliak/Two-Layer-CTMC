@@ -1,0 +1,13 @@
+{
+  "status": "source_only_final_revision",
+  "supervisor_text_preserved_verbatim": true,
+  "geographic_sentences_added": 1,
+  "all_citation_keys_resolved_in_bib": true,
+  "unique_cited_keys": 29,
+  "overleaf_sources_match": true,
+  "main_tex_sha256": "b82f45d643ecc58938ec714cc659728f4e49ddb85711bc2140c420c215f2edda",
+  "compiled_after_final_revision": false,
+  "pdf_status": "Existing PDF predates final supervisor-text revision; not updated at user request.",
+  "zip_status": "Existing archives not updated; use TEX/BIB sources.",
+  "simulations_run": false
+}

@@ -1,0 +1,201 @@
+% !TeX program = pdflatex
+% Complete ECDFs use streamed PGF paths to fit standard pdfLaTeX memory.
+\documentclass[a4paper,fleqn]{cas-sc}
+
+% Elsevier CAS template; target journal: Simulation Modelling Practice and Theory.
+\usepackage[T1]{fontenc}
+\usepackage{iftex}
+\ifPDFTeX\usepackage[utf8]{inputenc}\fi
+\usepackage[english]{babel}
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,fillbetween}
+\usetikzlibrary{patterns}
+\usetikzlibrary{positioning,fit,arrows.meta}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\microtypesetup{expansion=false}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\setlength{\emergencystretch}{3em}
+\hyphenation{inter-community intra-community Gillespie}
+
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\floatname{algorithm}{Algorithm}
+\floatstyle{plain}
+\restylefloat{figure}
+\restylefloat{table}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newdefinition{remark}{Remark}
+\newproof{proof}{Proof}
+
+\newcommand{\ibar}{\bar{y}}
+\newcommand{\sbar}{\bar{s}}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\Full}{\textup{\textsc{Full}}}
+\newcommand{\TS}{\textup{\textsc{TwoScale}}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\eW}{e_{W}}
+
+% Full-paper numbers for material not yet translated into this partial main.
+\AtBeginDocument{
+\newlabel{app:floor}{{B}{27}{}{}{}}
+\newlabel{app:clique}{{A}{25}{}{}{}}
+\newlabel{app:repro}{{C}{28}{}{}{}}
+}
+% BEGIN EDITABLE PLOT STYLE
+% Shared plotting style; all text inherits the article font.
+\providecommand{\ArrivalCellFont}{\fontsize{6}{7}\selectfont}
+\pgfplotsset{compat=1.18,paper axis/.style={font=\scriptsize,label style={font=\scriptsize},title style={font=\small},tick label style={font=\scriptsize},legend style={font=\scriptsize,draw=none,fill=none},axis line style={black!65},tick style={black!65},grid=major,grid style={black!10},scaled ticks=false,unbounded coords=jump,clip=true}}
+\definecolor{FullBlue}{HTML}{2878B5}
+\definecolor{ScaleOrange}{HTML}{D45A44}
+\definecolor{Size50}{HTML}{D73027}
+\definecolor{Size100}{HTML}{FC8D59}
+\definecolor{Size250}{HTML}{4575B4}
+\definecolor{Size1000}{HTML}{313695}
+\pgfplotsset{colormap={paperdiv}{rgb=(0.01960784,0.18823529,0.38039216);
+rgb=(0.12725875,0.39584775,0.66874279);
+rgb=(0.26274510,0.57647059,0.76470588);
+rgb=(0.56647443,0.76870434,0.86851211);
+rgb=(0.81960784,0.89803922,0.94117647);
+rgb=(0.96908881,0.96647443,0.96493656);
+rgb=(0.99215686,0.85882353,0.78039216);
+rgb=(0.95455594,0.64175317,0.50572857);
+rgb=(0.83921569,0.37647059,0.30196078);
+rgb=(0.69227220,0.09227220,0.16770473);
+rgb=(0.40392157,0.00000000,0.12156863);}}
+\pgfplotsset{colormap={paperseq}{rgb=(1.00000000,1.00000000,0.89803922);
+rgb=(1.00000000,0.97539408,0.77193387);
+rgb=(0.99764706,0.92156863,0.63607843);
+rgb=(0.99607843,0.84347559,0.46915802);
+rgb=(0.99607843,0.73490196,0.28000000);
+rgb=(0.99497116,0.59747789,0.15949250);
+rgb=(0.93960784,0.47137255,0.09490196);
+rgb=(0.84822760,0.35229527,0.03497116);
+rgb=(0.72000000,0.26039216,0.01098039);
+rgb=(0.55686275,0.19123414,0.01737793);
+rgb=(0.40000000,0.14509804,0.02352941);}}
+% Stream all ECDF vertices to PGF without retaining PGFPlots point metadata.
+% Arguments: display-coordinate file, stroke colour, dash setting.
+\newcommand{\DrawExactECDF}[3]{%
+  \begin{pgfonlayer}{main}%
+  \begin{pgfscope}%
+    \pgftransformshift{\pgfplotsqpointdescriptionxy{0}{0}}%
+    \pgfsetxvec{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{0pt}}%
+    \pgfsetyvec{\pgfpoint{0pt}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfusepath{clip}%
+    \pgfsetstrokecolor{#2}%
+    \pgfsetlinewidth{.8pt}%
+    #3%
+    \pgfplothandlerconstantlineto%
+    \pgfplotxyfile{#1}%
+    \pgfusepath{stroke}%
+  \end{pgfscope}%
+  \end{pgfonlayer}%
+}
+% END EDITABLE PLOT STYLE
+\begin{document}
+\shorttitle{Figure 2 inset preview}
+\shortauthors{Kuryliak and Emmerich}
+\pagestyle{empty}
+\begin{figure}[tbp]
+\centering
+% BEGIN EDITABLE FIGURE clique_leaf
+% Editable PGFPlots version of clique_leaf_endpoint_and_mechanism.
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=1.55cm},
+  set layers=standard,
+  paper axis, width=.24\linewidth, height=3.7cm, scale only axis,
+  legend style={font=\scriptsize, draw=none},
+]
+\nextgroupplot[
+  title={\textbf{a} Export times},
+  xlabel={total export time}, ylabel={empirical CDF},
+  xmin=0, xmax=600, ymin=0, ymax=1.01,
+  legend style={at={(.98,.36)}, anchor=south east},
+  extra description/.code={
+    \DrawExactECDF{figures_pgfplots/leaf_clique_export_full_path.dat}{FullBlue}{\pgfsetdash{}{0pt}}
+    \DrawExactECDF{figures_pgfplots/leaf_clique_export_twoscale_path.dat}{ScaleOrange}{\pgfsetdash{{3pt}{3pt}}{0pt}}
+  },
+]
+  \addlegendimage{color=FullBlue, solid, no markers, line width=.8pt}
+  \addlegendentry{Full}
+  \addlegendimage{color=ScaleOrange, dashed, no markers, line width=.8pt}
+  \addlegendentry{TwoScale}
+  \node[anchor=south east, align=right, fill=white, draw=black!20, inner sep=2pt, font=\scriptsize]
+    at (rel axis cs:.97,.07) {$W_1=3.249$\\$D_{\rm KS}=0.0142$};
+\nextgroupplot[
+  title={\textbf{b} Export minus bridge},
+  xlabel={$T_{\mathrm{export}}-T_B$}, ylabel={empirical CDF},
+  xmin=-20, xmax=100, ymin=0, ymax=.55,
+  extra description/.code={
+    \DrawExactECDF{figures_pgfplots/leaf_clique_signed_delay_full_path.dat}{FullBlue}{\pgfsetdash{}{0pt}}
+    \DrawExactECDF{figures_pgfplots/leaf_clique_signed_delay_twoscale_path.dat}{ScaleOrange}{\pgfsetdash{{3pt}{3pt}}{0pt}}
+  },
+]
+  \path[fill=black!8] (axis cs:-20,0) rectangle (axis cs:0,.55);
+  \addplot+[black!75, no markers, line width=.35pt] coordinates {(0,0) (0,.55)};
+
+
+  \node[anchor=north west, font=\scriptsize, text=black!65] at (axis cs:-18,.51) {export before bridge};
+\nextgroupplot[
+  title={\textbf{c} Bridge bypass},
+  ylabel={bridge-bypass runs (\%)},
+  xmin=.5, xmax=2.5, ymin=-.03, ymax=1.35, clip=false,
+  xtick={1,2}, xticklabels={Full,TwoScale},
+]
+  \addplot+[
+    only marks, mark=*, mark size=1.7pt, color=black!80,
+    error bars/.cd, y dir=both, y explicit,
+  ] table[x=x,y=rate_pct,
+      y error minus expr=\thisrow{rate_pct}-\thisrow{low_pct},
+      y error plus expr=\thisrow{high_pct}-\thisrow{rate_pct}]
+      {figures_pgfplots/leaf_clique_bypass.dat};
+  \node[anchor=south, align=center, font=\scriptsize] at (axis cs:1,.14) {0/10000\\(0.00\%)};
+  \node[anchor=south, align=center, font=\scriptsize] at (axis cs:2,1.18) {98/10000\\(0.98\%)};
+\end{groupplot}
+% Zoom of the original signed-delay observations; vertical values are percent.
+\begin{axis}[
+  paper axis, at={(group c2r1.south east)}, anchor=south east,
+  xshift=-.12cm, yshift=.40cm,
+  width=.105\linewidth, height=1.35cm, scale only axis,
+  axis background/.style={fill=white},
+  font=\tiny, tick label style={font=\tiny},
+  xmin=-22, xmax=3, ymin=0, ymax=2.5,
+  xtick={-20,-10,0}, ytick={0,1,2},
+  scaled ticks=false, unbounded coords=discard,
+]
+  \path[fill=black!8] (axis cs:-22,0) rectangle (axis cs:0,2.5);
+  \node[anchor=north west, font=\tiny, inner sep=1pt] at (rel axis cs:.03,.97) {CDF (\%)};
+  \addplot[black!65, no marks, line width=.25pt]
+    coordinates {(0,0) (0,2.5)};
+  \addplot[FullBlue, const plot, no marks, line width=.6pt,
+    restrict x to domain=-22:3]
+    table[x=x,y expr=100*\thisrow{y}]
+    {figures_pgfplots/leaf_clique_signed_delay_full.dat};
+  \addplot[ScaleOrange, const plot, no marks, line width=.6pt,
+    dash pattern=on 2pt off 1.5pt, restrict x to domain=-22:3]
+    table[x=x,y expr=100*\thisrow{y}]
+    {figures_pgfplots/leaf_clique_signed_delay_twoscale.dat};
+\end{axis}
+\end{tikzpicture}
+% END EDITABLE FIGURE clique_leaf
+\caption{%
+First export of infection in the clique--leaf network ($n=100$, $k=2$, $\beta=0.005$, 10\,000 runs of each model).
+(a) Empirical distribution functions of the export time.
+(b) Distributions of the difference $T_{\mathrm{export}}-T_B$; negative values correspond to export before either real bridge node becomes infected. The inset magnifies the region near zero; its CDF values are shown as percentages.
+(c) Fraction of runs with this violation of the transmission order and 95\% confidence intervals.
+}
+\label{fig:clique_leaf}
+\end{figure}
+\end{document}

@@ -1,0 +1,33 @@
+{
+  "scientific_source": "claude-version_merged_parallel_uk_back.tex: Section6",
+  "figures": {
+    "chain_cliques_n1000_k1_propagation_cdf_random_initial.pdf": {
+      "source": "output/analysis/chain_corrected_figures_20261008/figures/chain_cliques_n1000_k1_propagation_cdf_random_initial.pdf",
+      "sha256": "91ebfa4b7f4cd77255dd752b34e69941aa511373e6cae05390cf6b71c131eb17"
+    },
+    "aspl_chain_median_arrival_error_map_labeled.pdf": {
+      "source": "output/analysis/chain_corrected_figures_20261008/figures/aspl_chain_median_arrival_error_map_labeled.pdf",
+      "sha256": "007eecf4f5b56a0bab94c4c924ac971462b5c79e9873ec18281102c1691e1a63"
+    },
+    "fig_accuracy_map.pdf": {
+      "source": "output/analysis/chain_corrected_figures_20261008/figures/fig_accuracy_map.pdf",
+      "sha256": "06af134f05697fb57be74b363c5bad34b2185d4ade9ddc86c20231af350d23b0"
+    },
+    "fig_descriptor.pdf": {
+      "source": "output/analysis/chain_corrected_figures_20261008/figures/fig_descriptor.pdf",
+      "sha256": "72b4d7eee789a34f54e5cc636cee00f93c151b190cb828ef37604ba1987ea6bf"
+    }
+  },
+  "paper_rho_definition": "0.003 * sigma_full; CSV rho and rho_sigma are different alternative descriptors",
+  "english_main_sha256": "72730e8a44bad31781b6e981a7c7e46283d81d73e21ec76d5eccd8adcffd583d",
+  "uk_main_before_sha256": "aae80f4d98cc99c81fddd360a22607ce2b43bf9b2d16f133ee1ea876a33261f7",
+  "old_number_updates": {
+    "aspl2to3_n1000_w1_range": [
+      1.3180005448039973,
+      2.8166244551336064
+    ],
+    "dense_w1_max": 4.524224168294414,
+    "spearman_all": 0.9135909683022144
+  },
+  "scope": "Section6 only; current Sections1-5 and English main unchanged; historical leaf datasets retained and explicitly identified"
+}

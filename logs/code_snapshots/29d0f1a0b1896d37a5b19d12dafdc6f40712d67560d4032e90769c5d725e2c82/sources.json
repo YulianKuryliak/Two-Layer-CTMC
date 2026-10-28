@@ -1,0 +1,116 @@
+{
+  "as_of": "2026-10-16",
+  "scope": "Focused seven-study explanatory review, not a systematic literature review",
+  "sources": [
+    {
+      "id": "salathe",
+      "doi": "10.1073/pnas.1009094107",
+      "url": "https://www.pnas.org/doi/10.1073/pnas.1009094107",
+      "checked_copy": "https://web.stanford.edu/~jhj1/papers/salathe_etal2010.pdf",
+      "checked_sections": "Methods, Fig.2, Fig.4 and study limitations",
+      "evidence_type": "Observed proximity; simulated epidemic vs school absentee/fever observations"
+    },
+    {
+      "id": "eubank",
+      "doi": "10.1038/nature02541",
+      "url": "https://www.nature.com/articles/nature02541",
+      "checked_sections": "Abstract and supplementary validation/data description",
+      "evidence_type": "Synthetic activity/contact graph; transport/activity validation, not edge validation"
+    },
+    {
+      "id": "guarino",
+      "doi": "10.3390/fi13050108",
+      "url": "https://www.mdpi.com/1999-5903/13/5/108",
+      "checked_copy": "https://www.cranic.it/data/futureinternet_v2.pdf",
+      "local_copy": "sources/guarino2021.pdf",
+      "checked_sections": "Sections3–4, Table6 PDFpage20; table image visually inspected",
+      "evidence_type": "Synthetic home/friendship graph; structural characterization",
+      "numeric_rows": [
+        {
+          "mu": 5,
+          "fitness": 1,
+          "distance_exponent": 0.5,
+          "mean_degree": 6.82,
+          "ASPL": 6.72,
+          "global_clustering": 0.053,
+          "mean_local_clustering": 0.074,
+          "giant_percent": 98.8
+        },
+        {
+          "mu": 10,
+          "fitness": 1,
+          "distance_exponent": 0.5,
+          "mean_degree": 11.81,
+          "ASPL": 5.36,
+          "global_clustering": 0.017,
+          "mean_local_clustering": 0.027,
+          "giant_percent": 99.9
+        }
+      ],
+      "caveat": "ASPL averaging domain not independently established; reported as authors table values"
+    },
+    {
+      "id": "machens",
+      "doi": "10.1186/1471-2334-13-185",
+      "url": "https://link.springer.com/article/10.1186/1471-2334-13-185",
+      "checked_sections": "Data, contact representations, Results Figures2–4 and Discussion",
+      "evidence_type": "Simulations on reconstructed matrices vs simulations on measured temporal contacts; no observed-outbreak validation"
+    },
+    {
+      "id": "genois",
+      "doi": "10.1038/ncomms9860",
+      "url": "https://www.nature.com/articles/ncomms9860",
+      "checked_sections": "Estimation of epidemic sizes, reshuffled datasets, Discussion and reconstruction algorithm",
+      "evidence_type": "Controlled uniform resampling; surrogate-vs-fuller-observed-network epidemic simulations",
+      "caveat": "Residual large-outbreak overestimation; original sensor sample itself incomplete"
+    },
+    {
+      "id": "mistry",
+      "doi": "10.1038/s41467-020-20544-y",
+      "url": "https://www.nature.com/articles/s41467-020-20544-y",
+      "checked_sections": "Reconstruction, Human-mixing patterns for influenza transmission, Fig.3 and caption",
+      "evidence_type": "Out-of-sample normalized age-contact matrices, not individual edges",
+      "pearson": {
+        "France": 0.92,
+        "Japan": 0.9,
+        "Shanghai": 0.8
+      }
+    },
+    {
+      "id": "chang",
+      "doi": "10.1038/s41586-020-2923-3",
+      "url": "https://www.nature.com/articles/s41586-020-2923-3",
+      "checked_copy": "https://cs.stanford.edu/~jure/pubs/covid-nature20.pdf",
+      "checked_sections": "Model description and fit, Figure1, calibration/validation; author PDF indexed text",
+      "evidence_type": "Aggregate CBG–POI mobility model; observed cases including held-out15Apr–9May2020 after calibration through14Apr",
+      "caveat": "Uses mobility of validation period; not validated individual contact edges"
+    }
+  ],
+  "simulations_run": false,
+  "numeric_recomputations": false,
+  "downloaded_source": {
+    "path": "sources/guarino2021.pdf",
+    "url": "https://www.cranic.it/data/futureinternet_v2.pdf",
+    "bytes": 10816827,
+    "sha256": "75fa0ff11ab4538d63ef6e10e8b8509ab35a3270b7320780d5ead499c5d3ed3d"
+  },
+  "prior_verification_records": [
+    {
+      "path": "paper/network_preparation/verification.json",
+      "sha256": "281a06145f9fdf35da76dd4c53197fdf07377c78103243c516b50777efe58936"
+    },
+    {
+      "path": "paper/national_network_preparation/verification.json",
+      "sha256": "12ae354255e223a6346040ff58d331876e1ff9cd913a318d1ec701eebaba386f"
+    },
+    {
+      "path": "paper/people_city_network_design/verification.json",
+      "sha256": "11aa379a39fc941bca71396ec9f559b7561c5b348b49a83389abec32732a710c"
+    }
+  ],
+  "main_manuscript": {
+    "path": "paper/SMPT paper/main-SMPT.tex",
+    "sha256": "e51f48673fb28bdac8784ea3728d4398ced30f9c3b0859d62eef796eaea268f1"
+  },
+  "provenance_note": "Other primary sources read with web tool; named read-only source agent checked Salathe/Eubank. No new contact datasets downloaded. Author-hosted Guarino PDF is a45-page published-layout copy; do not redistribute as our authored work."
+}

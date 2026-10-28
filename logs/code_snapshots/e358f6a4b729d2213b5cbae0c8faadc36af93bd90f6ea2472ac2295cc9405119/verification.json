@@ -1,0 +1,22 @@
+{
+  "root_sha256": "768a8ed0a27e4a2a9d57d6522c429fdf7c5a6f321909ae4e8f93d1fa206bbc9b",
+  "user_sections_1_3_sha256": "a51da9b553b30497be7b493ec992577c34b2de00be31b77e3ce72271b02f9051",
+  "sections_4_5_sha256": "0e3cfcf80d1908f1df3c1da2b284947f6da0c41df649824a5bc0c26c6827828c",
+  "preserved_numbered_equations": true,
+  "section_count": 5,
+  "labels": 33,
+  "omitted_section_references": [
+    "app:clique",
+    "app:floor",
+    "app:repro",
+    "sec:discussion",
+    "sec:res_descriptor",
+    "sec:results",
+    "tab:verification"
+  ],
+  "build": "LuaLaTeX, BibTeX, LuaLaTeX twice",
+  "warnings": [
+    "Overfull \\hbox (117.0831pt too wide) detected at line 84"
+  ],
+  "simulations_run": false
+}

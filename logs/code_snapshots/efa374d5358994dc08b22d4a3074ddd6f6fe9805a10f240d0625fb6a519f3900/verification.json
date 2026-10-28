@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "original_files_verified": 9,
+  "full_english_citation_sequence": "unchanged",
+  "uk_front_citation_sequence": "unchanged",
+  "section_4_onward_english_source": "byte-identical tail",
+  "uk_middle_and_back": "original inputs, hashes unchanged",
+  "section_1_3_citations_per_language": 25,
+  "labels_per_language": 18,
+  "numbered_equations_per_language": 6,
+  "undefined_references": false,
+  "unstable_labels": false,
+  "pdf_text_colors": {
+    "page5": {
+      "#000000": 146,
+      "#ff0000": 3343
+    },
+    "page9": {
+      "#000000": 3544,
+      "#2f4f4f": 10
+    }
+  },
+  "visual_review": "bilingual front, formulas, table/schematic, algorithm and section4 boundary checked",
+  "remaining_template_warnings": "existing title-page overfull box; Ukrainian small-caps font substitution; no changed-section overfull boxes",
+  "scientific_description": "section3 import paragraph and algorithm now describe corrected retained residual local threshold; empirical indicator limited to tested benchmarks",
+  "simulations_started": false,
+  "other_results_updated": false
+}

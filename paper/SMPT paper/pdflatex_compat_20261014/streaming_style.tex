@@ -1,0 +1,19 @@
+% Stream all ECDF vertices to PGF without retaining PGFPlots point metadata.
+% Arguments: display-coordinate file, stroke colour, dash setting.
+\newcommand{\DrawExactECDF}[3]{%
+  \begin{pgfonlayer}{main}%
+  \begin{pgfscope}%
+    \pgftransformshift{\pgfplotsqpointdescriptionxy{0}{0}}%
+    \pgfsetxvec{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{0pt}}%
+    \pgfsetyvec{\pgfpoint{0pt}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfusepath{clip}%
+    \pgfsetstrokecolor{#2}%
+    \pgfsetlinewidth{.8pt}%
+    #3%
+    \pgfplothandlerconstantlineto%
+    \pgfplotxyfile{#1}%
+    \pgfusepath{stroke}%
+  \end{pgfscope}%
+  \end{pgfonlayer}%
+}

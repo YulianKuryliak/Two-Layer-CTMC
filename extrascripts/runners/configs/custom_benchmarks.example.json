@@ -1,0 +1,55 @@
+{
+  "replications_default": 10,
+  "defaults": {
+    "gamma": 0.0,
+    "model": 2,
+    "tau_micro": 1.0,
+    "macro_T": 1.0,
+    "dt_out": 1.0,
+    "initial_node": 0,
+    "store_trajectories": true
+  },
+  "scenarios": [
+    {
+      "name": "custom_chain_cliques_L4_n50_k3",
+      "family": "custom_chain",
+      "communities": 4,
+      "community_size": 50,
+      "inter_links": 3,
+      "macro_graph_type": "chain",
+      "micro_graph_type": "complete",
+      "beta": 0.003,
+      "T_end": 1500,
+      "base_seed": 11000,
+      "plot_groups": ["custom_chain"]
+    },
+    {
+      "name": "custom_chain_random_connected_L4_n50_d6_k2",
+      "family": "custom_sparse",
+      "communities": 4,
+      "community_size": 50,
+      "inter_links": 2,
+      "macro_graph_type": "chain",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 6,
+      "beta": 0.003,
+      "T_end": 2500,
+      "base_seed": 12000,
+      "plot_groups": ["custom_sparse"]
+    },
+    {
+      "name": "custom_complete_macro_random_micro",
+      "family": "custom_dense",
+      "communities": 3,
+      "community_size": 40,
+      "inter_links": 4,
+      "macro_graph_type": "complete",
+      "micro_graph_type": "random",
+      "edge_prob": 0.15,
+      "beta": 0.003,
+      "T_end": 1000,
+      "base_seed": 13000,
+      "plot_groups": ["custom_dense"]
+    }
+  ]
+}

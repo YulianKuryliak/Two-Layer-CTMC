@@ -1,0 +1,50 @@
+{
+  "body_preserved_except_citation_and_layout_syntax": true,
+  "labels": 50,
+  "citation_commands": 26,
+  "unique_cited_keys": 25,
+  "numbered_equations": 12,
+  "figures": 7,
+  "tables": 3,
+  "algorithms": 1,
+  "abstract_words": 239,
+  "plot_tables_sha256_match": 37,
+  "original_template_files_unchanged": 56,
+  "pages": 17,
+  "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+  "pdf_sha256": "04fbefa78c5dc0d3c230c1f26745d424ff507d49ab297cb08d4f672d1e8b2e0f",
+  "main_tex_sha256": "3889d56dfd0168f337d7b77c7d844aa5bc5ef579793a826d70deda0aaa911ede",
+  "appendices_restored": [
+    "A",
+    "B",
+    "C"
+  ],
+  "limitations": [
+    "Data availability placeholder and missing author biographies remain; declarations were not edited."
+  ],
+  "simulations_run": false,
+  "backup": "paper/IEEE_version/layout_backup_20261022T083156Z",
+  "appendix_tex_sha256": "bd6ad794d233221ce1540e6665567ee86766b01356f5e825e1b8b5067385f225",
+  "source_original_tex_pdf_unchanged": true,
+  "visual_checks": [
+    "Results pages 11-15: all seven plots retain axes, labels and data; plots mixed with text",
+    "Appendices A-C and compact verification table, page16",
+    "Final declarations and reference columns, page17"
+  ],
+  "figure_pages_before": {
+    "2": 12,
+    "3": 12,
+    "4": 13,
+    "5": 13,
+    "6": 15,
+    "7": 15
+  },
+  "figure_pages_after": {
+    "2": 11,
+    "3": 12,
+    "4": 12,
+    "5": 13,
+    "6": 14,
+    "7": 15
+  }
+}

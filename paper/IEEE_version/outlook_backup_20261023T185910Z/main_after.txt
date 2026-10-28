@@ -1,0 +1,1365 @@
+Manuscript prepared for review.
+Digital Object Identifier To be assigned
+
+
+
+
+Two-scale stochastic simulation of epidemics on
+community networks with aggregate
+inter-community coupling
+YULIAN KURYLIAK1 and MICHAEL T. M. EMMERICH2
+1
+  Institute of Computer Science and Information Technologies, Lviv Polytechnic National University, 12 Stepan Bandera Street, Lviv 79000, Ukraine (e-mail:
+yulian.a.kuryliak@lpnu.ua)
+2
+  Faculty of Information Technology, University of Jyväskylä, P.O. Box 35 (Agora), FI-40014 Jyväskylä, Finland (e-mail: michael.t.m.emmerich@jyu.fi)
+Corresponding author: Yulian Kuryliak (e-mail: yulian.a.kuryliak@lpnu.ua).
+
+
+
+
+    ABSTRACT Stochastic epidemic simulation often lacks information about individual contacts. Aggregate
+    data on movements between communities may nevertheless be available. Internal contact networks can
+    be approximately reconstructed from structural characteristics, while specific inter-community contacts
+    remain unknown. We study a two-scale stochastic simulation method (TwoScale) that combines detailed
+    local Gillespie simulators with aggregate inter-community transmission rates, without explicitly represent-
+    ing inter-community contacts. We prove that the ideal two-scale process is equivalent to exact simulation
+    on a surrogate network with uniform inter-community connections. We identify the mechanisms of dis-
+    crepancy from the full-network model and establish that the first infection export is stochastically no later
+    than in the full-network model under uniformly random bridge-node placement in the theoretical setting
+    considered. We assess the method’s accuracy by comparing it with full-network Gillespie simulation on
+    synthetic SI networks, including 48 configurations of chains of ten communities. The experiments showed
+    close time distributions when infection spread rapidly within communities: in a chain of ten cliques, the
+    normalised Wasserstein distance after nine inter-community crossings was 3.34%. However, discrepancies
+    increased substantially in communities with longer internal paths and lower connectivity, reaching 40.9%
+    in the most discrepant configuration. Their magnitude also depended on community size and the number
+    of inter-community edges. The proposed time-scale measure showed a strong rank association with the
+    magnitude of the discrepancies (Spearman correlation 0.91). These results help identify conditions under
+    which aggregate connections reproduce temporal characteristics close to full-network simulation without
+    specifying individual inter-community contacts.
+
+
+    INDEX TERMS Aggregate inter-community connections, Community networks, Epidemic modelling,
+    Gillespie algorithm, Incomplete contact data, Multiscale simulation, Simulation accuracy, Stochastic
+    simulation.
+
+
+I. INTRODUCTION                                                                                  length [6], [7]. In contrast, links between communities may
+Epidemics spread at more than one scale. Inside a community,                                     be known only through transport, migration, commuting, or
+infection may pass through a detailed network of contacts                                        mobile-phone data [5], [8]. Such data can tell us the total
+between people [1]–[3]. Between communities, the available                                       strength of connection between two communities, but not
+data are often much less detailed. For example, they may give                                    which people form the connection. We may therefore know
+only passenger numbers, commuting flows, or a weighted                                           the total coupling without knowing the bridge nodes or their
+link between two places [4], [5]. We therefore need a model                                      infection states.
+that can use a detailed network inside each community and                                          If every contact is known, a continuous-time Markov chain
+simpler data between communities.                                                                (CTMC) can describe the epidemic, and the Gillespie method
+  This situation is common in practice. A local contact net-                                     can simulate it exactly [9], [10]. Efficient methods are also
+work may be observed, reconstructed, or generated to match                                       available for temporal, large, and sparse networks [11], [12].
+known properties such as clustering and mean shortest-path                                       However, these methods still need the individual contacts
+
+VOLUME XX, XXXX                                                                                                                                              1
+                                                     Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+that may transmit infection. Metapopulation models use ag-                We consider susceptible–infected (SI) dynamics on static
+gregate flows between communities, but usually also replace             synthetic networks and use one fixed synchronisation step.
+the detailed local network by counts of people in different             Section II explains the relation to earlier methods. Section III
+states [13]–[16]. Our problem lies between these two cases:             describes the simulator. Section IV explains what the aggre-
+we want to keep node-level stochastic spread inside every               gate interface preserves and loses. Sections V and VI present
+community while using only aggregate information between                the experiments and results. Section VII discusses use, cost,
+communities.                                                            and limitations.
+   The idea of a two-scale simulator was presented in an
+earlier conference paper [17]. It runs a separate local simu-           II. RELATED WORK
+lator for each community. The macro layer uses the current              a: Simulation of stochastic events.
+community states and connection weights to generate infec-             Gillespie’s direct method draws the next event and its time
+tions arriving from another community. In this article, we             from the current event rates [9]. The next reaction method
+describe the method in detail and study its approximation              keeps a separate clock for each possible event [10]. Both
+error. In particular, we examine what is lost when real cross-         methods are exact for the CTMC they simulate. When an
+community edges and their endpoints are replaced by the total          event rate changes with time, its rate can be accumulated until
+connection weight, and an imported infection is placed on a            it reaches a random threshold [18]. Anderson [19] used this
+randomly selected susceptible node.                                    idea for systems with time-dependent rates and delays. Our
+   Our main question is: when is this aggregate connection             macro clock uses the same idea, but its rate changes because
+sufficient to reproduce the quantity of interest in the full-          the local epidemic states change. Network simulators can
+network CTMC? We study infection arrival times, their dis-             save work by updating only the rates affected by the latest
+tributions, and whether transmission is possible through the           event [11], [12]. Our local simulators use the implementation
+real contacts. Similar arrival times do not guarantee a possible       of Kuryliak et al. [12].
+transmission route: the two-scale model can infect another                Some multiscale methods speed up chemical-reaction mod-
+community while all real bridge nodes in the source com-               els by approximating reactions that occur much faster than
+munity are still susceptible. To test this, we use synthetic           others [20], [21]. Our method removes a different kind of
+networks in which every contact is known. Full-network                 detail. It keeps the local infection events, but does not know
+Gillespie simulation receives the whole network, whereas the           which individual cross-community edges are currently able
+two-scale method receives only the local networks and the              to transmit. Even so, the relative speeds of local spread and
+total weights of the cross-community connections.                      cross-community transmission help explain its error.
+   This article makes four contributions.
+                                                                        b: Models with several communities.
+    1) We describe how the simulator works: each commu-                 Metapopulation models represent each subpopulation by
+       nity is simulated separately, and a shared scheduler             counts of people in different states and connect the subpopula-
+       determines infections between them. We explain how               tions by mobility flows. They have been used to study global
+       it coordinates the local simulators on time intervals of         spread and the conditions for invasion [4], [13]–[15]. Detailed
+       fixed length (Section III, Algorithm 1).                         mobility data can also be combined with local transmission
+    2) We show which network the method simulates exactly.              models [8]. Agent-based models instead represent individuals
+       The ideal process is exact for a surrogate network               throughout the model [6], [22]. Ajelli et al. [16] compared
+       with uniform inter-community connections: for each               these two broad approaches. The method studied here keeps
+       connected community pair, every node in one com-                 individual nodes and contacts inside each community, but re-
+       munity is connected to every node in the other, and              places the unknown individual contacts between communities
+       the total coupling weight is distributed equally among           by one aggregate stochastic interface.
+       these node pairs (Proposition 1). We then identify the
+       sources of error and analyse a single export of infection        c: Two levels of mixing and co-simulation.
+       (Proposition 2).                                                 Some epidemic models combine contacts in small local
+    3) We compare the two-scale method with full-network                groups with uniform mixing at a wider level [23]. Our sur-
+       Gillespie simulation for transmission to one neighbour-          rogate network with uniform inter-community connections is
+       ing community and for spread along chains of commu-              related to this idea, but uniform mixing is used only between
+       nities. We measure differences using the relative shift in       connected pairs of communities, and its strength is set by their
+       the median time of first infection and the Wasserstein           aggregate weight.
+       distance between the distributions of these times (Sec-             The implementation also has features of co-simulation.
+       tions V and VI).                                                 In co-simulation, separate subsystem solvers move forward
+    4) We propose an empirical indicator of accuracy for our            on a shared time grid and exchange a limited amount of
+       benchmarks. It compares the spread of infection times            information [24]. Here, the local community simulators are
+       inside a community with the typical transmission time            those subsystems. They send their infected and susceptible
+       through one cross-community edge (Section VI-D).                 counts to the macro layer. The macro layer uses these data
+2                                                                                                                                   VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+to generate the time of a cross-community infection and                             The waiting time between state transitions is exponential
+select the receiving community and target node. The local                        and is determined by the total rate of all events in the current
+simulators can therefore remain black boxes for the scheduler.                   state x, which is
+In this implementation, the exchanged data are used to create                                           X             X
+random infection events.                                                                         a(x) =     qv (x) +       ru (x).
+                                                                                                          v            u
+
+III. THE TWO-SCALE SIMULATION METHOD                                             If a(x) > 0, the waiting time to the next event is exponentially
+The experiments use one implementation of the two-scale                          distributed with rate a(x) and mean 1/a(x). Infection of node
+simulator, in which the local simulators exchange information                    v is selected with probability qv (x)/a(x), and removal of node
+with the macro scheduler at fixed time intervals. To under-                      u with probability ru (x)/a(x). After the event, the rates are
+stand its error, we also consider a process with the same                        updated. If a(x) = 0, no further event can occur.
+rates but exact timing of every event. We call this theoretical
+description the ideal process. It separates the error caused                     B. AGGREGATE INTERFACE
+by changing the network from the additional error caused                        The two-scale simulator, denoted TwoScale, knows every
+by the time grid. The ideal process is exact for the surrogate                  local graph Gi = (Vi , Eii ) and its rates. It does not know the
+network with uniform inter-community connections defined                        individual cross-community channels in Eij . For each ordered
+later; this does not make it exact for the original physical                    pair of communities, it knows only the total weight
+network. Below, we explain the reference model, the available                                            X
+                                                                                                Wij =           wuv ,      i ̸= j.           (3)
+data, and the steps of the implemented simulator.
+                                                                                                        (u,v)∈Eij
+
+A. FULL-NETWORK REFERENCE MODEL                                                  If all weights equal one, Wij is the number of directed chan-
+Let G = (V , E) be the contact network. Its nodes are divided                    nels from Vi to Vj . In an application, this total may instead
+into M non-overlapping communities:                                              come from transport, migration, mobility, or contact data. The
+                                                                                 macro layer also receives the current susceptible and infected
+            V = V1 ∪ V2 ∪ · · · ∪ VM ,            Ni = |Vi |.          (1)       counts from each local simulator. It does not know which
+                                                                                 nodes are endpoints of real cross-community edges. Table 1
+Here, Vi is the node set of community i, and Ni is its size. We                  gives the main difference, and Figure 1 shows it visually.
+write Eii for contacts inside community i and Eij for contacts
+from nodes in community i to nodes in community j. We                            C. LOCAL SIMULATORS
+treat each contact as an oriented transmission channel. An
+                                                                                Each community has a separate Gillespie simulator for its
+undirected contact therefore gives two channels, one in each
+                                                                                local graph Gi . It applies the infection and removal rates in (2)
+direction.
+                                                                                using only the local edges Eii . The implementation updates
+     Every node is susceptible (S), infected (I ), or removed                   only rates affected by the latest event, following Kuryliak et
+(R). The full network state at time t is X (t), and the state                   al. [12]. Each local simulator is independent and has its own
+of community i is Xi (t). Let Si (t) and Ii (t) be the sets of                  random-number stream.
+susceptible and infected nodes in that community. Their sizes                      The macro layer can advance a local simulator to a spec-
+are si (t) and yi (t), and their fractions are s̄i (t) = si (t)/Ni and          ified time. The simulator applies the local events up to that
+ȳi (t) = yi (t)/Ni . Below, x denotes a particular network state;              time. The macro layer can then import an infection by chang-
+x v:I is the same state after node v becomes infected, and x u:R                ing one selected susceptible node to I . This changes the
+is the state after node u is removed.                                           local rates. The implementation keeps the unused part of the
+     The full model follows two simple rules. A susceptible                     random threshold for the next local event and recalculates its
+node v receives infection from each infected neighbour u at                     waiting time using the new total rate.
+rate βuv . An infected node is removed at rate γ. We can write                     To recalculate the time of the next local event after an
+both rules as                                                                   import, the simulator retains the remaining random threshold.
+ qv (x) =
+               X
+                      βuv (xv = S),         ru (x) = γ (xu = I ).               Let Eloc ∼ Exp(1) be the threshold drawn after the previous
+           u:(u,v)∈E
+                                                                                local event, and let Aloc be the integral of the total local rate
+              xu =I                                                             from that event to the import time. After the import, the total
+                                                            (2)                 local rate is anew . If anew > 0, the remaining waiting time is
+Here, qv is the total infection rate of node v, and ru is the
+                                                                                                              Eloc − Aloc
+removal rate of node u. For a non-susceptible node, qv = 0;                                           ∆t =                .
+for a non-infected node, ru = 0. A rate describes how often                                                      anew
+an event occurs: for a constant rate q, the mean waiting time is                Thus, an import changes the waiting time, but not the random
+1/q. For a cross-community channel, we write βuv = βout wuv ,                   threshold itself. If another import occurs first, the accumu-
+where wuv is its contact weight. We call exact simulation of                    lated rate is updated and the waiting time is recalculated again.
+these full-network rates Full. All experiments in this article                  If anew = 0, no local event can occur until the rate becomes
+use SI dynamics, so γ = 0.                                                      positive.
+VOLUME XX, XXXX                                                                                                                                 3
+                                                             Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                      (a) Full network                       (b) Aggregate network                          (c) Surrogate network
+
+                                                                          Wij
+
+
+
+
+                     Vi                  Vj                      Vi                  Vj
+                                                                                                                    Wij /(Ni Nj ) per
+                                                                                                               cross-community channel
+
+Figure 1. Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b)
+Internal nodes and contacts are retained in each community. Individual inter-community contacts are represented by one wide directed edge between Vi
+and Vj , labelled with their total weight Wij . (c) The ideal two-scale process is equivalent to a process on a surrogate network with uniform
+inter-community connections: for each connected community pair, all ordered node pairs have the same contact weight. The connections together have
+total weight Wij . Orange nodes are infected and blue nodes are susceptible.
+
+
+Table 1. Data and rules of the two models. In all experiments, TwoScale selects the target node uniformly among susceptible nodes.
+
+
+    Information or action                                               Full                                   TwoScale
+    Local contacts, rates, and node states                              known                                  known by local simulators
+    Individual cross-community edges and bridge nodes                   known                                  unknown
+    Total cross-community weight Wij                                    obtained from the edges                given directly
+    Cross-community event rate                                          uses states of real edge               uses ȳi , s̄j , and Wij
+                                                                        endpoints
+    Target of a cross-community infection                               endpoint of the active edge            a susceptible node drawn by the
+                                                                                                               target rule
+    Number of possible SI infections through one bundle                 at most the number of its              at most sj target infections
+                                                                        channels
+
+
+   The event type and its node are selected using the updated                   state. Thus, Π simply denotes the probability of choosing a
+rates. A new local threshold is drawn only if there is no exist-                particular susceptible node. Other target rules can be used if
+ing one. Each local clock has its own threshold, separate from                  bridge-node information is available.
+the macro threshold described in Section III-E. For prescribed                     This aggregate rate is generally an approximation to trans-
+import times and target nodes, the local simulator follows the                  mission through the real physical edges. For fixed community
+CTMC rules of its own network. The approximation comes                          counts, it is the expected rate under uniformly random selec-
+from the way imports are generated and their target nodes are                   tion of the edge endpoints, before their particular identities,
+selected.                                                                       states, and epidemic history are taken into account. This does
+                                                                                not guarantee the correct rate for an epidemic already realised
+D. MACRO LAYER                                                                  on specific edges. For uniform all-to-all coupling, it is the
+The macro layer represents each community by its current                        actual rate, as explained in Section IV.
+fractions and represents each directed connection by Wij . Its
+rate for an infection from community i to community j is                        E. TIMING AND SYNCHRONISATION
+                                                X                               After a macro event at time t0 , draw a random threshold
+      λij (t) = βout Wij ȳi (t)s̄j (t), Θ(t) =   λij (t). (4)                  E ∼ Exp(1): an exponential random number with mean one.
+                                                      i̸=j                      Starting from zero, accumulate the total macro rate Θ:
+The factors have a direct meaning: βout Wij gives the total                                          Z t
+connection strength, ȳi is the infected fraction in the source,                             A(t) =      Θ(s) ds,    A(t0 ) = 0.       (5)
+                                                                                                          t0
+and s̄j is the susceptible fraction in the receiving community.
+The sum Θ is the rate of any cross-community infection.                         The next macro event occurs at the first time t ∗ when A(t ∗ ) =
+Calculating the waiting time to the next event when Θ varies                    E.
+with time requires special treatment (Section III-E).                              In words, the area under the rate curve grows until it
+   When such an event occurs, first select the source and                       first reaches the random threshold. If it never reaches the
+receiving communities (i, j) with probability λij /Θ. Then                      threshold, no further macro event occurs. This is the standard
+choose one susceptible node uniformly in the receiving com-                     cumulative-rate construction [18], [19]. If Θ is constant, the
+munity j and infect it. If there are 20 susceptible nodes,                      waiting time is E/Θ. Drawing E = − ln U , with U uniform
+each has probability 1/20. This selection does not use real                     on (0, 1), gives the familiar Gillespie waiting time. When Θ
+bridge nodes, because the aggregate interface does not know                     changes after a local event, we keep the same threshold and
+them. In later formulas, we write this target probability as                    continue accumulating with the new rate. We draw a new
+Πij (v | x) = 1/sj for v ∈ Sj , where x is the current network                  macro threshold only after a macro event. Exact calculation
+4                                                                                                                                           VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+Algorithm 1 Grid-synchronised two-scale simulation of one                        approximation. The experiments in this article use the imple-
+realisation.                                                                     mented grid version with τ = 1.
+Input: local graphs Gi , weights Wij , rates, step τ , horizon Tend , and
+initial state.
+                                                                                 F. COMPUTATIONAL STRUCTURE AND INTENDED USE
+   1) Set t = 0 and accumulated rate A = 0; draw E ∼ Exp(1).
+   2) While t < Tend and infection can still spread, set tg = min(t+            Full stores all local and cross-community channels, and its
+        τ, Tend ) and process the interval up to tg .                           work per event grows with node degree [12]. TwoScale stores
+   3) Copy every local simulator, including its random-number                   the local graphs and an M × M matrix of aggregate weights.
+        state. Advance the copies to the midpoint of the remaining              The conference paper discusses this reduction in the informa-
+        interval and calculate Θmid from (4).                                   tion stored for cross-community contacts [17]. Its importance
+   4) If A + Θmid (tg − t) < E, advance the real simulators to tg ,
+        add this amount to A, set t = tg , and return to step 2.                depends on the problem. Replacing many individual cross-
+   5) Otherwise, calculate t ∗ from (6) and advance the real simula-            community edges by one weight can reduce storage. If only a
+        tors to t ∗ .                                                           few such edges exist, this saving may be small, and the local
+   6) Select (i, j) with probability λij (t ∗ )/Θ(t ∗ ). Select v uniformly     graphs still have to be stored.
+        from Sj (t ∗ ) and import infection at v. Update the receiving             The separate local simulators also provide an opportunity
+        local simulator, keeping its unused exponential threshold and
+        selecting the local event from the new rates.                           for parallel execution. Once the scheduler has chosen the
+   7) Set t = t ∗ and A = 0, draw a new E ∼ Exp(1), and process                 next target time (tg or t ∗ ), the local simulators can advance
+        the rest of the current interval in the same way.                       independently to that same time. The midpoint copies can
+                                                                                also be processed in parallel. The macro layer must then
+                                                                                collect the counts and apply any scheduled import before
+of its first crossing defines the ideal process; the time-grid                  continuing. The implementation studied here advances the
+calculation below approximates that crossing. Section IV-A                      local simulators sequentially; parallel execution within one
+shows that the ideal process is exact for the surrogate network                 run is a possible extension, not a measured speedup. Local
+with uniform inter-community connections.                                       simulators can also use different community-specific settings.
+   The scheduler divides time into intervals of length τ . On                      The grid scheduler adds work by copying local states and
+each interval, it approximates the varying macro rate by its                    coordinating the communities. Therefore, neither lower mem-
+value at the midpoint. Let A be the amount already accumu-                      ory use nor faster execution is guaranteed. The method is
+lated since the previous macro event. For the current inter-                    useful when individual cross-community contacts are unavail-
+val [t, tg ), copy every local simulator, including its random-                 able or too numerous to represent explicitly.
+number state, and advance each copy to the midpoint. The
+copies give an estimate Θmid of the total macro rate. The esti-                  IV. THEORETICAL ANALYSIS OF THE TWO-SCALE
+mated increase over the remaining interval is Θmid (tg − t). If                  METHOD
+A plus this increase is below E (the random macro threshold),                   The previous section described the two-scale simulation algo-
+the real simulators move to tg . Otherwise, estimate the event                  rithm. The remaining question is how closely its results rep-
+time by                                                                         resent infection spread in the original network. Although the
+                                  E −A                                          local simulators reproduce the within-community processes
+                        t∗ = t +         .                   (6)
+                                  Θmid                                          exactly, the macro layer uses aggregate connections instead
+Here, E is the random macro threshold and A is the amount                       of individual inter-community edges.
+already accumulated toward it. The numerator E − A is what                         In this section, we first identify the network that mathe-
+remains; dividing by the estimated rate gives the remaining                     matically corresponds to the ideal two-scale process. This
+waiting time. For example, if E = 1, A = 0.4, and Θmid =                        establishes what changes when contacts are aggregated and
+0.2, the estimated wait is three time units. The scheduler                      separates these changes from the numerical synchronisation
+advances the real simulators to t ∗ , selects the source and                    error. We then investigate how losing information about
+receiving communities using their states at that time, chooses                  bridge nodes affects the first transmission time and introduce
+the susceptible target, and imports the infection. Algorithm 1                  a characteristic for analysing accuracy in the experiments.
+gives the full sequence.
+   The copied random-number states are important. Unless                         A. EQUIVALENCE TO SIMULATION ON A NETWORK WITH
+an import occurs first, a copied simulator follows the same                      UNIFORM INTER-COMMUNITY CONNECTIONS
+path that the real simulator will follow to the midpoint. The                   The two-scale method replaces explicit inter-community con-
+midpoint estimate is exact on an interval with no local event.                  tacts with aggregate infection rates while retaining exact
+Its timing error and its look-ahead of at most τ /2 decrease to                 stochastic dynamics within communities. This raises the ques-
+zero as τ decreases.                                                            tion of whether the resulting process can be represented as
+   The time grid is needed because the scheduler treats lo-                     exact simulation on a contact network and, if so, what that
+cal simulators as black boxes. If they also report their next                   network looks like.
+local-event times, the scheduler can merge those times and                         To answer this question, consider the ideal two-scale pro-
+accumulate the piecewise-constant value of Θ exactly. That                      cess, in which the time of each macro event is determined
+event-driven version removes the numerical synchronisation                      exactly by (5), without the time-grid approximation. This
+VOLUME XX, XXXX                                                                                                                              5
+                                                             Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+process is a continuous-time Markov chain (CTMC), because                       inter-community contacts are preserved by their replacement
+its transition rates depend on the current system state. Local                  and which change.
+transitions have the same rates as in the full-network model,
+while inter-community infections are determined by the ag-                      B. MECHANISMS OF DISCREPANCY FROM THE
+gregate rates (4) and the recipient-node selection rule.                        FULL-NETWORK MODEL
+   We show that, when the susceptible recipient node is se-                     By construction, the surrogate network G̃ preserves within-
+lected uniformly, this process is equivalent to exact simula-                   community contacts and the total coupling rate between each
+tion on a surrogate network with uniform inter-community                        community pair:
+connections, G̃ (Figure 1c). In this network, the total weight
+of each inter-community connection is distributed equally
+                                                                                                    X
+                                                                                                           β̃uv = βout Wij .
+among all node pairs in the corresponding communities.                                                (u,v)∈Vi ×Vj
+Proposition 1 (Equivalence for a network with uniform
+inter-community connections): Let G̃ have the same within-                         This equality concerns the total rate of all channels, how-
+community contacts and their rates as the original network G.                   ever, rather than only those through which infection can be
+Replace each inter-community bundle Eij with the full set of                    transmitted in the current system state. The actual infection
+channels Vi × Vj , assigning each channel (u, v) the rate                       rate depends on the endpoint states of each contact. Equal
+                  βout Wij                                                      total inter-community weights therefore do not guarantee the
+         β̃uv =            ,          u ∈ Vi , v ∈ Vj , i ̸= j.                 same infection dynamics.
+                   Ni Nj
+                                                                                   Replacing real inter-community contacts by averaged con-
+If the simulator selects the import target uniformly among                      nections changes three things: the transmission rate, the re-
+susceptible nodes, the ideal two-scale process has the same                     cipient node, and the possible number of imports. A fourth
+rates for all transitions as the full-network process on G̃. Thus,              source of error is the approximate calculation of event times
+from the same initial state, its distribution coincides with that               in the implementation.
+of full-network Gillespie on G̃.
+      Proof: Local infections and removals have the same rates
+                                                                                a: 1. The states of the real bridge nodes are not used.
+in both processes. It therefore suffices to compare the inter-
+community infection rates.                                                      In the full network, the transmission rate from Vi to Vj is
+   Consider any susceptible node v ∈ Vj in system state x. In                                                X
+the two-scale process, imports from community i to j occur at                            a⋆ij (x) = βout               wuv 1{xu = I , xv = S},         (7)
+                                                                                                           (u,v)∈Eij
+rate λij (x), and the probability of selecting node v is 1/sj (x).
+Its total infection rate from other communities is therefore
+                                                                               Only contacts from infected nodes to susceptible nodes con-
+         X                1     X             yi (x) sj (x) 1                  tribute to this sum. If all bridge nodes in the source are
+               λij (x)        =      βout Wij
+                       sj (x)                  Ni Nj sj (x)                    still susceptible, transmission is impossible. In the two-scale
+          i̸=j                  i̸=j
+                                X X βout Wij                                   method, the rate depends on the overall infected fraction, so
+                              =                     1{xu = I }.                infection of any source node can contribute to export. The
+                                           Ni Nj
+                               i̸=j  u∈V i                                     method can transmit infection before any real bridge node is
+   The last expression is the total infection rate of node v                   infected. We refer to this as bridge bypass (Section IV-C).
+through all inter-community channels of the surrogate net-                        The aggregate rate does not necessarily exceed the actual
+work G̃ that lead to it from infected nodes. If sj (x) = 0, the                rate. If infected nodes are concentrated at the inter-community
+community has no susceptible nodes, and inter-community                        interface, the opposite can occur. Comparing rates in an indi-
+infection is impossible in both models.                                        vidual state is therefore insufficient to establish the overall
+   Thus, the rates of all possible transitions coincide. The                   direction of a shift in transmission time.
+generators of the two CTMCs are therefore identical, giving
+the same process distribution from the same initial state.                      b: 2. Import location.
+Corollary 1: If every node in community i is already con-                      In the full network, infection reaches the endpoint of the
+nected to every node in community j in the original network,                   contact through which it was transmitted. The two-scale
+and all these channels have the same rate for a given commu-                   method selects any susceptible node with equal probability.
+nity pair, then G̃ = G. In this case, the ideal two-scale method               As a result, infection may reach a node that has no incoming
+is also exact for the original network.                                        contact from the corresponding source community in the
+   The ideal two-scale method therefore has an exact network                   original network. The location of the first infection affects
+interpretation: it reproduces the process on G̃. In general,                   subsequent spread within the community, including the time
+however, the original and surrogate networks differ. The es-                   taken to reach bridge nodes leading to further communities.
+tablished equivalence does not by itself guarantee similar                     Changing the import-placement rule can therefore affect both
+simulation results on these networks. To identify possible                     local dynamics and infection spread through a sequence of
+reasons for discrepancies, we examine which properties of                      communities.
+6                                                                                                                                           VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+c: 3. Additional inter-community infections.                                    follows SI dynamics, and the leaf does not affect internal
+In the SI model, each node can move from S to I only once.                      infection spread before it becomes infected.
+Each directed channel in the original network can therefore                        In the full-network model, the leaf can become infected
+cause at most one infection of its target node. Consequently,                   only after at least one real bridge node becomes infected. In
+at most |Eij | such infections can occur through the bundle Eij .               TwoScale, the aggregate coupling weight is W0ℓ = k, so
+   The two-scale method does not track individual inter-                        before the leaf is infected, the export rate is
+community channels. After the first import, the rate λij can
+remain positive as long as the source community has infected                                           λ0ℓ (t) = βout kȳ0 (t).
+nodes and the recipient community has susceptible nodes.
+   For example, if the communities are connected by just one                    The possibility of export in the two-scale model therefore
+directed channel, it can cause at most one infection in the                     depends on the overall number of infected source nodes,
+full network. In contrast, TwoScale can import infection into                   rather than the states of the individual bridges.
+several different nodes of the recipient community. These                          Consider the case in which the k bridge nodes are selected
+additional infections can accelerate internal spread and sub-                   uniformly and independently of the internal dynamics. This
+sequent transmission to other communities.                                      allows us to compare first-export-time distributions while ac-
+                                                                                counting for random placement of inter-community contacts.
+d: 4. Numerical synchronisation error.                                          Proposition 2 (Stochastic ordering of the first export time):
+As described in Section III-E, the scheduler estimates the rate                 Let the bridge set B be chosen uniformly from all k-element
+from the system state at the midpoint of a synchronisation                      subsets of V0 , independently of the internal graph, initial state,
+interval and uses it to approximate the integral (5). The im-                   and event randomness. Let T Full and T TwoScale be the first
+plemented TwoScale can therefore differ even from the ideal                     infection times of the leaf in the full-network and ideal two-
+two-scale process on G̃.                                                        scale models, respectively. Then
+Remark 1 (The first import with randomly placed contacts):
+Suppose that the endpoints of inter-community channels are                                 P(T Full > t) ≥ P(T TwoScale > t),       t ≥ 0.
+selected uniformly and independently of the internal graphs
+and other contact sets, as in our tests. If the recipient com-                     Thus, with randomly placed bridges, the first export time in
+munity is still fully susceptible, the target of its first import               TwoScale is stochastically no greater than the corresponding
+is also uniform in the full network, after averaging over                       time in Full. The same ordering holds for its expectation and
+random contact placement. The two-scale method has the                          quantiles.
+same distribution of the first target. For an individual fixed                        Proof: Before the leaf becomes infected, infection
+network, the targets need not coincide. The same distribution                   spread within V0 is independent of external transmission.
+of the first target does not imply the same distribution of the                 Both models can therefore be compared using the same in-
+first import time. Our tests show small errors in a number of                   ternal SI trajectory X0 of the source community.
+configurations where the spread of internal infection times is                     Let τu be the infection time of node u, and let Au (t) =
+small compared with the mean transmission time through one                      max{t − τu , 0} be the time it has spent infected by time t.
+inter-community channel (Section VI-D).                                            In the full-network model, the cumulative export rate up to
+   Replacing inter-community contacts thus changes not only                     time t is determined only by infected bridge nodes:
+the nodes through which infection can be transmitted, but also                                                    X
+the possible locations and number of infections. These mech-                                        HB (t) = βout     Au (t).
+anisms can act simultaneously and should not be treated as                                                            u∈B
+
+independent additive components of the total error. Analysing                      In TwoScale, the corresponding cumulative rate is deter-
+them alone does not establish either the overall direction or                    mined by all source nodes:
+the magnitude of discrepancies between the models.
+                                                                                                                    k X
+C. EFFECT OF CONTACT AGGREGATION ON SYSTEMATIC
+                                                                                                    H̄ (t) = βout         Au (t).
+                                                                                                                    n u∈V
+                                                                                                                            0
+SHIFTS IN EXPORT TIME
+We now examine how replacing individual inter-community                            With a uniform, independent choice of B, each source node
+contacts with an aggregate connection affects the first trans-                   has probability k/n of belonging to the bridge set. Conditional
+mission time to another community. In particular, we ask                         on the trajectory X0 , therefore,
+whether aggregation can systematically shift the first export
+time even when the mean transmission rate is preserved.                                              EB [HB (t) | X0 ] = H̄ (t).
+   To isolate the effect of losing information about bridge
+nodes, consider a simplified network: a connected source                            The cumulative rate in TwoScale is thus the expected cu-
+community V0 with n nodes and one external susceptible node                      mulative rate in Full over random bridge placement. Equality
+ℓ, called a leaf. The leaf is connected to a set B ⊂ V0 of k                     of these quantities does not, however, imply equality of the
+bridge nodes, with each channel having rate βout . The source                    export-time distributions.
+VOLUME XX, XXXX                                                                                                                                  7
+                                                      Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+  The probability of no export by time t is the exponential              a: Clique–leaf.
+of the negative cumulative rate. Since z 7→ e−z is convex,              To compare the first export times of the two methods with
+Jensen’s inequality gives                                               minimal influence from internal network structure, we use
+                                                                        a complete graph. The receiving community need not be
+         P(T Full > t | X0 ) = EB [e−HB (t) | X0 ]
+                                                                        represented in full: for this purpose, it is sufficient to represent
+                             ≥ e−EB [HB (t)|X0 ]                        export through the bridge nodes and a single external leaf.
+                             = e−H̄ (t)                                    We attach one external node (the leaf) to a complete graph
+                             = P(T TwoScale > t | X0 ).                 (clique) with n = 100 nodes through k = 2 distinct bridge
+                                                                        nodes in the clique. We perform 10 000 runs of each model
+   Because this inequality holds for every internal trajectory          with β = 0.005 and a time horizon of 1000. In this and
+X0 , it also holds after averaging over all possible trajectories,      all other experiments, bridge nodes are selected uniformly
+proving the proposition.                                                without replacement.
+   This result shows that the aggregate rate matches the ex-
+pected actual rate, yet the transmission-time distributions can          b: Random community–leaf.
+differ systematically. The reason is the nonlinear dependence
+                                                                        We next investigate how the internal structure of the source
+of the probability of no event on the cumulative rate: aver-
+                                                                        affects infection transmission to the leaf. We replace the
+aging rates is not equivalent to averaging the corresponding
+                                                                        clique with a connected random graph of n = 1000 nodes
+probabilities.
+                                                                        and attach the leaf through k ∈ {1, 5} distinct bridge nodes.
+   In addition to shifting time, aggregation can violate
+                                                                           We characterise internal structure by the average shortest-
+constraints on admissible transmission routes. Let TB =
+                                                                        path length (ASPL). To generate the graph, we first construct
+minu∈B τu be the infection time of the first real bridge node.
+                                                                        a uniformly random tree and then add random edges to obtain
+In the full-network model, the leaf cannot become infected
+                                                                        the target ASPL within a tolerance of 0.1. We vary ASPL from
+before TB . In ideal TwoScale, however, the probability of such
+                                                                        1 to 6 in steps of 0.25; ASPL 1 corresponds to a complete
+an early export is
+                                                                        graph.
+                                             k TB
+                                             Z             
+      TwoScale                                                             As ASPL increases, the mean degree of the generated
+P(T            < TB ) = E 1 − exp −βout             y0 (s) ds .
+                                             n 0                        graphs also decreases. This experiment therefore investigates
+                                                              (8)       the effects of internal path length and network sparsity.
+   This expression gives the probability that the aggregate                The initially infected node is selected uniformly from all
+rate causes an export before any real bridge node becomes               source nodes. For each configuration, we perform 400 runs
+infected. It shows that even when export-time distributions are         of each model: 40 realisations of the internal graph with 10
+close, the two models can differ in whether their transmission          replicates of inter-community contacts and random events.
+paths are admissible.                                                   We use β = 0.003 and a horizon of 30 000.
+   For randomly placed bridges, we have therefore estab-
+lished the direction of the stochastic shift in the first export         c: Chain of cliques.
+time, but not its magnitude. The next question is which
+                                                                        We assess how discrepancies change after successive cross-
+properties of internal spread make this discrepancy small or
+                                                                        ings in a chain of L = 10 complete graphs, each with
+substantial.
+                                                                        n = 1000 nodes. Neighbouring communities are connected
+                                                                        by one edge (k = 1). Infection starts in community 0.
+V. METHODOLOGY FOR EXPERIMENTAL EVALUATION
+                                                                           As in the first test, complete graphs provide rapid internal
+A. EXPERIMENTAL NETWORKS AND PARAMETERS
+                                                                        spread. This allows us to assess the effect of successive inter-
+The theoretical analysis in the previous section showed
+                                                                        community crossings in a baseline setting with minimal inter-
+how aggregating inter-community contacts changes infection
+                                                                        nal path lengths.
+transmission and under which conditions a stochastic shift in
+                                                                           We use β = 0.003, 400 runs of each model, and a horizon
+the first export time arises. However, it does not determine the
+                                                                        of 30 000.
+magnitude of the discrepancies between the models or their
+behaviour after successive inter-community crossings.
+   To investigate these questions, we compare Full and                   d: Chains of random communities.
+TwoScale in four experimental series. We first consider trans-          Finally, we combine successive inter-community crossings
+mission to a single external node and then infection spread             with variation in internal community structure. This series
+along a chain of communities. In each setting, we examine               examines how community size and internal structure affect
+how internal network structure affects the discrepancies be-            discrepancies between Full and TwoScale, and how these
+tween the models.                                                       discrepancies change along the chain.
+   All experiments use SI dynamics, unit contact weights,                  We connect L = 10 connected random communities in a
+βin = βout = β, and a synchronisation step of τ = 1                     line, with k ∈ {1, 5} edges between neighbouring communi-
+(Algorithm 1).                                                          ties. Infection starts in community 0.
+8                                                                                                                                    VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+Table 2. Parameters of the experimental series. ASPL is the target average shortest-path length within a community.
+
+
+  Series                        Structure                                                   k             β           Runs per cell and model
+  Clique–leaf                   Clique n = 100 and one leaf                                 2             0.005       10 000
+  Random                        n = 1000, ASPL 1–6 in steps of 0.25, one leaf               1, 5          0.003       400 (40 × 10)
+  community–leaf
+  Chain of cliques              L = 10, n = 1000                                            1             0.003       400 (40 × 10)
+  Chains of random              L = 10, n ∈ {50, 100, 250, 1000}, ASPL 1–6 in               1, 5          0.003       400 (40 × 10)
+  communities                   steps of 1
+
+
+  We consider sizes n ∈ {50, 100, 250, 1000}. Internal                           describes the direction and magnitude of the difference in
+graphs are generated by the procedure described above, vary-                     typical times, but does not describe the whole distribution.
+ing ASPL from 1 to 6 in steps of 1.
+  For each interface, we select k nodes uniformly without                        b: Normalised Wasserstein distance.
+replacement from each community and connect them in pairs.                      The median shift captures only the difference between the
+A node can participate in interfaces with both neighbouring                     medians and does not account for the rest of the distribution.
+communities.                                                                    To assess differences between empirical distributions of event
+  For each configuration, we perform 400 runs of each model                     times, we therefore use the Wasserstein-1 distance.
+with β = 0.003 and a horizon of 30 000. Two Full runs were                         We sort the R observed times of the corresponding event in
+extended to 40 000 to observe infection of the last community                   ascending order separately for each model and calculate
+(Appendix C).                                                                                                 R
+  Each pair of Full and TwoScale runs uses the same internal                                              1 X TwoScale    Full
+                                                                                                   W1 =        T       − T(r)  ,
+graphs, inter-community contacts, and initially infected node,                                            R r=1 (r)
+but independent streams of random events. Inter-community
+                                                                                          TwoScale        Full
+contacts are generated independently for different interfaces                   where T(r)         and T(r)    are the rth values in the ordered
+and replicates.                                                                 TwoScale and Full samples, respectively.
+                                                                                   To compare results with different characteristic propaga-
+B. METRICS FOR COMPARING THE MODELS                                             tion times, we normalise the distance by the mean time in
+To assess discrepancies between Full and TwoScale, we com-                      Full:
+                                                                                                                      W1
+pare infection propagation times and cases of transmission                                               eW = 100 Full .
+before the bridge nodes become infected.                                                                             T
+   In the leaf tests, we measure its first infection time Texport .             The resulting measure describes the difference between em-
+For chains, let Tc be the first infection time of community c,                  pirical distributions independently of the direction of the shift.
+where c = 1, . . . , 9. Since the chain has 10 communities, the                 The formula compares ordered samples, not individual pairs
+arrival time in the last community is denoted by T9 .                           of runs.
+   Because infection spread is stochastic, the time of the same                    In the leaf tests, both metrics are calculated for Texport ; in
+event varies between runs. The first infected nodes and in-                     chains, they are calculated for the arrival times Tc .
+fection paths also differ between runs. Comparing individual
+realisations is therefore insufficient to assess discrepancies                   c: Fraction of premature exports
+between the models.                                                              Similar infection-time distributions do not guarantee that an
+   For each configuration, we perform repeated runs of Full                      admissible sequence of infection transmission is preserved.
+and TwoScale. Each run yields one time for the corresponding                     In the full network, infection cannot reach a neighbouring
+event: infection of the leaf or the first infection of a particular              community until at least one real bridge node in the source
+community. From these values, we form separate empirical                         becomes infected. In contrast, TwoScale can transmit infec-
+distributions for the two models and compare them using                          tion before any of these nodes becomes infected.
+three metrics.                                                                      To assess how often this occurs, for each inter-community
+                                                                                 crossing we consider the set B of real bridge nodes in the
+a: Relative median shift.                                                        source community. Let τuTwoScale be the infection time of node
+To determine how much earlier or later TwoScale transmits in-                    u in the corresponding TwoScale run. The infection time of
+fection than Full, we calculate the relative difference between                  the first bridge is then
+the medians of the corresponding distributions:                                                      TBTwoScale = min τuTwoScale .
+                                                                                                                   u∈B
+                     med(TcTwoScale ) − med(TcFull )
+            bc = 100                                 .                                  TwoScale
+                                                                                   Let Tarr      be the first infection time of the recipient
+                             med(TcFull )
+                                                                                 community or leaf. We record a premature export if
+A negative value means earlier infection arrival in TwoScale,
+                                                                                                        TwoScale
+while a positive value means later arrival. The median shift                                           Tarr      < TBTwoScale .
+VOLUME XX, XXXX                                                                                                                                 9
+                                                   Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+   The fraction of premature exports is the percentage of             a: Block bootstrap.
+such cases among all examined inter-community crossings in           Replicates on the same graph share its structure and are there-
+TwoScale. This metric describes how often a necessary con-           fore not independent realisations of a network configuration.
+dition for transmission through real bridge nodes is violated.       To account for this dependence, the bootstrap samples whole
+                                                                     network blocks with replacement, keeping all ten replicates
+d: Discrepancies along the chain.                                    and their corresponding pairs of Full and TwoScale runs
+For chains, we additionally compare the relative shifts in the       together.
+mean durations of the first crossing, T1 , and the subsequent           For chain summary statistics, we form 2000 bootstrap sam-
+crossings, T9 − T1 . The first crossing allows us to assess          ples and recalculate the measures of interest. The limits of
+discrepancies associated with export from the initial com-           the 95% confidence intervals are the 2.5th and 97.5th per-
+munity, while later crossings can also reflect the effects of        centiles of the resulting estimates. This assesses uncertainty
+import placement and surplus imports. This comparison tests          in the magnitude and direction of discrepancies between the
+whether discrepancies become stronger after the first inter-         models.
+community crossing.
+                                                                      b: Permutation test.
+C. A MEASURE OF THE RATIO OF TIME SCALES                             The Wasserstein distance can be positive even for two samples
+                                                                     from the same distribution, because each contains a finite
+Discrepancies between Full and TwoScale may depend not
+                                                                     number of random observations. We therefore need to test
+only on network structure, but also on the relative speeds
+                                                                     whether the observed distance exceeds the level that can arise
+of infection spread within and between communities. In par-
+                                                                     from sampling variability.
+ticular, aggregation does not account for when individual
+                                                                        For each pair of runs, we randomly swap the observed
+bridge nodes become infected, which can matter when inter-
+                                                                     Full and TwoScale infection times with probability 1/2. We
+nal spread is slow and uneven.
+                                                                     recalculate the normalised Wasserstein distance from the re-
+   We characterise temporal heterogeneity of infection by the
+                                                                     sulting samples. Repeating this procedure 2000 times gives
+dimensionless measure
+                                                                     a distribution of distances under random reassignment of
+                                                                     results between models.
+                        ρ = βout σT ,                       (9)
+                                                                        Under the null hypothesis that Full and TwoScale results
+                                                                     are exchangeable within pairs, we use this distribution to
+where σT is the standard deviation of node infection times           assess the statistical significance of the observed distance.
+within a community. This measure describes the spread of             Its 95th percentile defines the permutation threshold, and the
+internal infection times relative to the mean transmission time      fraction of permutations with a distance at least as large as the
+through one continuously active inter-community channel,             observed one estimates the p-value.
+1/βout .
+                                                                        Exceeding the threshold indicates a statistically significant
+   For each configuration, we calculate σT from node infec-          discrepancy under the assumed null model.
+tion times in each source community of the Full runs, then
+average these values over communities and runs.                       E. VALIDATION OF THE FULL IMPLEMENTATION
+   We examine how ρ relates to the median shift and nor-
+                                                                     To validate the full-network simulator, we compare the simu-
+malised Wasserstein distance for the arrival time in the last
+                                                                     lated mean infection time of the first bridge node, TB , with the
+community, T9 . In particular, we compare how well ρ and
+                                                                     analytical value for a clique (Appendix A). This check uses
+ASPL explain discrepancies between the models across com-
+                                                                     four clique sizes and two numbers of inter-community edges.
+munity sizes, structures, and numbers of inter-community
+                                                                        We also check the mean transmission time to the leaf after
+edges.
+                                                                     the single bridge becomes infected. For one continuously
+   A small ρ means that the spread of internal infection times       active channel, its theoretical value is 1/β.
+is small relative to the transmission time through one channel.         These checks assess the agreement of the Full implemen-
+   The measure ρ is not a direct error metric. We consider it a      tation with known analytical results, but do not establish the
+possible explanatory characteristic of the discrepancies. Since      accuracy of the two-scale approximation.
+σT is calculated from Full, we do not test whether error can
+be predicted from local simulations alone.                            VI. RESULTS
+                                                                      In this section, we compare Full and TwoScale in terms of
+D. STATISTICAL EVALUATION                                             the timing of infection spread and the admissibility of inter-
+Because the simulations are stochastic and the number of              community transmission. We use the experimental series de-
+runs is limited, the estimated discrepancies between Full             scribed in Section V. We first consider the first export of
+and TwoScale have sampling uncertainty. We use a block                infection to determine the consequences of losing information
+bootstrap to assess this uncertainty and a permutation test to        about bridge nodes. We then examine spread along a chain of
+test differences between infection-time distributions.                communities, the effects of network characteristics, and the
+10                                                                                                                                VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                              a Export times                                                  b Export minus bridge                                              c Bridge bypass
+                     1                                                                                                                                                      98/10000
+                                                                                                                                                                             (0.98%)
+                                                                                         export before bridge
+                    0.8
+
+
+
+
+                                                                                                                               bridge-bypass runs (%)
+                                                                                   0.4                                                                   1
+    empirical CDF
+
+
+
+
+                                                                   empirical CDF
+                    0.6
+                                                    Full
+                                                  TwoScale
+                    0.4                                                            0.2                                                                  0.5
+                                                                                                                                                              0/10000
+                    0.2                    W1 = 3.249                                                                                                         (0.00%)
+                                         DKS = 0.0142
+                     0                                                              0                                                                    0
+                          0   200          400               600                             0                  50       100                                   Full         TwoScale
+                              total export time                                                      Texport − TB
+
+Figure 2. First export of infection in the clique–leaf network (n = 100, k = 2, β = 0.005, 10 000 runs of each model). (a) Empirical distribution functions of
+the export time. (b) Distributions of the difference Texport − TB ; negative values correspond to export before either real bridge node becomes infected. (c)
+Fraction of runs with this violation of the transmission order and 95% confidence intervals.
+
+
+relationship between the discrepancies and the ratio of time                                              different average shortest path lengths (ASPL). In this series,
+scales.                                                                                                   graph density also decreases as ASPL increases.
+   The chain comparisons cover 48 configurations, with 400                                                   In dense networks with short paths, premature exports
+paired Full and TwoScale runs in each, for a total of 19 200                                              remained rare: their fraction did not exceed 0.5% for ASPL
+pairs.                                                                                                    ≤ 1.75. It increased with ASPL and, at ASPL 6, reached
+                                                                                                          32.5% for both values of k examined (Figure 3).
+A. TEMPORAL ACCURACY AND ADMISSIBILITY OF                                                                    The timing of export also changed. At ASPL 6, the mean
+INTER-COMMUNITY TRANSMISSION                                                                              export time in TwoScale was 8.3% lower than in Full for k = 1
+The first experiment tests whether TwoScale can reproduce                                                 and 6.2% lower for k = 5. The corresponding 95% bootstrap
+the infection export time accurately without retaining infor-                                             intervals were [−13.1, −3.5]% and [−10.3, −2.3]%. A pos-
+mation about the specific bridge nodes. We consider a clique–                                             itive shift in the mean export time was not observed in any
+leaf network, in which internal spread is rapid.                                                          configuration in this series.
+   In this case, the export-time distributions were close (Fig-                                              The direction of this shift is consistent with Proposition 2
+ure 2). The mean time to infection of the leaf was 110.18 in                                              for the ideal two-scale process: averaging rates over randomly
+Full and 112.62 in TwoScale, and the normalised Wasserstein                                               selected bridge nodes can result in systematically earlier ex-
+distance was eW = 2.95%. The paired difference in means                                                   port.
+was +2.43, with a 95% bootstrap interval of [−0.35, 5.27],                                                   Sampling variability must be considered when interpreting
+which contains zero. Thus, this experiment did not detect a                                               the Wasserstein distance. For nearly exponential export times
+significant systematic shift in the mean export time.                                                     with R = 400, the expected normalised distance between two
+   The similarity of the time distributions in this experiment is                                         independent
+                                                                                                                   p samples from the same distribution is approxi-
+consistent with rapid and uniform infection spread within the                                             mately π/R ≈ 9% (Appendix B). Small values of eW for
+clique. Because of its symmetric structure, infection spreads                                             a single export therefore do not, by themselves, indicate a
+quickly among the nodes regardless of their positions, includ-                                            difference between the models.
+ing the bridge nodes.                                                                                        Unlike the temporal distance, every premature export di-
+   The expected time to infection of the first bridge is only                                             rectly indicates a violation of the admissible transmission
+E[TB ] = 8.36, whereas the mean export time exceeds 110.                                                  order. For example, at ASPL 4 and k = 1, such violations
+Thus, the actual and aggregate transmission rates differ for                                              occurred in 19.75% of runs, although the time distributions
+a relatively short period compared with the overall waiting                                               remained relatively close.
+time for export. This is consistent with the small discrepancy                                               The first export demonstrates two distinct consequences of
+observed between the models.                                                                              aggregation. Even when the transmission times are close, the
+   However, similar time distributions do not imply that the                                              model can violate the physical constraints imposed by inter-
+admissible infection route is preserved. In 98 of the 10 000                                              community contacts. When internal spread becomes slower
+TwoScale runs (0.98%), the leaf was infected before either                                                and less uniform, this loss of information can also produce a
+of the two real bridge nodes. This event order is impossible                                              noticeable shift in the export time.
+in Full. The aggregate interface can reproduce the timing of
+transmission accurately while allowing transitions that are                                               B. PROPAGATION OF DISCREPANCIES ALONG A CHAIN
+impossible in the original network.                                                                       OF COMMUNITIES
+   To determine how this effect depends on internal structure,                                            We examine successive inter-community crossings in a chain
+we replace the clique with connected random graphs having                                                 of ten communities.
+VOLUME XX, XXXX                                                                                                                                                                        11
+                                                                                                   Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                                          k = 1: export time                                                     k = 1: W1 error                                                                               k = 1: bridge bypass
+
+                          1,500                                  Full
+
+
+
+
+                                                                                                                                                                export before any bridge (%)
+                                                               TwoScale
+                                                                                                   10                                                                                          30
+     mean export time
+
+
+
+
+                                                                                  W1 /T Full (%)
+                          1,000
+                                                                                                                                                                                               20
+                                                                                                   5
+                           500
+                                                                                                                                                                                               10
+
+
+                             0                                                                     0                                                                                            0
+
+
+                                          k = 5: export time                                                     k = 5: W1 error                                                                               k = 5: bridge bypass
+
+                          1,500
+
+
+
+
+                                                                                                                                                                export before any bridge (%)
+                                                                                                   10                                                                                          30
+     mean export time
+
+
+
+
+                                                                                  W1 /T Full (%)
+
+
+
+
+                          1,000
+                                                                                                                                                                                               20
+                                                                                                   5
+                           500
+                                                                                                                                                                                               10
+
+
+                             0                                                                     0                                                                                            0
+                                      1   2       3       4     5         6                             1    2       3                    4           5   6                                         1          2      3      4        5       6
+                                                target ASPL                                                         target ASPL                                                                                      target ASPL
+
+Figure 3. Effect of the source’s internal structure on the first export to the leaf (n = 1000, β = 0.003, k = 1 in the top row and k = 5 in the bottom row;
+400 paired runs for each configuration). Left: mean export time. Centre: normalised Wasserstein distance eW between the export-time distributions. Right:
+fraction of TwoScale exports occurring before infection of the first real bridge; such events are impossible in Full. Error bars show 95% block-bootstrap
+intervals.
+
+
+                                                      (a) Epidemic propagation                                                                            (b) Arrival in the last community
+                          10,000                                                                                                              1
+                                                Full
+                                              TwoScale
+
+                           7,500                                                                                                         0.75
+                                                                                                                         Empirical CDF
+         Infected nodes
+
+
+
+
+                           5,000                                                                                                          0.5
+
+
+
+                           2,500                                                                                                         0.25
+
+
+
+                                  0                                                                                                           0
+                                      0                2,000                  4,000                         6,000                                 0            2,000                                               4,000                  6,000
+                                                                Time                                                                                                                                    Time
+
+Figure 4. Infection spread along a chain of ten cliques with 1000 nodes each (k = 1, β = 0.003, 400 runs of each model). Left: median number of infected
+nodes over time and interquartile bands, which describe variability among runs rather than confidence intervals. Right: empirical distribution functions of
+the arrival time at the last community, T9 . Four Full values and two TwoScale values lie outside the displayed time range; all are included in the analysis.
+
+
+   We first consider a chain of cliques, in which internal infec-                                                         test did not detect a statistically significant difference between
+tion spreads much faster than inter-community transmission.                                                               the distributions.
+Even after nine consecutive crossings, the time distributions                                                                For a clique with n nodes and βin = βout , the ratio of the
+remained close (Figure 4).                                                                                                mean time to infect the entire clique to the mean transmission
+   The median arrival time at the last community was 2785                                                                 time through one active inter-community edge is 2Hn−1 /n,
+in Full and 2877 in TwoScale. The normalised Wasserstein                                                                  which is only about 1.5% for n = 1000.
+distance was 3.34% and did not exceed the permutation                                                                        Internal spread is therefore much faster than inter-
+threshold of 5.1% (p = 0.32). Thus, at this sample size, the                                                              community transmission, which explains the small discrepan-
+12                                                                                                                                                                                                                                 VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                                            (a) k = 1: median shift                                                                             (b) k = 1: Wasserstein distance
+
+                          6   -7.1   -9.8   -11.7 -14.3 -13.4 -13.3 -13.8 -13.8 -13.8                                                6   7.9    9.5    10.9    12.8   13.2   13.5   13.8   13.7   13.6
+                                                                                              10
+                          5   -9.6   -12.1 -12.1    -8.9   -9.2   -9.9   -9.7   -9.8   -8.7                                          5   11.0   9.9    10.0     9.1   9.2    9.8    9.4    9.7    9.4
+   Target internal ASPL
+
+
+
+
+                                                                                                              Target internal ASPL
+                                                                                                                                                                                                         10
+
+                          4   -5.8   -2.8   -3.3    -4.0   -5.2   -6.8   -7.8   -6.4   -6.7                                          4   5.1    4.1    2.5      3.7   4.2    5.6    6.6    6.3    6.1
+
+
+
+
+                                                                                                                                                                                                              eW (%)
+                                                                                                    bc (%)
+                                                                                              0
+                          3   -1.6   -3.1   -0.8     0.6   -0.8   -1.8   -1.0   -0.8   1.1                                           3   4.8    4.0    3.8      2.2   1.5    2.0    1.8    1.6    1.6
+                                                                                                                                                                                                         5
+                          2   -3.7   -1.4   0.1     -0.4   -2.8   0.9    0.1    -1.0   1.4                                           2   6.8    4.6    3.8      1.6   2.6    1.6    1.3    1.6    2.4
+                                                                                              −10
+                          1   12.6   4.0    2.8      7.4   2.0    4.1    3.9    4.4    3.3                                           1   7.7    4.7    6.0      5.1   3.4    3.9    3.4    3.6    3.3
+                                                                                                                                                                                                         0
+                               1      2      3       4      5      6      7      8      9                                                 1      2      3       4      5      6      7      8      9
+                                                  Community reached c                                                                                        Community reached c
+                                            (c) k = 5: median shift                                                                             (d) k = 5: Wasserstein distance
+
+                          6   -8.7   -9.1   -8.1    -10.3 -11.1 -10.6 -11.2 -11.1 -10.1                                              6   8.7    10.0   9.4      9.6   10.4   10.2   10.8   11.0   10.8
+
+
+                          5   -6.4   -6.3   -8.1    -6.5   -8.9   -8.2   -9.6   -8.6   -9.0                                          5   9.7    9.6    9.4      9.0   9.1    8.9    9.3    9.0    8.9
+   Target internal ASPL
+
+
+
+
+                          4                                                                                   Target internal ASPL   4
+                              -4.4   -2.9   -4.2    -4.4   -5.4   -5.0   -4.9   -5.2   -5.7                                              5.9    5.1    5.0      4.7   5.3    5.3    5.4    5.7    5.8
+
+
+                          3   1.7    -2.7   -2.3    -0.5   -0.7   -2.7   -2.6   -3.5   -3.6                                          3   1.8    2.2    2.1      1.4   1.4    2.3    2.7    3.2    2.8
+
+
+                          2   -7.7   -0.1   -1.3     1.0   -0.9   0.5    -1.4   -1.6   -0.2                                          2   4.5    2.6    2.2      1.6   1.2    1.2    1.4    1.6    1.3
+
+
+                          1   11.5   2.5    4.1      7.5   -0.6   5.6    6.3    3.7    2.8                                           1   6.6    4.1    6.2      4.2   2.6    3.5    3.6    3.8    3.1
+
+
+                               1      2      3       4      5      6      7      8      9                                                 1      2      3       4      5      6      7      8      9
+                                                  Community reached c                                                                                        Community reached c
+
+Figure 5. Change in discrepancies along a chain of ten communities with n = 1000 nodes each. Rows correspond to target ASPL values, and columns to
+the community reached (c = 1, . . . , 9). Results for k = 1 are shown above and those for k = 5 below. Left: relative shift bc in the median arrival time;
+negative values mean that TwoScale predicts earlier arrival. Right: normalised Wasserstein distance eW . Each configuration uses 400 paired runs.
+Uncertainty is not shown; results for terminal arrivals are presented in Figure 6.
+
+
+cies observed between the models. In addition, information                                                   correspond to a substantial difference in the time at which
+about which particular nodes are bridges has relatively little                                               infection reaches a distant community.
+effect on the crossing time.
+   A different pattern appears in chains of random commu-                                                    C. EFFECTS OF COMMUNITY SIZE AND NUMBER OF
+nities with longer internal paths. TwoScale systematically                                                   INTER-COMMUNITY EDGES
+predicts earlier infection arrival, but the size of this lead
+                                                                                                             At the same ASPL, the accuracy of TwoScale may depend on
+behaves differently in absolute and relative terms (Figure 5).
+                                                                                                             community size and the number of inter-community edges.
+   At ASPL 6 and k = 1, the median first-crossing time in
+                                                                                                             We compare the arrival time at the last community, T9 , for
+TwoScale was 7.1% lower, whereas the time to reach the last
+                                                                                                             different community sizes n, ASPL values, and numbers of
+community was 13.8% lower. For k = 5, the corresponding
+                                                                                                             inter-community edges k (Figure 6).
+values were 8.7% and 10.1%.
+   However, the relative discrepancy did not increase in pro-                                                   In configurations with short internal paths (ASPL ≤ 2),
+portion to the number of inter-community crossings. After the                                                the discrepancies were mostly small. For 14 of these 16 con-
+initial changes, it mostly stabilised or changed slowly. For                                                 figurations, the permutation test did not detect a statistically
+example, at ASPL 5 and k = 1, the median lead was 9.6% for                                                   significant difference between the arrival-time distributions.
+the first crossing and 8.7% for arrival at the last community.                                                  At ASPL ≥ 3, the discrepancies became more pronounced.
+   At the same time, the absolute difference between the                                                     In 31 of the 32 configurations, the permutation test detected a
+median arrival times in this configuration increased from                                                    difference between the distributions (p < 0.01). These results
+approximately 107 to 896 time units.                                                                         were obtained without correction for multiple comparisons.
+   Successive inter-community crossings can accumulate a                                                        The magnitude of the discrepancy also depended strongly
+substantial absolute timing discrepancy even when its relative                                               on community size. At fixed ASPL ≥ 3, the normalised
+size remains approximately constant. This matters in fore-                                                   Wasserstein distance decreased monotonically with increas-
+casting problems, in which even a relatively small error can                                                 ing n for both values of k.
+VOLUME XX, XXXX                                                                                                                                                                                                        13
+                                                                          Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                                        (a) k = 1: median shift                                                            (b) k = 1: Wasserstein distance
+                                                                               40                                                                                  40
+                            6   −40.3      −31.1      −19.6       −13.8                                              6   40.9      30.7       20.1      13.6
+
+                            5   −31.6      −25.3      −17.1       −8.7         20                                    5   33.3      25.3       17.8       9.4
+     Target internal ASPL
+
+
+
+
+                                                                                              Target internal ASPL
+                                                                                                                                                                   30
+
+                            4   −26.2      −17.1      −12.2       −6.7                                               4   26.1      16.9       12.4       6.1
+
+
+
+
+                                                                                                                                                                        eW (%)
+                                                                                     b9 (%)
+                                                                               0                                                                                   20
+                            3   −13.7      −7.9        −3.8       +1.1                                               3   14.1      9.0         4.1       1.6
+
+                            2   −2.6       −1.5        +0.0       +1.4         −20                                   2   1.3       1.5         1.8       2.4       10
+
+                            1   −5.7       −0.6        −5.9       +3.3                                               1   4.2       2.5         4.3       3.3
+                                                                               −40                                                                                 0
+                                 50         100         250       1000                                                    50       100         250      1000
+                                            Community size n                                                                       Community size n
+                                        (c) k = 5: median shift                                                            (d) k = 5: Wasserstein distance
+
+                            6   −33.0      −26.4      −20.4       −10.1                                              6   32.6      26.0       19.5      10.8
+
+                            5   −25.4      −22.3      −16.8       −9.0                                               5   25.7      22.8       16.4       8.9
+     Target internal ASPL
+
+
+
+
+                                                                                              Target internal ASPL
+                            4   −21.2      −15.9      −10.5       −5.7                                               4   20.8      15.3       10.4       5.8
+
+                            3   −12.9      −8.4        −4.4       −3.6                                               3   12.2      9.1         5.7       2.8
+
+                            2   −4.5       −1.5        +0.5       −0.2                                               2   3.8       2.0         1.8       1.3
+
+                            1   −3.4       +0.6        −4.3       +2.8                                               1   3.2       1.1         4.5       3.1
+
+                                 50         100         250       1000                                                    50       100         250      1000
+                                            Community size n                                                                       Community size n
+
+Figure 6. Discrepancies in the terminal arrival time T9 for 48 configurations of ten-community chains. The left panels show the relative median shift b9
+(%), and the right panels show the normalised Wasserstein distance eW (%). The top row corresponds to k = 1 and the bottom row to k = 5. Within each
+panel, cell rows correspond to target ASPL values and columns to community size n. The colour and number in a cell represent the same metric; the
+colour scales are shared between the two values of k separately for each metric. A negative median shift means earlier arrival in TwoScale. Hatching in
+the right panels only marks configurations for which the permutation test for the Wasserstein distance did not detect a difference (p ≥ 0.05). The tests
+were performed without correction for multiple comparisons. Each configuration uses 400 paired runs.
+
+
+   For example, at ASPL 6 and k = 1, it was 40.9% for n = 50                                  eW and median shift b9 as functions of ρ for all 48 chain
+but only 13.6% for n = 1000. For k = 5, the corresponding                                     configurations.
+values were 32.6% and 10.8%.                                                                     The measure ρ had a stronger rank association with eW than
+   Increasing the number of inter-community edges from one                                    target ASPL. The Spearman correlation between ρ and eW
+to five also generally reduced the discrepancies in sparse                                    was 0.91 across all configurations and 0.98 for configurations
+communities, although it did not remove them completely.                                      with ASPL ≥ 3. The corresponding values for ASPL were
+   The fraction of TwoScale inter-community crossings that                                    0.82 and 0.66.
+occurred before infection of the first real bridge in the source                                 For ρ < 0.25, the distance eW did not exceed 4.5% in any of
+also depended strongly on structure: it ranged from 0.1–2.3%                                  the 18 configurations. For 15 of them, the permutation test did
+at ASPL 1 to 31–51% at ASPL 6.                                                                not detect a difference between the distributions. By contrast,
+   Discrepancies between the models generally increase as                                     for ρ ≥ 0.25, the observed distance exceeded the permutation
+internal paths become longer. However, at the same ASPL,                                      threshold in all 30 configurations.
+their magnitude can differ substantially with community size                                     For ρ ≥ 0.3, the results were approximately described by
+and the number of inter-community edges. ASPL alone is                                        the empirical relationship
+insufficient for assessing accuracy.
+                                                                                                                                          eW ≈ 15ρ %.                     (10)
+D. RELATIONSHIP BETWEEN DISCREPANCIES AND THE
+RATIO OF TIME SCALES                                                                          In this range, we also observed b9 ≈ −eW : the distance be-
+We assess the relationship between discrepancies and tem-                                     tween the distributions mainly corresponded to a shift towards
+poral heterogeneity of internal infection using the measure                                   earlier arrival times in TwoScale.
+ρ = βout σT defined in Section V-C.                                                              When the spread of internal infection times is small relative
+  Figure 7(a,b) shows the normalised Wasserstein distance                                     to the expected inter-community transmission time, aggrega-
+14                                                                                                                                                             VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+                       (a) Distributional discrepancy                                     (b) Signed median shift                                                (c) First vs later crossings
+
+                                                                                                                                                           0   ASPL ≥ 3
+                  40                                                                                                                                           Below diagonal: later
+                                                                                   0
+
+
+
+
+                                                                                                                         Crossings 2–9: mean shift (%)
+                                                                                                                                                               crossings more biased
+
+
+
+
+                                                           Median shift b9 (%)
+   eW of T9 (%)
+
+
+
+
+                                                                                                                                                         −20
+                  20                                                             −20
+
+
+
+
+                                                                                                                                                         −40
+                                                                                 −40
+                  0
+
+                   10−3     10−2     10−1     100                                  10−3    10−2     10−1     100                                               −40                     −20           0
+                                   ρ = βσT                                                        ρ = βσT                                                           First crossing: mean shift (%)
+
+
+                                                ■ n = 50   ■ n = 100 ■ n = 250 ■ n = 1000 • k = 1                     △k = 5                              — null 95%
+
+Figure 7. Relationship between discrepancies in Full and TwoScale and the time-scale ratio ρ = βout σT for 48 chain configurations. (a) Normalised
+Wasserstein distance eW for the terminal arrival time T9 . (b) Relative shift in its median, b9 . Colours denote community size; filled circles correspond to
+k = 1, and open triangles to k = 5. Lines connect configurations with ASPL from 1 to 6 at fixed n and k. Grey marks in (a) show the 95th percentile of the
+permutation distribution of the distance for the corresponding configuration. (c) Comparison of relative shifts in the mean duration of the first crossing
+and crossings 2–9 for ASPL ≥ 3. Error bars show 95% block-bootstrap intervals for the shift in the first crossing.
+
+
+tion of bridge nodes has a comparatively small effect on the                                        states of individual bridge nodes may remain important for
+time distributions.                                                                                 a substantial part of the waiting time for a crossing. This is
+                                                                                                    why structural characteristics, including ASPL, do not fully
+VII. DISCUSSION                                                                                     explain the observed discrepancies. The stronger relationship
+The main advantage of the proposed two-scale approach is                                            between accuracy and the measure ρ = βout σT supports
+that it combines detailed stochastic simulation within com-                                         an explanation based on temporal heterogeneity in internal
+munities with an aggregate representation of the connections                                        infection. This suggests that the suitability of aggregation
+between them. This is suitable for problems in which contact-                                       can be assessed from both network topology and process
+network data are available at different levels of detail. For                                       dynamics.
+example, the internal structure of communities can be recon-                                           A possible direction for further research is to increase the
+structed or generated from known characteristics, whereas                                           model’s level of detail by incorporating local community char-
+inter-community connections may be represented only by                                              acteristics, such as ASPL, eigenvalues, or other descriptors,
+aggregate movement flows obtained from transport or migra-                                          and to evaluate whether these additions reduce the discrep-
+tion data. Unlike full-network simulation, TwoScale does not                                        ancy between the methods.
+require the nodes involved in inter-community contacts to be                                           For simulations of spread through many communities, the
+specified explicitly. At the same time, unlike fully aggregated                                     way in which discrepancies accumulate is also important.
+models, it preserves individual infection dynamics and the                                          The experiments showed that the absolute difference between
+effect of internal topology.                                                                        arrival times can increase along the chain, whereas the relative
+   The experiments showed that this simplification can pre-                                         shift often stabilises or changes slowly. Thus, the error of the
+serve high accuracy in the temporal characteristics of infec-                                       aggregate simulation does not necessarily grow in proportion
+tion spread. In communities with fast internal spread, the                                          to the number of inter-community crossings. At the same time,
+arrival-time distributions from Full and TwoScale were close,                                       the stronger bias in the total duration of later crossings than
+and this agreement persisted even after nine consecutive inter-                                     in the first crossing indicates possible additional effects after
+community crossings. Thus, the absence of information about                                         infection is imported. One explanation is the occurrence of
+specific bridge nodes does not necessarily cause a substantial                                      surplus imports, which can create additional foci of infection
+error in the overall propagation dynamics. This makes aggre-                                        and accelerate subsequent spread. The separate contribution
+gate interfaces a promising way to model networks of com-                                           of this mechanism requires further investigation.
+munities when the main quantities of interest are the times at                                         The theoretical analysis clearly identifies the approxima-
+which communities are reached and their distributions.                                              tion implemented by the two-scale approach. The ideal pro-
+   The accuracy of this approximation can be explained by the                                       cess is equivalent to exact simulation on a surrogate net-
+ratio of time scales. If infection spreads rapidly among the                                        work with uniformly distributed inter-community connec-
+nodes of a community relative to the waiting time for inter-                                        tions. This provides a mathematical basis for the aggregate
+community transmission, the specific locations of the bridges                                       representation and explains why its results can differ from
+have a comparatively small effect on the export time. With                                          those of full-network simulation. In particular, similarity be-
+slower and more heterogeneous internal spread, however, the                                         tween time distributions does not guarantee reproduction
+VOLUME XX, XXXX                                                                                                                                                                                          15
+                                                       Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+of specific infection routes. The appropriate level of detail             accumulate along a chain, whereas the relative discrepancy
+should therefore be determined by the aim of the study: an ag-            often stabilises or changes slowly.
+gregate representation may be sufficient for estimating tempo-               We examined how internal structure, community size, and
+ral characteristics, whereas analysis of physical transmission            the number of inter-community edges affect the accuracy
+paths requires information about the corresponding contacts.              of aggregate simulation. The time-scale ratio ρ = βout σT
+   Further possibilities arise from the computational structure           had a stronger observed relationship with the discrepancies
+of the method. Independent local simulators can run in par-               than ASPL and is a promising characteristic for identifying
+allel between synchronisation points, and individual commu-               conditions under which the method is applicable.
+nities can have different internal structures and simulation                 In our tests, the smallest discrepancies occurred when infec-
+parameters. In addition, replacing explicit inter-community               tion spread rapidly within communities. In all 18 configura-
+edges with aggregate weights can reduce the amount of con-                tions with ρ < 0.25, the normalised Wasserstein distance did
+tact data. However, the actual gains in speed and memory de-              not exceed 4.5%. At the same time, close time distributions
+pend on the network structure and the cost of synchronisation.            did not guarantee preservation of admissible transmission
+   Outlook. A natural next step is evaluation on empirical                routes.
+social networks [25] and geographically explicit synthetic
+contact networks [26], with communities defined by organi-                APPENDIX A CLIQUE FORMULAS AND VERIFICATION
+zational membership or place of residence. Available node-               Consider an n-node clique with SI dynamics, per-edge rate
+level connections would provide both a full-network refer-               β, a uniformly placed seed and a uniformly placed set of k
+ence and aggregated intercommunity weights Wij . A comple-               bridge nodes. When m nodes are infected, the next internal
+mentary approach is to construct local contact networks from             infection occurs at rate βm(n − m), independently of which
+demographic data and connect communities using mobility-                 nodes are infected, and the infected set is a uniform m-subset.
+informed weights [27], with explicit assumptions linking                 The probability
+                                                                                        that none of the first m infected nodes is a
+travel flows to contact intensities. Initial studies could use           bridge is n−k
+                                                                                     m  /  n
+                                                                                          m , hence
+static network aggregates; retaining contact times would re-
+                                                                                                 n−k n−k 
+quire a temporal-network extension. Such studies should ex-                                      X
+                                                                                                        m        1
+                                                                                       E[TB ] =         n                ,         (11)
+amine sensitivity to community definitions, contact weights,                                            m
+                                                                                                            βm(n − m)
+                                                                                                 m=1
+disease parameters, and incomplete observations, while dis-
+tinguishing approximation error from uncertainty in network               For one bridge this simplifies to
+construction. This evaluation warrants a dedicated follow-up                                               Hn−1
+study; validation against observed spreading outcomes would                                     E[TB ] =        (k = 1),                        (12)
+                                                                                                            βn
+require additional evidence.
+                                                                         where Hn−1 is the harmonic number; the case of a bridge seed
+VIII. CONCLUSIONS
+                                                                         (TB = 0) is included. For k = 1, the export time in Full is
+This study investigated a two-scale method for stochastic sim-           TB plus an independent Exp(β) waiting time. The expected
+ulation of infection spread in networks of communities. The              time to infect the whole clique is 2Hn−1 /(βn). Table 3 com-
+method combines detailed Gillespie simulation of internal                pares (11) with the first community of the clique chains.
+contact networks with aggregate inter-community intensities.
+                                                                         Table 3. Verification of the reference simulator on the first community of
+It therefore allows local contact networks to be used together           the clique chains (β = 0.003, 400 runs per cell): mean bridge-activation
+with aggregate data on connections between communities,                  time and, for k = 1, mean wait after activation (exact value 1/β = 333.3).
+                                                                         Values are mean ± standard error.
+without requiring every inter-community contact to be rep-
+resented explicitly. Its modular structure also allows local
+simulators to be run in parallel.                                                     n k Exact E[TB ]             Full TB        Full wait
+    We proved that the ideal two-scale process is equivalent to                     50 1            29.86 29.72 ± 0.71 354.0 ± 16.9
+exact simulation on a surrogate network with uniform inter-                        100 1            17.26 17.05 ± 0.38 326.5 ± 17.0
+community connections. We analysed the mechanisms that                             250 1             8.13 7.84 ± 0.15 347.4 ± 16.6
+                                                                                  1000 1             2.49 2.51 ± 0.04 353.8 ± 17.9
+produce discrepancies between aggregate and full-network                            50 5            15.97 15.96 ± 0.55            –
+simulation, including the consequences of losing information                       100 5            10.31 9.64 ± 0.29             –
+about specific bridge nodes. We also proved that, when bridge                      250 5             5.35 5.16 ± 0.12             –
+nodes are placed uniformly at random, aggregation yields a                        1000 5             1.80 1.77 ± 0.03             –
+first infection export that is stochastically no later in the ideal
+model.
+    The experiments confirmed that TwoScale can reproduce                 APPENDIX B SAMPLING FLOOR OF THE WASSERSTEIN
+infection-spread time distributions close to those of Full when           DISTANCE
+infection spreads rapidly within communities. This agree-                 Let FR and GR be empirical CDFs of two independent samples
+ment persisted even after nine consecutive inter-community                R size R from the√same continuous law F. Then√ W1 =
+                                                                          of
+crossings. The absolute discrepancy between arrival times can                |FR −GR | dx, and R (FR −GR ) is approximately 2 times
+16                                                                                                                                    VOLUME XX, XXXX
+Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+a Brownian bridge evaluated at F(x) [28]. Since E|B(u)| =
+p                                                                               These tools were also used interactively to discuss and re-
+  2u(1 − u)/π for a Brownian bridge B,                                          fine mathematical arguments, support experimental design
+                       Z q                                                      and statistical analysis, and assist with the development of
+                    2                       
+        E[W1 ] ≈ √           F(x) 1 − F(x) dx.                                  simulation and analysis code.
+                    πR                                                             The authors directed the research, made the final scientific
+                                                                                and methodological decisions, and reviewed and approved the
+                     p with mean µ, the integral equals µπ/2,
+For an exponential law
+so that E[W1 ]/µ ≈ π/R, which is 8.9% for R = 400 and                           resulting manuscript.
+1.8% for R = 10 000. Arrival times that are sums of several
+crossings are less dispersed relative to their mean, and their                   References
+floor is correspondingly lower; the permutation floors of the                     [1] M. J. Keeling and K. T. D. Eames, ‘‘Networks and epidemic models,’’
+                                                                                      Journal of The Royal Society Interface, vol. 2, no. 4, pp. 295–307, 2005.
+chain configurations ranged from 1.6% to 5.9%.                                    [2] R. Pastor-Satorras, C. Castellano, P. Van Mieghem, and A. Vespignani,
+                                                                                      ‘‘Epidemic processes in complex networks,’’ Reviews of Modern Physics,
+                                                                                      vol. 87, no. 3, pp. 925–979, 2015.
+APPENDIX C REPRODUCIBILITY DETAILS
+                                                                                  [3] I. Z. Kiss, J. C. Miller, and P. L. Simon, Mathematics of Epidemics on
+Seeds are derived deterministically from the experiment pa-                           Networks: From Exact to Approximate Models. Cham: Springer, 2017.
+rameters. Each TwoScale engine draws from a private pseudo-                       [4] D. Balcan, V. Colizza, B. Gonçalves, H. Hu, J. J. Ramasco, and A. Vespig-
+                                                                                      nani, ‘‘Multiscale mobility networks and the spatial spreading of infectious
+random stream; midpoint probes copy the stream state of their                         diseases,’’ Proceedings of the National Academy of Sciences, vol. 106,
+engine and do not advance it. Two Full runs (n = 50, ASPL 6,                          no. 51, pp. 21 484–21 489, 2009.
+k = 1) had not reached the tenth community by T = 30 000.
+They were rerun to T = 40 000 with the same graphs, initial
+nodes and event seeds. Their event histories up to 30 000 were
+verified to match the saved runs, and their terminal arrivals
+occurred at about 31 059 and 31 007. No horizon value was
+substituted for an unobserved event. The permutation and
+bootstrap analyses of the chain configurations, the descriptor
+σT and Figures 6–7 were computed from the saved runs by
+the scripts extrascripts/analysis/smpt_twoscale_paper_metr
+ics.py and extrascripts/visualization/smpt_twoscale_paper_f
+igures.py.
+
+CODE AVAILABILITY
+The source code of the simulators is available at https://gith
+ub.com/YulianKuryliak/Two-Layer-CTMC.
+
+DATA AVAILABILITY
+[To be completed]
+
+FUNDING
+This research did not receive any specific funding.
+
+CREDIT AUTHORSHIP CONTRIBUTION STATEMENT
+Yulian Kuryliak: Conceptualization, Methodology, Soft-
+ware, Investigation, Formal analysis, Visualization, Writing –
+original draft. Michael T. M. Emmerich: Conceptualization,
+Methodology, Supervision, Writing – review & editing.
+
+DECLARATION OF COMPETING INTEREST
+The authors declare that they have no known competing
+financial interests or personal relationships that could have
+appeared to influence the work reported in this article.
+
+ACKNOWLEDGMENT
+During the preparation of this manuscript, the first author
+used OpenAI ChatGPT and Codex, and Anthropic Claude
+to assist with drafting, language editing, and structuring
+the manuscript across Sections I–VIII and Appendices A–C.
+VOLUME XX, XXXX                                                                                                                                               17
+                                                                  Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling
+
+
+
+ [5] H. Barbosa, M. Barthelemy, G. Ghoshal, C. R. James, M. Lenormand,               [26] N. Jiang, F. Yin, B. Wang, and A. T. Crooks, ‘‘A large-scale geographically
+     T. Louail, R. Menezes, J. J. Ramasco, F. Simini, and M. Tomasini, ‘‘Human            explicit synthetic population with social networks for the United States,’’
+     mobility: Models and applications,’’ Physics Reports, vol. 734, pp. 1–74,            Scientific Data, vol. 11, p. 1204, 2024.
+     2018.                                                                           [27] M. Tizzoni, P. Bajardi, A. Decuyper, G. Kon Kam King, C. M. Schneider,
+ [6] S. Eubank, H. Guclu, V. S. A. Kumar, M. V. Marathe, A. Srinivasan,                   V. Blondel, Z. Smoreda, M. C. González, and V. Colizza, ‘‘On the use of
+     Z. Toroczkai, and N. Wang, ‘‘Modelling disease outbreaks in realistic urban          human mobility proxies for modeling epidemics,’’ PLOS Computational
+     social networks,’’ Nature, vol. 429, no. 6988, pp. 180–184, 2004.                    Biology, vol. 10, no. 7, p. e1003716, 2014.
+ [7] L. Danon, A. P. Ford, T. House, C. P. Jewell, M. J. Keeling, G. O. Roberts,     [28] E. del Barrio, E. Giné, and C. Matrán, ‘‘Central limit theorems for the
+     J. V. Ross, and M. C. Vernon, ‘‘Networks and the epidemiology of infec-              Wasserstein distance between the empirical and the true distributions,’’ The
+     tious disease,’’ Interdisciplinary Perspectives on Infectious Diseases, vol.         Annals of Probability, vol. 27, no. 2, pp. 1009–1071, 1999.
+     2011, p. 284909, 2011.
+ [8] S. Chang, E. Pierson, P. W. Koh, J. Gerardin, B. Redbird, D. Grusky, and
+     J. Leskovec, ‘‘Mobility network models of covid-19 explain inequities and      YULIAN KURYLIAK is currently pursuing a Ph.D. in System Analysis at
+     inform reopening,’’ Nature, vol. 589, pp. 82–87, 2021.                         Lviv Polytechnic National University, Ukraine, where he also serves as
+ [9] D. T. Gillespie, ‘‘Exact stochastic simulation of coupled chemical reac-       a Teaching Assistant. His research interests include stochastic modeling,
+     tions,’’ The Journal of Physical Chemistry, vol. 81, no. 25, pp. 2340–2361,    complex networks, multiscale simulation, and the modeling of dynamical
+     1977.                                                                          processes on networks, particularly epidemic spreading.
+[10] M. A. Gibson and J. Bruck, ‘‘Efficient exact stochastic simulation of
+     chemical systems with many species and many channels,’’ The Journal of
+     Physical Chemistry A, vol. 104, no. 9, pp. 1876–1889, 2000.                    MICHAEL T.M. EMMERICH was born in 1973, Coesfeld, Germany. He re-
+[11] C. L. Vestergaard and M. Génois, ‘‘Temporal gillespie algorithm: Fast          ceived his Dr.rer.nat. degree from Dortmund University (Prof. H.-P. Schwefel,
+     simulation of contagion processes on time-varying networks,’’ PLoS Com-        Prof. P. Buchholz Promoters) in 2005. He is currently an Associate Professor
+     putational Biology, vol. 11, no. 10, p. e1004579, 2015.                        (UHD) with LIACS, Leiden University, and the Head of the Multicriteria
+[12] Y. Kuryliak, M. T. M. Emmerich, and D. Dosyn, ‘‘Simulating epidemic            Optimization and Decision Analysis Research Group (moda.liacs.nl) and
+     peak dynamics on complex networks using efficient gillespie algorithms,’’      Scientific Coordinator of Center for Computational Life Science (CCLS),
+     Infection, Genetics and Evolution, vol. 132, p. 105768, 2025.
+                                                                                    Leiden University. Moreover, he is appointed as a visiting fellow at the
+[13] V. Colizza, R. Pastor-Satorras, and A. Vespignani, ‘‘Reaction–diffusion        Multiobjective Optimization research group at Jyvakyla University, Finland
+     processes and metapopulation models in heterogeneous networks,’’ Nature
+                                                                                    and as a Lead AI Scientist for Silo.ai.
+     Physics, vol. 3, no. 4, pp. 276–282, 2007.
+                                                                                       In the past, he carried out projects as a Researcher at ICD e.V., Germany,
+[14] V. Colizza and A. Vespignani, ‘‘Epidemic modeling in metapopulation
+                                                                                    IST Lisbon, the University of the Algarve, Portugal, ACCESS Material Sci-
+     systems with heterogeneous coupling pattern: Theory and simulations,’’
+     Journal of Theoretical Biology, vol. 251, no. 3, pp. 450–467, 2008.
+                                                                                    ence e.V., Germany, and the FOM/AMOLF Institute on Fundamental Science
+                                                                                    of Matter, Amsterdam, The Netherlands. He is known for pioneering work
+[15] D. Balcan, V. Colizza, B. Gonçalves, H. Hu, J. J. Ramasco, and A. Vespig-
+     nani, ‘‘Modeling the spatial spread of infectious diseases: The global         on model-assisted and indicator-based multiobjective optimization (SMS-
+     epidemic and mobility computational model,’’ Journal of Computational          EMOA, Expected Hypervolume Improvement), and has edited four books
+     Science, vol. 1, no. 3, pp. 132–145, 2010.                                     and co-authored over 120 papers in multicriteria optimization algorithms and
+[16] M. Ajelli, B. Gonçalves, D. Balcan, V. Colizza, H. Hu, J. J. Ramasco,          their application in drug discovery, logistics, and sustainable design.
+     S. Merler, and A. Vespignani, ‘‘Comparing large-scale computational ap-
+     proaches to epidemic modeling: Agent-based versus structured metapopu-
+     lation models,’’ BMC Infectious Diseases, vol. 10, p. 190, 2010.
+[17] Y. Kuryliak and M. Emmerich, ‘‘Towards complexity reduction of large-
+     scale epidemic simulation in two-scale networks,’’ in Proceedings of the
+     Modern Machine Learning Technologies Workshop (MoMLeT 2025), ser.
+     CEUR Workshop Proceedings, vol. 4004, 2025, pp. 327–336. [Online].
+     Available: https://ceur-ws.org/Vol-4004/
+[18] S. N. Ethier and T. G. Kurtz, Markov Processes: Characterization and
+     Convergence. New York: Wiley, 1986.
+[19] D. F. Anderson, ‘‘A modified next reaction method for simulating chemical
+     systems with time dependent propensities and delays,’’ The Journal of
+     Chemical Physics, vol. 127, no. 21, p. 214107, 2007.
+[20] E. L. Haseltine and J. B. Rawlings, ‘‘Approximate simulation of coupled
+     fast and slow reactions for stochastic chemical kinetics,’’ The Journal of
+     Chemical Physics, vol. 117, no. 15, pp. 6959–6969, 2002.
+[21] Y. Cao, D. T. Gillespie, and L. R. Petzold, ‘‘The slow-scale stochastic
+     simulation algorithm,’’ The Journal of Chemical Physics, vol. 122, no. 1, p.
+     014116, 2005.
+[22] C. C. Kerr, R. M. Stuart, D. Mistry, R. G. Abeysuriya, K. Rosenfeld, G. R.
+     Hart, R. C. Núñez, J. A. Cohen, P. Selvaraj, B. Hagedorn, L. George,
+     M. Jastrzebski, A. S. Izzo, G. Fowler, A. Palmer, D. Delport, N. Scott,
+     S. L. Kelly, C. S. Bennette, B. G. Wagner, S. T. Chang, A. P. Oron, E. A.
+     Wenger, J. Panovska-Griffiths, M. Famulare, and D. J. Klein, ‘‘Covasim:
+     An agent-based model of covid-19 dynamics and interventions,’’ PLoS
+     Computational Biology, vol. 17, no. 7, p. e1009149, 2021.
+[23] F. Ball, D. Mollison, and G. Scalia-Tomba, ‘‘Epidemics with two levels of
+     mixing,’’ The Annals of Applied Probability, vol. 7, no. 1, pp. 46–89, 1997.
+[24] C. Gomes, C. Thule, D. Broman, P. G. Larsen, and H. Vangheluwe, ‘‘Co-
+     simulation: A survey,’’ ACM Computing Surveys, vol. 51, no. 3, pp. 49:1–
+     49:33, 2018.
+[25] H. Yin, A. R. Benson, J. Leskovec, and D. F. Gleich, ‘‘Local higher-order
+     graph clustering,’’ in Proceedings of the 23rd ACM SIGKDD International
+     Conference on Knowledge Discovery and Data Mining. Association for
+     Computing Machinery, 2017, pp. 555–564.
+
+18                                                                                                                                                   VOLUME XX, XXXX
+

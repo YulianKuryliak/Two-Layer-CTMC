@@ -1,0 +1,25 @@
+--- paper/IEEE_version/biographies_backup_20261023T085008Z/main.tex
++++ paper/IEEE_version/main.tex
+@@ -1416,5 +1416,22 @@
+ % Balance the final columns with the native IEEE reference trigger.
+ \IEEEtriggeratref{5}
+ \bibliography{references_fixed,references_missing}
++% Keep the final page compact; the class otherwise stretches the author gap.
++\patchcmd{\IEEEbiographynophoto}
++  {\vskip 4\baselineskip plus 1fil minus 0\baselineskip}
++  {\vskip 2\baselineskip}
++  {}{\PackageError{manuscript}{Biography spacing patch failed}{Check the IEEE Access class.}}
++\raggedbottom
++\begin{IEEEbiographynophoto}{Yulian Kuryliak}
++is currently pursuing a Ph.D. in System Analysis at Lviv Polytechnic National University, Ukraine, where he also serves as a Teaching Assistant.
++His research interests include stochastic modeling, complex networks, multiscale simulation, and the modeling of dynamical processes on networks, particularly epidemic spreading.
++\end{IEEEbiographynophoto}
++
++\begin{IEEEbiographynophoto}{Michael T.M. Emmerich}
++was born in 1973, Coesfeld, Germany. He received his Dr.rer.nat. degree from Dortmund University (Prof. H.-P. Schwefel, Prof. P. Buchholz Promoters) in 2005. He is currently an Associate Professor (UHD) with LIACS, Leiden University, and the Head of the Multicriteria Optimization and Decision Analysis Research Group (moda.liacs.nl) and Scientific Coordinator of Center for Computational Life Science (CCLS), Leiden University. Moreover, he is appointed as a visiting fellow at the Multiobjective Optimization research group at Jyvakyla University, Finland and as a Lead AI Scientist for \url{Silo.ai}.
++
++In the past, he carried out projects as a Researcher at ICD e.V., Germany, IST Lisbon, the University of the Algarve, Portugal, ACCESS Material Science e.V., Germany, and the FOM/AMOLF Institute on Fundamental Science of Matter, Amsterdam, The Netherlands. He is known for pioneering work on model-assisted and indicator-based multiobjective optimization (SMS-EMOA, Expected Hypervolume Improvement), and has edited four books and co-authored over 120 papers in multicriteria optimization algorithms and their application in drug discovery, logistics, and sustainable design.
++\end{IEEEbiographynophoto}
++
+ \EOD
+ \end{document}

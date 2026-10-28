@@ -1,0 +1,447 @@
+--- SMPT/main-SMPT.tex
++++ IEEE_version/main.tex
+@@ -1,55 +1,69 @@
+ % !TeX program = pdflatex
+-% Complete ECDFs use streamed PGF paths to fit standard pdfLaTeX memory.
+-\documentclass[a4paper,fleqn]{cas-sc}
+-
+-% Elsevier CAS template; target journal: Simulation Modelling Practice and Theory.
++% IEEE Access adaptation of the current main-SMPT manuscript.
++% The class reuses TeX's \year name; PGF needs the original numeric primitive.
++\let\TeXyear\year
++\documentclass{ieeeaccess}
++\let\AccessYear\year
++\let\year\TeXyear
+ \usepackage[T1]{fontenc}
+-\usepackage{iftex}
+-\ifPDFTeX\usepackage[utf8]{inputenc}\fi
++\usepackage[utf8]{inputenc}
+ \usepackage[english]{babel}
+-\usepackage[authoryear]{natbib}
+-\usepackage{amsmath,amssymb}
++\usepackage{cite}
++\usepackage{amsmath,amssymb,amsfonts}
+ \usepackage{graphicx}
+ \usepackage{tikz}
+ \usepackage{pgfplots}
+ \usepgfplotslibrary{groupplots,fillbetween}
+-\usetikzlibrary{patterns}
+-\usetikzlibrary{positioning,fit,arrows.meta}
+-\usepackage{booktabs}
+-\usepackage{array}
+-\usepackage{float}
+-\usepackage{xcolor}
++\usetikzlibrary{patterns,positioning,fit,arrows.meta}
++\usepackage{booktabs,array,float,xcolor}
++% Use the template blue as process CMYK; PGF also manages PDF colour resources.
++\definecolor{accessblue}{cmyk}{1,0.3,0,0.2}
++\definecolor{greycolor}{cmyk}{0,0,0,0.8}
++\definecolor{grey}{cmyk}{0,0,0,0.1}
+ \usepackage{microtype}
+ \microtypesetup{expansion=false}
+ \IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+-\setlength{\emergencystretch}{3em}
++\setlength{\emergencystretch}{2em}
+ \hyphenation{inter-community intra-community Gillespie}
+-
+ \floatstyle{ruled}
+ \newfloat{algorithm}{tbp}{loa}
+ \floatname{algorithm}{Algorithm}
+-\floatstyle{plain}
+-\restylefloat{figure}
+-\restylefloat{table}
+-
+ \newtheorem{proposition}{Proposition}
+ \newtheorem{corollary}{Corollary}
+-\newdefinition{remark}{Remark}
+-\newproof{proof}{Proof}
+-
++\newtheorem{remark}{Remark}
++\newenvironment{proof}{\begin{IEEEproof}}{\end{IEEEproof}}
+ \newcommand{\ibar}{\bar{y}}
+ \newcommand{\sbar}{\bar{s}}
+ \newcommand{\Exp}{\mathrm{Exp}}
+-\newcommand{\Full}{\textup{\textsc{Full}}}
+-\newcommand{\TS}{\textup{\textsc{TwoScale}}}
++\newcommand{\Full}{\textup{Full}}
++\newcommand{\TS}{\textup{TwoScale}}
+ \newcommand{\ind}{\mathbf{1}}
+ \newcommand{\eW}{e_{W}}
+-
+-% Full-paper numbers for material not yet translated into this partial main.
++% Keep the supplied footer's appearance without its overfull zero-width boxes.
++\makeatletter
++\newcommand{\AccessOddFooter}{\hbox to\textwidth{{\footervolfont VOLUME\ \thevol, \theyear}\hfil{\footerpagefont\thepage}}}
++\newcommand{\AccessEvenFooter}{\hbox to\textwidth{{\footerpagefont\thepage}\hfil{\footervolfont VOLUME\ \thevol, \theyear}}}
++\let\AccessTitleStyle\ps@titlepage
++\let\AccessHeadingStyle\ps@headings
++\def\ps@titlepage{\AccessTitleStyle
++  \def\@oddfoot{\raisebox{3pt}{\AccessOddFooter}}
++  \def\@evenfoot{\raisebox{3pt}{\AccessEvenFooter}}}
++\def\ps@headings{\AccessHeadingStyle
++  \def\@oddfoot{\raisebox{8pt}{\AccessOddFooter}}
++  \def\@evenfoot{\raisebox{8pt}{\AccessEvenFooter}}}
++\makeatother
++\pagestyle{headings}
++% Allow for the bullet and gap in the template's abstract/index-term boxes.
++% The class aliases these two lengths; separate them before adjusting the box.
++\newlength{\AccessAbstractWidth}
++\setlength{\AccessAbstractWidth}{\titlewidth}
++\addtolength{\AccessAbstractWidth}{-10pt}
++\let\abstractwidth\AccessAbstractWidth
++% Reserved references inherited from the source; appendix text is not included.
+ \AtBeginDocument{
+-\newlabel{app:floor}{{B}{27}{}{}{}}
+-\newlabel{app:clique}{{A}{25}{}{}{}}
+-\newlabel{app:repro}{{C}{28}{}{}{}}
++\newlabel{app:floor}{{B}{}{}{}{}}
++\newlabel{app:clique}{{A}{}{}{}{}}
++\newlabel{app:repro}{{C}{}{}{}{}}
+ }
+ % BEGIN EDITABLE PLOT STYLE
+ % Shared plotting style; all text inherits the article font.
+@@ -103,71 +117,38 @@
+   \end{pgfonlayer}%
+ }
+ % END EDITABLE PLOT STYLE
++
+ \begin{document}
+-\let\WriteBookmarks\relax
+-\def\floatpagepagefraction{1}
+-\def\textpagefraction{.001}
+-
+-\shorttitle{Two-scale stochastic simulation with aggregate inter-community coupling}
+-\shortauthors{Y. Kuryliak and M.T.M. Emmerich}
+-
+-\title[mode=title]{Two-scale stochastic simulation of epidemics on community networks with aggregate inter-community coupling}
+-
+-\author[1]{Yulian Kuryliak}[orcid=0000-0002-6600-2637]
+-\cormark[1]
+-\ead{yulian.a.kuryliak@lpnu.ua}
+-\affiliation[1]{organization={Institute of Computer Science and Information Technologies, Lviv Polytechnic National University},
+-            addressline={12 Stepan Bandera Street},
+-            city={Lviv},
+-            postcode={79000},
+-            country={Ukraine}}
+-
+-\author[2]{Michael T. M. Emmerich}[orcid=0000-0002-7342-2090]
+-\ead{michael.t.m.emmerich@jyu.fi}
+-\affiliation[2]{organization={Faculty of Information Technology, University of Jyv\"askyl\"a},
+-            addressline={P.O. Box 35 (Agora)},
+-            city={Jyv\"askyl\"a},
+-            postcode={FI-40014},
+-            country={Finland}}
+-
+-\cortext[1]{Corresponding author}
+-
+-% Abstract and keywords translated from the current Ukrainian manuscript.
++% Publication metadata are assigned by the publisher.
++\history{Manuscript prepared for review.}
++\doi{To be assigned}
++\vol{XX}
++\AccessYear{XXXX}
++\title{Two-scale stochastic simulation of epidemics on community networks with aggregate inter-community coupling}
++\author{\uppercase{Yulian Kuryliak}\authorrefmark{1} and \uppercase{Michael T. M. Emmerich}\authorrefmark{2}}
++\address[1]{Institute of Computer Science and Information Technologies, Lviv Polytechnic National University, 12 Stepan Bandera Street, Lviv 79000, Ukraine (e-mail: yulian.a.kuryliak@lpnu.ua)}
++\address[2]{Faculty of Information Technology, University of Jyv\"askyl\"a, P.O. Box 35 (Agora), FI-40014 Jyv\"askyl\"a, Finland (e-mail: michael.t.m.emmerich@jyu.fi)}
++\markboth{Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling}{Kuryliak and Emmerich: Two-scale stochastic simulation with aggregate inter-community coupling}
++\corresp{Corresponding author: Yulian Kuryliak (e-mail: yulian.a.kuryliak@lpnu.ua).}
+ \begin{abstract}
+-Stochastic simulation of epidemic spread in large contact networks often lacks information about specific contacts between individuals. Aggregate data on population movements and connections between cities or other communities may nevertheless be available. Internal community contact networks can be approximately reconstructed from known structural characteristics, while the specific contacts between communities remain unknown. We study a two-scale stochastic simulation method (\TS{}) that combines detailed local Gillespie simulators with aggregate inter-community transmission rates, without explicitly representing inter-community contacts.
+-
+-We prove that the ideal two-scale process is equivalent to exact simulation on a surrogate network with uniform inter-community connections. We identify the mechanisms of discrepancy from the full-network model and establish that the first infection export is stochastically no later than in the full-network model under uniformly random bridge-node placement in the theoretical setting considered.
+-
+-We assess the method's accuracy by comparing it with full-network Gillespie simulation on synthetic SI networks, including 48 configurations of chains of ten communities. The experiments showed close time distributions when infection spread rapidly within communities: in a chain of ten cliques, the normalised Wasserstein distance after nine inter-community crossings was $3.34\%$. However, discrepancies increased substantially in communities with longer internal paths and lower connectivity, reaching $40.9\%$ in the most discrepant configuration. Their magnitude also depended on community size and the number of inter-community edges. The proposed measure of this ratio showed a strong rank association with the magnitude of the discrepancies (Spearman correlation $0.91$).
+-
+-The results support the possibility of reproducing temporal characteristics close to those of full-network simulation without knowing the specific structure of inter-community contacts, and help identify conditions under which this approximation is appropriate.
++Stochastic epidemic simulation often lacks information about individual contacts. Aggregate data on movements between communities may nevertheless be available. Internal contact networks can be approximately reconstructed from structural characteristics, while specific inter-community contacts remain unknown. We study a two-scale stochastic simulation method (\TS{}) that combines detailed local Gillespie simulators with aggregate inter-community transmission rates, without explicitly representing inter-community contacts. We prove that the ideal two-scale process is equivalent to exact simulation on a surrogate network with uniform inter-community connections. We identify the mechanisms of discrepancy from the full-network model and establish that the first infection export is stochastically no later than in the full-network model under uniformly random bridge-node placement in the theoretical setting considered. We assess the method's accuracy by comparing it with full-network Gillespie simulation on synthetic SI networks, including 48 configurations of chains of ten communities. The experiments showed close time distributions when infection spread rapidly within communities: in a chain of ten cliques, the normalised Wasserstein distance after nine inter-community crossings was $3.34\%$. However, discrepancies increased substantially in communities with longer internal paths and lower connectivity, reaching $40.9\%$ in the most discrepant configuration. Their magnitude also depended on community size and the number of inter-community edges. The proposed time-scale measure showed a strong rank association with the magnitude of the discrepancies (Spearman correlation $0.91$). These results help identify conditions under which aggregate connections reproduce temporal characteristics close to full-network simulation without specifying individual inter-community contacts.
+ \end{abstract}
+-
+ \begin{keywords}
+-Stochastic simulation
+-\sep Epidemic modelling
+-\sep Gillespie algorithm
+-\sep Multiscale simulation
+-\sep Community networks
+-\sep Aggregate inter-community connections
+-\sep Incomplete contact data
+-\sep Simulation accuracy
+-
++Aggregate inter-community connections, Community networks, Epidemic modelling, Gillespie algorithm, Incomplete contact data, Multiscale simulation, Simulation accuracy, Stochastic simulation.
+ \end{keywords}
+-
++\titlepgskip=-21pt
+ \maketitle
+ 
+-%======================================================================
+ \section{Introduction}
+ \label{sec:introduction}
+ 
+-Epidemics spread at more than one scale. Inside a community, infection may pass through a detailed network of contacts between people \citep{keeling2005,pastorsatorras2015,kiss2017}. Between communities, the available data are often much less detailed. For example, they may give only passenger numbers, commuting flows, or a weighted link between two places \citep{balcan2009,barbosa2018human}. We therefore need a model that can use a detailed network inside each community and simpler data between communities.
+-
+-This situation is common in practice. A local contact network may be observed, reconstructed, or generated to match known properties such as clustering and mean shortest-path length \citep{eubank2004,danon2011}. In contrast, links between communities may be known only through transport, migration, commuting, or mobile-phone data \citep{barbosa2018human,chang2021}. Such data can tell us the total strength of connection between two communities, but not which people form the connection. We may therefore know the total coupling without knowing the bridge nodes or their infection states.
+-
+-If every contact is known, a continuous-time Markov chain (CTMC) can describe the epidemic, and the Gillespie method can simulate it exactly \citep{gillespie1977exact,gibson2000}. Efficient methods are also available for temporal, large, and sparse networks \citep{vestergaard2015,kuryliak2025simulating}. However, these methods still need the individual contacts that may transmit infection. Metapopulation models use aggregate flows between communities, but usually also replace the detailed local network by counts of people in different states \citep{colizza2007reaction,colizza2008,balcan2010modeling,ajelli2010}. Our problem lies between these two cases: we want to keep node-level stochastic spread inside every community while using only aggregate information between communities.
+-
+-The idea of a two-scale simulator was presented in an earlier conference paper \citep{kuryliak2025towards}. It runs a separate local simulator for each community. The macro layer uses the current community states and connection weights to generate infections arriving from another community. In this article, we describe the method in detail and study its approximation error. In particular, we examine what is lost when real cross-community edges and their endpoints are replaced by the total connection weight, and an imported infection is placed on a randomly selected susceptible node.
++Epidemics spread at more than one scale. Inside a community, infection may pass through a detailed network of contacts between people \cite{keeling2005,pastorsatorras2015,kiss2017}. Between communities, the available data are often much less detailed. For example, they may give only passenger numbers, commuting flows, or a weighted link between two places \cite{balcan2009,barbosa2018human}. We therefore need a model that can use a detailed network inside each community and simpler data between communities.
++
++This situation is common in practice. A local contact network may be observed, reconstructed, or generated to match known properties such as clustering and mean shortest-path length \cite{eubank2004,danon2011}. In contrast, links between communities may be known only through transport, migration, commuting, or mobile-phone data \cite{barbosa2018human,chang2021}. Such data can tell us the total strength of connection between two communities, but not which people form the connection. We may therefore know the total coupling without knowing the bridge nodes or their infection states.
++
++If every contact is known, a continuous-time Markov chain (CTMC) can describe the epidemic, and the Gillespie method can simulate it exactly \cite{gillespie1977exact,gibson2000}. Efficient methods are also available for temporal, large, and sparse networks \cite{vestergaard2015,kuryliak2025simulating}. However, these methods still need the individual contacts that may transmit infection. Metapopulation models use aggregate flows between communities, but usually also replace the detailed local network by counts of people in different states \cite{colizza2007reaction,colizza2008,balcan2010modeling,ajelli2010}. Our problem lies between these two cases: we want to keep node-level stochastic spread inside every community while using only aggregate information between communities.
++
++The idea of a two-scale simulator was presented in an earlier conference paper \cite{kuryliak2025towards}. It runs a separate local simulator for each community. The macro layer uses the current community states and connection weights to generate infections arriving from another community. In this article, we describe the method in detail and study its approximation error. In particular, we examine what is lost when real cross-community edges and their endpoints are replaced by the total connection weight, and an imported infection is placed on a randomly selected susceptible node.
+ 
+ Our main question is: when is this aggregate connection sufficient to reproduce the quantity of interest in the full-network CTMC? We study infection arrival times, their distributions, and whether transmission is possible through the real contacts. Similar arrival times do not guarantee a possible transmission route: the two-scale model can infect another community while all real bridge nodes in the source community are still susceptible. To test this, we use synthetic networks in which every contact is known. Full-network Gillespie simulation receives the whole network, whereas the two-scale method receives only the local networks and the total weights of the cross-community connections.
+ 
+@@ -187,17 +168,17 @@
+ \label{sec:related}
+ 
+ \paragraph{Simulation of stochastic events.}
+-Gillespie's direct method draws the next event and its time from the current event rates \citep{gillespie1977exact}. The next reaction method keeps a separate clock for each possible event \citep{gibson2000}. Both methods are exact for the CTMC they simulate. When an event rate changes with time, its rate can be accumulated until it reaches a random threshold \citep{ethier1986}. \citet{anderson2007} used this idea for systems with time-dependent rates and delays. Our macro clock uses the same idea, but its rate changes because the local epidemic states change. Network simulators can save work by updating only the rates affected by the latest event \citep{vestergaard2015,kuryliak2025simulating}. Our local simulators use the implementation of \citet{kuryliak2025simulating}.
+-
+-Some multiscale methods speed up chemical-reaction models by approximating reactions that occur much faster than others \citep{haseltine2002,cao2005slow}. Our method removes a different kind of detail. It keeps the local infection events, but does not know which individual cross-community edges are currently able to transmit. Even so, the relative speeds of local spread and cross-community transmission help explain its error.
++Gillespie's direct method draws the next event and its time from the current event rates \cite{gillespie1977exact}. The next reaction method keeps a separate clock for each possible event \cite{gibson2000}. Both methods are exact for the CTMC they simulate. When an event rate changes with time, its rate can be accumulated until it reaches a random threshold \cite{ethier1986}. Anderson~\cite{anderson2007} used this idea for systems with time-dependent rates and delays. Our macro clock uses the same idea, but its rate changes because the local epidemic states change. Network simulators can save work by updating only the rates affected by the latest event \cite{vestergaard2015,kuryliak2025simulating}. Our local simulators use the implementation of Kuryliak et al.~\cite{kuryliak2025simulating}.
++
++Some multiscale methods speed up chemical-reaction models by approximating reactions that occur much faster than others \cite{haseltine2002,cao2005slow}. Our method removes a different kind of detail. It keeps the local infection events, but does not know which individual cross-community edges are currently able to transmit. Even so, the relative speeds of local spread and cross-community transmission help explain its error.
+ 
+ \paragraph{Models with several communities.}
+-Metapopulation models represent each subpopulation by counts of people in different states and connect the subpopulations by mobility flows. They have been used to study global spread and the conditions for invasion \citep{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}. Detailed mobility data can also be combined with local transmission models \citep{chang2021}. Agent-based models instead represent individuals throughout the model \citep{eubank2004,kerr2021}. \citet{ajelli2010} compared these two broad approaches. The method studied here keeps individual nodes and contacts inside each community, but replaces the unknown individual contacts between communities by one aggregate stochastic interface.
++Metapopulation models represent each subpopulation by counts of people in different states and connect the subpopulations by mobility flows. They have been used to study global spread and the conditions for invasion \cite{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}. Detailed mobility data can also be combined with local transmission models \cite{chang2021}. Agent-based models instead represent individuals throughout the model \cite{eubank2004,kerr2021}. Ajelli et al.~\cite{ajelli2010} compared these two broad approaches. The method studied here keeps individual nodes and contacts inside each community, but replaces the unknown individual contacts between communities by one aggregate stochastic interface.
+ 
+ \paragraph{Two levels of mixing and co-simulation.}
+-Some epidemic models combine contacts in small local groups with uniform mixing at a wider level \citep{ball1997}. Our surrogate network with uniform inter-community connections is related to this idea, but uniform mixing is used only between connected pairs of communities, and its strength is set by their aggregate weight.
+-
+-The implementation also has features of co-simulation. In co-simulation, separate subsystem solvers move forward on a shared time grid and exchange a limited amount of information \citep{gomes2018cosim}. Here, the local community simulators are those subsystems. They send their infected and susceptible counts to the macro layer. The macro layer uses these data to generate the time of a cross-community infection and select the receiving community and target node. The local simulators can therefore remain black boxes for the scheduler. In this implementation, the exchanged data are used to create random infection events.
++Some epidemic models combine contacts in small local groups with uniform mixing at a wider level \cite{ball1997}. Our surrogate network with uniform inter-community connections is related to this idea, but uniform mixing is used only between connected pairs of communities, and its strength is set by their aggregate weight.
++
++The implementation also has features of co-simulation. In co-simulation, separate subsystem solvers move forward on a shared time grid and exchange a limited amount of information \cite{gomes2018cosim}. Here, the local community simulators are those subsystems. They send their infected and susceptible counts to the macro layer. The macro layer uses these data to generate the time of a cross-community infection and select the receiving community and target node. The local simulators can therefore remain black boxes for the scheduler. In this implementation, the exchanged data are used to create random infection events.
+ 
+ 
+ %======================================================================
+@@ -245,7 +226,7 @@
+ \end{equation}
+ If all weights equal one, $W_{ij}$ is the number of directed channels from $V_i$ to $V_j$. In an application, this total may instead come from transport, migration, mobility, or contact data. The macro layer also receives the current susceptible and infected counts from each local simulator. It does not know which nodes are endpoints of real cross-community edges. Table~\ref{tab:information} gives the main difference, and Figure~\ref{fig:schematic} shows it visually.
+ 
+-\begin{table}[tbp]
++\begin{table*}[!t]
+ \color{black}
+ \centering
+ \caption{\textcolor{black}{Data and rules of the two models. In all experiments, \TS{} selects the target node uniformly among susceptible nodes.}}
+@@ -263,9 +244,9 @@
+ Number of possible SI infections through one bundle & at most the number of its channels & at most $s_j$ target infections\\
+ \bottomrule
+ \end{tabular}
+-\end{table}
+-
+-\begin{figure}[tbp]
++\end{table*}
++
++\begin{figure*}[!t]
+ \color{black}
+ \centering
+ \begin{tikzpicture}[
+@@ -339,12 +320,12 @@
+ \end{tikzpicture}
+ \caption{\textcolor{black}{Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b) Internal nodes and contacts are retained in each community. Individual inter-community contacts are represented by one wide directed edge between $V_i$ and $V_j$, labelled with their total weight $W_{ij}$. (c) The ideal two-scale process is equivalent to a process on a surrogate network with uniform inter-community connections: for each connected community pair, all ordered node pairs have the same contact weight. The connections together have total weight $W_{ij}$. Orange nodes are infected and blue nodes are susceptible.}}
+ \label{fig:schematic}
+-\end{figure}
++\end{figure*}
+ 
+ \subsection{Local simulators}
+ \label{sec:local}
+ 
+-Each community has a separate Gillespie simulator for its local graph $G_i$. It applies the infection and removal rates in~\eqref{eq:full_generator} using only the local edges $E_{ii}$. The implementation updates only rates affected by the latest event, following \citet{kuryliak2025simulating}. Each local simulator is independent and has its own random-number stream.
++Each community has a separate Gillespie simulator for its local graph $G_i$. It applies the infection and removal rates in~\eqref{eq:full_generator} using only the local edges $E_{ii}$. The implementation updates only rates affected by the latest event, following Kuryliak et al.~\cite{kuryliak2025simulating}. Each local simulator is independent and has its own random-number stream.
+ 
+ The macro layer can advance a local simulator to a specified time. The simulator applies the local events up to that time. The macro layer can then import an infection by changing one selected susceptible node to $I$. This changes the local rates. The implementation keeps the unused part of the random threshold for the next local event and recalculates its waiting time using the new total rate.
+ 
+@@ -384,7 +365,7 @@
+ \end{equation}
+ The next macro event occurs at the first time $t^\ast$ when $A(t^\ast)=E$.
+ 
+-In words, the area under the rate curve grows until it first reaches the random threshold. If it never reaches the threshold, no further macro event occurs. This is the standard cumulative-rate construction \citep{ethier1986,anderson2007}. If $\Theta$ is constant, the waiting time is $E/\Theta$. Drawing $E=-\ln U$, with $U$ uniform on $(0,1)$, gives the familiar Gillespie waiting time. When $\Theta$ changes after a local event, we keep the same threshold and continue accumulating with the new rate. We draw a new macro threshold only after a macro event. Exact calculation of its first crossing defines the ideal process; the time-grid calculation below approximates that crossing. Section~\ref{sec:surrogate} shows that the ideal process is exact for the surrogate network with uniform inter-community connections.
++In words, the area under the rate curve grows until it first reaches the random threshold. If it never reaches the threshold, no further macro event occurs. This is the standard cumulative-rate construction \cite{ethier1986,anderson2007}. If $\Theta$ is constant, the waiting time is $E/\Theta$. Drawing $E=-\ln U$, with $U$ uniform on $(0,1)$, gives the familiar Gillespie waiting time. When $\Theta$ changes after a local event, we keep the same threshold and continue accumulating with the new rate. We draw a new macro threshold only after a macro event. Exact calculation of its first crossing defines the ideal process; the time-grid calculation below approximates that crossing. Section~\ref{sec:surrogate} shows that the ideal process is exact for the surrogate network with uniform inter-community connections.
+ 
+ The scheduler divides time into intervals of length $\tau$. On each interval, it approximates the varying macro rate by its value at the midpoint. Let $A$ be the amount already accumulated since the previous macro event. For the current interval $[t,t_g)$, copy every local simulator, including its random-number state, and advance each copy to the midpoint. The copies give an estimate $\Theta_{\mathrm{mid}}$ of the total macro rate. The estimated increase over the remaining interval is $\Theta_{\mathrm{mid}}(t_g-t)$. If $A$ plus this increase is below $E$ (the random macro threshold), the real simulators move to $t_g$. Otherwise, estimate the event time by
+ \begin{equation}
+@@ -419,7 +400,7 @@
+ \subsection{Computational structure and intended use}
+ \label{sec:cost}
+ 
+-\Full{} stores all local and cross-community channels, and its work per event grows with node degree \citep{kuryliak2025simulating}. \TS{} stores the local graphs and an $M\times M$ matrix of aggregate weights. The conference paper discusses this reduction in the information stored for cross-community contacts \citep{kuryliak2025towards}. Its importance depends on the problem. Replacing many individual cross-community edges by one weight can reduce storage. If only a few such edges exist, this saving may be small, and the local graphs still have to be stored.
++\Full{} stores all local and cross-community channels, and its work per event grows with node degree \cite{kuryliak2025simulating}. \TS{} stores the local graphs and an $M\times M$ matrix of aggregate weights. The conference paper discusses this reduction in the information stored for cross-community contacts \cite{kuryliak2025towards}. Its importance depends on the problem. Replacing many individual cross-community edges by one weight can reduce storage. If only a few such edges exist, this saving may be small, and the local graphs still have to be stored.
+ 
+ The separate local simulators also provide an opportunity for parallel execution. Once the scheduler has chosen the next target time ($t_g$ or $t^\ast$), the local simulators can advance independently to that same time. The midpoint copies can also be processed in parallel. The macro layer must then collect the counts and apply any scheduled import before continuing. The implementation studied here advances the local simulators sequentially; parallel execution within one run is a possible extension, not a measured speedup. Local simulators can also use different community-specific settings.
+ 
+@@ -623,7 +604,7 @@
+ \label{eq:bypass}
+ \mathbb{P}(T^{\TS}<T_B)
+ =
+-\mathbb{E}\left[
++\mathbb{E}\!\left[
+ 1-\exp\left(
+ -\beta_{\mathrm{out}}\frac{k}{n}
+ \int_0^{T_B}y_0(s)\,ds
+@@ -681,7 +662,7 @@
+ 
+ For each configuration, we perform 400 runs of each model with $\beta=0.003$ and a horizon of 30\,000. Two \Full{} runs were extended to 40\,000 to observe infection of the last community (Appendix~\ref*{app:repro}).
+ 
+-\begin{table}[tbp]
++\begin{table*}[!t]
+ \centering
+ \caption{Parameters of the experimental series. ASPL is the target average shortest-path length within a community.}
+ \label{tab:design}
+@@ -715,7 +696,7 @@
+ & 1, 5 & 0.003 & 400 (40 $\times$ 10) \\
+ \bottomrule
+ \end{tabular}
+-\end{table}
++\end{table*}
+ 
+ Each pair of \Full{} and \TS{} runs uses the same internal graphs, inter-community contacts, and initially infected node, but independent streams of random events. Inter-community contacts are generated independently for different interfaces and replicates.
+ 
+@@ -854,7 +835,7 @@
+ 
+ However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE clique_leaf
+ % Editable PGFPlots version of clique_leaf_endpoint_and_mechanism.
+@@ -920,7 +901,7 @@
+ (c) Fraction of runs with this violation of the transmission order and 95\% confidence intervals.
+ }
+ \label{fig:clique_leaf}
+-\end{figure}
++\end{figure*}
+ 
+ To determine how this effect depends on internal structure, we replace the clique with connected random graphs having different average shortest path lengths (ASPL). In this series, graph density also decreases as ASPL increases.
+ 
+@@ -930,7 +911,7 @@
+ 
+ The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE source_sweep
+ % Editable PGFPlots version of fig_aspl_export_fidelity.
+@@ -995,7 +976,7 @@
+ Error bars show 95\% block-bootstrap intervals.
+ }
+ \label{fig:source_sweep}
+-\end{figure}
++\end{figure*}
+ 
+ Sampling variability must be considered when interpreting the Wasserstein distance. For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}). Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.
+ 
+@@ -1017,7 +998,7 @@
+ 
+ Internal spread is therefore much faster than inter-community transmission, which explains the small discrepancies observed between the models. In addition, information about which particular nodes are bridges has relatively little effect on the crossing time.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE chain_cliques
+ \begin{tikzpicture}
+@@ -1045,7 +1026,7 @@
+ Right: empirical distribution functions of the arrival time at the last community, $T_9$. Four \Full{} values and two \TS{} values lie outside the displayed time range; all are included in the analysis.
+ }
+ \label{fig:chain_cliques}
+-\end{figure}
++\end{figure*}
+ 
+ A different pattern appears in chains of random communities with longer internal paths. \TS{} systematically predicts earlier infection arrival, but the size of this lead behaves differently in absolute and relative terms (Figure~\ref{fig:chain_heatmap}).
+ 
+@@ -1057,7 +1038,7 @@
+ 
+ Successive inter-community crossings can accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE chain_heatmap
+ \begin{tikzpicture}
+@@ -1174,7 +1155,7 @@
+ Each configuration uses 400 paired runs. Uncertainty is not shown; results for terminal arrivals are presented in Figure~\ref{fig:accuracy_map}.
+ }
+ \label{fig:chain_heatmap}
+-\end{figure}
++\end{figure*}
+ 
+ 
+ \subsection{Effects of community size and number of inter-community edges}
+@@ -1192,11 +1173,11 @@
+ 
+ Increasing the number of inter-community edges from one to five also generally reduced the discrepancies in sparse communities, although it did not remove them completely.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE accuracy
+ \begin{tikzpicture}
+-\begin{groupplot}[paper axis,group style={group size=2 by 2,horizontal sep=3.4cm,vertical sep=1.7cm},width=.31\linewidth,height=4.25cm,scale only axis]
++\begin{groupplot}[paper axis,group style={group size=2 by 2,horizontal sep=3.4cm,vertical sep=1.7cm},width=.31\linewidth,height=4.0cm,scale only axis]
+ \nextgroupplot[title={(a) $k=1$: median shift},xmin=-.5,xmax=3.5,ymin=-.5,ymax=5.5,xtick={0,1,2,3},xticklabels={50,100,250,1000},ytick={0,1,2,3,4,5},yticklabels={1,2,3,4,5,6},xlabel={Community size $n$},ylabel={Target internal ASPL},colormap name=paperdiv,point meta min=-40.307303343994505,point meta max=40.307303343994505,colorbar,colorbar style={width=3mm,ylabel={$b_9$ (\%)},ylabel style={font=\scriptsize},scaled y ticks=false},grid=none,tick align=outside]
+ \addplot[matrix plot*,mesh/cols=4,point meta=explicit] table[x=x,y=y,meta=value]{figures_pgfplots/accuracy_k1_median.dat};
+ \pgfplotstableread{figures_pgfplots/accuracy_k1_median.dat}\heatmapdata
+@@ -1291,7 +1272,7 @@
+ Each configuration uses 400 paired runs.
+ }
+ \label{fig:accuracy_map}
+-\end{figure}
++\end{figure*}
+ 
+ The fraction of \TS{} inter-community crossings that occurred before infection of the first real bridge in the source also depended strongly on structure: it ranged from 0.1--2.3\% at ASPL 1 to 31--51\% at ASPL 6.
+ 
+@@ -1301,7 +1282,7 @@
+ \subsection{Relationship between discrepancies and the ratio of time scales}
+ \label{sec:res_descriptor}
+ 
+-We assess the relationship between discrepancies and temporal heterogeneity of internal infection using the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ defined in Section 5.3.
++We assess the relationship between discrepancies and temporal heterogeneity of internal infection using the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ defined in Section~\ref{sec:descriptor}.
+ 
+ Figure~\ref{fig:descriptor}(a,b) shows the normalised Wasserstein distance $\eW$ and median shift $b_9$ as functions of $\rho$ for all 48 chain configurations.
+ 
+@@ -1317,7 +1298,7 @@
+ 
+ When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
+ 
+-\begin{figure}[tbp]
++\begin{figure*}[!t]
+ \centering
+ % BEGIN EDITABLE FIGURE descriptor
+ \begin{tikzpicture}
+@@ -1374,9 +1355,11 @@
+ Error bars show 95\% block-bootstrap intervals for the shift in the first crossing.
+ }
+ \label{fig:descriptor}
+-\end{figure}
+-
+-
++\end{figure*}
++
++
++% Finish the Results floats before the Discussion starts.
++\clearpage
+ \section{Discussion}
+ \label{sec:discussion}
+ 
+@@ -1436,8 +1419,12 @@
+ organisation of the text and coding. The authors reviewed and edited the content as needed
+ and take full responsibility for the content of the published article.
+ 
++
++
++
+ \clearpage
+-
+-\bibliographystyle{cas-model2-names}
+-\bibliography{references_fixed}
++\bibliographystyle{IEEEtran}
++\IEEEtriggeratref{13}
++\bibliography{references_fixed,references_missing}
++\EOD
+ \end{document}

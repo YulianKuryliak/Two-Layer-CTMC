@@ -1,0 +1,65 @@
+## 2026-10-07 — Chain-only TwoScale rerun; original midpoint retained
+
+- User confirmed the macro layer receives aggregates only at synchronization; withdrew the proposed removal of midpoint. The original black-box midpoint scheduler at tau_micro=1, macro_T=1 is retained. No event-driven production scheduler was created or installed; provisional event-driven imports/labels in the new runner were replaced before any execution.
+- Keep the corrected native micro residual clock, fresh RNG use without rollback, and cache-safe private probe copies. These production fixes were not reverted.
+- Added `extrascripts/runners/rerun_chain_twoscale.py` and `reports/chain_twoscale_rerun.md`: only 19,200 new TwoScale trajectories, 48 chain configurations (n=50,100,250,1000; ASPL=1..6; k=1,5; 400 each). Frozen graph/interface/initial-node/seed metadata from historical article pairs. Full rows are reused unchanged, including two saved horizon-40000 extensions, with hashes and separate provenance.
+- New output: `output/chain_twoscale_residual_midpoint_20261007`. User launch command: `.venv/bin/python extrascripts/runners/rerun_chain_twoscale.py --run`. Resume verifies source/code/environment hashes and skips compatible completed tasks. Full simulator is never called. Journals record new TwoScale experiments, baseline reuse and failures separately from code changes.
+- Static verification only: parsed source AST, checked absence of Full/event-driven simulator calls, checked saved extension labels, inspected provenance/resume logic and whitespace. No runner execution, preparation, module import, diagnostic or smoke simulation. User runs the simulations.
+- Interpretation: local time/RNG corrected; midpoint synchronization error, aggregate-rate abstraction and uniform import placement remain part of this TwoScale model. Neither the revised manuscript nor historical results were edited.
+
+## 2026-10-07 — Residual local clock after imports; reproducible SMPT rerun
+
+- User clarified after preparation: do not launch scripts/experiments; user will run them. Further work is analysis and script preparation only. At clarification, all prior processes had finished; only two pilot pairs and the isolated diagnostic had been run, and no full suite was launched.
+
+- User requested proportional rescheduling after imports. `MicroModel` now retains the unused aggregate exponential intensity budget: B = a_old * (t_pending - t_import), next wait = B / a_new. It discards the old event mark and selects a fresh mark from updated rates. Successive imports, inactive/zero-rate clocks and probe copies retain the correct clock state.
+- Removed horizon RNG rollback/replay; each community and its disposable clone owns a private stream. Native clone/refresh copies pending proposal, rate, origin and RNG state. Explicit `micro_rngs` allows the paper runner to preserve historical per-community seeds without consuming the macro stream during initialization.
+- Macro logs now include successful/repeat-import flags and destination S/I before the event, firing hazard and post-event hazard. Micro events are logged in chronological order so wait_time is nonnegative.
+- Added `extrascripts/runners/rerun_smpt_paper.py`: 46,000 frozen matched pairs (10,000 clique–leaf, 16,800 source–leaf, 19,200 chains), no duplicate clique-chain cell. Preserves graphs, interfaces, initial nodes, event seeds and two historical Full extensions to 40,000; writes under `output/paper_rerun_residual_clock_20261007`. Raw typed events and all SI change points retained. Atomic checkpoints, provenance checks, source/graph snapshots, automatic resume and output locking.
+- Added separate append-only journals `logs/code_changes.jsonl` (source snapshots) and `logs/experiments.jsonl` (experiment lifecycle). The rerunner also keeps its own experiment journal. `AGENTS.md` requires logging all future code edits and experiment invocations.
+- Verification: 10 targeted regression tests passed. Native-engine diagnostic with 20,000 seeds, 14,887 conditioned runs: import-to-node-2 probability 0.506146 (expected 0.5), mean residual wait 0.740530, 95% CI [0.727381, 0.753679] (expected 0.75); exact residual formula checked in every accepted trajectory. Diagnostic recorded in `output/validation/residual_import_clock_20261007/manifest.json` and experiment journal.
+- End-to-end verification: full manifest prepared (91 cells, 46,000 pairs, exactly two Full extensions). A clique–leaf pair and n=50/ASPL=6/k=1 chain pair completed; Full clique observables and the entire Full chain infection trajectory reproduced historical results exactly. Corrected MicroMacro chain had 22 typed repeat imports, 18 before T9; all event waits were nonnegative and raw repeat flags matched counts. Resume verification reused the completed clique checkpoint without simulation. Only these two bounded pilot pairs were simulated; the full suite awaits the launch command. Added narrow .gitignore exceptions so the regression file is visible in Git.
+- Scientific limits: midpoint hazard integration remains an approximation and can use a probe state later than the scheduled import. Retaining a budget does not remove that numerical error or the surrogate model's uniform placement/interface abstraction. Legacy runners that monkey-patch clone/refresh must not be used for this corrected rerun. Historical data and revised manuscript were not edited. Other unrelated working-tree edits predated this task and are not claimed here.
+
+## v1.0.3
+- Cross-platform path handling: resolve config/output/plot paths via pathlib and normalize Windows-style separators so runs work on Linux and Windows.
+- Config updates: added micro plot folder keys to `config.json` for first-infection and per-community outputs.
+- Visualization and simulator outputs now anchor paths relative to the script location for consistent behavior across OSes.
+- Run logging and network visualization now resolve paths relative to the repo to avoid OS-specific path issues.
+
+## v1.0.2
+- Updated Micro simulator:
+	- Fixed bug in Microsimulator that blocked intra-infections of other communities till the end of outbreak in current one. 
+	- Infection-source was incorrect. Fixed infection-source sampling to use β · Σw units (matches total_infection_rate); removes β-dependent bias.
+	- On infection, set sum_of_weights_i = s (no accumulation drift).
+	- On recovery, subtract node’s β · sum_of_weights_i from total_infection_rate (prevents overcounting).
+	- SIS fix: add back weights to infected neighbors (not susceptibles) when a node recovers.
+	- Added numeric clamps for tiny negatives in sums and total_infection_rate.
+	- simulate_step now applies the event internally and returns wait time + event; kept sample-and-hold CSV output; minor plotting/legend tweaks; graceful fallback if sim_db.log_run is absent.
+
+- Added macro/micro topology options and randomness controls to network generation (macro: complete/chain, micro: complete/random, edge probability).
+- Renamed inter-community links setting to `inter_links` and updated config, docs, and callers.
+- Added `network_visualization.py` with config-driven rendering and saved outputs.
+- Renamed Solid simulator to Micro simulator, updated config/data paths, and plot folders.
+- Enhanced Micro simulator plots: first-infection snapshots, per-community counts, and combined community curves with infection markers.
+
+## v1.0.1
+- Optimized MicroMacro simulator (micromacro2) for faster runtime with identical logic:
+	- O(1) S/I/R counters (maintained counters instead of rescanning nodes).
+	- Cached neighbor lists/weights to avoid repeated NetworkX neighbor lookups.
+	- Lightweight cloning that copies only mutable state and reuses static topology.
+	- Hazard buffer reuse with cached flattened cumulative sums for sampling.
+	- Cached next-event sampling per community, invalidated on state changes.
+
+## v1.0 (main)
+- Initial baseline release.
+
+
+## 2026-10-08 — isolated exact-trajectory state/event optimization
+
+- User authorized optimization in a separate code copy and bounded verification that trajectories remain identical. Created `optimization/state_events_v1/baseline/` and `optimized/`: 51 source files each, frozen from the current working tree (including pre-existing uncommitted changes), with SHA-256 manifest. No main simulator or running production runner source was edited; unrelated prior edits are not claimed.
+- Changed only the optimized micro engine/model, midpoint orchestrator and copied runner routing/lifetimes. Node state access uses fresh direct mapping references; static source/clone refresh uses matching insertion-order dict values. Susceptible-neighbor selection avoids temporary lists while retaining built-in sum, exact arithmetic order, RNG calls and strict weighted-choice comparison. Standalone diagnostic RNG snapshots remain enabled by default; the copied orchestrator disables unused private before/after metadata only. Residual budgets, pending proposals and actual RNG states are unchanged.
+- Optimized copied chain runner releases source graph/views after construction (with explicit GC for NetworkX reference cycles), loads immutable Full rows after TwoScale, and avoids deepcopy of freshly decoded, unmodified Full data. New runner version/default output and copy-source fingerprints prevent resuming historical output with new code. Full simulation was not rerun; the main paper suite was not started.
+- Added sequential `validate.py` with start/end/failure experiment records, deterministic scenario/seeds manifest, exact float.hex comparisons, immutable source checks, original residual regressions, saved corrected-trajectory comparison, alternating short timing repeats, weakref lifetime checks and separate traced-memory replay. Two verification invocations completed; first output `output/state_events_validation_20261008T052106102646`, expanded final output `output/state_events_validation_20261008T052505348663`. A small non-stochastic graph lifetime diagnostic was recorded retrospectively and the final suite independently verifies the release before simulation.
+- Final verification: 96 micro + 39 Full-engine + 39 MicroMacro cases = 174 exact synthetic comparisons; 10 unchanged residual-clock tests; four full saved-input replays (dense/sparse n50, n50 with original Full horizon 40000 and TwoScale horizon 30000, dense n250). All events, scientific payloads, final state, pending-clock values and actual RNG states matched exactly. Only timestamp/version/fingerprint/runtime metadata are intentionally different; copied orchestrator private RNG snapshot fields are None. Baseline and main source hashes are unchanged. Final validation fingerprint: 65d21c3b3af414365c7a630c5568e7d13d3d8fb30adf651baa92665ba1a68e12.
+- Measured under ongoing CPU load: short midpoint benchmark 1.96x, event benchmark 1.74x; three ordinary saved task replays 1.23–1.34x. Dense n250 live traced allocations before stepping decreased 119741728 -> 12818622 bytes (about 89.3%); peak traced memory only 122665731 -> 119137342 bytes, since initial NetworkX construction remains. Peak RSS 333176 -> 329044 KiB. Tracemalloc-enabled task timings are not used as ordinary speed claims. Bounded evidence does not certify all 19200 paper trajectories.
+- Added README with exact contracts, results, validation command and optional user-launch command for the copied runner; added three narrow .gitignore exceptions for copied regression/test sources. Existing broader working-tree whitespace problems belong to prior edits; scoped change checks are used. Full current run remains on the original code and is not accelerated retroactively.

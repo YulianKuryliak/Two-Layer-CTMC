@@ -1,0 +1,165 @@
+--- before_main-SMPT.tex
++++ main-SMPT.tex
+@@ -50,7 +50,6 @@
+ \newlabel{app:floor}{{B}{27}{}{}{}}
+ \newlabel{app:clique}{{A}{25}{}{}{}}
+ \newlabel{app:repro}{{C}{28}{}{}{}}
+-\newlabel{sec:discussion}{{7}{22}{}{}{}}
+ }
+ % BEGIN EDITABLE PLOT STYLE
+ % Shared plotting style; all text inherits the article font.
+@@ -184,7 +183,7 @@
+ \item We propose an empirical indicator of accuracy for our benchmarks. It compares the spread of infection times inside a community with the typical transmission time through one cross-community edge (Section~\ref{sec:res_descriptor}).
+ \end{enumerate}
+ 
+-We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref{sec:design} and~\ref{sec:results} present the experiments and results. Section~\ref*{sec:discussion} discusses use, cost, and limitations.
++We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref{sec:design} and~\ref{sec:results} present the experiments and results. Section~\ref{sec:discussion} discusses use, cost, and limitations.
+ 
+ 
+ %======================================================================
+@@ -669,7 +668,7 @@
+ The initially infected node is selected uniformly from all source nodes. For each configuration, we perform 400 runs of each model: 40 realisations of the internal graph with 10 replicates of inter-community contacts and random events. We use $\beta=0.003$ and a horizon of 30\,000.
+ 
+ \paragraph{Chain of cliques.}
+-The preceding tests consider just one inter-community crossing. To examine how discrepancies change after successive crossings, we connect $L=10$ complete graphs, each with $n=1000$ nodes, in a line, with one edge between neighbouring communities ($k=1$). Infection starts in community 0.
++We assess how discrepancies change after successive crossings in a chain of $L=10$ complete graphs, each with $n=1000$ nodes. Neighbouring communities are connected by one edge ($k=1$). Infection starts in community 0.
+ 
+ As in the first test, complete graphs provide rapid internal spread. This allows us to assess the effect of successive inter-community crossings in a baseline setting with minimal internal path lengths.
+ 
+@@ -794,7 +793,7 @@
+ 
+ Discrepancies between \Full{} and \TS{} may depend not only on network structure, but also on the relative speeds of infection spread within and between communities. In particular, aggregation does not account for when individual bridge nodes become infected, which can matter when internal spread is slow and uneven.
+ 
+-To investigate this relationship, we use the dimensionless measure
++We characterise temporal heterogeneity of infection by the dimensionless measure
+ \begin{equation}
+ \label{eq:rho}
+ \rho=\beta_{\mathrm{out}}\sigma_T,
+@@ -803,13 +802,9 @@
+ 
+ For each configuration, we calculate $\sigma_T$ from node infection times in each source community of the \Full{} runs, then average these values over communities and runs.
+ 
+-We examine how $\rho$ relates to the median shift and normalised Wasserstein distance for the arrival time in the last community, $T_9$. In particular, we compare how well $\rho$ and ASPL explain discrepancies between the models across community sizes and structures.
+-
+-A small $\rho$ means that the spread of internal infection times is small relative to the transmission time through one channel. We test whether such configurations show smaller discrepancies between the models.
+-
+-For each configuration, $\sigma_T$ is calculated from node infection times in the source communities of the \Full{} runs and averaged over these communities and runs.
+-
+-In the results, we compare $\rho$ with the median shift and normalised Wasserstein distance across community sizes, internal structures, and numbers of inter-community edges.
++We examine how $\rho$ relates to the median shift and normalised Wasserstein distance for the arrival time in the last community, $T_9$. In particular, we compare how well $\rho$ and ASPL explain discrepancies between the models across community sizes, structures, and numbers of inter-community edges.
++
++A small $\rho$ means that the spread of internal infection times is small relative to the transmission time through one channel.
+ 
+ The measure $\rho$ is not a direct error metric. We consider it a possible explanatory characteristic of the discrepancies. Since $\sigma_T$ is calculated from \Full{}, we do not test whether error can be predicted from local simulations alone.
+ 
+@@ -861,7 +856,7 @@
+ 
+ The expected time to infection of the first bridge is only $\mathbb{E}[T_B]=8.36$, whereas the mean export time exceeds 110. Thus, the actual and aggregate transmission rates differ for a relatively short period compared with the overall waiting time for export. This is consistent with the small discrepancy observed between the models.
+ 
+-However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can therefore reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
++However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
+ 
+ \begin{figure}[tbp]
+ \centering
+@@ -1010,13 +1005,13 @@
+ 
+ Unlike the temporal distance, every premature export directly indicates a violation of the admissible transmission order. For example, at ASPL 4 and $k=1$, such violations occurred in 19.75\% of runs, although the time distributions remained relatively close.
+ 
+-The first export therefore demonstrates two distinct consequences of aggregation. Even when the transmission times are close, the model can violate the physical constraints imposed by inter-community contacts. When internal spread becomes slower and less uniform, this loss of information can also produce a noticeable shift in the export time.
++The first export demonstrates two distinct consequences of aggregation. Even when the transmission times are close, the model can violate the physical constraints imposed by inter-community contacts. When internal spread becomes slower and less uniform, this loss of information can also produce a noticeable shift in the export time.
+ 
+ 
+ \subsection{Propagation of discrepancies along a chain of communities}
+ \label{sec:res_chain_random}
+ 
+-A single export does not show how differences between the models behave after several inter-community crossings. We therefore examine infection spread along a chain of ten communities.
++We examine successive inter-community crossings in a chain of ten communities.
+ 
+ We first consider a chain of cliques, in which internal infection spreads much faster than inter-community transmission. Even after nine consecutive crossings, the time distributions remained close (Figure~\ref{fig:chain_cliques}).
+ 
+@@ -1064,7 +1059,7 @@
+ 
+ At the same time, the absolute difference between the median arrival times in this configuration increased from approximately 107 to 896 time units.
+ 
+-Successive inter-community crossings can therefore accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
++Successive inter-community crossings can accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
+ 
+ \begin{figure}[tbp]
+ \centering
+@@ -1189,9 +1184,7 @@
+ \subsection{Effects of community size and number of inter-community edges}
+ \label{sec:res_size}
+ 
+-The preceding experiments showed that internal structure affects the discrepancies between the models. However, the same average shortest path length does not necessarily imply the same accuracy of \TS{}.
+-
+-To examine the effects of other network characteristics, we compare the arrival time at the last community, $T_9$, for different community sizes $n$, ASPL values, and numbers of inter-community edges $k$ (Figure~\ref{fig:accuracy_map}).
++At the same ASPL, the accuracy of \TS{} may depend on community size and the number of inter-community edges. We compare the arrival time at the last community, $T_9$, for different community sizes $n$, ASPL values, and numbers of inter-community edges $k$ (Figure~\ref{fig:accuracy_map}).
+ 
+ In configurations with short internal paths ($\mathrm{ASPL}\leq2$), the discrepancies were mostly small. For 14 of these 16 configurations, the permutation test did not detect a statistically significant difference between the arrival-time distributions.
+ 
+@@ -1306,15 +1299,13 @@
+ 
+ The fraction of \TS{} inter-community crossings that occurred before infection of the first real bridge in the source also depended strongly on structure: it ranged from 0.1--2.3\% at ASPL 1 to 31--51\% at ASPL 6.
+ 
+-ASPL is therefore a useful characteristic for assessing the accuracy of \TS{}: discrepancies between the models generally increase as internal paths become longer. However, at the same ASPL, their magnitude can differ substantially with community size and the number of inter-community edges. ASPL alone is therefore insufficient for assessing accuracy, which motivates a characteristic that also accounts for the timing of internal spread.
++Discrepancies between the models generally increase as internal paths become longer. However, at the same ASPL, their magnitude can differ substantially with community size and the number of inter-community edges. ASPL alone is insufficient for assessing accuracy.
+ 
+ 
+ \subsection{Relationship between discrepancies and the ratio of time scales}
+ \label{sec:res_descriptor}
+ 
+-The results suggest that discrepancies between the models may depend on how quickly infection spreads within a community relative to inter-community transmission.
+-
+-To examine this relationship, we use the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ defined in Section 5.3. It describes the spread of internal infection times relative to the mean transmission time through one inter-community channel.
++We assess the relationship between discrepancies and temporal heterogeneity of internal infection using the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ defined in Section 5.3.
+ 
+ Figure~\ref{fig:descriptor}(a,b) shows the normalised Wasserstein distance $\eW$ and median shift $b_9$ as functions of $\rho$ for all 48 chain configurations.
+ 
+@@ -1328,7 +1319,7 @@
+ \end{equation}
+ In this range, we also observed $b_9\approx-\eW$: the distance between the distributions mainly corresponded to a shift towards earlier arrival times in \TS{}.
+ 
+-The results therefore support an explanation based on the ratio of time scales. When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
++When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
+ 
+ \begin{figure}[tbp]
+ \centering
+@@ -1390,6 +1381,38 @@
+ \end{figure}
+ 
+ 
++\section{Discussion}
++\label{sec:discussion}
++
++The main advantage of the proposed two-scale approach is that it combines detailed stochastic simulation within communities with an aggregate representation of the connections between them. This is suitable for problems in which contact-network data are available at different levels of detail. For example, the internal structure of communities can be reconstructed or generated from known characteristics, whereas inter-community connections may be represented only by aggregate movement flows obtained from transport or migration data. Unlike full-network simulation, \TS{} does not require the nodes involved in inter-community contacts to be specified explicitly. At the same time, unlike fully aggregated models, it preserves individual infection dynamics and the effect of internal topology.
++
++The experiments showed that this simplification can preserve high accuracy in the temporal characteristics of infection spread. In communities with fast internal spread, the arrival-time distributions from \Full{} and \TS{} were close, and this agreement persisted even after nine consecutive inter-community crossings. Thus, the absence of information about specific bridge nodes does not necessarily cause a substantial error in the overall propagation dynamics. This makes aggregate interfaces a promising way to model networks of communities when the main quantities of interest are the times at which communities are reached and their distributions.
++
++The accuracy of this approximation can be explained by the ratio of time scales. If infection spreads rapidly among the nodes of a community relative to the waiting time for inter-community transmission, the specific locations of the bridges have a comparatively small effect on the export time. With slower and more heterogeneous internal spread, however, the states of individual bridge nodes may remain important for a substantial part of the waiting time for a crossing. This is why structural characteristics, including ASPL, do not fully explain the observed discrepancies. The stronger relationship between accuracy and the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ supports an explanation based on temporal heterogeneity in internal infection. This suggests that the suitability of aggregation can be assessed from both network topology and process dynamics.
++
++A possible direction for further research is to increase the model's level of detail by incorporating local community characteristics, such as ASPL, eigenvalues, or other descriptors, and to evaluate whether these additions reduce the discrepancy between the methods.
++
++For simulations of spread through many communities, the way in which discrepancies accumulate is also important. The experiments showed that the absolute difference between arrival times can increase along the chain, whereas the relative shift often stabilises or changes slowly. Thus, the error of the aggregate simulation does not necessarily grow in proportion to the number of inter-community crossings. At the same time, the stronger bias in the total duration of later crossings than in the first crossing indicates possible additional effects after infection is imported. One explanation is the occurrence of surplus imports, which can create additional foci of infection and accelerate subsequent spread. The separate contribution of this mechanism requires further investigation.
++
++The theoretical analysis clearly identifies the approximation implemented by the two-scale approach. The ideal process is equivalent to exact simulation on a surrogate network with uniformly distributed inter-community connections. This provides a mathematical basis for the aggregate representation and explains why its results can differ from those of full-network simulation. In particular, similarity between time distributions does not guarantee reproduction of specific infection routes. The appropriate level of detail should therefore be determined by the aim of the study: an aggregate representation may be sufficient for estimating temporal characteristics, whereas analysis of physical transmission paths requires information about the corresponding contacts.
++
++Further possibilities arise from the computational structure of the method. Independent local simulators can run in parallel between synchronisation points, and individual communities can have different internal structures and simulation parameters. In addition, replacing explicit inter-community edges with aggregate weights can reduce the amount of contact data. However, the actual gains in speed and memory depend on the network structure and the cost of synchronisation.
++
++\section{Conclusions}
++\label{sec:conclusions}
++
++This study investigated a two-scale method for stochastic simulation of infection spread in networks of communities. The method combines detailed Gillespie simulation of internal contact networks with aggregate inter-community intensities. It therefore allows local contact networks to be used together with aggregate data on connections between communities, without requiring every inter-community contact to be represented explicitly. Its modular structure also allows local simulators to be run in parallel.
++
++We proved that the ideal two-scale process is equivalent to exact simulation on a surrogate network with uniform inter-community connections. We analysed the mechanisms that produce discrepancies between aggregate and full-network simulation, including the consequences of losing information about specific bridge nodes. We also proved that, when bridge nodes are placed uniformly at random, aggregation yields a first infection export that is stochastically no later in the ideal model.
++
++The experiments confirmed that \TS{} can reproduce infection-spread time distributions close to those of \Full{} when infection spreads rapidly within communities. This agreement persisted even after nine consecutive inter-community crossings. The absolute discrepancy between arrival times can accumulate along a chain, whereas the relative discrepancy often stabilises or changes slowly.
++
++We examined how internal structure, community size, and the number of inter-community edges affect the accuracy of aggregate simulation. The time-scale ratio $\rho=\beta_{\mathrm{out}}\sigma_T$ had a stronger observed relationship with the discrepancies than ASPL and is a promising characteristic for identifying conditions under which the method is applicable.
++
++In our tests, the smallest discrepancies occurred when infection spread rapidly within communities. In all 18 configurations with $\rho<0.25$, the normalised Wasserstein distance did not exceed 4.5\%. At the same time, close time distributions did not guarantee preservation of admissible transmission routes.
++
++\clearpage
++
+ \bibliographystyle{cas-model2-names}
+ \bibliography{twoscale_references}
+ \end{document}

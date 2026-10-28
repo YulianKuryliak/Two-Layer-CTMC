@@ -1,0 +1,16 @@
+Building /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022
+clique_leaf: 3000/10000 files; 2.4 MiB
+Traceback (most recent call last):
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 570, in <module>
+    main()
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 461, in main
+    c.archive('clique_leaf', ((p, 'checkpoints/' + p.name) for p in sorted(CLIQUE.glob('*.json.gz'))), c.clique_leaf)
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 317, in archive
+    resolved_source_path=str(source.resolve().relative_to(ROOT)),
+                             ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1252, in resolve
+    p.stat()
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

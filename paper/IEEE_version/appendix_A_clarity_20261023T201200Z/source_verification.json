@@ -1,0 +1,16 @@
+{
+  "status": "passed_source_checks",
+  "exact_appendix_A_replacement_only": true,
+  "table_numeric_rows_unchanged": true,
+  "two_displayed_equations_byte_identical": true,
+  "all_other_main_text_unchanged": true,
+  "B_and_C_state_unchanged": true,
+  "active_internal_labels": 49,
+  "all_internal_refs_resolve": true,
+  "citation_keys_and_order_unchanged": true,
+  "overleaf_sources_match": true,
+  "bibliography_changed": false,
+  "full_article_recompiled": false,
+  "pdf_zip_rebuilt": false,
+  "simulations_run": false
+}

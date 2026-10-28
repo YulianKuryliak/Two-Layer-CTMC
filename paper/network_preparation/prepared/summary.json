@@ -1,0 +1,62 @@
+{
+  "quality": {
+    "rows": 188508,
+    "unique_contact_bins": 188508,
+    "duplicate_contact_bins": 0,
+    "metadata_nodes": 329,
+    "observed_nodes": 327,
+    "metadata_only_ids": [
+      2,
+      478
+    ],
+    "missing_metadata": 0,
+    "class_mismatch_endpoints": 1321,
+    "self_contacts": 0,
+    "class_disagreements": [
+      {
+        "node": 28,
+        "metadata_class": "2BIO2",
+        "contact_class": "2BIO1",
+        "endpoint_rows": 1321
+      }
+    ],
+    "class_policy": "Separate metadata table governs primary partition; contact-label alternative exported explicitly.",
+    "timestamp_min": 1385982020,
+    "timestamp_max": 1386345580,
+    "observation_start_utc": "2013-12-02T11:00:00+00:00",
+    "observation_end_utc": "2013-12-06T15:59:40+00:00",
+    "observation_seconds": 363580,
+    "active_bins": 7375,
+    "total_pair_contact_seconds": 3770160,
+    "bins_per_day": {
+      "2013-12-02": 899,
+      "2013-12-03": 1619,
+      "2013-12-04": 1619,
+      "2013-12-05": 1619,
+      "2013-12-06": 1619
+    },
+    "note": "A contact-bin row is not an episode; consecutive rows can belong to one episode. Empty bins are not distinguished from missing observation."
+  },
+  "population_policy": "Observed endpoints (327); all 329 metadata IDs retained in nodes.csv for an explicit sensitivity alternative.",
+  "weighting": "duration_seconds / observation_seconds; calendar time including nights and gaps; beta in inverse seconds of active contact.",
+  "nodes": 327,
+  "edges": 5818,
+  "communities": 9,
+  "components": 1,
+  "intra_edges": 4035,
+  "inter_edges": 1783,
+  "intra_weight": 9.694922713020519,
+  "inter_weight": 0.6746245668078552,
+  "within_weight_fraction": 0.9349417531351455,
+  "nonempty_interfaces": 36,
+  "possible_interfaces": 36,
+  "contact_label_alternative": {
+    "intra_edges": 4016,
+    "inter_edges": 1802,
+    "inter_weight": 0.728257879971395,
+    "W_frobenius_relative_difference": 0.25412798997877384,
+    "W_max_absolute_difference": 0.05363331316354023
+  },
+  "conservation_checks": "PASS",
+  "simulations_run": false
+}

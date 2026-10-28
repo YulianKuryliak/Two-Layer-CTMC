@@ -1,0 +1,22 @@
+{
+  "communities": 10,
+  "sizes": [50, 100, 250, 1000],
+  "degrees": [6, 10, 20, "complete"],
+  "inter_links": [1, 5, 10, 20],
+  "runs": 100,
+  "calibration_runs": 5,
+  "target_time": 2500.0,
+  "T_end": 10000.0,
+  "rho": 0.003,
+  "refinement_rho": [0.001, 0.0003],
+  "refinement_runs": null,
+  "refinement_sizes": [50, 100, 250, 1000],
+  "refinement_degrees": [6, 10, 20, "complete"],
+  "refinement_links": [1, 5, 10, 20],
+  "report_points": 2001,
+  "seed": 20260909,
+  "workers": 6,
+  "network_timeout_seconds": 180,
+  "pilot_horizon_attempts": 3,
+  "skip_unused_spectral_descriptors": true
+}

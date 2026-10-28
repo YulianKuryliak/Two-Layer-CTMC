@@ -1,0 +1,50 @@
+{
+  "archive_date_utc": "2026-08-07",
+  "experiment": "experiment_05_spectral_corrections",
+  "final_replication_window": [1, 100],
+  "total_archived_bytes": 43040815680,
+  "items": [
+    {
+      "archive_path": "summaries/hazard_diagnostics.csv",
+      "original_path": "output/experiment_05_spectral_corrections/summaries/hazard_diagnostics.csv",
+      "bytes": 41920540193,
+      "files": 1,
+      "classification": "derived_reconstructible_csv"
+    },
+    {
+      "archive_path": "raw/baseline/V0/rep_0101.parquet..rep_0646.parquet",
+      "original_path": "output/experiment_05_spectral_corrections/raw/baseline/V0/",
+      "bytes": 27853315,
+      "files": 546,
+      "classification": "outside_final_replication_window"
+    },
+    {
+      "archive_path": "raw/baseline/V1/rep_0101.parquet..rep_0645.parquet",
+      "original_path": "output/experiment_05_spectral_corrections/raw/baseline/V1/",
+      "bytes": 236620751,
+      "files": 545,
+      "classification": "outside_final_replication_window"
+    },
+    {
+      "archive_path": "raw/baseline/V2/rep_0101.parquet..rep_0645.parquet",
+      "original_path": "output/experiment_05_spectral_corrections/raw/baseline/V2/",
+      "bytes": 183097047,
+      "files": 545,
+      "classification": "outside_final_replication_window"
+    },
+    {
+      "archive_path": "raw/baseline/V3/rep_0101.parquet..rep_0645.parquet",
+      "original_path": "output/experiment_05_spectral_corrections/raw/baseline/V3/",
+      "bytes": 404084535,
+      "files": 545,
+      "classification": "outside_final_replication_window"
+    },
+    {
+      "archive_path": "raw/baseline/V4/rep_0101.parquet..rep_0645.parquet",
+      "original_path": "output/experiment_05_spectral_corrections/raw/baseline/V4/",
+      "bytes": 268619839,
+      "files": 545,
+      "classification": "outside_final_replication_window"
+    }
+  ]
+}

@@ -1,0 +1,1415 @@
+This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2026.6.25)  31 JUL 2026 19:32
+ restricted system commands enabled.
+**report_metrics_guide_uk.tex
+(./report_metrics_guide_uk.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+Lua module: luaotfload 2024-02-14 3.28 Lua based OpenType font support
+Lua module: lualibs 2023-07-13 2.76 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2023-07-13 2.76 ConTeXt Lua libraries -- extended c
+ollection.
+luaotfload | conf : Root cache directory is "/home/uakuryliyu/.texlive2023/texmf
+-var/luatex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2023-12-28.lua" from kpse-res
+olved path "/home/uakuryliyu/texmf/tex/luatex/luaotfload/fontloader-2023-12-28.l
+ua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.134
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "/home/uakuryliyu/.texlive2023/texmf
+-var/luatex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'.
+Inserting `tracingstacklevels' in `input_level_string'. (/usr/share/texlive/tex
+mf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+luaotfload | db : Font names database loaded from /home/uakuryliyu/.texlive2023/
+texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen139
+) (../preamble_uk.tex
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-01-22 L3 programming layer (loader) 
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
+File: l3backend-luatex.def 2024-01-04 L3 backend support: PDF output (LuaTeX)
+\l__color_backend_stack_int=\count193
+Inserting `l3color' in `luaotfload.parse_color'.
+\l__pdf_internal_box=\box51
+))
+Package: xparse 2023-10-10 L3 Experimental document command parser
+)
+Package: fontspec 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaTeX
+Lua module: fontspec 2022/01/15 2.8a Font selection for XeLaTeX and LuaLaTeX
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
+Package: fontspec-luatex 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaT
+eX
+\l__fontspec_script_int=\count194
+\l__fontspec_language_int=\count195
+\l__fontspec_strnum_int=\count196
+\l__fontspec_tmp_int=\count197
+\l__fontspec_tmpa_int=\count198
+\l__fontspec_tmpb_int=\count199
+\l__fontspec_tmpc_int=\count266
+\l__fontspec_em_int=\count267
+\l__fontspec_emdef_int=\count268
+\l__fontspec_strong_int=\count269
+\l__fontspec_strongdef_int=\count270
+\l__fontspec_tmpa_dim=\dimen140
+\l__fontspec_tmpb_dim=\dimen141
+\l__fontspec_tmpc_dim=\dimen142
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+luaotfload | cache : Lookup cache loaded from /home/uakuryliyu/.texlive2023/texm
+f-var/luatex-cache/generic/names/luaotfload-lookup-cache.luc.
+
+Package fontspec Info: Could not resolve font "DejaVuSerif/BI" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "DejaVuSerif/I" (it probably
+(fontspec)             doesn't exist).
+
+luaotfload | aux : font no 21 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 22 (nil) does not define feature smcp for script latn
+ with language dflt
+
+Package fontspec Info: Font family 'DejaVuSerif(0)' created for font 'DejaVu
+(fontspec)             Serif' with options [Ligatures=TeX].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSerif:mode=node;script=latn;language=dflt;+tli
+g;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSerif/B:mode=node;script=latn;language=dflt;+t
+lig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+
+
+Package fontspec Info: Could not resolve font "DejaVuSans/BI" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "DejaVuSans/I" (it probably
+(fontspec)             doesn't exist).
+
+luaotfload | aux : font no 28 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 29 (nil) does not define feature smcp for script latn
+ with language dflt
+
+Package fontspec Info: Font family 'DejaVuSans(0)' created for font 'DejaVu
+(fontspec)             Sans' with options [Ligatures=TeX].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSans:mode=node;script=latn;language=dflt;+tlig
+;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSans/B:mode=node;script=latn;language=dflt;+tl
+ig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+
+luaotfload | aux : font no 36 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 37 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 39 (nil) does not define feature smcp for script latn
+ with language dflt
+
+Package fontspec Info: Font family 'DejaVuSansMono(0)' created for font
+(fontspec)             'DejaVu Sans Mono' with options
+(fontspec)             [WordSpace={1,0,0},HyphenChar=None,PunctuationSpace=Word
+Space].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSansMono:mode=node;script=latn;language=dflt;"
+
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"DejaVuSansMono/B:mode=node;script=latn;language=dflt
+;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"DejaVuSansMono/I:mode=node;script=latn;language=dflt
+;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"DejaVuSansMono/BI:mode=node;script=latn;language=dfl
+t;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count271
+\Gm@cntv=\count272
+\c@Gm@tempcnt=\count273
+\Gm@bindingoffset=\dimen143
+\Gm@wd@mp=\dimen144
+\Gm@odd@mp=\dimen145
+\Gm@even@mp=\dimen146
+\Gm@layoutwidth=\dimen147
+\Gm@layoutheight=\dimen148
+\Gm@layouthoffset=\dimen149
+\Gm@layoutvoffset=\dimen150
+\Gm@dimlist=\toks18
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip50
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks19
+\ex@=\dimen151
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen152
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count274
+LaTeX Info: Redefining \frac on input line 236.
+\uproot@=\count275
+\leftroot@=\count276
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count277
+\DOTSCASE@=\count278
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box52
+\strutbox@=\box53
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen153
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count279
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count280
+\dotsspace@=\muskip16
+\c@parentequation=\count281
+\dspbrk@lvl=\count282
+\tag@help=\toks20
+\row@=\count283
+\column@=\count284
+\maxfields@=\count285
+\andhelp@=\toks21
+\eqnshift@=\dimen154
+\alignsep@=\dimen155
+\tagshift@=\dimen156
+\tagwidth@=\dimen157
+\totwidth@=\dimen158
+\lineht@=\dimen159
+\@envbody=\toks22
+\multlinegap=\skip51
+\multlinetaggap=\skip52
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: luatex.def on input line 107.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/luatex.def
+File: luatex.def 2022/09/22 v1.2d Graphics/color driver for luatex
+))
+\Gin@req@height=\dimen160
+\Gin@req@width=\dimen161
+)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen162
+\captionmargin=\dimen163
+\caption@leftmargin=\dimen164
+\caption@rightmargin=\dimen165
+\caption@width=\dimen166
+\caption@indent=\dimen167
+\caption@parindent=\dimen168
+\caption@hangindent=\dimen169
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count286
+\c@continuedfloat=\count287
+)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count288
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count289
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen170
+\lightrulewidth=\dimen171
+\cmidrulewidth=\dimen172
+\belowrulesep=\dimen173
+\belowbottomsep=\dimen174
+\aboverulesep=\dimen175
+\abovetopsep=\dimen176
+\cmidrulesep=\dimen177
+\cmidrulekern=\dimen178
+\defaultaddspace=\dimen179
+\@cmidla=\count290
+\@cmidlb=\count291
+\@aboverulesep=\dimen180
+\@belowrulesep=\dimen181
+\@thisruleclass=\count292
+\@lastruleclass=\count293
+\@thisrulewidth=\dimen182
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: luatex.def on input line 274.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks24
+))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count294
+)
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count295
+)
+\@linkdim=\dimen183
+\Hy@linkcounter=\count296
+\Hy@pagecounter=\count297
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count298
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 4062.
+Package hyperref Info: Hyper figures OFF on input line 4179.
+Package hyperref Info: Link nesting OFF on input line 4184.
+Package hyperref Info: Hyper index ON on input line 4187.
+Package hyperref Info: Plain pages OFF on input line 4194.
+Package hyperref Info: Backreferencing OFF on input line 4199.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4446.
+\c@Hy@tempcnt=\count299
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4784.
+\XeTeXLinkMargin=\dimen184
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count300
+\Field@Width=\dimen185
+\Fld@charsize=\dimen186
+Package hyperref Info: Hyper figures OFF on input line 6063.
+Package hyperref Info: Link nesting OFF on input line 6068.
+Package hyperref Info: Hyper index ON on input line 6071.
+Package hyperref Info: backreferencing OFF on input line 6078.
+Package hyperref Info: Link coloring ON on input line 6081.
+Package hyperref Info: Link coloring with OCG OFF on input line 6088.
+Package hyperref Info: PDF/A mode OFF on input line 6093.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count301
+\c@Item=\count302
+\c@Hfootnote=\count303
+)
+Package hyperref Info: Driver (autodetected): hluatex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hluatex.def
+File: hluatex.def 2024-01-20 v7.01h Hyperref driver for luaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count304
+\c@bookmark@seq@number=\count305
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+85.
+)
+\Hy@SectionHShift=\skip53
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2023/03/13 v3.1a Micro-typographical refinements (RS)
+\MT@toks=\toks25
+\MT@tempbox=\box54
+\MT@count=\count306
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1059.
+LaTeX Info: Redefining \leftprotrusion on input line 1060.
+\MT@prot@toks=\toks26
+LaTeX Info: Redefining \rightprotrusion on input line 1078.
+LaTeX Info: Redefining \textls on input line 1368.
+\MT@outer@kern=\dimen187
+LaTeX Info: Redefining \textmicrotypecontext on input line 1988.
+\MT@listname@count=\count307
+
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-luatex.def
+File: microtype-luatex.def 2023/03/13 v3.1a Definitions specific to luatex (RS)
+
+Lua module: microtype 2023/03/13 3.1a microtype module.
+Module microtype Info: overwriting function `keepligature' on input line 63
+LaTeX Info: Redefining \lsstyle on input line 688.
+LaTeX Info: Redefining \lslig on input line 688.
+\MT@outer@space=\skip54
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2023/03/13 v3.1a microtype main configuration file (RS)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count308
+\float@exts=\toks27
+\float@box=\box55
+\@float@everytoks=\toks28
+\@floatcapt=\box56
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen188
+\ar@mcellbox=\box57
+\extrarowheight=\dimen189
+\NC@list=\toks29
+\extratabsurround=\skip55
+\backup@length=\skip56
+\ar@cellbox=\box58
+))
+(./report_metrics_guide_uk.aux)
+\openout1 = report_metrics_guide_uk.aux
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 9
+.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+
+Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
+(fontspec)             this).
+
+\symlegacymaths=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 9.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 9.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 9.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 9.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 9.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 9.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 9.
+LaTeX Font Info:    Redeclaring math accent \check on input line 9.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 9.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 9.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 9.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 9.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 9.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 9.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/DejaVuSerif(0)/m/n on input line 9.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 9.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/DejaVuSerif(0)/m/n on input line 9.
+
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/DejaVuSerif(0)/m/n --> TU/DejaVuSerif(0)/m/n on inpu
+t line 9.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/DejaVuSerif(0)/m/it on input line 9
+.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/DejaVuSerif(0)/b/n on input line 9.
+
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/DejaVuSans(0)/m/n on input line 9.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/DejaVuSansMono(0)/m/n on input line
+ 9.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/DejaVuSerif(0)/m/n --> TU/DejaVuSerif(0)/b/n on inpu
+t line 9.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/DejaVuSerif(0)/b/it on input line 
+9.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/DejaVuSans(0)/b/n on input line 9.
+
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/DejaVuSansMono(0)/b/n on input line
+ 9.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+*geometry* verbose mode - [ preamble ] result:
+* driver: luatex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-38.1381pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count309
+\scratchdimen=\dimen190
+\scratchbox=\box59
+\nofMPsegments=\count310
+\nofMParguments=\count311
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count312
+\MPscratchDim=\dimen191
+\MPnumerator=\count313
+\makeMPintoPDFobject=\count314
+\everyMPtoPDFconversion=\toks31
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+Package hyperref Info: Link coloring ON on input line 9.
+
+(./report_metrics_guide_uk.out) (./report_metrics_guide_uk.out)
+\@outlinefile=\write3
+
+\openout3 = report_metrics_guide_uk.out
+LaTeX Info: Redefining \microtypecontext on input line 9.
+Package microtype Info: Applying patch `item' on input line 9.
+Package microtype Info: Applying patch `toc' on input line 9.
+Package microtype Info: Applying patch `eqnum' on input line 9.
+Package microtype Info: Applying patch `footnote' on input line 9.
+Package microtype Info: Applying patch `verbatim' on input line 9.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: No font expansion.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of spacing.
+Package microtype Info: No adjustment of kerning.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `DejaVuSerif' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 11.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 11.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
+(RS)
+)
+Overfull \hbox (40.17676pt too wide) in paragraph at lines 13--21
+[]\TU/DejaVuSerif(0)/m/n/10 Цей документ пояснює повну 
+ієрархію метрик порівняння, що використов
+уються
+ []
+
+
+Overfull \hbox (3.35599pt too wide) in paragraph at lines 13--21
+\TU/DejaVuSerif(0)/m/n/10 повідомлення: \TU/DejaVuSerif(0)/b/n/10 co
+n-di-tional mean та con-di-tional me-dian (лише завершені
+ []
+
+(./report_metrics_guide_uk.toc
+Overfull \hbox (5.37537pt too wide) in paragraph at lines 5--5
+ [][] [][][]\TU/DejaVuSerif(0)/m/n/10.95 Передумова 1: звітуй
+те com-ple-tion, потім використовуйте censoring- 
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+\tf@toc=\write4
+
+\openout4 = report_metrics_guide_uk.toc
+ [2]
+Overfull \hbox (19.98468pt too wide) in paragraph at lines 34--37
+[]\TU/DejaVuSerif(0)/b/n/10.95 Mi-cro-Macro (MM)\TU/DejaVuSerif(0)/m/n/10.95 : 
+двомасштабна апроксимація. Використовує а
+грегований
+ []
+
+
+LaTeX Font Warning: Font shape `TU/DejaVuSerif(0)/m/it' undefined
+(Font)              using `TU/DejaVuSerif(0)/m/n' instead on input line 42.
+
+
+Overfull \hbox (1.2866pt too wide) in paragraph at lines 44--48
+\TU/DejaVuSerif(0)/b/n/10.95 tion rates \TU/DejaVuSerif(0)/m/n/10.95 (част
+ка реплікацій, де $\OML/cmm/m/it/10.95 T[] < T[]$\TU/DejaVuSerif(
+0)/m/n/10.95 ), бо MM поширюється в середньому
+ []
+
+
+Overfull \hbox (29.47011pt too wide) in paragraph at lines 50--50
+[]\TU/DejaVuSerif(0)/b/n/14.4 Аналіз відмінностей метод
+ів: дизайн перед метриками 
+ []
+
+
+Overfull \hbox (23.93187pt too wide) in paragraph at lines 54--61
+\TU/DejaVuSerif(0)/m/it/10.95 що мають керувати будь-яки
+м порівнянням Micro-vs-MM. Каталог метрик (розді
+л [][]3[][])
+ []
+
+
+Overfull \hbox (24.25006pt too wide) in paragraph at lines 54--61
+\TU/DejaVuSerif(0)/m/it/10.95 тоді --- це просто набір інс
+трументів, що використовується всередині 
+цих принципів,
+ []
+
+
+Overfull \hbox (25.42978pt too wide) in paragraph at lines 68--71
+\TU/DejaVuSerif(0)/m/it/10.95 шумом? $\OMS/cmsy/m/n/10.95 !$ \TU/DejaVuSer
+if(0)/m/it/10.95 значущість $\OT1/cmr/m/n/10.95 []$ \TU/DejaVuSerif(
+0)/m/it/10.95 (boot-strap CI) або двовибірковий тест ро
+зподілів.
+ []
+
+
+Overfull \hbox (0.1399pt too wide) in paragraph at lines 74--79
+[]\TU/DejaVuSerif(0)/m/it/10.95 Чому виникає різниця, і я
+ка властивість мережі
+ []
+
+
+Overfull \hbox (3.30338pt too wide) in paragraph at lines 74--79
+\TU/DejaVuSerif(0)/m/it/10.95 її контролює? $\OMS/cmsy/m/n/10.95 !$ 
+\TU/DejaVuSerif(0)/m/it/10.95 контрольована абляція, що 
+перемикає одну апроксимацію
+ []
+
+
+Overfull \hbox (14.18045pt too wide) in paragraph at lines 74--79
+\TU/DejaVuSerif(0)/m/it/10.95 за раз, плюс сурогатний па
+раметричний тест. Потребує ізоляції con-founders,
+
+ []
+
+
+Overfull \hbox (3.80864pt too wide) in paragraph at lines 81--86
+\TU/DejaVuSerif(0)/b/n/10.95 Q2\TU/DejaVuSerif(0)/m/it/10.95 : звітува
+ти про великий, неконтрольований $\OT1/cmr/m/n/10.9
+5 []$ \TU/DejaVuSerif(0)/m/it/10.95 і наративно приписува
+ти
+ []
+
+[3
+
+]
+Overfull \hbox (19.23721pt too wide) in paragraph at lines 112--120
+\TU/DejaVuSerif(0)/m/it/10.95 con-di-tional me-dian, $\OML/cmm/m/it/10.95 W[]$\
+TU/DejaVuSerif(0)/m/it/10.95 , KS --- зазнає selection-bias і не ма
+є нести head-line (розділ [][]3.2[][]
+ []
+
+
+Overfull \hbox (8.84274pt too wide) in paragraph at lines 124--131
+\TU/DejaVuSerif(0)/m/it/10.95 RMST залежить від $\OML/cmm/m/it/10.95
+ T[]$\TU/DejaVuSerif(0)/m/it/10.95 , тож сирий $\OT1/cmr/m/n/10.95 []$
+ \TU/DejaVuSerif(0)/m/it/10.95 має сенс лише всередині ф
+іксованого
+ []
+
+
+Overfull \hbox (4.50735pt too wide) in paragraph at lines 124--131
+\TU/DejaVuSerif(0)/m/it/10.95 сирих зсувів по $\OML/cmm/m/it/10.95
+ r$ \TU/DejaVuSerif(0)/m/it/10.95 порівнює різні осі, і ви
+живають лише знак та horizon-нормовані
+ []
+
+[4]
+Overfull \hbox (15.6314pt too wide) in paragraph at lines 156--158
+[]\TU/DejaVuSerif(0)/m/it/10.95 Читайте IQR $\OML/cmm/m/it/10.95 I[]\OT1
+/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t\OT1/cmr/m/n/10.95 )$ \TU/DejaVuSerif(0)/m
+/it/10.95 як ``наскільки мінлива епідемія'', а не 
+``наскільки зміщений
+ []
+
+
+Overfull \hbox (3.01959pt too wide) in paragraph at lines 158--160
+[]\TU/DejaVuSerif(0)/m/it/10.95 Широка смуга навколо дво
+х майже збіжних медіан не є свідченням вел
+икої
+ []
+
+
+Overfull \hbox (38.49893pt too wide) in paragraph at lines 165--167
+\TU/DejaVuSerif(0)/m/it/10.95 Атрибуція потребує драбин
+и, кожен щабель якої перемикає рівно одну а
+проксимацію,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 174--175
+[]|\TU/DejaVuSerif(0)/m/it/10.95 лише nu-mer-i-cal/syn-chro-ni-sa-
+ []
+
+
+Underfull \hbox (badness 7777) in paragraph at lines 177--178
+[]|\TU/DejaVuSerif(0)/m/it/10.95 place-ment $\OT1/cmr/m/n/10.95 +$ \TU/DejaVuSe
+rif(0)/m/it/10.95 rate (de-ployed
+ []
+
+
+Overfull \hbox (22.68411pt too wide) in paragraph at lines 191--202
+\TU/DejaVuSerif(0)/m/it/10.95 gap $\OML/cmm/m/it/10.95 []$\TU/DejaVuSerif(0)/m
+/it/10.95 , середній ступінь, boundary-degree статисти
+ки --- відтворити oracle-корекцію
+ []
+
+
+Overfull \hbox (11.96677pt too wide) in paragraph at lines 191--202
+\TU/DejaVuSerif(0)/m/it/10.95 без точної структури. Коре
+ктний тест --- не ``чи корелює похибка з $\OML/cmm/
+m/it/10.95 []$ \TU/DejaVuSerif(0)/m/it/10.95 по мережах''
+ []
+
+
+Overfull \hbox (1.63368pt too wide) in paragraph at lines 191--202
+\TU/DejaVuSerif(0)/m/it/10.95 (ця кореляція сконфаундже
+на всім, що ко-варіює з $\OML/cmm/m/it/10.95 []$\TU/DejaVuSer
+if(0)/m/it/10.95 ). Він такий: чи переміщує
+ []
+
+
+Overfull \hbox (10.44652pt too wide) in paragraph at lines 191--202
+\TU/DejaVuSerif(0)/m/it/10.95 факторів фіксованих? Щоб ц
+е підтримати, параметричний sweep має запису
+вати
+ []
+
+
+Overfull \hbox (0.19804pt too wide) in paragraph at lines 191--202
+\OML/cmm/m/it/10.95 []$\TU/DejaVuSerif(0)/m/it/10.95 , ступінь, bound-ar
+y статистики та горизонт на реалізацію, щоб 
+сурогат можна
+ []
+
+
+Overfull \hbox (46.86597pt too wide) in paragraph at lines 206--213
+\TU/DejaVuSerif(0)/m/it/10.95 невіддільна за лише агрег
+ованого стану (structural er-ror). Звітуйте oracle-кал
+ібрований
+ []
+
+[5]
+Overfull \hbox (5.52646pt too wide) in paragraph at lines 230--232
+[]\TU/DejaVuSerif(0)/m/it/10.95 Фіксуйте горизонт усеред
+ині порівняння; нормалізуйте (і розкривайт
+е $\OML/cmm/m/it/10.95 T[]$\TU/DejaVuSerif(0)/m/it/10.95 )
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Con-di-tional mean/me-dian за
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--249
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Звітуйте com-ple-tion;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--249
+\TU/DejaVuSerif(0)/m/it/10.95 використовуйте RMST / sur-vival
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 250--251
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Додайте $\OML/cmm/m/it/10.95 W[]\OT1/cm
+r/m/n/10.95 /[]$ \TU/DejaVuSerif(0)/m/it/10.95 або $\OML/cmm/m/it/10.95 W[]\
+OT1/cmr/m/n/10.95 /\OML/cmm/m/it/10.95 T[]$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--251
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Механізм наративований 
+з
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Ab-la-tion lad-der, один tog-gle на
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 252--252
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Похибка ``пояснена''
+ []
+
+
+Underfull \hbox (badness 5893) in paragraph at lines 252--253
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Фіксуйте коваріати / рег
+ресуйте;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--254
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Чистий випадок залишено
+ []
+
+
+Underfull \hbox (badness 1342) in paragraph at lines 254--255
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Neg-a-tive con-trol з числами $\OML/cm
+m/m/it/10.95 W[]$\TU/DejaVuSerif(0)/m/it/10.95 /KS
+ []
+
+[6]
+Overfull \hbox (19.46426pt too wide) in paragraph at lines 272--275
+[]\TU/DejaVuSerif(0)/b/n/10.95 Що вимірює: \TU/DejaVuSerif(0)/m/it/10.
+95 чи проходить епідемія весь ланцюг у межа
+х горизонту симуляції.
+ []
+
+
+Overfull \hbox (0.6371pt too wide) in paragraph at lines 272--275
+\TU/DejaVuSerif(0)/m/it/10.95 Залежить як від внутрішнь
+ої стохастичності епідемії, так і від bias ап
+роксимації
+ []
+
+
+Overfull \hbox (5.4351pt too wide) in paragraph at lines 286--288
+[]\TU/DejaVuSerif(0)/b/n/10.95 Обмеження: \TU/DejaVuSerif(0)/m/it/10.9
+5 Це один бінарний поріг; він не квантифіку
+є, наскільки швидше
+ []
+
+
+Overfull \hbox (38.8587pt too wide) in paragraph at lines 310--316
+\TU/DejaVuSerif(0)/m/it/10.95 Ми порівнюємо $\OML/cmm/m/it/10.95 m[
+]$ \TU/DejaVuSerif(0)/m/it/10.95 з $\OML/cmm/m/it/10.95 m[]$\TU/DejaVuSerif(0)
+/m/it/10.95 , але вони відповідають різним перце
+нтилям безумовного
+ []
+
+
+Overfull \hbox (25.91252pt too wide) in paragraph at lines 340--345
+[]\TU/DejaVuSerif(0)/b/n/10.95 Що вимірює: \TU/DejaVuSerif(0)/m/it/10.
+95 очікуваний час до прибуття, обмежений зв
+ерху $\OML/cmm/m/it/10.95 T[]$\TU/DejaVuSerif(0)/m/it/10.95 . Цензур
+овані
+ []
+
+[7]
+Overfull \hbox (20.93228pt too wide) in paragraph at lines 346--351
+\TU/DejaVuSerif(0)/m/it/10.95 ($\OML/cmm/m/it/10.95 T[] > T[]$\TU/DejaVuSerif(0
+)/m/it/10.95 ) ми знаємо, що справжній час прибут
+тя щонайменше $\OML/cmm/m/it/10.95 T[]$\TU/DejaVuSerif(0)/m/it/10.9
+5 . Використання
+ []
+
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `DejaVuSansMono' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+Overfull \hbox (144.39368pt too wide) in paragraph at lines 369--370
+[]\TU/DejaVuSerif(0)/b/n/10.95 Як RMST обчислюється в цьом
+у проєкті (код).[] \TU/DejaVuSerif(0)/m/it/10.95 З \TU/DejaVuSansMo
+no(0)/m/n/10.95 extrascripts/benchmark_censoring_summary.py\TU/DejaVuSerif(0)/m
+/it/10.95 : 
+ []
+
+
+Overfull \hbox (2.50316pt too wide) in paragraph at lines 400--403
+\TU/DejaVuSerif(0)/m/it/10.95 Усі сценарії з достатнім com-
+ple-tion показують $\OT1/cmr/m/n/10.95 [] \OML/cmm/m/it/10.95 < \OT1/
+cmr/m/n/10.95 0$ \TU/DejaVuSerif(0)/m/it/10.95 (жирне CI = значуще).
+
+ []
+
+
+Overfull \hbox (39.6258pt too wide) in paragraph at lines 404--407
+[]\TU/DejaVuSerif(0)/b/n/10.95 Обмеження: \TU/DejaVuSerif(0)/m/it/10.9
+5 RMST залежить від $\OML/cmm/m/it/10.95 T[]$\TU/DejaVuSerif(0)/m/it
+/10.95 . Довший горизонт робить RMST чутливішим
+ []
+
+[8]
+Overfull \hbox (30.6441pt too wide) in paragraph at lines 415--418
+[]\TU/DejaVuSerif(0)/b/n/10.95 Що вимірює: \TU/DejaVuSerif(0)/m/it/10.
+95 середню абсолютну різницю між quan-tile func-tions 
+двох розподілів.
+ []
+
+
+Overfull \hbox (8.00644pt too wide) in paragraph at lines 422--425
+\TU/DejaVuSerif(0)/m/it/10.95 Це нормалізує на середнє Mi-c
+ro, даючи безрозмірну міру розбіжності розп
+оділів. 
+ []
+
+
+Overfull \hbox (3.65088pt too wide) in paragraph at lines 426--433
+\TU/DejaVuSerif(0)/m/it/10.95 прибуття?'' Це валідно для 
+порівняння форми розподілу, але не вловлює 
+ефекту
+ []
+
+
+Overfull \hbox (16.28139pt too wide) in paragraph at lines 468--471
+[]\TU/DejaVuSerif(0)/b/n/10.95 Що вимірює: \TU/DejaVuSerif(0)/m/it/10.
+95 максимальну вертикальну відстань між дв
+ома CDF. Асоційоване
+ []
+
+
+Overfull \hbox (5.25832pt too wide) in paragraph at lines 479--481
+\TU/DejaVuSerif(0)/m/it/10.95 Усі метрики вище оперують 
+на термінальному часі прибуття $\OML/cmm/m/it/10.95 
+T[]$\TU/DejaVuSerif(0)/m/it/10.95 . Per-hop аналіз
+ []
+
+[9]
+Overfull \hbox (25.97342pt too wide) in paragraph at lines 491--496
+\TU/DejaVuSerif(0)/m/it/10.95 зберігаються, і оцінювач м
+ає значно нижчу дисперсію, ніж between-run порів
+няння. 
+ []
+
+
+Overfull \hbox (5.0671pt too wide) in paragraph at lines 497--504
+\TU/DejaVuSerif(0)/m/it/10.95 мінливість домінує в неви
+значеності RMST, парне порівняння усуває її 
+повністю:
+ []
+
+
+Overfull \hbox (5.0003pt too wide) in paragraph at lines 505--510
+\TU/DejaVuSerif(0)/m/it/10.95 вона повертається до 0 чер
+ез cen-sor-ing повільних прогонів Mi-cro. IQR станов
+ить
+ []
+
+
+Overfull \hbox (18.98701pt too wide) in paragraph at lines 512--512
+[]\TU/DejaVuSerif(0)/b/n/14.4 Графік I$[][]$(t): phase noise проти 
+похибки апроксимації 
+ []
+
+
+Overfull \hbox (20.50664pt too wide) in paragraph at lines 525--526
+[]\TU/DejaVuSerif(0)/b/n/10.95 Що насправді вимірює IQR-см
+уга на $\OML/cmm/m/it/10.95 I[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t\O
+T1/cmr/m/n/10.95 )$\TU/DejaVuSerif(0)/b/n/10.95 .[] \TU/DejaVuSerif(0)/m/it/10.
+95 У фіксований момент $\OML/cmm/m/it/10.95 t$ \TU/DejaVuSerif
+(0)/m/it/10.95 поточковий
+ []
+
+
+Overfull \hbox (0.51865pt too wide) in paragraph at lines 546--548
+[]\TU/DejaVuSerif(0)/b/n/10.95 Не для\TU/DejaVuSerif(0)/m/it/10.95 : кв
+антифікації малих-до-помірних bias (clique case), ч
+и порівняння
+ []
+
+[10]
+Overfull \hbox (1.83208pt too wide) in paragraph at lines 559--559
+[]|\TU/DejaVuSerif(0)/b/n/10.95 Обробляє
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--559
+\TU/DejaVuSerif(0)/b/n/10.95 cen-sor-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--559
+[]|\TU/DejaVuSerif(0)/b/n/10.95 Використовувати
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--560
+[]|\TU/DejaVuSerif(0)/b/n/10.95 Не
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--560
+\TU/DejaVuSerif(0)/b/n/10.95 використовувати
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 561--561
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Завжди звітувати
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--563
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Обидві моделі
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--564
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Com-ple-tion rates
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Com-ple-tion rates
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 565--565
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Cond. me-dian
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 565--566
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Com-ple-tion rates
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 566--567
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Останній шар (cen-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 566--567
+\TU/DejaVuSerif(0)/m/it/10.95 sor-ing повільних
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 567--568
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Перший/останній
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--568
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Ідентифікація
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--568
+\TU/DejaVuSerif(0)/m/it/10.95 режиму, san-ity
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--569
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Квантифікація
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 569--570
+[]|\TU/DejaVuSerif(0)/m/it/10.95 Первинне кількісне
+ []
+
+
+Overfull \hbox (9.59505pt too wide) in paragraph at lines 586--588
+[]\TU/DejaVuSerif(0)/m/it/10.95 Медіана $\OML/cmm/m/it/10.95 I[]\OT1/cmr
+/m/n/10.95 (\OML/cmm/m/it/10.95 t\OT1/cmr/m/n/10.95 )$\TU/DejaVuSerif(0)/m/it/1
+0.95 : лише для візуального контексту, не для 
+кількісних висновків. 
+ []
+
+[11]
+Overfull \hbox (34.12537pt too wide) in paragraph at lines 619--624
+[]\TU/DejaVuSerif(0)/b/n/10.95 Чому RMST усе одно має значе
+ння навіть за 100% com-ple-tion.[] \TU/DejaVuSerif(0)/m/it/10.95 Ф
+ормулювання
+ []
+
+
+Overfull \hbox (8.46613pt too wide) in paragraph at lines 619--624
+\TU/DejaVuSerif(0)/m/it/10.95 той самий код і ту саму інт
+ерпретацію в усіх експериментах. Це уникає 
+введення
+ []
+
+
+Overfull \hbox (0.22327pt too wide) in paragraph at lines 629--631
+\TU/DejaVuSerif(0)/m/it/10.95 Поширене питання: скільки 
+реплікацій потрібно, щоб виявити заданий $\O
+T1/cmr/m/n/10.95 []$
+ []
+
+
+Overfull \hbox (40.26427pt too wide) in paragraph at lines 632--634
+[]\TU/DejaVuSerif(0)/m/it/10.95 Для одновибіркового $\OML/cmm
+/m/it/10.95 t$\TU/DejaVuSerif(0)/m/it/10.95 -тесту на $\OT1/cmr/m/n/10.9
+5 [] = [](\OML/cmm/m/it/10.95 T[]; T[]\OT1/cmr/m/n/10.95 ) \OMS/cmsy/m/n/10.95
+ ^^@ []\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 T[]; T[]\OT1/cmr/m/n/10.95 )$ \T
+U/DejaVuSerif(0)/m/it/10.95 зі стандартним
+ []
+
+
+Overfull \hbox (8.79051pt too wide) in paragraph at lines 652--655
+[]\TU/DejaVuSerif(0)/b/n/10.95 CE-01 (paired).[] \TU/DejaVuSerif(0)/m/it/10.95 
+Спарювання реплікацій (той самий seed) драма
+тично зменшує
+ []
+
+
+Overfull \hbox (3.98401pt too wide) in paragraph at lines 656--658
+[]\TU/DejaVuSerif(0)/b/n/10.95 Практичне правило: \TU/DejaVuSer
+if(0)/m/it/10.95 для chain bench-mark без спарювання вико
+ристовуйте
+ []
+
+
+Overfull \hbox (14.00594pt too wide) in paragraph at lines 664--667
+\TU/DejaVuSerif(0)/m/it/10.95 ing, прямо пов’язані з нері
+вністю Jensen, і мають добре зрозумілі статис
+тичні
+ []
+
+[12]
+Overfull \hbox (33.05707pt too wide) in paragraph at lines 677--680
+[]\TU/DejaVuSerif(0)/b/n/10.95 Поточкові графіки $\OML/cmm/m/it
+/10.95 I[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t\OT1/cmr/m/n/10.95 )$ \TU/De
+jaVuSerif(0)/m/it/10.95 відображають phase noise, а не похи
+бку апроксимації.
+ []
+
+
+Overfull \hbox (49.20636pt too wide) in paragraph at lines 677--680
+\TU/DejaVuSerif(0)/m/it/10.95 Корисні для візуального к
+онтексту (особливо sparse case), але не для квант
+ифікації
+ []
+
+
+Overfull \hbox (11.40361pt too wide) in paragraph at lines 681--685
+\TU/DejaVuSerif(0)/m/it/10.95 усуває between-run дисперсію, в
+икористовуючи paired seeds. Інтерпретуйте
+ []
+
+
+Overfull \hbox (3.80754pt too wide) in paragraph at lines 686--689
+[]\TU/DejaVuSerif(0)/b/n/10.95 100 реплікацій \TU/DejaVuSerif(0)/m/it
+/10.95 недостатньо для clique base-line ($\OML/cmm/m/it/10.95 k \
+OT1/cmr/m/n/10.95 = 5$\TU/DejaVuSerif(0)/m/it/10.95 ), щоб виявити Jen
+sen
+ []
+
+[13] (./report_metrics_guide_uk.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package rerunfilecheck Info: File `report_metrics_guide_uk.out' has not changed
+.
+(rerunfilecheck)             Checksum: D140E1C0A8D2954B8C7FF29A98D5BFE3;7773.
+)
+
+Here is how much of LuaTeX's memory you used:
+ 16868 strings out of 476553
+ 125027,1977958 words of node,token memory allocated
+ 644 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 5 kern, 1 penalty, 1 margin_ke
+rn, 4 glyph, 24 attribute, 56 glue_spec, 24 attribute_list, 1 write, 1 pdf_actio
+n nodes
+   avail lists: 1:1,2:695,3:417,4:281,5:333,6:110,7:6241,8:60,9:763,10:7,11:128
+ 38497 multiletter control sequences out of 65536+600000
+ 97 fonts using 27344911 bytes
+ 84i,13n,92p,1019b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf></usr/share/fonts/truetype/
+dejavu/DejaVuSerif.ttf></usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/symbols/msbm10.pfb>
+Output written on report_metrics_guide_uk.pdf (13 pages, 184627 bytes).
+
+PDF statistics: 307 PDF objects out of 1000 (max. 8388607)
+ 272 compressed objects within 3 object streams
+ 77 named destinations out of 1000 (max. 131072)
+ 201 words of extra memory for PDF output out of 10000 (max. 100000000)
+

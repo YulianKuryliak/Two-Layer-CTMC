@@ -1,0 +1,481 @@
+% ============================================================================
+% Article section: causal ablation of hazard abstraction and import placement
+% Requires: amsmath, amssymb, booktabs, graphicx (and optionally subcaption).
+% Expected figure files (copy to paper/Images/hazard_placement_ablation/):
+%   survival.png
+%   rmst_shift.png
+%   cumulative_error.png
+%   local_delay_shift.png
+%   premature_hazard.png
+%   hazard_vs_arrival.png
+%   infected_dynamics.png
+% The section is written as an \input{}-ready fragment for the main article.
+% ============================================================================
+
+\subsection{Causal ablation of macro-hazard abstraction and import placement}
+\label{sec:hazard_placement_ablation}
+
+\subsubsection{Research question and motivation}
+
+The sparse connected-community benchmark in Section~\ref{sec:accuracy_error} showed a pronounced early-arrival discrepancy between the full microscopic simulator and the production MicroMacro implementation.  In the baseline chain, the terminal relative Wasserstein discrepancy was approximately $0.426$, and the censoring-aware RMST shift was $-1228.9$ time units.  That comparison, however, changed several elements of the inter-community mechanism simultaneously: the exact active-edge transmission rate was replaced by a prevalence-based macro rate, imported infections were placed uniformly among susceptible destination nodes rather than at endpoints of active inter-community edges, and the production implementation integrated the macro hazard on a synchronization grid.  Consequently, the full benchmark established that the implemented approximation was inaccurate in the sparse regime, but it did not identify which interface mechanism generated the discrepancy.
+
+We therefore performed a dedicated ablation experiment whose purpose was to separate, as far as mathematically possible, the effects of
+\begin{enumerate}
+    \item \emph{rate abstraction}, namely replacement of the active microscopic inter-community hazard by a community-prevalence hazard; and
+    \item \emph{import placement}, namely replacement of the dynamically selected endpoint of an active inter-community edge by an approximate target-selection rule.
+\end{enumerate}
+The experiment is a causal ablation on one fixed baseline family.  It is not a robustness study over network size, interface width, recovery rate, or synchronization interval.
+
+\subsubsection{Experimental design}
+\label{sec:hazard_placement_design}
+
+Each of $100$ paired replications used a newly generated chain of $L=10$ connected random communities.  Each community contained $n=100$ nodes and had an internal mean degree of approximately $d=6$.  Adjacent communities were connected by $k=5$ inter-community edges.  The epidemic parameters were
+\[
+\beta_{\mathrm{in}}=\beta_{\mathrm{out}}=0.003,
+\qquad
+\gamma=0,
+\qquad
+\tau_{\mathrm{micro}}=1,
+\qquad
+T_{\mathrm{end}}=4000.
+\]
+The internal community generator samples a graph with a fixed number of edges and repeats the draw until the graph is connected; it is therefore more precisely described as a connected $G(n,m)$ construction than as an unconditional $G(n,p)$ graph.
+
+Within each replication, all model variants received the same generated network, the same inter-community edges, the same initially infected node, and the same initial state.  Deterministic variant-specific random-number streams were used for internal events, macro exponential budgets, community-pair selection, and import placement.  Pairing therefore removes network-generation and initialization variability from the contrasts, but it should not be interpreted as an event-by-event common-random-number coupling after the trajectories diverge.
+
+The ablation used an isolated event-driven scheduler with direct competition between microscopic and macro exponential clocks.  The production Full Micro and MicroMacro implementations were not modified.  This design choice is important: the aggregate/uniform ablation mode uses the same macro-rate and uniform-placement semantics as the production MicroMacro model, but deliberately excludes the production midpoint synchronization approximation.  The ablation therefore measures structural interface effects under an event-driven scheduler; it does not reproduce the complete production implementation.
+
+\subsubsection{Model variants}
+\label{sec:hazard_placement_modes}
+
+For a directed community pair $i\to j$, let $E_{ij}$ denote the set of explicit microscopic edges from community $i$ to community $j$.  Given microscopic state $x$, the exact active-edge hazard is
+\begin{equation}
+    a^{\star}_{ij}(x)
+    =
+    \beta_{\mathrm{out}}
+    \sum_{(u,v)\in E_{ij}}
+    w_{uv}
+    \mathbf{1}\{X_u=I,\,X_v=S\}.
+    \label{eq:ablation_exact_hazard}
+\end{equation}
+Conditional on an exact event on $i\to j$, the exact edge-conditioned target distribution is
+\begin{equation}
+    \pi^{\star}_{ij}(v\mid x)
+    =
+    \frac{
+    \mathbf{1}\{X_v=S\}
+    \sum_{u:(u,v)\in E_{ij}}
+    w_{uv}\mathbf{1}\{X_u=I\}
+    }{
+    \sum_{(u',v')\in E_{ij}}
+    w_{u'v'}\mathbf{1}\{X_{u'}=I,\,X_{v'}=S\}
+    },
+    \label{eq:ablation_exact_placement}
+\end{equation}
+whenever $a^{\star}_{ij}(x)>0$.
+
+The prevalence-based aggregate hazard is
+\begin{equation}
+    \lambda_{ij}(t)
+    =
+    \beta_{\mathrm{macro}}W_{ij}
+    \bar{i}_{i}(t)\bar{s}_{j}(t),
+    \label{eq:ablation_aggregate_hazard}
+\end{equation}
+where $W_{ij}=\sum_{(u,v)\in E_{ij}}w_{uv}$, $\bar{i}_{i}=I_i/N_i$, and $\bar{s}_{j}=S_j/N_j$.
+
+Five variants were evaluated:
+\begin{description}
+    \item[Full Micro.] The reference full-network CTMC with explicit inter-community infection edges.
+
+    \item[Exact/exact.] The experimental macro-event architecture uses the exact hazard~\eqref{eq:ablation_exact_hazard} and the exact edge-conditioned placement rule~\eqref{eq:ablation_exact_placement}.  This is an oracle control for validating the event-driven scheduler.
+
+    \item[Exact/uniform.] Event times and transmitting community pairs are generated from the exact active-edge hazard, but the imported infection is placed uniformly among all susceptible nodes in the destination community.  Relative to exact/exact, this is the cleanest available intervention on import placement because event timing is held fixed at the exact model class.
+
+    \item[Aggregate/boundary.] The event rate is the prevalence hazard~\eqref{eq:ablation_aggregate_hazard}, while the target is restricted to susceptible destination boundary nodes and sampled proportionally to static incoming inter-community weight,
+    \begin{equation}
+        q^{B}_{ij}(v\mid x)
+        \propto
+        \mathbf{1}\{X_v=S\}
+        \sum_{u:(u,v)\in E_{ij}}w_{uv}.
+        \label{eq:ablation_boundary_placement}
+    \end{equation}
+    This rule is boundary-aware but not exact because it does not condition on which source endpoints are currently infected.  Directions with no susceptible boundary target are gated to zero rather than redirected to an arbitrary internal node.
+
+    \item[Aggregate/uniform.] The event rate is the prevalence hazard~\eqref{eq:ablation_aggregate_hazard}, and the target is selected uniformly among all susceptible destination nodes.  This is the event-driven analogue of the current structural MicroMacro approximation.
+\end{description}
+
+A nominal cell combining aggregate hazard with exact edge-conditioned placement is not generally defined.  The aggregate rate can satisfy $\lambda_{ij}>0$ while $a^{\star}_{ij}=0$.  In such a state there is no active microscopic edge, so the denominator in~\eqref{eq:ablation_exact_placement} is zero and no exact target distribution exists.  The experiment therefore omits this cell rather than introducing a silent fallback.
+
+This missing cell prevents a factorial decomposition with \emph{exact placement} in both hazard conditions.  It does not, however, prevent every controlled hazard contrast.  In particular, exact/uniform and aggregate/uniform share the same placement rule and therefore provide a valid model-level contrast of exact and aggregate hazards under uniform placement.  This contrast was not fully quantified in the initial report and is discussed below.
+
+\subsubsection{Validation and statistical summaries}
+\label{sec:hazard_placement_validation}
+
+Eight automated sanity tests were passed.  These tests verified the exact hazard against brute-force active-edge sums, including $25$ randomly generated microscopic states; normalization and support of exact placement; support and weighting of boundary placement; zero exact hazard in the absence of active inter-community edges; zero boundary-enabled hazard when no susceptible boundary target exists; deterministic reproduction; exclusion of the mathematically invalid aggregate/exact configuration; and absence of silent fallback.
+
+The exact/exact oracle passed the validation gate against Full Micro.  Both variants completed all $100$ replications.  The terminal relative Wasserstein distance was $0.0138$, and the paired RMST difference was
+\[
+\Delta\mathrm{RMST}_{\mathrm{Ex/Ex}-\mathrm{Micro}}
+=7.5,
+\qquad
+95\%\ \mathrm{CI}=[-93.6,120.3].
+\]
+Thus, at the resolution of $100$ replications, no scheduler-induced discrepancy was detected.  This result validates the experimental architecture for the subsequent model contrasts.  It should nevertheless be interpreted as a statistical consistency check rather than as a mathematical proof that the two implementations are identical for every realization.
+
+All five modes completed all runs before $T_{\mathrm{end}}$.  Hence terminal means, completed-only distributions, and RMST are evaluated on the same set of replications in this experiment.  RMST is retained as the primary timing contrast because it remains valid when future parameter settings introduce administrative censoring.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Variant & Mean $T_{\mathrm{last}}$ & $W_1$ vs Micro & Relative $W_1$ & $\Delta$RMST vs Micro \\
+\midrule
+Full Micro & 2936.7 & 0.0 & 0.000 & 0.0 \\
+Exact/exact & 2944.3 & 40.4 & 0.014 & 7.5 \\
+Exact/uniform & 2775.5 & 163.6 & 0.056 & -161.2 \\
+Aggregate/boundary & 2735.5 & 203.5 & 0.069 & -201.2 \\
+Aggregate/uniform & 2715.9 & 220.8 & 0.075 & -220.8 \\
+\bottomrule
+\end{tabular}
+\caption{Terminal-arrival summaries for the hazard--placement ablation.  All variants completed all $100$ replications.  Wasserstein distances are calculated against Full Micro.}
+\label{tab:hazard_placement_terminal}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{p{0.38\linewidth}rrp{0.33\linewidth}}
+\toprule
+Contrast & RMST shift & 95\% CI & Interpretation \\
+\midrule
+Exact/exact $-$ Full Micro
+& $7.5$ & $[-93.6,120.3]$
+& Oracle validation; no detectable scheduler discrepancy. \\
+
+Exact/uniform $-$ Exact/exact
+& $-168.8$ & $[-274.5,-56.1]$
+& Clean placement effect under exact event hazards. \\
+
+Aggregate/boundary $-$ Exact/exact
+& $-208.8$ & $[-310.0,-112.2]$
+& Combined aggregate-hazard and boundary-placement pathway; not a pure hazard effect. \\
+
+Aggregate/uniform $-$ Full Micro
+& $-220.8$ & $[-315.5,-126.8]$
+& Total structural error of the event-driven aggregate/uniform approximation. \\
+
+Aggregate/uniform $-$ Aggregate/boundary
+& $-19.6$ & $[-114.2,77.2]$
+& Contextual difference between two aggregate mechanisms; not a pure placement contrast because boundary gating also changes event eligibility. \\
+\bottomrule
+\end{tabular}
+\caption{Primary paired RMST contrasts.  Negative values indicate earlier arrival in the first-listed approximation.}
+\label{tab:hazard_placement_contrasts}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/survival.png}
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/rmst_shift.png}
+    \caption{Terminal-arrival survival curves (left) and paired RMST shifts with 95\% bootstrap intervals (right) for the five ablation variants.}
+    \label{fig:hazard_placement_survival_rmst}
+\end{figure}
+
+\subsubsection{Import placement under exact event hazards}
+\label{sec:hazard_placement_result_placement}
+
+The most directly identified mechanism is the error introduced by uniform import placement.  Replacing exact edge-conditioned targets by uniformly selected susceptible nodes, while retaining the exact active-edge hazards, shifted RMST by
+\[
+-168.8
+\quad\text{time units},
+\qquad
+95\%\ \mathrm{CI}=[-274.5,-56.1].
+\]
+The terminal relative Wasserstein discrepancy increased from $0.014$ in exact/exact to $0.056$ in exact/uniform.  Because the hazard process is exact in both variants, this difference cannot be attributed to premature rate accumulation.  It is caused by the post-import microscopic state created in the destination community.
+
+The direction of the bias has a clear network interpretation.  In Full Micro and exact/exact, the receiving node is necessarily an endpoint of an active inter-community edge.  In exact/uniform, the same import time and transmitting community pair can seed any susceptible destination node.  A uniformly selected node may lie closer to the next export interface, may have a higher internal degree, or may occupy a more central location than the microscopic endpoint through which transmission would physically enter.  Such placement shortens the time required for infection to reach the next boundary.  The effect is repeated at successive communities and therefore can accumulate along the chain.
+
+This finding establishes that target-node selection is not a secondary implementation detail.  Even with exact event timing, replacing the edge-conditioned target distribution by a community-wide uniform rule changes the downstream first-passage distribution.  In practical terms, preserving only the receiving community identity is insufficient when the position of the imported case within that community influences subsequent export.
+
+\subsubsection{The aggregate-hazard pathway with boundary-aware placement}
+\label{sec:hazard_placement_result_aggregate}
+
+The aggregate/boundary variant arrived earlier than exact/exact by
+\[
+-208.8
+\quad\text{time units},
+\qquad
+95\%\ \mathrm{CI}=[-310.0,-112.2].
+\]
+Its terminal relative Wasserstein discrepancy was $0.069$.  This result shows that restricting imports to plausible gateway nodes is not sufficient to recover the exact first-passage distribution when the event rate is driven by aggregate prevalence.
+
+The contrast must, however, be interpreted carefully.  Aggregate/boundary differs from exact/exact in both its rate and its target distribution.  The exact target distribution in~\eqref{eq:ablation_exact_placement} depends on the dynamically infected source endpoints, whereas the boundary-aware rule~\eqref{eq:ablation_boundary_placement} uses static incoming weights.  Moreover, boundary gating suppresses a macro direction when no susceptible boundary target is available.  Therefore, the observed $-208.8$ shift is a combined pathway involving rate abstraction, static boundary placement, and destination-boundary eligibility.  It is not a pure factorial estimate of the macro-hazard effect.
+
+Nevertheless, the result is informative.  It demonstrates that a macro model can remain substantially early even after the most obvious uniform-placement pathology has been removed.  Aggregate prevalence can assign positive transmission pressure before the microscopic process has activated a suitable source--destination interface.  Boundary-aware placement improves the physical plausibility of the recipient location, but it cannot by itself correct an event clock that starts accumulating from a community average rather than from active boundary edges.
+
+\subsubsection{A direct hazard contrast that remains to be completed}
+\label{sec:hazard_placement_direct_hazard}
+
+Although the exact-placement factorial cell is undefined, the existing design contains a valid direct hazard contrast under a common uniform placement rule:
+\begin{equation}
+    C_H^{\mathrm{uniform}}
+    =
+    \mathrm{RMST}_{\mathrm{aggregate/uniform}}
+    -
+    \mathrm{RMST}_{\mathrm{exact/uniform}}.
+    \label{eq:uniform_hazard_contrast}
+\end{equation}
+Using the reported point estimates,
+\[
+C_H^{\mathrm{uniform}}
+=
+-220.8-(-161.2)
+=
+-59.6
+\quad\text{time units}.
+\]
+This is a model-level causal contrast of changing the hazard strategy while keeping the import-placement rule fixed.  It is distinct from a state-replay comparison: after the first divergent event, exact/uniform and aggregate/uniform evolve on different endogenous trajectories.  Even so, it is the cleanest currently available estimate of the dynamic effect of rate abstraction in the uniform-placement context.
+
+The initial report did not provide a paired-bootstrap confidence interval for~\eqref{eq:uniform_hazard_contrast}.  Therefore, the point estimate $-59.6$ should not yet be described as statistically established.  The raw paired outputs should be used to compute its bootstrap interval.  If the interval excludes zero, the experiment will directly support an additional early-arrival effect of aggregate hazard beyond the already established uniform-placement effect.  If it includes zero, the data would instead suggest that most of the event-driven aggregate/uniform discrepancy in this baseline is explained by placement, with the hazard contribution being smaller or more variable.
+
+A more complete, fully defined $2\times2$ auxiliary design can be obtained by adding an \emph{exact-hazard/boundary-weighted-placement} variant.  The four cells
+\[
+\{\text{exact},\text{aggregate}\}
+\times
+\{\text{uniform},\text{boundary-weighted}\}
+\]
+are all mathematically defined.  Exact/exact would remain an external oracle control rather than a cell of this auxiliary factorial design.  This extension would permit hazard contrasts under two common placement rules and a well-defined interaction contrast between hazard strategy and approximate placement strategy.
+
+\subsubsection{Layer-wise accumulation and local transition delays}
+\label{sec:hazard_placement_layerwise}
+
+Figure~\ref{fig:hazard_placement_layerwise} separates cumulative arrival-time error from local transition-delay error.  The cumulative median curves become increasingly negative for exact/uniform, aggregate/boundary, and aggregate/uniform, showing that the terminal discrepancy is generated progressively along the chain rather than by a single final transition.  Exact/exact remains centered near zero, consistent with the oracle validation.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/cumulative_error.png}
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/local_delay_shift.png}
+    \caption{Layer-wise paired cumulative arrival-time error $T_i^{\mathrm{variant}}-T_i^{\mathrm{Micro}}$ (left) and local transition-delay shifts for $\Delta T_i=T_{i+1}-T_i$ (right).  Curves are paired medians and bands are interquartile ranges over $100$ replications.}
+    \label{fig:hazard_placement_layerwise}
+\end{figure}
+
+The local-delay panel is more variable.  Its broad interquartile bands indicate that individual community transitions can be earlier or later depending on the realized network and import location.  Thus the cumulative bias should not be interpreted as a deterministic per-layer decrement.  Rather, small and heterogeneous local shifts acquire a systematic negative drift when propagated through a sequential chain.  A formal claim that the error grows linearly with community index would require an explicit slope analysis or layer-wise bootstrap confidence intervals.  The current evidence supports cumulative propagation of error, but not a universal constant error per transition.
+
+\subsubsection{Premature-hazard states and why current counts are descriptive}
+\label{sec:hazard_placement_premature}
+
+The aggregate variants frequently visited states in which the macro hazard was positive although the corresponding exact active-edge hazard was zero.  Aggregate/boundary and aggregate/uniform generated $63{,}298$ and $295{,}719$ evaluated intervals, respectively, with
+\[
+\lambda_{ij}>0,
+\qquad
+a^{\star}_{ij}=0.
+\]
+They also produced $245$ and $561$ actual imports in states where an exact edge-conditioned placement distribution would have been undefined.  These observations provide direct implementation-level evidence for the premature-hazard mechanism: the aggregate clock can accumulate and fire before a microscopic interface is active.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/premature_hazard.png}
+    \safeincludegraphics[width=0.49\linewidth]{Images/hazard_placement_ablation/hazard_vs_arrival.png}
+    \caption{Premature-hazard diagnostics (left) and integrated signed hazard error versus terminal-arrival error (right).  The two aggregate variants follow different endogenous trajectories, so raw counts and integrated errors are descriptive rather than common-state paired measurements.}
+    \label{fig:hazard_placement_hazard_diagnostics}
+\end{figure}
+
+Raw interval counts must not be compared as if they were observations on the same microscopic state trajectory.  The variants differ in their import times and target nodes, so they generate different future states and different numbers of evaluated intervals.  The much larger count in aggregate/uniform may reflect both a stronger structural mismatch and the fact that uniform placement creates a different trajectory with more opportunities for positive aggregate hazard.  A more interpretable diagnostic would normalize by the number or duration of evaluated edge--time intervals and would weight premature intervals by the amount of aggregate hazard accumulated.  Useful quantities include
+\begin{align}
+    H^{\mathrm{prem}}_{ij}
+    &=
+    \int_0^{T}
+    \lambda_{ij}(t)
+    \mathbf{1}\{a^{\star}_{ij}(t)=0\}\,dt,
+    \label{eq:premature_hazard_mass}
+    \\
+    E^{\mathrm{abs}}_{ij}
+    &=
+    \int_0^{T}
+    \left|\lambda_{ij}(t)-a^{\star}_{ij}(t)\right|\,dt,
+    \label{eq:absolute_hazard_error}
+    \\
+    E^{\mathrm{signed}}_{ij}
+    &=
+    \int_0^{T}
+    \left(\lambda_{ij}(t)-a^{\star}_{ij}(t)\right)\,dt.
+    \label{eq:signed_hazard_error}
+\end{align}
+The signed quantity can be small because positive and negative discrepancies cancel.  Consequently, the weak visual association in the current signed-error scatter does not refute a hazard mechanism.  Absolute error and premature-hazard mass are better aligned with the structural question.
+
+\subsubsection{Context dependence and non-additivity}
+\label{sec:hazard_placement_nonadditivity}
+
+The full event-driven aggregate/uniform approximation had
+\[
+\Delta\mathrm{RMST}=-220.8,
+\qquad
+95\%\ \mathrm{CI}=[-315.5,-126.8],
+\]
+and terminal relative $W_1=0.075$.  This discrepancy is statistically clear but is much smaller than the sum of the two headline contrasts, $-168.8$ and $-208.8$.  Those contrasts cannot be added because they are not orthogonal components of a complete factorial design.
+
+The aggregate/uniform versus aggregate/boundary contrast was only $-19.6$ time units, with CI $[-114.2,77.2]$.  This comparison should not be described as a pure placement effect.  Boundary placement is coupled to a boundary-susceptibility gate, whereas uniform placement is coupled to the global susceptible fraction.  The comparison therefore changes both the target distribution and the effective eligibility of a macro direction.  Its small point estimate may reflect overlap, saturation, trajectory divergence, or the different susceptibility gates.
+
+Similarly, the reported difference of $149.2$ between the exact-hazard placement contrast and the aggregate-context contrast demonstrates context dependence, but it is not a formal interaction term for hazard and exact placement because the required aggregate/exact cell does not exist.  The defensible conclusion is narrower: marginal effects depend on the accompanying rate and placement mechanisms, and the total error cannot be decomposed by summing independently estimated components.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{p{0.31\linewidth}p{0.27\linewidth}p{0.34\linewidth}}
+\toprule
+Comparison & Status & Defensible interpretation \\
+\midrule
+Exact/exact vs Full Micro
+& Valid oracle control
+& Tests the experimental scheduler and exact macro-event reconstruction. \\
+
+Exact/uniform vs Exact/exact
+& Clean placement contrast
+& Identifies the effect of uniform import placement under exact hazards. \\
+
+Aggregate/uniform vs Exact/uniform
+& Clean hazard-strategy contrast under uniform placement
+& Point estimate $-59.6$; paired-bootstrap CI still required. \\
+
+Aggregate/boundary vs Exact/exact
+& Combined proxy
+& Includes aggregate hazard, static boundary placement, and boundary eligibility. \\
+
+Aggregate/uniform vs Aggregate/boundary
+& Contextual mechanism contrast
+& Not pure placement because the boundary gate also changes effective hazard support. \\
+
+Aggregate/uniform vs Full Micro
+& Total event-driven structural error
+& Joint effect of aggregate hazard and uniform placement, excluding production midpoint synchronization. \\
+\bottomrule
+\end{tabular}
+\caption{Interpretive status of the principal model comparisons.}
+\label{tab:hazard_placement_interpretation}
+\end{table}
+
+\subsubsection{Aggregate epidemic trajectories}
+\label{sec:hazard_placement_infected_dynamics}
+
+The aggregate infected-count trajectories provide a process-level view of how early imports alter the global SI curve.  Because $\gamma=0$, the infected count is cumulative and monotone, so earlier inter-community seeding shifts the growth curve to the left.  These plots are useful for visualizing the consequence of the timing bias, but they are not the primary evidence for the causal decomposition.  Pointwise medians do not correspond to a single stochastic realization, and heavily overlapping interquartile bands make differences difficult to attribute to one mechanism.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=0.78\linewidth]{Images/hazard_placement_ablation/infected_dynamics.png}
+    \caption{Pointwise median total infected counts with interquartile bands.  Since $\gamma=0$, infected counts are cumulative.  Distributional conclusions in this section are based primarily on paired arrival-time and RMST contrasts rather than on pointwise median curves.}
+    \label{fig:hazard_placement_infected_dynamics}
+\end{figure}
+
+For the final article, a less crowded visualization may be preferable: either separate panels comparing Full Micro with one approximation at a time, or curves of the paired infected-count difference.  The current figure is suitable as a supplementary diagnostic but is visually dense for the main text.
+
+\subsubsection{What the ablation explains}
+\label{sec:hazard_placement_explained}
+
+The experiment supports four substantive conclusions.
+
+First, the event-driven oracle architecture is statistically consistent with the full microscopic CTMC.  The large discrepancies observed in the approximate modes cannot be explained by an inherent failure of the experimental scheduler.
+
+Second, uniform placement is independently capable of producing a substantial early-arrival bias.  This mechanism remains present even when event times and transmitting community pairs are generated from exact active inter-community edges.  Therefore, a two-scale model that preserves only the destination community but discards the entry location can be inaccurate even if its macro event clock is exact.
+
+Third, boundary-aware placement does not by itself remove the bias associated with prevalence-driven transmission.  Aggregate community prevalence can become positive before export-relevant source endpoints are infected, and the macro layer may accumulate transmission risk during this structurally impossible interval.
+
+Fourth, the mechanisms are path-dependent and cannot be treated as additive constants.  An early or centrally placed import changes the subsequent local epidemic, which changes future boundary exposure and future macro hazards.  The effect of one approximation therefore changes the state distribution on which the other approximation acts.
+
+\subsubsection{What the ablation does not explain}
+\label{sec:hazard_placement_unexplained}
+
+The ablation does not identify a unique percentage of the total error attributable to hazard abstraction and placement.  Exact edge-conditioned placement is undefined for some aggregate events, the aggregate/boundary pathway contains more than one approximation, and the variants evolve on different endogenous trajectories.
+
+More importantly, the event-driven ablation does not explain the magnitude of the discrepancy observed in the production sparse-chain benchmark.  Under nearly the same baseline parameters, the production comparison reported terminal relative $W_1\approx0.426$ and $\Delta\mathrm{RMST}=-1228.9$, whereas the event-driven aggregate/uniform mode in Table~\ref{tab:hazard_placement_terminal} produced relative $W_1=0.075$ and $\Delta\mathrm{RMST}=-220.8$.  The discrepancy in the production implementation is therefore approximately five to six times larger than the structural error measured by the event-driven ablation.
+
+This difference is too large to dismiss as Monte Carlo variability.  It indicates an additional implementation-level or synchronization-level mechanism, or an unrecognized semantic difference between the benchmark pipelines.  The midpoint integration of macro hazard is an immediate candidate, but the current data do not prove that it is the sole cause.  Other possibilities include stale community summaries, different treatment of macro budgets, event insertion within synchronization intervals, repeated-import handling, source--destination orientation, or subtle differences in graph generation and initialization.  Until a direct paired audit is completed, the strong production result should be described as a full-implementation discrepancy rather than as evidence attributable only to prevalence aggregation or uniform placement.
+
+\subsubsection{Required next analyses}
+\label{sec:hazard_placement_next}
+
+\paragraph{1. Complete the direct hazard contrast already present in the data.}
+Compute a paired-bootstrap confidence interval for aggregate/uniform minus exact/uniform.  The current point estimate is $-59.6$ time units.  This is the first statistic needed to determine whether aggregate hazard contributes a detectable additional dynamic bias after uniform placement is fixed.
+
+\paragraph{2. Add exact-hazard/boundary-weighted placement.}
+This sixth experimental variant would complete a mathematically valid auxiliary $2\times2$ design over hazard strategy and approximate placement strategy.  It would allow hazard effects to be estimated under both uniform and boundary-weighted placement and would produce a formal interaction contrast for these two approximate placement rules.  Exact/exact would remain the oracle reference.
+
+\paragraph{3. Compare production and event-driven MicroMacro on identical inputs.}
+Run the production MicroMacro implementation as an additional mode on the same saved networks, inter-community edges, initial nodes, and initial states used by the ablation.  The key contrast is
+\[
+\text{production aggregate/uniform}
+-
+\text{event-driven aggregate/uniform}.
+\]
+This isolates the combined effect of synchronization and remaining implementation differences from the structural hazard/placement approximation.
+
+\paragraph{4. Perform a synchronization convergence study.}
+Repeat the production comparison for
+\[
+\tau_{\mathrm{micro}}\in\{1,0.5,0.25,0.1,0.05\}.
+\]
+If production results converge to the event-driven aggregate/uniform distribution as $\tau_{\mathrm{micro}}\to0$, the excess production bias can be attributed primarily to synchronization.  If a substantial discrepancy remains, the scheduler semantics or import handling must be audited separately.
+
+\paragraph{5. Conduct a common-state state-replay hazard audit.}
+Store Full Micro microscopic states at fixed observation times and evaluate both $a^{\star}_{ij}(x_t)$ and $\lambda_{ij}(x_t)$ on those same states without allowing either hazard to alter the trajectory.  This removes endogenous path divergence and permits direct estimation of
+\[
+\lambda_{ij}(x_t)-a^{\star}_{ij}(x_t),
+\qquad
+\left|\lambda_{ij}(x_t)-a^{\star}_{ij}(x_t)\right|,
+\qquad
+\lambda_{ij}(x_t)\mathbf{1}\{a^{\star}_{ij}(x_t)=0\}.
+\]
+The audit should stratify errors by community index, infected fraction, number of infected boundary nodes, and distance from the current infected set to the export boundary.
+
+\paragraph{6. Test the gateway-distance mechanism.}
+After the common-state audit, generate connected random communities with fixed $n$, edge count, mean degree, and interface width, while varying only the distance between entry and exit boundary sets.  Measure the time from import to first infection of an export node,
+\[
+T_{\mathrm{find}},
+\]
+and test the causal chain
+\[
+D_{\mathrm{entry,exit}}
+\longrightarrow
+T_{\mathrm{find}}
+\longrightarrow
+H^{\mathrm{prem}}
+\longrightarrow
+\Delta T_i
+\longrightarrow
+T_{\mathrm{last}}.
+\]
+This experiment would determine whether the placement effect is governed mainly by internal gateway geometry rather than by mean degree alone.
+
+\paragraph{7. Evaluate a corrected boundary-aware macro model.}
+A natural correction is to retain the infected fraction among export-relevant source nodes and the susceptible fraction among import-relevant destination nodes.  For example,
+\begin{equation}
+    \lambda^{B}_{ij}(t)
+    =
+    \beta W_{ij}
+    \bar{i}^{B}_{i\to j}(t)
+    \bar{s}^{B}_{j\leftarrow i}(t),
+    \label{eq:boundary_corrected_hazard}
+\end{equation}
+where the boundary fractions may be weighted by inter-community degree.  This model should be compared with the current aggregate hazard, the exact active-edge oracle, and Full Micro.  A successful correction would convert the present diagnostic result into a constructive modeling contribution.
+
+\paragraph{8. Extend beyond the SI baseline.}
+The current experiment has $\gamma=0$, so every connected community eventually becomes infected and all modes complete.  An SIR extension should evaluate invasion probability, terminal RMST, conditional arrival times, extinction, final size, peak prevalence, and time to peak.  Recovery can amplify the practical consequence of interface error because the exact process may die out before reaching a boundary while the aggregate process has already accumulated export hazard.
+
+\subsubsection{Implications for the interpretation of the sparse benchmark}
+\label{sec:hazard_placement_implications}
+
+The original sparse-chain benchmark remains valid as evidence that the production MicroMacro implementation propagates substantially too early under the tested conditions.  The ablation changes the interpretation of that result.  It shows that uniform placement is a confirmed causal contributor, that prevalence aggregation remains problematic even with boundary-aware targeting, and that these mechanisms alone account for a smaller discrepancy in an event-driven implementation than the one observed in production.
+
+Accordingly, the production benchmark should not yet be presented as a quantitative measurement of the intrinsic error of the prevalence formula alone.  It is a full-system diagnostic that combines structural approximation and numerical implementation.  The event-driven ablation is the appropriate evidence for structural claims, while the production comparison is evidence that the current integrated implementation contains additional error that must be localized.
+
+This distinction also affects the methodological conclusion.  The main problem is not simply that the macro hazard uses an average infected fraction.  The approximation acts through an interface consisting of at least three coupled elements: event intensity, recipient location, and temporal synchronization.  Accuracy requires these elements to be evaluated jointly, but causal diagnosis requires controlled contrasts that keep the remaining elements fixed.
+
+\subsubsection{Conclusion of the ablation study}
+\label{sec:hazard_placement_conclusion}
+
+The ablation provides strong evidence that import placement is a first-order source of early-arrival bias in sparse community chains.  Under exact active-edge hazards, uniform susceptible placement reduced RMST by $168.8$ time units, with a bootstrap interval excluding zero.  A prevalence-driven boundary-aware pathway also produced a statistically clear early shift, confirming that plausible gateway placement does not by itself correct a macro clock driven by aggregate community state.  The full event-driven aggregate/uniform approximation had a terminal relative Wasserstein discrepancy of $7.5\%$ and an RMST shift of $-220.8$.
+
+At the same time, the experiment does not support assigning unique percentages of the total error to hazard and placement.  Some contrasts combine multiple mechanisms, the exact aggregate/exact cell is undefined, and the approximations alter the future state distribution on which subsequent errors operate.  The existing exact/uniform and aggregate/uniform outputs nevertheless contain a valid direct hazard-strategy contrast with point estimate $-59.6$; its paired confidence interval should be calculated before finalizing the relative interpretation of the two mechanisms.
+
+Finally, the ablation reveals an unresolved discrepancy between the event-driven structural approximation and the production MicroMacro benchmark.  The latter exhibits a much larger error.  A paired production-versus-event-driven audit and a synchronization-step convergence study are therefore required before the sparse-chain result can be fully attributed.  The current defensible conclusion is that both rate abstraction and import placement matter, while the largest production discrepancy likely includes an additional synchronization or implementation component that remains to be identified.

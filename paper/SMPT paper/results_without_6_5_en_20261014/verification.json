@@ -1,0 +1,14 @@
+{
+  "scope": "First Ukrainian Results block, subsections6.1-6.4;6.5 excluded; all descriptor panels and caption retained.",
+  "pages": 21,
+  "compiler": "pdfLaTeX, standard5000000 memory limit",
+  "stable_latexmk_bibtex_build": true,
+  "exact_authorized_diff_verified": true,
+  "all_six_plot_bodies_and_numeric_files_unchanged": true,
+  "descriptor_panel_c_visually_verified": "main-SMPT.pdf page20",
+  "sections1_5_and_test_abstract_unchanged": true,
+  "uk_main_unchanged": true,
+  "zip_members": 166,
+  "no_simulations_or_statistics_recomputed": true,
+  "inherited_warnings": "CAS title117.0831pt/empty anchors and prose underfull remain; omitted appendices/Discussion keep pre-existing reserved references."
+}

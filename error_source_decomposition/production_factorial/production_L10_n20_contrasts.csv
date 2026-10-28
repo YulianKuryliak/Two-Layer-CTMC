@@ -1,0 +1,9 @@
+contrast,left,right,delta_RMST_left_minus_right,ci95_low,ci95_high
+cache_preserve_minus_current,cache_preserve,current,-99.72790917551713,-323.54204047987537,119.98227452984442
+independent_rng_minus_current,independent_rng,current,1119.4141813824886,817.2662413892253,1418.6528274157813
+remove_reimports_current,current_single_entry,current,1569.9289019844716,1123.7733454769582,1968.0889199987394
+remove_reimports_independent,independent_single_entry,independent_rng,426.3909730493864,147.92029336133285,714.1800133754401
+rng_by_reimport_interaction,(independent-current)_normal,(independent-current)_single_entry,1143.5379289350853,721.263029787853,1525.7846667487543
+current_minus_event_driven_A_U,current,event_driven_A_U,-858.2591383482631,-1246.1088809580579,-497.3165110692143
+cache_preserve_minus_event_driven_A_U,cache_preserve,event_driven_A_U,-957.9870475237801,-1374.0007295314547,-563.6546000976748
+independent_rng_minus_event_driven_A_U,independent_rng,event_driven_A_U,261.1550430342254,40.90042983978727,490.0315690384004

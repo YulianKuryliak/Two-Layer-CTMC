@@ -1,0 +1,13 @@
+--- before/main-SMPT.tex
++++ after/main-SMPT.tex
+@@ -1409,6 +1409,10 @@
+ 
+ In our tests, the smallest discrepancies occurred when infection spread rapidly within communities. In all 18 configurations with $\rho<0.25$, the normalised Wasserstein distance did not exceed 4.5\%. At the same time, close time distributions did not guarantee preservation of admissible transmission routes.
+ 
++\section*{Code availability}
++The source code of the two-scale simulator is available at
++\url{https://github.com/YulianKuryliak/Two-Layer-CTMC}.
++
+ \clearpage
+ 
+ \bibliographystyle{cas-model2-names}

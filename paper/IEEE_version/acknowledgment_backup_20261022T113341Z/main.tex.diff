@@ -1,0 +1,20 @@
+diff --git a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/main.tex b/paper/IEEE_version/main.tex
+index 306cd9d..75d9d3d 100755
+--- a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/main.tex
++++ b/paper/IEEE_version/main.tex
+@@ -1407,11 +1407,10 @@ The authors declare that they have no known competing financial interests or
+ personal relationships that could have appeared to influence the work reported
+ in this article.
+ 
+-\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+-During the preparation of this manuscript, the authors used OpenAI GPT and
+-Anthropic Claude models to assist with drafting, translation, language editing,
+-organisation of the text and coding. The authors reviewed and edited the content as needed
+-and take full responsibility for the content of the published article.
++\section*{Acknowledgment}
++During the preparation of this manuscript, the first author used OpenAI ChatGPT and Codex, and Anthropic Claude to assist with drafting, language editing, and structuring the manuscript across Sections I–VIII and Appendices A–C. These tools were also used interactively to discuss and refine mathematical arguments, support experimental design and statistical analysis, and assist with the development of simulation and analysis code.
++
++The authors directed the research, made the final scientific and methodological decisions, and reviewed and approved the resulting manuscript.
+ 
+ \bibliographystyle{IEEEtran}
+ % Balance the final columns with the native IEEE reference trigger.

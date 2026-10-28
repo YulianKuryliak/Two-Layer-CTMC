@@ -1,0 +1,21 @@
+\begin{table}[!htbp]
+\centering
+\caption{Verification of the reference simulator on the first community of the clique chains ($\beta=0.003$, 400 runs per cell): mean bridge-activation time and, for $k=1$, mean wait after activation (exact value $1/\beta=333.3$). Values are mean $\pm$ standard error.}
+\label{tab:verification}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $k$ & Exact $\mathbb{E}[T_B]$ & \Full{} $T_B$ & \Full{} wait\\
+\midrule
+50 & 1 & 29.86 & $29.72\pm0.71$ & $354.0\pm16.9$\\
+100 & 1 & 17.26 & $17.05\pm0.38$ & $326.5\pm17.0$\\
+250 & 1 & 8.13 & $7.84\pm0.15$ & $347.4\pm16.6$\\
+1000 & 1 & 2.49 & $2.51\pm0.04$ & $353.8\pm17.9$\\
+50 & 5 & 15.97 & $15.96\pm0.55$ & --\\
+100 & 5 & 10.31 & $9.64\pm0.29$ & --\\
+250 & 5 & 5.35 & $5.16\pm0.12$ & --\\
+1000 & 5 & 1.80 & $1.77\pm0.03$ & --\\
+\bottomrule
+\end{tabular}
+\end{table}

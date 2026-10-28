@@ -1,0 +1,40 @@
+--- before/main-SMPT.tex
++++ after/main-SMPT.tex
+@@ -911,12 +911,36 @@
+   \node[anchor=south, align=center, font=\scriptsize] at (axis cs:1,.14) {0/10000\\(0.00\%)};
+   \node[anchor=south, align=center, font=\scriptsize] at (axis cs:2,1.18) {98/10000\\(0.98\%)};
+ \end{groupplot}
++% Zoom of the original signed-delay observations; vertical values are percent.
++\begin{axis}[
++  paper axis, at={(group c2r1.south east)}, anchor=south east,
++  xshift=-.12cm, yshift=.40cm,
++  width=.105\linewidth, height=1.35cm, scale only axis,
++  axis background/.style={fill=white},
++  font=\tiny, tick label style={font=\tiny},
++  xmin=-22, xmax=3, ymin=0, ymax=2.5,
++  xtick={-20,-10,0}, ytick={0,1,2},
++  scaled ticks=false, unbounded coords=discard,
++]
++  \path[fill=black!8] (axis cs:-22,0) rectangle (axis cs:0,2.5);
++  \node[anchor=north west, font=\tiny, inner sep=1pt] at (rel axis cs:.03,.97) {CDF (\%)};
++  \addplot[black!65, no marks, line width=.25pt]
++    coordinates {(0,0) (0,2.5)};
++  \addplot[FullBlue, const plot, no marks, line width=.6pt,
++    restrict x to domain=-22:3]
++    table[x=x,y expr=100*\thisrow{y}]
++    {figures_pgfplots/leaf_clique_signed_delay_full.dat};
++  \addplot[ScaleOrange, const plot, no marks, line width=.6pt,
++    dash pattern=on 2pt off 1.5pt, restrict x to domain=-22:3]
++    table[x=x,y expr=100*\thisrow{y}]
++    {figures_pgfplots/leaf_clique_signed_delay_twoscale.dat};
++\end{axis}
+ \end{tikzpicture}
+ % END EDITABLE FIGURE clique_leaf
+ \caption{%
+ First export of infection in the clique--leaf network ($n=100$, $k=2$, $\beta=0.005$, 10\,000 runs of each model).
+ (a) Empirical distribution functions of the export time.
+-(b) Distributions of the difference $T_{\mathrm{export}}-T_B$; negative values correspond to export before either real bridge node becomes infected.
++(b) Distributions of the difference $T_{\mathrm{export}}-T_B$; negative values correspond to export before either real bridge node becomes infected. The inset magnifies the region near zero; its CDF values are shown as percentages.
+ (c) Fraction of runs with this violation of the transmission order and 95\% confidence intervals.
+ }
+ \label{fig:clique_leaf}

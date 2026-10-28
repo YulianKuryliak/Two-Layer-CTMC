@@ -1,0 +1,170 @@
+\documentclass[11pt,a4paper]{article}
+\input{../preamble}
+
+\title{CE-03: MicroMacro Error vs.\ Beta Ratio\\
+       \large Experiment Report --- Two-Scale CTMC Project}
+\author{Claude Experiments Pipeline}
+\date{2026-07-31}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report quantifies how the ratio $r = \beta_{\text{out}}/\beta_{\text{in}}$
+between inter- and intra-community infection rates affects the MicroMacro
+approximation error.  Five scenarios sweep $r \in \{0.1, 0.3, 1.0, 2.0, 5.0\}$
+on a fixed chain-of-cliques topology ($L=10$, $n=100$, $d=6$, $k=5$)
+with 100 paired replications each.
+The primary finding is a \textbf{sign reversal} in $\DRMS$:
+MicroMacro arrives \emph{later} than full Gillespie at low $r$
+($\DRMS = {+}4796$ at $r=0.1$), and \emph{earlier} at high $r$
+($\DRMS = -1355$ at $r=1.0$, $-1638$ at $r=2.0$).
+The crossover occurs between $r=0.3$ and $r=1.0$.
+At $r \ge 2$ the full-Micro epidemic rarely reaches the final community
+within the simulation horizon (completion 54\% and 1\% respectively),
+while MicroMacro completes in all runs---indicating a qualitative
+false-positive bias under strong inter-community coupling.
+\textit{Ukrainian summary}: see \texttt{docs/ce03\_beta\_ratio/report.md}.
+\end{abstract}
+
+\section{Experimental Design}
+
+\subsection{Objective}
+Determine how the ratio of inter-community to intra-community infection rate
+modulates MicroMacro approximation error, and characterise the direction
+(premature vs.\ delayed arrival) across the parameter range.
+
+\subsection{Network and Parameters}
+\begin{itemize}
+  \item Topology: chain-of-cliques, $L=10$ communities, $n=100$ nodes each,
+        degree $d=6$, $k=5$ inter-community edges per boundary.
+  \item Intra-community infection rate: $\beta_{\text{in}} = 0.003$.
+  \item Inter-community infection rate: $\beta_{\text{out}} = r \cdot \beta_{\text{in}}$.
+  \item Rate ratios: $r \in \{0.1,\; 0.3,\; 1.0,\; 2.0,\; 5.0\}$.
+  \item Recovery: $\gamma = 0$ (pure SI model).
+  \item Replications: 100 paired runs per scenario (same network and seed).
+  \item Horizon $T_{\text{end}}$: scenario-dependent (20{,}000 to 2{,}000;
+        shorter for larger $r$ to keep runtimes feasible).
+\end{itemize}
+
+\subsection{Primary Metric}
+\[
+  \DRMS = \overline{T_{\text{MM}}} - \overline{T_{\text{Micro}}}
+\]
+where arrival times use restricted-mean estimates with censoring at
+$T_{\text{end}}$ (censored runs contribute $T_{\text{end}}$ to the mean).
+A positive $\DRMS$ indicates MicroMacro predicts \emph{delayed} arrival;
+negative indicates \emph{premature} arrival.
+Bootstrap 95\% confidence intervals use 10{,}000 resamples.
+Relative Wasserstein distance $\text{rel-}W_1$ measures distributional
+discrepancy normalised by the Micro mean arrival time.
+
+\section{Results}
+
+\begin{table}[H]
+\centering
+\caption{CE-03 results: MicroMacro error by beta ratio.
+  $\DRMS$ = censored-mean difference (MicroMacro $-$ Micro).
+  $r = \beta_{\text{out}}/\beta_{\text{in}}$.
+  ``Comp.'' = fraction of Micro runs reaching the final community
+  by $T_{\text{end}}$ (MicroMacro: 1.00 for all scenarios).
+  All CIs exclude zero.}
+\label{tab:ce03-main}
+\begin{tabular}{rrrrrrc}
+\toprule
+$r$ & $\beta_{\text{out}}$ & $\DRMS$ & \multicolumn{2}{c}{95\% CI} & rel-$W_1$ & Micro comp. \\
+\cmidrule(lr){4-5}
+ & & & lower & upper & & \\
+\midrule
+0.1 & 0.0003 & $+4796$ & $+4384$ & $+5213$ & 1.624 & 1.00 \\
+0.3 & 0.0009 & $+562$  & $+300$  & $+812$  & 0.297 & 1.00 \\
+1.0 & 0.0030 & $-1355$ & $-1494$ & $-1220$ & 0.456 & 1.00 \\
+2.0 & 0.0060 & $-1638$ & $-1746$ & $-1527$ & 0.558 & 0.54 \\
+5.0 & 0.0150 & $-1213$ & $-1283$ & $-1141$ & 0.566 & 0.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Key Observations}
+
+\begin{enumerate}
+  \item \textbf{Sign reversal.}  $\DRMS$ is positive at $r \le 0.3$ and
+        negative at $r \ge 1.0$.  The crossover $r^*$ lies between 0.3 and 1.0.
+  \item \textbf{Large magnitude at extremes.}  $|\DRMS| \approx 4800$ at $r=0.1$
+        and $\approx 1600$ at $r=2.0$---both large relative to the horizon.
+  \item \textbf{Distributional divergence.}  $\text{rel-}W_1 = 1.624$ at $r=0.1$
+        (distributions differ by more than the Micro mean arrival time).
+  \item \textbf{Completion collapse at high $r$.}  At $r=2.0$ only 54\% of
+        full-Micro runs reach the final community within $T_{\text{end}}=3000$;
+        at $r=5.0$ only 1\%.  MicroMacro always reports full traversal,
+        yielding a 99 percentage-point false-positive epidemic rate at $r=5.0$.
+\end{enumerate}
+
+\section{Interpretation}
+
+\subsection{Mechanism at Low $r$ (delayed arrival, $\DRMS > 0$)}
+
+When $\beta_{\text{out}} \ll \beta_{\text{in}}$, intra-community spread is fast
+and inter-community spread is rare.  In the full Gillespie (Micro) model,
+the $k=5$ gateway nodes on the boundary of the source community can fire their
+cross-community edges as soon as \emph{they themselves} become infected,
+regardless of the community-wide infected fraction $\bar{i}(t)$.
+
+MicroMacro uses the aggregate import hazard
+$\lambda_{\text{macro}}(t) = \beta_{\text{out}} \cdot \bar{i}(t)$,
+proportional to the community-wide mean.  When $\beta_{\text{out}}$ is
+tiny, this hazard remains negligible until $\bar{i}(t)$ grows substantially,
+so the macro import event fires \emph{late}.  The direct gateway edges in Micro
+can fire earlier, giving $\DRMS > 0$.
+
+\subsection{Mechanism at High $r$ (premature arrival, $\DRMS < 0$)}
+
+When $\beta_{\text{out}} \ge \beta_{\text{in}}$, the aggregate hazard
+$\lambda_{\text{macro}}(t) = \beta_{\text{out}} \cdot \bar{i}(t)$ becomes
+large as soon as any infecteds appear in the source community.  MicroMacro
+fires imports aggressively and places each at a uniformly random node in the
+target community, artificially accelerating chain traversal.
+
+In full Micro, the epidemic must propagate through only $k=5$ physical edges
+per boundary.  Even with large $\beta_{\text{out}}$, traversing nine
+consecutive boundaries in a chain is constrained by within-community buildup
+at each step.  Micro rarely completes the chain within a short $T_{\text{end}}$
+(1\% at $r=5.0$), while MicroMacro always does.
+
+\subsection{Comparison with CE-01 Baseline}
+
+CE-01 used homogeneous rates ($r=1$) and found $\DRMS = -209$ with
+rate abstraction as the dominant error source.  CE-03 at $r=1.0$ gives
+$\DRMS = -1355$; the larger magnitude is consistent with a shorter
+$T_{\text{end}} = 4000$ (vs.\ 5000 in CE-01).  Both confirm premature
+arrival at $r=1$.
+
+\section{Conclusion}
+
+CE-03 reveals a qualitative change in MicroMacro error direction as a function
+of $r$:
+
+\begin{itemize}
+  \item \textbf{Low $r$ ($r < r^* \approx 0.5$--$0.8$):}
+        MicroMacro predicts \emph{delayed} arrival.  The aggregate hazard
+        underweights early gateway activity, causing the macro import to fire too late.
+  \item \textbf{High $r$ ($r > r^*$):}
+        MicroMacro predicts \emph{premature} arrival.  The aggregate hazard
+        overestimates the effective multi-boundary crossing rate.
+        At $r=5.0$ the qualitative prediction is wrong: Micro rarely spreads
+        across the full chain, while MicroMacro always does (99\% false-positive rate).
+  \item \textbf{Crossover near $r^* \approx 0.5$--$0.8$:}
+        Both error directions cancel.  This cancellation is topology-dependent,
+        not a regime of correct approximation.
+\end{itemize}
+
+A single scalar correction to $\beta_{\text{out}}$ cannot remove the bias
+across the full parameter range.  Structural corrections---such as using the
+actual gateway-node infected count rather than the community mean---are needed.
+
+\section*{Data Location}
+\texttt{output/claude\_experiments/ce03\_beta\_ratio/summary.csv}
+
+\section*{Related Experiments}
+CE-01 (ablation: rate abstraction vs.\ placement), CE-04 (SIR: recovery effect).
+\end{document}

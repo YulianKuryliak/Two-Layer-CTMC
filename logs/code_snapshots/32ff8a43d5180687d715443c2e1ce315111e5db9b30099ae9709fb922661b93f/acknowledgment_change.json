@@ -1,0 +1,7 @@
+{
+  "backup": "acknowledgment_backup_20261022T113341Z",
+  "before_main_sha256": "3889d56dfd0168f337d7b77c7d844aa5bc5ef579793a826d70deda0aaa911ede",
+  "old": "\\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}\nDuring the preparation of this manuscript, the authors used OpenAI GPT and\nAnthropic Claude models to assist with drafting, translation, language editing,\norganisation of the text and coding. The authors reviewed and edited the content as needed\nand take full responsibility for the content of the published article.",
+  "new": "\\section*{Acknowledgment}\nDuring the preparation of this manuscript, the first author used OpenAI ChatGPT and Codex, and Anthropic Claude to assist with drafting, language editing, and structuring the manuscript across Sections I–VIII and Appendices A–C. These tools were also used interactively to discuss and refine mathematical arguments, support experimental design and statistical analysis, and assist with the development of simulation and analysis code.\n\nThe authors directed the research, made the final scientific and methodological decisions, and reviewed and approved the resulting manuscript.",
+  "authorization": "User supplied exact final wording, including directed rather than led; replace the separate AI declaration."
+}

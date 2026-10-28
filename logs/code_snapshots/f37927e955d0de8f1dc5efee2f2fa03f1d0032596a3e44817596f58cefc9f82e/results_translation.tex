@@ -1,0 +1,220 @@
+\section{Results}
+\label{sec:results}
+
+In this section, we compare \Full{} and \TS{} in terms of the timing of infection spread and the admissibility of inter-community transmission. We use the experimental series described in Section~\ref{sec:design}. We first consider the first export of infection to determine the consequences of losing information about bridge nodes. We then examine spread along a chain of communities, the effects of network characteristics, and the relationship between the discrepancies and the ratio of time scales.
+
+The chain comparisons cover 48 configurations, with 400 paired \Full{} and \TS{} runs in each, for a total of 19\,200 pairs.
+
+
+\subsection{Temporal accuracy and admissibility of inter-community transmission}
+\label{sec:res_clique}
+
+The first experiment tests whether \TS{} can reproduce the infection export time accurately without retaining information about the specific bridge nodes. We consider a clique--leaf network, in which internal spread is rapid.
+
+In this case, the export-time distributions were close (Figure~\ref{fig:clique_leaf}). The mean time to infection of the leaf was 110.18 in \Full{} and 112.62 in \TS{}, and the normalised Wasserstein distance was $\eW=2.95\%$. The paired difference in means was $+2.43$, with a 95\% bootstrap interval of $[-0.35,5.27]$, which contains zero. Thus, this experiment did not detect a significant systematic shift in the mean export time.
+
+The similarity of the time distributions in this experiment is consistent with rapid and uniform infection spread within the clique. Because of its symmetric structure, infection spreads quickly among the nodes regardless of their positions, including the bridge nodes.
+
+The expected time to infection of the first bridge is only $\mathbb{E}[T_B]=8.36$, whereas the mean export time exceeds 110. Thus, the actual and aggregate transmission rates differ for a relatively short period compared with the overall waiting time for export. This is consistent with the small discrepancy observed between the models.
+
+However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can therefore reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+First export of infection in the clique--leaf network ($n=100$, $k=2$, $\beta=0.005$, 10\,000 runs of each model).
+(a) Empirical distribution functions of the export time.
+(b) Distributions of the difference $T_{\mathrm{export}}-T_B$; negative values correspond to export before either real bridge node becomes infected.
+(c) Fraction of runs with this violation of the transmission order and 95\% confidence intervals.
+}
+\label{fig:clique_leaf}
+\end{figure}
+
+To determine how this effect depends on internal structure, we replace the clique with connected random graphs having different average shortest path lengths (ASPL). In this series, graph density also decreases as ASPL increases.
+
+In dense networks with short paths, premature exports remained rare: their fraction did not exceed 0.5\% for ASPL $\leq 1.75$. It increased with ASPL and, at ASPL 6, reached 32.5\% for both values of $k$ examined (Figure~\ref{fig:source_sweep}).
+
+The timing of export also changed. At ASPL 6, the mean export time in \TS{} was 8.3\% lower than in \Full{} for $k=1$ and 6.2\% lower for $k=5$. The corresponding 95\% bootstrap intervals were $[-13.1,-3.5]\%$ and $[-10.3,-2.3]\%$. A positive shift in the mean export time was not observed in any configuration in this series.
+
+The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+Effect of the source's internal structure on the first export to the leaf ($n=1000$, $\beta=0.003$, $k=1$ in the top row and $k=5$ in the bottom row; 400 paired runs for each configuration).
+Left: mean export time.
+Centre: normalised Wasserstein distance $\eW$ between the export-time distributions.
+Right: fraction of \TS{} exports occurring before infection of the first real bridge; such events are impossible in \Full{}.
+Error bars show 95\% block-bootstrap intervals.
+}
+\label{fig:source_sweep}
+\end{figure}
+
+Sampling variability must be considered when interpreting the Wasserstein distance. For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}). Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.
+
+Unlike the temporal distance, every premature export directly indicates a violation of the admissible transmission order. For example, at ASPL 4 and $k=1$, such violations occurred in 19.75\% of runs, although the time distributions remained relatively close.
+
+The first export therefore demonstrates two distinct consequences of aggregation. Even when the transmission times are close, the model can violate the physical constraints imposed by inter-community contacts. When internal spread becomes slower and less uniform, this loss of information can also produce a noticeable shift in the export time.
+
+
+\subsection{Propagation of discrepancies along a chain of communities}
+\label{sec:res_chain_random}
+
+A single export does not show how differences between the models behave after several inter-community crossings. We therefore examine infection spread along a chain of ten communities.
+
+We first consider a chain of cliques, in which internal infection spreads much faster than inter-community transmission. Even after nine consecutive crossings, the time distributions remained close (Figure~\ref{fig:chain_cliques}).
+
+The median arrival time at the last community was 2785 in \Full{} and 2877 in \TS{}. The normalised Wasserstein distance was 3.34\% and did not exceed the permutation threshold of 5.1\% ($p=0.32$). Thus, at this sample size, the test did not detect a statistically significant difference between the distributions.
+
+For a clique with $n$ nodes and $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}$, the ratio of the mean time to infect the entire clique to the mean transmission time through one active inter-community edge is $2H_{n-1}/n$, which is only about $1.5\%$ for $n=1000$.
+
+Internal spread is therefore much faster than inter-community transmission, which explains the small discrepancies observed between the models. In addition, information about which particular nodes are bridges has relatively little effect on the crossing time.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+Infection spread along a chain of ten cliques with 1000 nodes each ($k=1$, $\beta=0.003$, 400 runs of each model).
+Left: median number of infected nodes over time and interquartile bands, which describe variability among runs rather than confidence intervals.
+Right: empirical distribution functions of the arrival time at the last community, $T_9$. Four \Full{} values and two \TS{} values lie outside the displayed time range; all are included in the analysis.
+}
+\label{fig:chain_cliques}
+\end{figure}
+
+A different pattern appears in chains of random communities with longer internal paths. \TS{} systematically predicts earlier infection arrival, but the size of this lead behaves differently in absolute and relative terms (Figure~\ref{fig:chain_heatmap}).
+
+At ASPL 6 and $k=1$, the median first-crossing time in \TS{} was 7.1\% lower, whereas the time to reach the last community was 13.8\% lower. For $k=5$, the corresponding values were 8.7\% and 10.1\%.
+
+However, the relative discrepancy did not increase in proportion to the number of inter-community crossings. After the initial changes, it mostly stabilised or changed slowly. For example, at ASPL 5 and $k=1$, the median lead was 9.6\% for the first crossing and 8.7\% for arrival at the last community.
+
+At the same time, the absolute difference between the median arrival times in this configuration increased from approximately 107 to 896 time units.
+
+Successive inter-community crossings can therefore accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+Change in discrepancies along a chain of ten communities with $n=1000$ nodes each.
+Rows correspond to target ASPL values, and columns to the community reached ($c=1,\ldots,9$).
+Results for $k=1$ are shown above and those for $k=5$ below.
+Left: relative shift $b_c$ in the median arrival time; negative values mean that \TS{} predicts earlier arrival.
+Right: normalised Wasserstein distance $\eW$.
+Each configuration uses 400 paired runs. Uncertainty is not shown; results for terminal arrivals are presented in Figure~\ref{fig:accuracy_map}.
+}
+\label{fig:chain_heatmap}
+\end{figure}
+
+
+\subsection{Effects of community size and number of inter-community edges}
+\label{sec:res_size}
+
+The preceding experiments showed that internal structure affects the discrepancies between the models. However, the same average shortest path length does not necessarily imply the same accuracy of \TS{}.
+
+To examine the effects of other network characteristics, we compare the arrival time at the last community, $T_9$, for different community sizes $n$, ASPL values, and numbers of inter-community edges $k$ (Figure~\ref{fig:accuracy_map}).
+
+In configurations with short internal paths ($\mathrm{ASPL}\leq2$), the discrepancies were mostly small. For 14 of these 16 configurations, the permutation test did not detect a statistically significant difference between the arrival-time distributions.
+
+At $\mathrm{ASPL}\geq3$, the discrepancies became more pronounced. In 31 of the 32 configurations, the permutation test detected a difference between the distributions ($p<0.01$). These results were obtained without correction for multiple comparisons.
+
+The magnitude of the discrepancy also depended strongly on community size. At fixed ASPL $\geq3$, the normalised Wasserstein distance decreased monotonically with increasing $n$ for both values of $k$.
+
+For example, at ASPL 6 and $k=1$, it was 40.9\% for $n=50$ but only 13.6\% for $n=1000$. For $k=5$, the corresponding values were 32.6\% and 10.8\%.
+
+Increasing the number of inter-community edges from one to five also generally reduced the discrepancies in sparse communities, although it did not remove them completely.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+Discrepancies in the terminal arrival time $T_9$ for 48 configurations of ten-community chains.
+The left panels show the relative median shift $b_9$ (\%), and the right panels show the normalised Wasserstein distance $\eW$ (\%). The top row corresponds to $k=1$ and the bottom row to $k=5$.
+Within each panel, cell rows correspond to target ASPL values and columns to community size $n$.
+The colour and number in a cell represent the same metric; the colour scales are shared between the two values of $k$ separately for each metric.
+A negative median shift means earlier arrival in \TS{}.
+Hatching in the right panels only marks configurations for which the permutation test for the Wasserstein distance did not detect a difference ($p\geq0.05$).
+The tests were performed without correction for multiple comparisons.
+Each configuration uses 400 paired runs.
+}
+\label{fig:accuracy_map}
+\end{figure}
+
+The fraction of \TS{} inter-community crossings that occurred before infection of the first real bridge in the source also depended strongly on structure: it ranged from 0.1--2.3\% at ASPL 1 to 31--51\% at ASPL 6.
+
+ASPL is therefore a useful characteristic for assessing the accuracy of \TS{}: discrepancies between the models generally increase as internal paths become longer. However, at the same ASPL, their magnitude can differ substantially with community size and the number of inter-community edges. ASPL alone is therefore insufficient for assessing accuracy, which motivates a characteristic that also accounts for the timing of internal spread.
+
+
+\subsection{Relationship between discrepancies and the ratio of time scales}
+\label{sec:res_descriptor}
+
+The results suggest that discrepancies between the models may depend on how quickly infection spreads within a community relative to inter-community transmission.
+
+To examine this relationship, we use the measure $\rho=\beta_{\mathrm{out}}\sigma_T$ defined in Section 5.3. It describes the spread of internal infection times relative to the mean transmission time through one inter-community channel.
+
+Figure~\ref{fig:descriptor}(a,b) shows the normalised Wasserstein distance $\eW$ and median shift $b_9$ as functions of $\rho$ for all 48 chain configurations.
+
+The measure $\rho$ had a stronger rank association with $\eW$ than target ASPL. The Spearman correlation between $\rho$ and $\eW$ was 0.91 across all configurations and 0.98 for configurations with $\mathrm{ASPL}\geq3$. The corresponding values for ASPL were 0.82 and 0.66.
+
+For $\rho<0.25$, the distance $\eW$ did not exceed 4.5\% in any of the 18 configurations. For 15 of them, the permutation test did not detect a difference between the distributions. By contrast, for $\rho\geq0.25$, the observed distance exceeded the permutation threshold in all 30 configurations.
+
+For $\rho\geq0.3$, the results were approximately described by the empirical relationship
+\begin{equation}
+\eW \approx 15\rho\,\%.
+\end{equation}
+In this range, we also observed $b_9\approx-\eW$: the distance between the distributions mainly corresponded to a shift towards earlier arrival times in \TS{}.
+
+The results therefore support an explanation based on the ratio of time scales. When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
+
+However, $\rho$ is not a universal error formula. The thresholds and empirical approximation reported here were obtained from the same configurations on which the discrepancies were evaluated. Their ability to predict results for independent networks was not tested.
+
+\begin{figure}[tbp]
+\centering
+% Editable plot body retained separately from the Ukrainian main.
+\caption{%
+Relationship between discrepancies in \Full{} and \TS{} and the time-scale ratio $\rho=\beta_{\mathrm{out}}\sigma_T$ for 48 chain configurations.
+(a) Normalised Wasserstein distance $\eW$ for the terminal arrival time $T_9$.
+(b) Relative shift in its median, $b_9$.
+Colours denote community size; filled circles correspond to $k=1$, and open triangles to $k=5$.
+Lines connect configurations with ASPL from 1 to 6 at fixed $n$ and $k$. Grey marks in (a) show the 95th percentile of the permutation distribution of the distance for the corresponding configuration.
+(c) Comparison of relative shifts in the mean duration of the first crossing and crossings 2--9 for $\mathrm{ASPL}\geq3$.
+Error bars show 95\% block-bootstrap intervals for the shift in the first crossing.
+}
+\label{fig:descriptor}
+\end{figure}
+
+
+\subsection{Differences between the first and subsequent inter-community crossings}
+
+The preceding results showed that the relative discrepancy in arrival time often stabilises along the chain. This does not imply, however, that the first and subsequent crossings have the same shift.
+
+The first crossing starts from the initial community, which has received no imported infections. Its timing is therefore affected mainly by the representation of the source interface and the numerical determination of the export time.
+
+Subsequent crossings may also reflect additional consequences of aggregate modelling: random placement of imported infections and the possibility of repeated imports through interfaces whose physical channels can no longer cause new infections.
+
+To test whether the shifts at these stages differ, we compare the relative shifts in the mean durations of the first crossing, $T_1$, and the subsequent crossings, $T_9-T_1$ (Figure~\ref{fig:descriptor}(c)).
+
+For $k=1$, the subsequent crossings had a stronger negative shift than the first in 15 of the 16 configurations with $\mathrm{ASPL}\geq3$. In nine of them, the block-bootstrap confidence intervals for the difference between the shifts did not contain zero.
+
+For example, at $n=50$ and ASPL 6, the shift in the mean duration of the first crossing was $-27.5\%$, whereas the shift for the subsequent crossings was $-42.5\%$.
+
+For $k=5$, this difference was less pronounced: a stronger negative shift in the subsequent crossings was observed in 14 of the 16 configurations, and the confidence interval for the difference did not contain zero in four of them. The tests were performed without correction for multiple comparisons.
+
+This relationship is consistent with the hypothesis that narrow interfaces are more sensitive to surplus imports. With one physical edge, only one infection of its target node is possible, whereas the aggregate rate can produce further imports. This constraint is less restrictive when more inter-community edges are present.
+
+At the same time, the stronger shift in subsequent crossings does not contradict the slow increase or stabilisation of the relative discrepancy in the cumulative arrival time.
+
+For the mean times,
+\begin{equation}
+\mathbb{E}[T_9]
+=
+\mathbb{E}[T_1]
++
+\mathbb{E}[T_9-T_1].
+\end{equation}
+The relative shift in the mean of $T_9$ is therefore a weighted mean of the relative shifts in these two components, with weights determined by their mean durations in \Full{}.
+
+The absolute lead can therefore accumulate as propagation time increases, while the relative discrepancy approaches the characteristic shift of the subsequent crossings. This explanation applies directly to mean times; it does not establish the behaviour of the medians in Figure~\ref{fig:chain_heatmap} mathematically.
+
+Overall, the results indicate differences between the first and subsequent inter-community crossings. However, comparing their durations alone cannot separately identify the contributions of random import placement, surplus infections, and numerical synchronisation. Additional control experiments that isolate each of these mechanisms are required for this purpose.

@@ -1,0 +1,28 @@
+{
+  "status": "source_only_review_revision",
+  "backup": "appendix_revision_20261023T194123Z",
+  "author_macro": "yulian",
+  "author_color": "red",
+  "two_argument_review_convention": true,
+  "exact_authorized_replacements_only": true,
+  "appendix_A_unchanged": true,
+  "active_appendices": [
+    "A"
+  ],
+  "appendices_B_C_hidden_as_tracked_deletions": true,
+  "active_references_to_removed_appendices": 0,
+  "sampling_explanation_already_in_methods": true,
+  "redundant_sampling_sentence_added": false,
+  "horizon_details_retained_in_methods": true,
+  "labels": 48,
+  "all_internal_refs_resolved": true,
+  "unique_active_citation_keys": 32,
+  "bibliography_checked": false,
+  "bibliography_note": "User explicitly says references-IEEE-michael.bib exists on Overleaf and asks to leave bibliography alone. No bibliography files or commands changed.",
+  "overleaf_sources_match": true,
+  "main_tex_sha256": "795dad159e21508cd4f17190ff179368223f0d30bd0e41750080ff89e9fcfa9f",
+  "appendices_tex_sha256": "66e9d22bf8105790626bc47e4d06c5ce9f4768c94af7bf09ef8a20117a7816d2",
+  "compiled_after_revision": false,
+  "pdf_zip_status": "Existing PDFs/ZIPs unchanged; source files are current.",
+  "simulations_run": false
+}

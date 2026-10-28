@@ -1,0 +1,47 @@
+{
+  "attribution": "Source: Insee; population 2022 and urban-unit membership in COG geography 2025.",
+  "downloaded": [
+    {
+      "path": "raw/population_2022_geography2025.zip",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/8581696/base-cc-evol-struct-pop-2022_csv.zip",
+      "bytes": 48961124,
+      "sha256": "cb4b918862289527232ad79fb3b712d5f4635c6de5bae762e8d22a132717ed83",
+      "validated_utc": "2026-10-16T13:48:45.101482+00:00"
+    },
+    {
+      "path": "raw/urban_units_2025.zip",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/4802589/UU2020_au_01-01-2025.zip",
+      "bytes": 1075071,
+      "sha256": "bc43d62e67c5dc6ae25a20fc3bd440dd37408ef8313b543aa1e9cb366be44840",
+      "validated_utc": "2026-10-16T13:48:45.185409+00:00"
+    }
+  ],
+  "reused": [
+    {
+      "path": "paper/national_network_preparation/prepared/F_domestic.npz",
+      "sha256": "50174bb2a311ee3877916ff0edeec84df371f4042a9a869286425220074d17fc"
+    },
+    {
+      "path": "paper/national_network_preparation/prepared/nodes.csv",
+      "sha256": "0014c560223d687a0cc51cbd0ac457b04a164bf3a4e2d9e0b71a3546e05efe5a"
+    },
+    {
+      "path": "paper/national_network_preparation/prepared/manifest.json",
+      "sha256": "4e377762dff3714aeaeb80ab98d1ac49268790e3e25f36635a0e663e8a5b4185"
+    }
+  ],
+  "main_paper": {
+    "path": "paper/SMPT paper/main-SMPT.tex",
+    "sha256": "e51f48673fb28bdac8784ea3728d4398ced30f9c3b0859d62eef796eaea268f1"
+  },
+  "pages": {
+    "population": "https://www.insee.fr/fr/statistiques/8581696",
+    "urban_units": "https://www.insee.fr/fr/information/4802589",
+    "households": "https://www.insee.fr/fr/statistiques/8647008",
+    "commuting": "https://www.insee.fr/fr/statistiques/8582949",
+    "contact_survey": "https://doi.org/10.1371/journal.pone.0133203"
+  },
+  "license": "INSEE Open Licence 2.0 unless otherwise stated; https://www.insee.fr/fr/information/2008466",
+  "downloaded_vs_catalogued": "Only population and urban-unit archives downloaded here; commuting reused. Household/contact-survey sources are design references, not yet fitted inputs.",
+  "note": "A partial population download timed out before this resumable fetcher; unvalidated bytes were preserved and resumed. No synthetic persons or epidemic trajectories generated."
+}

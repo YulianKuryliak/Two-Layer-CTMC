@@ -1,0 +1,67 @@
+% English translation of the current Ukrainian main, up to but excluding single export.
+\section{What the two-scale method actually simulates}
+\label{sec:analysis}
+
+\subsection{Exactness for a network with uniform inter-community connections}
+\label{sec:surrogate}
+
+If the time of each event is determined exactly by~\eqref{eq:hazard_integral}, the two-scale method itself defines a continuous-time Markov chain. It has the same local infection and removal rules as full-network Gillespie. The difference concerns contacts between communities. Instead of the real edges, the method effectively uses weak connections between every pair of nodes in two connected communities.
+
+We construct a surrogate network with uniform inter-community connections, $\tilde G$: internal contacts and their rates are unchanged, while every node in one community is connected to every node in the other for each connected pair of communities. The total weight of the inter-community contacts is distributed equally among all these node pairs. The following proposition shows that the two-scale rules give the same infection rates as full-network Gillespie on $\tilde G$.
+
+\begin{proposition}[Exactness for a network with uniform inter-community connections]
+\label{prop:surrogate}
+Let $\tilde G$ have the same internal contacts and rates as $G$. For each community pair $i\neq j$, replace its real inter-community channels $E_{ij}$ by all channels $V_i\times V_j$. Assign each new channel the rate $\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}/(N_iN_j)$, where $N_i$ and $N_j$ are the numbers of nodes in the respective communities. If the simulator chooses the import target uniformly among susceptible nodes, the ideal two-scale process has the same rates for all transitions as the full-network process on $\tilde G$. Thus, from the same initial state, its distribution coincides with that of full-network Gillespie on $\tilde G$.
+\end{proposition}
+
+\begin{proof}
+Local infections and removals have the same rates. For a susceptible node $v\in V_j$, the probability of being selected as an import target is $1/s_j(x)$. Its infection rate from other communities is therefore
+\[
+\begin{aligned}
+\sum_{i\neq j}\lambda_{ij}(x)\frac{1}{s_j(x)}
+&=\sum_{i\neq j}\beta_{\mathrm{out}}W_{ij}\frac{y_i(x)}{N_i}\frac{s_j(x)}{N_j}\frac{1}{s_j(x)}\\
+&=\sum_{i\neq j}\sum_{u\in V_i}\frac{\beta_{\mathrm{out}}W_{ij}}{N_iN_j}\ind\{x_u=I\}.
+\end{aligned}
+\]
+The last expression sums the rates of all channels in $\tilde G$ leading from infected nodes to $v$. If $s_j(x)=0$, imports are impossible in both models. Thus, all transition rates coincide. \qed
+\end{proof}
+
+\begin{corollary}
+\label{cor:exact}
+If every node in community $i$ is already connected to every node in community $j$ in the original network, and all these channels have the same rate for a given community pair, then $\tilde G=G$. In this case, the ideal two-scale method is also exact for the original network.
+\end{corollary}
+
+In general, $\tilde G$ preserves the internal contacts and aggregate inter-community weights of $G$, but differs in its inter-community contacts, so $\tilde G\neq G$.
+The total coupling strength is preserved:
+\[
+\sum_{(u,v)\in V_i\times V_j}\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}.
+\]
+Its distribution among nodes changes (Figure~\ref{fig:schematic}c). Thus, even with exact event timing, results on $G$ and $\tilde G$ may differ. The time-grid implementation adds a numerical error. These two effects can be checked separately: comparison with full-network Gillespie on $\tilde G$ checks synchronisation, while comparison with full-network Gillespie on $G$ also captures the effects of replacing the contacts.
+
+\subsection{Where the error comes from}
+\label{sec:sources}
+
+Replacing real inter-community contacts by averaged connections changes three things: the transmission rate, the recipient node, and the possible number of imports. A fourth source of error is the approximate calculation of event times in the implementation.
+
+\paragraph{1. The states of the real bridge nodes are not used.}
+In the full network, the transmission rate from $V_i$ to $V_j$ is
+\begin{equation}
+\label{eq:exact_rate}
+a^\star_{ij}(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}w_{uv}\,\ind\{x_u=I,\,x_v=S\},
+\end{equation}
+Only contacts from infected nodes to susceptible nodes contribute to this sum. If all bridge nodes in the source are still susceptible, transmission is impossible. In the two-scale method, the rate depends on the overall infected fraction, so infection of any source node can contribute to export. The method can transmit infection before any real bridge node is infected. We refer to this as \emph{bridge bypass} (Section~\ref{sec:single_export}).
+
+\paragraph{2. The infection location in the recipient changes.}
+In the full network, infection reaches the endpoint of the contact through which it was transmitted. The two-scale method selects any susceptible node with equal probability. This affects how quickly infection reaches the bridge nodes leading to the next community.
+
+\paragraph{3. Additional imports are possible.}
+In the SI model, a node remains infected once infected. A real directed channel can therefore infect its target node at most once. The $|E_{ij}|$ channels permit at most $|E_{ij}|$ infections; a single channel permits at most one.
+\par In $\tilde G$, connected communities generally have more contacts than in the original network. The rate $\lambda_{ij}=\beta_{\mathrm{out}}W_{ij}\ibar_i\sbar_j$ can remain positive after the first import. The expected number of imports on $[t_1,t_2]$ is $\mathbb{E}\int_{t_1}^{t_2}\lambda_{ij}(s)\,ds$. If the recipient remains mostly susceptible for a long time, the method may add infections that the original set of contacts cannot transmit.
+
+\paragraph{4. Event timing is approximate.}
+The implementation estimates the rate from the state at the midpoint of an interval and uses this estimate to determine the import time (Section~\ref{sec:timing}). This approximates the integral in~\eqref{eq:hazard_integral}. The resulting error concerns the time grid and is separate from the replacement of contacts.
+
+\begin{remark}[The first import with randomly placed contacts]
+\label{rem:placement}
+Suppose that the endpoints of inter-community channels are selected uniformly and independently of the internal graphs and other contact sets, as in our tests. If the recipient community is still fully susceptible, the target of its first import is also uniform in the full network, after averaging over random contact placement. The two-scale method has the same distribution of the first target. For an individual fixed network, the targets need not coincide. The same distribution of the first target does not imply the same distribution of the first import time. Our tests show small errors in a number of configurations where the spread of internal infection times is small compared with the mean transmission time through one inter-community channel (Section~\ref{sec:res_descriptor}).
+\end{remark}

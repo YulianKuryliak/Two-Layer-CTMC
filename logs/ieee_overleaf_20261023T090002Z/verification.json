@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "files": 74,
+  "data_tables": 37,
+  "pages": 18,
+  "pdf_layout_text_matches_current_ieee": true,
+  "all_file_hashes_match_source": true,
+  "archive_crc_and_member_hashes_pass": true,
+  "source_manuscript_edited": false,
+  "generated_files_moved_to_audit": 7,
+  "external_pgfplots_files": 39,
+  "external_manuscript_or_plot_data_inputs": 0,
+  "local_test_library_note": "Standard TeX packages, including PGFPlots, come from the TeX installation; no unused vendor collection is shipped. The local test exposes the already saved PGFPlots package through TEXINPUTS because this local TeX installation lacks PGFPlots. All manuscript, font, template and plot data inputs must come only from the upload package.",
+  "zip_bytes": 1320643,
+  "simulations_run": false,
+  "overleaf_remote_compilation_performed": false
+}

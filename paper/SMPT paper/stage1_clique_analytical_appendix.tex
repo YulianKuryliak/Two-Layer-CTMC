@@ -1,0 +1,52 @@
+% Analytical material retained and qualified during Stage 1.
+\section{Analytical checks for an autonomous clique source}
+\label{app:clique_analytic_checks}
+
+These calculations concern a uniformly seeded $n$-node clique with SI dynamics, equal per-edge internal rate $\beta_{\mathrm{in}}>0$, and $k$ distinct bridge nodes connected to one leaf at rate $\beta_{\mathrm{out}}>0$ per bridge edge. Before its first infection, the leaf cannot affect the source. We therefore use an autonomous source trajectory, including its hypothetical continuation after export, and an independent exponential threshold for the export clock.
+
+\subsection{Time to the first infected bridge}
+
+Uniform seeding makes the order of node infections a uniform permutation. When $m$ source nodes are infected, the next infection has total rate $\beta_{\mathrm{in}}m(n-m)$, and its waiting time is independent of which susceptible node is selected. The probability that none of the first $m$ infected nodes belongs to the bridge set is $\binom{n-k}{m}/\binom{n}{m}$. Consequently,
+\[
+\mathbb{E}[T_B]
+=\sum_{m=1}^{n-k}
+\frac{\binom{n-k}{m}}{\binom{n}{m}}\,
+\frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+\]
+This expression includes the possibility that the initial seed is a bridge, in which case $T_B=0$; for $k=n$ the sum is empty and the expectation is zero. With one bridge, it reduces to
+\[
+\mathbb{E}[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}n},
+\qquad
+H_{n-1}=\sum_{m=1}^{n-1}\frac{1}{m}.
+\]
+For $k=1$, the independent exponential crossing time then gives
+$\mathbb{E}[T_A]=H_{n-1}/(\beta_{\mathrm{in}}n)+1/\beta_{\mathrm{out}}$.
+These are analytical reference checks under the specified seed convention. They are not presented here as completed tests of the Production implementation, and the single-bridge post-activation formula does not apply to the $k=2$ numerical benchmark.
+
+\subsection{Ideal conditional-mean hazard comparison}
+\label{app:clique_jensen}
+
+In this autonomous clique construction, the random infection order is independent of the count holding times. Conditional on the entire source count path up to $t$, the infected set at each time $s\le t$ is therefore uniformly distributed among subsets of its size. Write $\mathcal{C}_t$ for this count-path information and define the potential accumulated bridge hazard, before stopping it at export, by
+\[
+H_B(t)=\int_0^t\beta_{\mathrm{out}}B_I(s)\,ds.
+\]
+Its conditional mean is
+\[
+\overline{H}_B(t)
+=\mathbb{E}[H_B(t)\mid\mathcal{C}_t]
+=\int_0^t\beta_{\mathrm{out}}k\,\frac{i_0(s)}{n}\,ds.
+\]
+This projection uses the source count path alone. Conditioning additionally on the leaf still being susceptible supplies information about the bridge history, so it is not an identity for the operational hazard filtered by that survival information.
+
+Because the export threshold is independent of the autonomous source trajectory, Full survival is $\mathbb{E}[\exp(-H_B(t))]$. An ideal aggregate clock that integrates the same count path exactly has survival $\mathbb{E}[\exp(-\overline{H}_B(t))]$. Convexity of the exponential gives
+\[
+\mathbb{E}\!\left[\exp(-H_B(t))\mid\mathcal{C}_t\right]
+\geq \exp(-\overline{H}_B(t)),
+\]
+and hence $S_{\mathrm{Full}}(t)\ge S_{\mathrm{ideal}}(t)$.
+Integrating these survival curves gives
+$\mathbb{E}[T_A^{\mathrm{Full}}]\ge\mathbb{E}[T_A^{\mathrm{ideal}}]$.
+The means are finite: infection saturates the finite clique and the leaf subsequently has positive export rate.
+
+The result shows how replacing a variable bridge hazard by its conditional mean can advance an ideal export clock even though the instantaneous potential hazards agree on average. Its assumptions specify the comparison: an autonomous, uniformly seeded clique; the same source count path; an independent export threshold; and exact integration of the conditional-mean hazard. Production instead uses midpoint quadrature, and coupled chains have feedback through imports. The inequality therefore supplies an explanation for the ideal motif, not a signed-error guarantee for those simulations.
+

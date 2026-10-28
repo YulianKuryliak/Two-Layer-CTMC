@@ -1,0 +1,5 @@
+component,percent,ci95_low,ci95_high,denominator
+implementation_vs_eventdriven,82.46534019373544,74.9192624003676,89.80440919251213,FullMicro - current Production
+structural_eventdriven_AU,17.53465980626457,10.195590807487882,25.080737599632418,FullMicro - current Production
+shared_RNG_stream_coupling_correction,101.2990435402857,91.28272411782312,112.57297116626762,EventDriven A/U - current Production
+remaining_implementation_after_independent_RNG,-1.2990435402857023,-12.572971166267624,8.717275882176857,EventDriven A/U - current Production

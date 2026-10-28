@@ -1,0 +1,32 @@
+{
+  "body_preserved_except_citation_and_layout_syntax": true,
+  "labels": 45,
+  "citation_commands": 25,
+  "unique_cited_keys": 24,
+  "numbered_equations": 10,
+  "figures": 7,
+  "tables": 2,
+  "algorithms": 1,
+  "abstract_words": 239,
+  "plot_tables_sha256_match": 37,
+  "original_template_files_unchanged": 56,
+  "pages": 18,
+  "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+  "pdf_sha256": "0e67204922390fdd334d035c33ae95c6cc1b2a849338c19986b404eae388b73f",
+  "main_tex_sha256": "70ca4942b2901d3c558e64dd93f3457958791ea8148db3b8678853ea99cf6aa7",
+  "limitations": [
+    "Source retains references to appendices A-C whose contents are absent; no appendix content invented",
+    "Data availability placeholder retained from source; no biographies or membership claims invented"
+  ],
+  "simulations_run": false,
+  "visual_checks": [
+    "IEEE title/abstract/index terms",
+    "editable ECDF and source-sweep plots",
+    "chain trajectory/CDF and cumulative-arrival maps",
+    "terminal accuracy and time-scale plots",
+    "reference formatting"
+  ],
+  "build_from_project_root": "latexmk -r paper/IEEE_version/.latexmkrc -cd -pdf -interaction=nonstopmode -halt-on-error paper/IEEE_version/main.tex: exit 0",
+  "allowed_template_message": "Text page 15 contains only floats (dedicated full-width figure page).",
+  "source_original_tex_pdf_unchanged": true
+}

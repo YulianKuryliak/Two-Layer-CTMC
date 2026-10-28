@@ -1,0 +1,47 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: SMPT_final_EN_sections_1_3.aux
+The style file: cas-model2-names.bst
+Database file #1: twoscale_references.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 24 entries,
+            2990 wiz_defined-function locations,
+            906 strings with 11956 characters,
+and the built_in function-call counts, 19353 in all, are:
+= -- 1397
+> -- 992
+< -- 10
++ -- 382
+- -- 354
+* -- 2328
+:= -- 2814
+add.period$ -- 89
+call.type$ -- 24
+change.case$ -- 236
+chr.to.int$ -- 24
+cite$ -- 24
+duplicate$ -- 1314
+empty$ -- 1273
+format.name$ -- 436
+if$ -- 3513
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 286
+newline$ -- 152
+num.names$ -- 96
+pop$ -- 452
+preamble$ -- 1
+purify$ -- 214
+quote$ -- 0
+skip$ -- 350
+stack$ -- 0
+substring$ -- 797
+swap$ -- 1089
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 210
+warning$ -- 0
+while$ -- 110
+width$ -- 0
+write$ -- 383

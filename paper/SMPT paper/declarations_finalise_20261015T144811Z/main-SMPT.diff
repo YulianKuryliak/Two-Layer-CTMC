@@ -1,0 +1,42 @@
+--- before/main-SMPT.tex
++++ after/main-SMPT.tex
+@@ -1420,24 +1420,27 @@
+ available, or explain any restrictions on access.]}
+ 
+ \section*{Funding}
+-\textit{[To be completed by the authors: list funding sources and grant numbers,
+-including the funders' role where applicable, or confirm that this research
+-received no specific funding.]}
++This research did not receive any specific grant from funding agencies in the
++public, commercial, or not-for-profit sectors.
+ 
+ \section*{CRediT authorship contribution statement}
+-\textbf{Yulian Kuryliak:} \textit{[Author to confirm applicable CRediT roles.]}
+-\textbf{Michael T. M. Emmerich:} \textit{[Author to confirm applicable CRediT roles.]}
++\textit{[Proposed contribution statement; to be confirmed by both authors.]}
++
++\textbf{Yulian Kuryliak:} Conceptualization, Methodology, Software,
++Investigation, Formal analysis, Visualization, Writing -- original draft.
++\textbf{Michael T. M. Emmerich:} Conceptualization, Methodology, Supervision,
++Writing -- review \& editing.
+ 
+ \section*{Declaration of competing interest}
+-\textit{[To be completed by all authors: declare any relevant financial or
+-personal interests, or confirm that there are no competing interests to declare.]}
++The authors declare that they have no known competing financial interests or
++personal relationships that could have appeared to influence the work reported
++in this article.
+ 
+ \section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+-OpenAI Codex was used to assist with translation, language editing, and
+-restructuring of the manuscript.
+-\textit{[Before submission, the authors should confirm the complete list of AI
+-tools and their uses, review and edit the final content, and confirm that they
+-take full responsibility for the content of the published article.]}
++During the preparation of this manuscript, the authors used OpenAI Codex and
++Anthropic Claude to assist with drafting, translation, language editing, and
++organisation of the text. The authors reviewed and edited the content as needed
++and take full responsibility for the content of the published article.
+ 
+ \clearpage
+ 

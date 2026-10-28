@@ -1,0 +1,274 @@
+\begin{thebibliography}{26}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Ajelli et~al.(2010)Ajelli, Gon{\c{c}}alves, Balcan, Colizza, Hu,
+  Ramasco, Merler and Vespignani}]{ajelli2010}
+\bibinfo{author}{Ajelli, M.}, \bibinfo{author}{Gon{\c{c}}alves, B.},
+  \bibinfo{author}{Balcan, D.}, \bibinfo{author}{Colizza, V.},
+  \bibinfo{author}{Hu, H.}, \bibinfo{author}{Ramasco, J.J.},
+  \bibinfo{author}{Merler, S.}, \bibinfo{author}{Vespignani, A.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Comparing large-scale computational approaches to
+  epidemic modeling: Agent-based versus structured metapopulation models}.
+\newblock \bibinfo{journal}{BMC Infectious Diseases} \bibinfo{volume}{10},
+  \bibinfo{pages}{190}.
+\newblock \DOIprefix\doi{10.1186/1471-2334-10-190}.
+%Type = Article
+\bibitem[{Anderson(2007)}]{anderson2007}
+\bibinfo{author}{Anderson, D.F.}, \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{A modified next reaction method for simulating
+  chemical systems with time dependent propensities and delays}.
+\newblock \bibinfo{journal}{The Journal of Chemical Physics}
+  \bibinfo{volume}{127}, \bibinfo{pages}{214107}.
+\newblock \DOIprefix\doi{10.1063/1.2799998}.
+%Type = Article
+\bibitem[{Balcan et~al.(2009)Balcan, Colizza, Gon{\c{c}}alves, Hu, Ramasco and
+  Vespignani}]{balcan2009}
+\bibinfo{author}{Balcan, D.}, \bibinfo{author}{Colizza, V.},
+  \bibinfo{author}{Gon{\c{c}}alves, B.}, \bibinfo{author}{Hu, H.},
+  \bibinfo{author}{Ramasco, J.J.}, \bibinfo{author}{Vespignani, A.},
+  \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{Multiscale mobility networks and the spatial
+  spreading of infectious diseases}.
+\newblock \bibinfo{journal}{Proceedings of the National Academy of Sciences}
+  \bibinfo{volume}{106}, \bibinfo{pages}{21484--21489}.
+\newblock \DOIprefix\doi{10.1073/pnas.0906910106}.
+%Type = Article
+\bibitem[{Balcan et~al.(2010)Balcan, Colizza, Gon{\c{c}}alves, Hu, Ramasco and
+  Vespignani}]{balcan2010modeling}
+\bibinfo{author}{Balcan, D.}, \bibinfo{author}{Colizza, V.},
+  \bibinfo{author}{Gon{\c{c}}alves, B.}, \bibinfo{author}{Hu, H.},
+  \bibinfo{author}{Ramasco, J.J.}, \bibinfo{author}{Vespignani, A.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Modeling the spatial spread of infectious diseases:
+  The global epidemic and mobility computational model}.
+\newblock \bibinfo{journal}{Journal of Computational Science}
+  \bibinfo{volume}{1}, \bibinfo{pages}{132--145}.
+\newblock \DOIprefix\doi{10.1016/j.jocs.2010.07.002}.
+%Type = Article
+\bibitem[{Ball et~al.(1997)Ball, Mollison and Scalia-Tomba}]{ball1997}
+\bibinfo{author}{Ball, F.}, \bibinfo{author}{Mollison, D.},
+  \bibinfo{author}{Scalia-Tomba, G.}, \bibinfo{year}{1997}.
+\newblock \bibinfo{title}{Epidemics with two levels of mixing}.
+\newblock \bibinfo{journal}{The Annals of Applied Probability}
+  \bibinfo{volume}{7}, \bibinfo{pages}{46--89}.
+%Type = Article
+\bibitem[{Barbosa et~al.(2018)Barbosa, Barthelemy, Ghoshal, James, Lenormand,
+  Louail, Menezes, Ramasco, Simini and Tomasini}]{barbosa2018human}
+\bibinfo{author}{Barbosa, H.}, \bibinfo{author}{Barthelemy, M.},
+  \bibinfo{author}{Ghoshal, G.}, \bibinfo{author}{James, C.R.},
+  \bibinfo{author}{Lenormand, M.}, \bibinfo{author}{Louail, T.},
+  \bibinfo{author}{Menezes, R.}, \bibinfo{author}{Ramasco, J.J.},
+  \bibinfo{author}{Simini, F.}, \bibinfo{author}{Tomasini, M.},
+  \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Human mobility: Models and applications}.
+\newblock \bibinfo{journal}{Physics Reports} \bibinfo{volume}{734},
+  \bibinfo{pages}{1--74}.
+\newblock \DOIprefix\doi{10.1016/j.physrep.2018.01.001}.
+%Type = Article
+\bibitem[{del Barrio et~al.(1999)del Barrio, Gin{\'e} and
+  Matr{\'a}n}]{delbarrio1999}
+\bibinfo{author}{del Barrio, E.}, \bibinfo{author}{Gin{\'e}, E.},
+  \bibinfo{author}{Matr{\'a}n, C.}, \bibinfo{year}{1999}.
+\newblock \bibinfo{title}{Central limit theorems for the {W}asserstein distance
+  between the empirical and the true distributions}.
+\newblock \bibinfo{journal}{The Annals of Probability} \bibinfo{volume}{27},
+  \bibinfo{pages}{1009--1071}.
+%Type = Article
+\bibitem[{Cao et~al.(2005)Cao, Gillespie and Petzold}]{cao2005slow}
+\bibinfo{author}{Cao, Y.}, \bibinfo{author}{Gillespie, D.T.},
+  \bibinfo{author}{Petzold, L.R.}, \bibinfo{year}{2005}.
+\newblock \bibinfo{title}{The slow-scale stochastic simulation algorithm}.
+\newblock \bibinfo{journal}{The Journal of Chemical Physics}
+  \bibinfo{volume}{122}, \bibinfo{pages}{014116}.
+%Type = Article
+\bibitem[{Chang et~al.(2021)Chang, Pierson, Koh, Gerardin, Redbird, Grusky and
+  Leskovec}]{chang2021}
+\bibinfo{author}{Chang, S.}, \bibinfo{author}{Pierson, E.},
+  \bibinfo{author}{Koh, P.W.}, \bibinfo{author}{Gerardin, J.},
+  \bibinfo{author}{Redbird, B.}, \bibinfo{author}{Grusky, D.},
+  \bibinfo{author}{Leskovec, J.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Mobility network models of {COVID-19} explain
+  inequities and inform reopening}.
+\newblock \bibinfo{journal}{Nature} \bibinfo{volume}{589},
+  \bibinfo{pages}{82--87}.
+\newblock \DOIprefix\doi{10.1038/s41586-020-2923-3}.
+%Type = Article
+\bibitem[{Colizza et~al.(2007)Colizza, Pastor-Satorras and
+  Vespignani}]{colizza2007reaction}
+\bibinfo{author}{Colizza, V.}, \bibinfo{author}{Pastor-Satorras, R.},
+  \bibinfo{author}{Vespignani, A.}, \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{Reaction--diffusion processes and metapopulation
+  models in heterogeneous networks}.
+\newblock \bibinfo{journal}{Nature Physics} \bibinfo{volume}{3},
+  \bibinfo{pages}{276--282}.
+\newblock \DOIprefix\doi{10.1038/nphys560}.
+%Type = Article
+\bibitem[{Colizza and Vespignani(2008)}]{colizza2008}
+\bibinfo{author}{Colizza, V.}, \bibinfo{author}{Vespignani, A.},
+  \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{Epidemic modeling in metapopulation systems with
+  heterogeneous coupling pattern: Theory and simulations}.
+\newblock \bibinfo{journal}{Journal of Theoretical Biology}
+  \bibinfo{volume}{251}, \bibinfo{pages}{450--467}.
+\newblock \DOIprefix\doi{10.1016/j.jtbi.2007.11.028}.
+%Type = Article
+\bibitem[{Danon et~al.(2011)Danon, Ford, House, Jewell, Keeling, Roberts, Ross
+  and Vernon}]{danon2011}
+\bibinfo{author}{Danon, L.}, \bibinfo{author}{Ford, A.P.},
+  \bibinfo{author}{House, T.}, \bibinfo{author}{Jewell, C.P.},
+  \bibinfo{author}{Keeling, M.J.}, \bibinfo{author}{Roberts, G.O.},
+  \bibinfo{author}{Ross, J.V.}, \bibinfo{author}{Vernon, M.C.},
+  \bibinfo{year}{2011}.
+\newblock \bibinfo{title}{Networks and the epidemiology of infectious disease}.
+\newblock \bibinfo{journal}{Interdisciplinary Perspectives on Infectious
+  Diseases} \bibinfo{volume}{2011}, \bibinfo{pages}{284909}.
+\newblock \DOIprefix\doi{10.1155/2011/284909}.
+%Type = Book
+\bibitem[{Ethier and Kurtz(1986)}]{ethier1986}
+\bibinfo{author}{Ethier, S.N.}, \bibinfo{author}{Kurtz, T.G.},
+  \bibinfo{year}{1986}.
+\newblock \bibinfo{title}{Markov Processes: Characterization and Convergence}.
+\newblock \bibinfo{publisher}{Wiley}, \bibinfo{address}{New York}.
+%Type = Article
+\bibitem[{Eubank et~al.(2004)Eubank, Guclu, Kumar, Marathe, Srinivasan,
+  Toroczkai and Wang}]{eubank2004}
+\bibinfo{author}{Eubank, S.}, \bibinfo{author}{Guclu, H.},
+  \bibinfo{author}{Kumar, V.S.A.}, \bibinfo{author}{Marathe, M.V.},
+  \bibinfo{author}{Srinivasan, A.}, \bibinfo{author}{Toroczkai, Z.},
+  \bibinfo{author}{Wang, N.}, \bibinfo{year}{2004}.
+\newblock \bibinfo{title}{Modelling disease outbreaks in realistic urban social
+  networks}.
+\newblock \bibinfo{journal}{Nature} \bibinfo{volume}{429},
+  \bibinfo{pages}{180--184}.
+\newblock \DOIprefix\doi{10.1038/nature02541}.
+%Type = Article
+\bibitem[{Gibson and Bruck(2000)}]{gibson2000}
+\bibinfo{author}{Gibson, M.A.}, \bibinfo{author}{Bruck, J.},
+  \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{Efficient exact stochastic simulation of chemical
+  systems with many species and many channels}.
+\newblock \bibinfo{journal}{The Journal of Physical Chemistry A}
+  \bibinfo{volume}{104}, \bibinfo{pages}{1876--1889}.
+%Type = Article
+\bibitem[{Gillespie(1977)}]{gillespie1977exact}
+\bibinfo{author}{Gillespie, D.T.}, \bibinfo{year}{1977}.
+\newblock \bibinfo{title}{Exact stochastic simulation of coupled chemical
+  reactions}.
+\newblock \bibinfo{journal}{The Journal of Physical Chemistry}
+  \bibinfo{volume}{81}, \bibinfo{pages}{2340--2361}.
+\newblock \DOIprefix\doi{10.1021/j100540a008}.
+%Type = Article
+\bibitem[{Gomes et~al.(2018)Gomes, Thule, Broman, Larsen and
+  Vangheluwe}]{gomes2018cosim}
+\bibinfo{author}{Gomes, C.}, \bibinfo{author}{Thule, C.},
+  \bibinfo{author}{Broman, D.}, \bibinfo{author}{Larsen, P.G.},
+  \bibinfo{author}{Vangheluwe, H.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Co-simulation: A survey}.
+\newblock \bibinfo{journal}{ACM Computing Surveys} \bibinfo{volume}{51},
+  \bibinfo{pages}{49:1--49:33}.
+%Type = Article
+\bibitem[{Haseltine and Rawlings(2002)}]{haseltine2002}
+\bibinfo{author}{Haseltine, E.L.}, \bibinfo{author}{Rawlings, J.B.},
+  \bibinfo{year}{2002}.
+\newblock \bibinfo{title}{Approximate simulation of coupled fast and slow
+  reactions for stochastic chemical kinetics}.
+\newblock \bibinfo{journal}{The Journal of Chemical Physics}
+  \bibinfo{volume}{117}, \bibinfo{pages}{6959--6969}.
+%Type = Article
+\bibitem[{Keeling and Eames(2005)}]{keeling2005}
+\bibinfo{author}{Keeling, M.J.}, \bibinfo{author}{Eames, K.T.D.},
+  \bibinfo{year}{2005}.
+\newblock \bibinfo{title}{Networks and epidemic models}.
+\newblock \bibinfo{journal}{Journal of The Royal Society Interface}
+  \bibinfo{volume}{2}, \bibinfo{pages}{295--307}.
+\newblock \DOIprefix\doi{10.1098/rsif.2005.0051}.
+%Type = Article
+\bibitem[{Kerr et~al.(2021)Kerr, Stuart, Mistry, Abeysuriya, Rosenfeld, Hart,
+  N{\'u}{\~n}ez, Cohen, Selvaraj, Hagedorn, George, Jastrzebski, Izzo, Fowler,
+  Palmer, Delport, Scott, Kelly, Bennette, Wagner, Chang, Oron, Wenger,
+  Panovska-Griffiths, Famulare and Klein}]{kerr2021}
+\bibinfo{author}{Kerr, C.C.}, \bibinfo{author}{Stuart, R.M.},
+  \bibinfo{author}{Mistry, D.}, \bibinfo{author}{Abeysuriya, R.G.},
+  \bibinfo{author}{Rosenfeld, K.}, \bibinfo{author}{Hart, G.R.},
+  \bibinfo{author}{N{\'u}{\~n}ez, R.C.}, \bibinfo{author}{Cohen, J.A.},
+  \bibinfo{author}{Selvaraj, P.}, \bibinfo{author}{Hagedorn, B.},
+  \bibinfo{author}{George, L.}, \bibinfo{author}{Jastrzebski, M.},
+  \bibinfo{author}{Izzo, A.S.}, \bibinfo{author}{Fowler, G.},
+  \bibinfo{author}{Palmer, A.}, \bibinfo{author}{Delport, D.},
+  \bibinfo{author}{Scott, N.}, \bibinfo{author}{Kelly, S.L.},
+  \bibinfo{author}{Bennette, C.S.}, \bibinfo{author}{Wagner, B.G.},
+  \bibinfo{author}{Chang, S.T.}, \bibinfo{author}{Oron, A.P.},
+  \bibinfo{author}{Wenger, E.A.}, \bibinfo{author}{Panovska-Griffiths, J.},
+  \bibinfo{author}{Famulare, M.}, \bibinfo{author}{Klein, D.J.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Covasim: An agent-based model of {COVID-19} dynamics
+  and interventions}.
+\newblock \bibinfo{journal}{PLoS Computational Biology} \bibinfo{volume}{17},
+  \bibinfo{pages}{e1009149}.
+\newblock \DOIprefix\doi{10.1371/journal.pcbi.1009149}.
+%Type = Book
+\bibitem[{Kiss et~al.(2017)Kiss, Miller and Simon}]{kiss2017}
+\bibinfo{author}{Kiss, I.Z.}, \bibinfo{author}{Miller, J.C.},
+  \bibinfo{author}{Simon, P.L.}, \bibinfo{year}{2017}.
+\newblock \bibinfo{title}{Mathematics of Epidemics on Networks: From Exact to
+  Approximate Models}.
+\newblock \bibinfo{publisher}{Springer}, \bibinfo{address}{Cham}.
+\newblock \DOIprefix\doi{10.1007/978-3-319-50806-1}.
+%Type = Inproceedings
+\bibitem[{Kuryliak and Emmerich(2025)}]{kuryliak2025towards}
+\bibinfo{author}{Kuryliak, Y.}, \bibinfo{author}{Emmerich, M.},
+  \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{Towards complexity reduction of large-scale epidemic
+  simulation in two-scale networks}, in: \bibinfo{booktitle}{Proceedings of the
+  Modern Machine Learning Technologies Workshop (MoMLeT 2025)}, pp.
+  \bibinfo{pages}{327--336}.
+\newblock \URLprefix \url{https://ceur-ws.org/Vol-4004/}.
+%Type = Article
+\bibitem[{Kuryliak et~al.(2025)Kuryliak, Emmerich and
+  Dosyn}]{kuryliak2025simulating}
+\bibinfo{author}{Kuryliak, Y.}, \bibinfo{author}{Emmerich, M.T.M.},
+  \bibinfo{author}{Dosyn, D.}, \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{Simulating epidemic peak dynamics on complex networks
+  using efficient gillespie algorithms}.
+\newblock \bibinfo{journal}{Infection, Genetics and Evolution}
+  \bibinfo{volume}{132}, \bibinfo{pages}{105768}.
+\newblock \DOIprefix\doi{10.1016/j.meegid.2025.105768}.
+%Type = Article
+\bibitem[{Pastor-Satorras et~al.(2015)Pastor-Satorras, Castellano, Van~Mieghem
+  and Vespignani}]{pastorsatorras2015}
+\bibinfo{author}{Pastor-Satorras, R.}, \bibinfo{author}{Castellano, C.},
+  \bibinfo{author}{Van~Mieghem, P.}, \bibinfo{author}{Vespignani, A.},
+  \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{Epidemic processes in complex networks}.
+\newblock \bibinfo{journal}{Reviews of Modern Physics} \bibinfo{volume}{87},
+  \bibinfo{pages}{925--979}.
+\newblock \DOIprefix\doi{10.1103/RevModPhys.87.925}.
+%Type = Book
+\bibitem[{Shaked and Shanthikumar(2007)}]{shaked2007}
+\bibinfo{author}{Shaked, M.}, \bibinfo{author}{Shanthikumar, J.G.},
+  \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{Stochastic Orders}.
+\newblock \bibinfo{publisher}{Springer}, \bibinfo{address}{New York}.
+%Type = Article
+\bibitem[{Vestergaard and G{\'e}nois(2015)}]{vestergaard2015}
+\bibinfo{author}{Vestergaard, C.L.}, \bibinfo{author}{G{\'e}nois, M.},
+  \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{Temporal gillespie algorithm: Fast simulation of
+  contagion processes on time-varying networks}.
+\newblock \bibinfo{journal}{PLoS Computational Biology} \bibinfo{volume}{11},
+  \bibinfo{pages}{e1004579}.
+\newblock \DOIprefix\doi{10.1371/journal.pcbi.1004579}.
+
+\end{thebibliography}

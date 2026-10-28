@@ -1,0 +1,32 @@
+# Python environment / caches
+- .venv/**
+- __pycache__/**
+- .pytest_cache/**
+- .mypy_cache/**
+- .ruff_cache/**
+- .matplotlib-cache/**
+- .texmf-var/**
+
+# Build artifacts
+- *.pyc
+- *.pyo
+- *.egg-info/**
+- build/**
+- dist/**
+
+# SQLite
+- simulations.db*
+
+# Archives: files
+- *.zip
+- *.7z
+- *.rar
+- *.tar
+- *.tar.gz
+- *.tgz
+
+# Archives: directories
+- archive/**
+- archives/**
+- backup/**
+- backups/**

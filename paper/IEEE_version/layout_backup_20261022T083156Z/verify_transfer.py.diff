@@ -1,0 +1,98 @@
+diff --git a/paper/IEEE_version/layout_backup_20261022T083156Z/verify_transfer.py b/paper/IEEE_version/verify_transfer.py
+index e67a515..7f921f1 100755
+--- a/paper/IEEE_version/layout_backup_20261022T083156Z/verify_transfer.py
++++ b/paper/IEEE_version/verify_transfer.py
+@@ -46,11 +46,46 @@ def normalise_body(text):
+     text = re.sub(r"\\end\{(figure|table)\*\}", r"\\end{\1}", text)
+     text = text.replace("Section 5.3", r"Section~\ref{sec:descriptor}")
+     text = text.replace(r"\clearpage", "").replace(r"\!", "")
++    text = text.replace(r"\input{appendices}", "")
+     # One multi-panel plot is slightly shorter to fit the IEEE float page.
+     text = re.sub(r"height=4\.(?:25|0)cm", "height=IEEE-adjusted", text)
+     return re.sub(r"\s+", " ", text).strip()
+ 
+ 
++def separate_floats(text):
++    """Compare text and float contents independently of their queue positions."""
++    floats = {}
++    pattern = r"\\begin\{(figure|table)\*?\}.*?\\end\{\1\*?\}"
++    def extract(match):
++        label = re.search(r"\\label\{([^}]+)\}", match[0])[1]
++        assert label not in floats, label
++        floats[label] = normalise_body(r"\section{Introduction}" + match[0] + r"\bibliographystyle")
++        return ""
++    remainder = re.sub(pattern, extract, text, flags=re.S)
++    return normalise_body(remainder), floats
++
++
++def check_appendices():
++    provenance = json.loads((HERE / "layout_manifest.json").read_text())
++    original = HERE / provenance["recovered_appendix_source"]
++    assert sha(original) == provenance["recovered_appendix_sha256"]
++    expected = original.read_text().replace(r"\appendix", r"\appendices", 1)
++    expected = expected.replace(r"\citep{", r"\cite{")
++    expected = expected.replace(r"\qquad" + "\n" + r"\mathbb{E}[T_B]",
++        r"\end{equation}" + "\nFor one bridge this simplifies to\n" +
++        r"\begin{equation}" + "\n" + r"\mathbb{E}[T_B]", 1)
++    expected = expected.replace(r"\begin{table}[tbp]", r"\begin{table}[!htbp]")
++    expected = expected.replace(r"\begin{tabular}{rrrrr}", r"\setlength{\tabcolsep}{3pt}" + "\n" + r"\begin{tabular}{rrrrr}")
++    expected = expected.replace(
++        r"$n$ & $k$ & $\mathbb{E}[T_B]$, Eq.~\eqref{eq:clique_TB} & \Full{} mean $T_B$ & \Full{} wait after $T_B$\\",
++        r"$n$ & $k$ & Exact $\mathbb{E}[T_B]$ & \Full{} $T_B$ & \Full{} wait\\")
++    actual = (HERE / "appendices.tex").read_text()
++    clean = lambda s: re.sub(r"\s+", " ", uncomment(s)).strip()
++    assert clean(expected) == clean(actual), "Recovered appendix content changed"
++    assert sha(HERE / "stfloats.sty") == provenance["stfloats_sha256"]
++    return actual
++
++
+ def main():
+     manifests = sorted(HERE.glob("migration_*/source_manifest.json"))
+     assert len(manifests) == 1, "Choose the migration baseline explicitly if another is added."
+@@ -59,11 +94,12 @@ def main():
+     source_file = manifest_path.parent / "source_main-SMPT.tex"
+     source, target = source_file.read_text(), (HERE / "main.tex").read_text()
+     assert sha(source_file) == manifest["source_sha256"]
+-    assert normalise_body(source) == normalise_body(target), "Scientific body changed"
++    assert separate_floats(source) == separate_floats(target), "Scientific body or figure contents changed"
+     assert citation_keys(source) == citation_keys(target), "Citation keys/order changed"
++    appendix = check_appendices() if (HERE / "layout_manifest.json").is_file() else ""
+     labels = lambda s: re.findall(r"\\label\{([^}]+)\}", uncomment(s))
+-    assert labels(source) == labels(target)
+-    assert len(labels(target)) == len(set(labels(target)))
++    assert collections.Counter(labels(source)) == collections.Counter(labels(target))
++    assert len(labels(target + appendix)) == len(set(labels(target + appendix)))
+     assert sha(HERE / "references_fixed.bib") == manifest["bibliography_sha256"]
+     for name, expected in manifest["plot_data_sha256"].items():
+         assert sha(HERE / name) == expected, name
+@@ -71,7 +107,7 @@ def main():
+         assert sha(HERE / name) == expected, name
+     for name, expected in manifest["original_template_sha256"].items():
+         assert sha(HERE / name) == expected, name
+-    cited = {key for group in citation_keys(target) for key in group.split(",")}
++    cited = {key for group in citation_keys(target + appendix) for key in group.split(",")}
+     fixed = bib_entries(HERE / "references_fixed.bib")
+     extra = bib_entries(HERE / "references_missing.bib")
+     assert not (fixed.keys() & extra.keys())
+@@ -97,15 +133,17 @@ def main():
+     pages = int(re.search(r"Pages:\s+(\d+)", info)[1])
+     print(json.dumps({
+         "body_preserved_except_citation_and_layout_syntax": True,
+-        "labels": len(labels(target)), "citation_commands": len(citation_keys(target)),
+-        "unique_cited_keys": len(cited), "numbered_equations": target.count(r"\begin{equation}"),
+-        "figures": target.count(r"\begin{figure*}"), "tables": target.count(r"\begin{table*}"),
++        "labels": len(labels(target + appendix)), "citation_commands": len(citation_keys(target + appendix)),
++        "unique_cited_keys": len(cited), "numbered_equations": (target + appendix).count(r"\begin{equation}"),
++        "figures": target.count(r"\begin{figure*}"), "tables": len(re.findall(r"\\begin\{table\*?\}", target + appendix)),
+         "algorithms": target.count(r"\begin{algorithm}"), "abstract_words": words,
+         "plot_tables_sha256_match": len(manifest["plot_data_sha256"]),
+         "original_template_files_unchanged": len(manifest["original_template_sha256"]),
+         "pages": pages, "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+         "pdf_sha256": sha(HERE / "main.pdf"), "main_tex_sha256": sha(HERE / "main.tex"),
+-        "limitations": manifest["limitations"], "simulations_run": False,
++        "appendices_restored": ["A", "B", "C"] if appendix else [],
++        "limitations": (["Data availability placeholder and missing author biographies remain; declarations were not edited."]
++                        if appendix else manifest["limitations"]), "simulations_run": False,
+     }, ensure_ascii=False, indent=2))
+ 
+ 

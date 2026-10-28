@@ -1,0 +1,20 @@
+--- before/main.tex
++++ after/main.tex
+@@ -1368,6 +1368,8 @@
+ 
+ Further possibilities arise from the computational structure of the method. Independent local simulators can run in parallel between synchronisation points, and individual communities can have different internal structures and simulation parameters. In addition, replacing explicit inter-community edges with aggregate weights can reduce the amount of contact data. However, the actual gains in speed and memory depend on the network structure and the cost of synchronisation.
+ 
++\textbf{Outlook.} A natural next step is evaluation on openly available empirical contact networks, for example the SocioPatterns high-school contact data \cite{mastrandrea2015} and primary-school contact data \cite{stehle2011,gemmetto2014}. Their class labels provide community partitions, and measured contacts permit comparison of a full-network reference with an interface retaining only $W_{ij}$. Geographically explicit synthetic population data also provide individual social connections and residential locations \cite{jiang2024synthetic}, allowing cities or regions to define communities and cross-boundary connections to be aggregated into $W_{ij}$. A first study could use explicitly defined static contact aggregates; retaining the recorded contact times would require a temporal-network extension. Proper evaluation must address observation windows, contact-weight calibration, incomplete participation, and sensitivity to disease parameters and community definitions. These tasks warrant a dedicated follow-up paper beyond the present methodological study. Such data test fidelity on observed contact structures; validation against observed epidemic outcomes would require additional evidence.
++
+ \section{Conclusions}
+ \label{sec:conclusions}
+ 
+@@ -1415,7 +1417,7 @@
+ \bibliographystyle{IEEEtran}
+ % Balance the final columns with the native IEEE reference trigger.
+ \IEEEtriggeratref{5}
+-\bibliography{references_fixed,references_missing}
++\bibliography{references_fixed,references_missing,references_outlook}
+ % Keep the final page compact; the class otherwise stretches the author gap.
+ \patchcmd{\IEEEbiographynophoto}
+   {\vskip 4\baselineskip plus 1fil minus 0\baselineskip}

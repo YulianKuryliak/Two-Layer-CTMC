@@ -1,0 +1,37 @@
+{
+  "description": "Two n=1000 chain cases using the original benchmark runner",
+  "replications_default": 1,
+  "defaults": {
+    "communities": 10,
+    "community_size": 1000,
+    "inter_links": 5,
+    "macro_graph_type": "chain",
+    "beta": 0.003,
+    "gamma": 0.0,
+    "model": 2,
+    "tau_micro": 1.0,
+    "macro_T": 1.0,
+    "T_end": 4000.0,
+    "dt_out": 1.0,
+    "initial_node": 0,
+    "store_trajectories": true
+  },
+  "scenarios": [
+    {
+      "name": "chain_complete_L10_n1000_k5_beta003",
+      "family": "n1000_complete",
+      "micro_graph_type": "complete",
+      "edge_prob": 1.0,
+      "base_seed": 20260910,
+      "network_seed_base": 20261910
+    },
+    {
+      "name": "chain_random_connected_L10_n1000_d10_k5_beta003",
+      "family": "n1000_random_connected_d10",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 10,
+      "base_seed": 20262910,
+      "network_seed_base": 20263910
+    }
+  ]
+}

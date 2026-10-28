@@ -1,0 +1,275 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./report.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./report.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(./report.out) (./report.out)
+Overfull \hbox (6.47021pt too wide) in paragraph at lines 24--26
+\T1/cmr/m/n/10.95 Can spec-tral lag, latent-proxy re-lax-ation, or their com-bi
+-na-tion re-duce sparse chain-of-cliques terminal-
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (10.04897pt too wide) in paragraph at lines 86--86
+[]\T1/cmr/m/n/10.95 experiment_01_reference| 
+
+Overfull \hbox (10.78555pt too wide) in paragraph at lines 87--87
+[]\T1/cmr/m/n/10.95 formula.clique_sensitivity| 
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+[]\T1/cmr/m/n/10.95 relW1: V2=0.214, V3=0.06778, V4=0.2588;
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+\T1/cmr/m/n/10.95 CI95: V2=[0.1802,0.2699], V3=[0.04298,0.1189],
+
+Overfull \hbox (43.87038pt too wide) in paragraph at lines 87--88
+[]\T1/cmr/m/n/10.95 recorded_sensitivity;
+
+Overfull \hbox (105.14017pt too wide) in paragraph at lines 87--88
+\T1/cmr/m/n/10.95 prior_2pct_expectation_rejected| 
+
+Overfull \hbox (21.60924pt too wide) in paragraph at lines 88--88
+[]\T1/cmr/m/n/10.95 formula.descriptor_ordering| 
+
+Overfull \hbox (45.73485pt too wide) in paragraph at lines 89--89
+[]\T1/cmr/m/n/10.95 formula.lambda_one_degenerate| 
+
+Overfull \hbox (65.52332pt too wide) in paragraph at lines 90--90
+[]\T1/cmr/m/n/10.95 formula.scheduler_pathwise_identity| 
+
+Overfull \hbox (46.64905pt too wide) in paragraph at lines 91--91
+[]\T1/cmr/m/n/10.95 formula.zero_lag_infinite_kappa| 
+
+Overfull \hbox (8.83989pt too wide) in paragraph at lines 94--94
+[]\T1/cmr/m/n/10.95 production_immutability| 
+
+Overfull \hbox (7.81583pt too wide) in paragraph at lines 85--97
+ [][] 
+[2] (./tables/table_1_metrics.tex
+Overfull \hbox (14.0558pt too wide) in alignment at lines 2--6
+ [] [] [] [] [] [] [] 
+
+Overfull \hbox (14.0558pt too wide) in alignment at lines 6--10
+ [] [] [] [] [] [] [] 
+
+Overfull \hbox (64.73093pt too wide) in alignment at lines 10--37
+ [] [] [] [] [] [] [] 
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 2 on input line 37.
+
+[3]) [4 <./figures/figure_1.pdf>] [5 <./figures/figure_2.pdf> <./figures/figure
+_3.pdf>] [6 <./figures/figure_4.pdf>]
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+[7] (./report.aux) )
+(see the transcript file for additional information) </home/uakuryliyu/.texlive
+2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/uakuryliyu/.t
+exlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </home/uakuryl
+iyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </home/u
+akuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </
+home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600
+pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm10
+00.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/
+ecbx1000.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecbx1095.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/
+jknappen/ec/ecrm1200.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/l
+jfour/jknappen/ec/ecrm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on report.pdf (7 pages, 266747 bytes).
+Transcript written on report.log.
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./report.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./report.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(./report.out) (./report.out)
+Overfull \hbox (6.47021pt too wide) in paragraph at lines 24--26
+\T1/cmr/m/n/10.95 Can spec-tral lag, latent-proxy re-lax-ation, or their com-bi
+-na-tion re-duce sparse chain-of-cliques terminal-
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (10.04897pt too wide) in paragraph at lines 86--86
+[]\T1/cmr/m/n/10.95 experiment_01_reference| 
+
+Overfull \hbox (10.78555pt too wide) in paragraph at lines 87--87
+[]\T1/cmr/m/n/10.95 formula.clique_sensitivity| 
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+[]\T1/cmr/m/n/10.95 relW1: V2=0.214, V3=0.06778, V4=0.2588;
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+\T1/cmr/m/n/10.95 CI95: V2=[0.1802,0.2699], V3=[0.04298,0.1189],
+
+Overfull \hbox (43.87038pt too wide) in paragraph at lines 87--88
+[]\T1/cmr/m/n/10.95 recorded_sensitivity;
+
+Overfull \hbox (105.14017pt too wide) in paragraph at lines 87--88
+\T1/cmr/m/n/10.95 prior_2pct_expectation_rejected| 
+
+Overfull \hbox (21.60924pt too wide) in paragraph at lines 88--88
+[]\T1/cmr/m/n/10.95 formula.descriptor_ordering| 
+
+Overfull \hbox (45.73485pt too wide) in paragraph at lines 89--89
+[]\T1/cmr/m/n/10.95 formula.lambda_one_degenerate| 
+
+Overfull \hbox (65.52332pt too wide) in paragraph at lines 90--90
+[]\T1/cmr/m/n/10.95 formula.scheduler_pathwise_identity| 
+
+Overfull \hbox (46.64905pt too wide) in paragraph at lines 91--91
+[]\T1/cmr/m/n/10.95 formula.zero_lag_infinite_kappa| 
+
+Overfull \hbox (8.83989pt too wide) in paragraph at lines 94--94
+[]\T1/cmr/m/n/10.95 production_immutability| 
+
+Overfull \hbox (7.81583pt too wide) in paragraph at lines 85--97
+ [][] 
+[2] (./tables/table_1_metrics.tex
+Overfull \hbox (64.73093pt too wide) in alignment at lines 2--6
+ [] [] [] [] [] [] [] 
+
+Overfull \hbox (64.73093pt too wide) in alignment at lines 6--10
+ [] [] [] [] [] [] [] 
+
+Overfull \hbox (64.73093pt too wide) in alignment at lines 10--37
+ [] [] [] [] [] [] [] 
+[3]) [4 <./figures/figure_1.pdf>] [5 <./figures/figure_2.pdf> <./figures/figure
+_3.pdf>] [6 <./figures/figure_4.pdf>]
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd) [7] (./report.aux) )
+(see the transcript file for additional information) </home/uakuryliyu/.texlive
+2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/uakuryliyu/.t
+exlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </home/uakuryl
+iyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </home/u
+akuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </
+home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600
+pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm10
+00.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/
+ecbx1000.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecbx1095.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/ljfour/
+jknappen/ec/ecrm1200.600pk> </home/uakuryliyu/.texlive2023/texmf-var/fonts/pk/l
+jfour/jknappen/ec/ecrm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on report.pdf (7 pages, 266746 bytes).
+Transcript written on report.log.

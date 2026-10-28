@@ -1,0 +1,14 @@
+{
+  "output_pdf": "paper/SMPT paper/main-SMPT_UK.pdf",
+  "pages": 21,
+  "sections1_5_unchanged": true,
+  "all_results_after_intro_unchanged_except_two_caption_phrases": true,
+  "figure_paths_unchanged": true,
+  "undefined_references_citations": false,
+  "missing_glyphs": false,
+  "unstable_labels": false,
+  "overfull": "only inherited CAS title117.0831pt",
+  "scope": "Reader-facing description from scratch; no development history in Results",
+  "no_simulations": true,
+  "source_sha256": "9e06de01393e00ab5abe4bffe32dcf7d5a881836c6104d434b0ed92e91ddf2c9"
+}

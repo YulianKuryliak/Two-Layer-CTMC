@@ -1,0 +1,50 @@
+[
+  {
+    "file": "runners/analyze_calibration_cv.py",
+    "sha256": "e5d9df43a6b7939a2a0f4334a37e3a38437fb8fb82c4f2c498da94ba8a13a261"
+  },
+  {
+    "file": "runners/analyze_gateway_calibration_bound.py",
+    "sha256": "a8bef59f950c3d33980fa2503f60cfeca807fda930b99a956b4bb2caf5cf3ca8"
+  },
+  {
+    "file": "runners/analyze_production_diagnostic.py",
+    "sha256": "076f2c4f2bbf4ac5780b33eaa239376d4dd878f806acdbfccf7fa2e32a1dce4d"
+  },
+  {
+    "file": "runners/analyze_production_n100.py",
+    "sha256": "708d8f4aa96c1f8be878473dc44f1a21638062ffb03d5868a8ac5f672cc2b2a4"
+  },
+  {
+    "file": "runners/analyze_structural_attribution.py",
+    "sha256": "ebfe2af464a2fdd22db4f7aa2dc26526ec6cb38e422b121255d0fa26863bca29"
+  },
+  {
+    "file": "runners/run_eventdriven_calibration_085.py",
+    "sha256": "1a7798708537d48bf4e3759e4205589716a8d29192fdb1fb41c5005b622a43bd"
+  },
+  {
+    "file": "runners/run_eventdriven_calibration_cv.py",
+    "sha256": "461b91a8efd3add1c51cd9ada39369210ffbcee24cd6856bc2cf3f473fb22e30"
+  },
+  {
+    "file": "runners/run_eventdriven_reference.py",
+    "sha256": "d0d144a268985fb64efacde8336a57db2bdd7d98ecaa53d19305059702594d89"
+  },
+  {
+    "file": "runners/run_independent_rng_l10.py",
+    "sha256": "d68418e73841031224f8d9d7b6dd48662917ebbef226fe99f1f010f56d25059e"
+  },
+  {
+    "file": "runners/run_production_diagnostic.py",
+    "sha256": "9119fc55f6ca86ea3eb0d0f48f4302bcfba52bb307f5597a624be8c9ec25c739"
+  },
+  {
+    "file": "runners/run_production_factorial.py",
+    "sha256": "bf8013c72b7368bc04930ca7f8b5a6a5c6b8eb0adc338286e02710a6abd0891d"
+  },
+  {
+    "file": "runners/run_rng_coupling_unit.py",
+    "sha256": "0b0956a32611bff2d0d318d69e14406004fe15d0e6c4e5840670e76e123957d1"
+  }
+]

@@ -1,0 +1,58 @@
+\begin{figure*}[!tbp]
+\centering
+% BEGIN EDITABLE FIGURE descriptor
+\begin{tikzpicture}
+\begin{groupplot}[paper axis,group style={group size=3 by 1,horizontal sep=1.7cm},width=.24\linewidth,height=4.1cm,scale only axis]
+\nextgroupplot[xmode=log,xlabel={$\rho=\beta\sigma_T$},ylabel={$e_W$ of $T_9$ (\%)},title={(a) Distributional discrepancy}]
+\addplot[Size50,mark=*,mark size=1.7pt,mark options={fill=Size50}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n50_k1.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n50_k1.dat};
+\addplot[Size50,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n50_k5.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n50_k5.dat};
+\addplot[Size100,mark=*,mark size=1.7pt,mark options={fill=Size100}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n100_k1.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n100_k1.dat};
+\addplot[Size100,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n100_k5.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n100_k5.dat};
+\addplot[Size250,mark=*,mark size=1.7pt,mark options={fill=Size250}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n250_k1.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n250_k1.dat};
+\addplot[Size250,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n250_k5.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n250_k5.dat};
+\addplot[Size1000,mark=*,mark size=1.7pt,mark options={fill=Size1000}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n1000_k1.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n1000_k1.dat};
+\addplot[Size1000,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=rel_w1_pct]{figures_pgfplots/descriptor_n1000_k5.dat};
+\addplot[gray!65,only marks,mark=-,mark size=2pt] table[x=plotrho,y=rel_w1_null95_pct]{figures_pgfplots/descriptor_n1000_k5.dat};
+\nextgroupplot[xmode=log,xlabel={$\rho=\beta\sigma_T$},ylabel={Median shift $b_9$ (\%)},title={(b) Signed median shift}]
+\addplot[gray,no marks] coordinates {(0.0018131616755314697,0) (2.7344524800897014,0)};
+\addplot[Size50,mark=*,mark size=1.7pt,mark options={fill=Size50}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n50_k1.dat};
+\addplot[Size50,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n50_k5.dat};
+\addplot[Size100,mark=*,mark size=1.7pt,mark options={fill=Size100}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n100_k1.dat};
+\addplot[Size100,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n100_k5.dat};
+\addplot[Size250,mark=*,mark size=1.7pt,mark options={fill=Size250}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n250_k1.dat};
+\addplot[Size250,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n250_k5.dat};
+\addplot[Size1000,mark=*,mark size=1.7pt,mark options={fill=Size1000}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n1000_k1.dat};
+\addplot[Size1000,mark=triangle,mark size=1.7pt,mark options={fill=white}] table[x=plotrho,y=median_shift_pct]{figures_pgfplots/descriptor_n1000_k5.dat};
+\nextgroupplot[title={(c) First vs later crossings},xmin=-47,xmax=5,ymin=-47,ymax=5,xtick={-40,-20,0},ytick={-40,-20,0},xlabel={First crossing: mean shift (\%)},ylabel={Crossings 2--9: mean shift (\%)}]
+\addplot[gray,no marks] coordinates {(-47,-47) (5,5)};
+\addplot[only marks,Size50,mark=*,mark size=1.7pt,mark options={fill=Size50},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n50_k1.dat};
+\addplot[only marks,Size50,mark=triangle,mark size=1.7pt,mark options={fill=white},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n50_k5.dat};
+\addplot[only marks,Size100,mark=*,mark size=1.7pt,mark options={fill=Size100},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n100_k1.dat};
+\addplot[only marks,Size100,mark=triangle,mark size=1.7pt,mark options={fill=white},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n100_k5.dat};
+\addplot[only marks,Size250,mark=*,mark size=1.7pt,mark options={fill=Size250},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n250_k1.dat};
+\addplot[only marks,Size250,mark=triangle,mark size=1.7pt,mark options={fill=white},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n250_k5.dat};
+\addplot[only marks,Size1000,mark=*,mark size=1.7pt,mark options={fill=Size1000},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n1000_k1.dat};
+\addplot[only marks,Size1000,mark=triangle,mark size=1.7pt,mark options={fill=white},error bars/.cd,x dir=both,x explicit,error bar style={line width=.3pt},error mark options={mark size=0pt}] table[x=first_cross_shift_pct,y=later_cross_shift_pct,x error minus=errlo,x error plus=errhi]{figures_pgfplots/descriptor_cross_n1000_k5.dat};
+\node[anchor=north west,font=\tiny,align=left,text=gray] at (axis cs:-45,3) {ASPL $\geq3$\\Below diagonal: later\\crossings more biased};
+\end{groupplot}
+\node[anchor=north,font=\scriptsize] at ([yshift=-1.25cm]group c2r1.south) {\textcolor{Size50}{$\blacksquare$} $n=50$\quad\textcolor{Size100}{$\blacksquare$} $n=100$\quad\textcolor{Size250}{$\blacksquare$} $n=250$\quad\textcolor{Size1000}{$\blacksquare$} $n=1000$\quad$\bullet$ $k=1$\quad$\triangle$ $k=5$\quad\textcolor{gray}{---} null 95\%};
+\end{tikzpicture}
+% END EDITABLE FIGURE descriptor
+\caption{%
+Relationship between discrepancies in \Full{} and \TS{} and the time-scale ratio $\rho=\beta_{\mathrm{out}}\sigma_T$ for 48 chain configurations.
+(a) Normalised Wasserstein distance $\eW$ for the terminal arrival time $T_9$.
+(b) Relative shift in its median, $b_9$.
+Colours denote community size; filled circles correspond to $k=1$, and open triangles to $k=5$.
+Lines connect configurations with ASPL from 1 to 6 at fixed $n$ and $k$. Grey marks in (a) show the 95th percentile of the permutation distribution of the distance for the corresponding configuration.
+(c) Comparison of relative shifts in the mean duration of the first crossing and crossings 2--9 for $\mathrm{ASPL}\geq3$.
+Error bars show 95\% block-bootstrap intervals for the shift in the first crossing.
+}
+\label{fig:descriptor}
+\end{figure*}

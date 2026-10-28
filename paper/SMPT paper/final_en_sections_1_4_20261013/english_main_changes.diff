@@ -1,0 +1,272 @@
+--- main-SMPT.tex before
++++ main-SMPT.tex updated
+@@ -41,12 +41,10 @@
+ 
+ % Full-paper numbers for material not yet translated into this partial main.
+ \AtBeginDocument{
+-\newlabel{prop:ordering}{{2}{11}{}{}{}}
+ \newlabel{sec:design}{{5}{13}{}{}{}}
+ \newlabel{sec:discussion}{{7}{22}{}{}{}}
+ \newlabel{sec:res_descriptor}{{6.6}{20}{}{}{}}
+ \newlabel{sec:results}{{6}{15}{}{}{}}
+-\newlabel{sec:single_export}{{4.3}{11}{}{}{}}
+ }
+ \begin{document}
+ \let\WriteBookmarks\relax
+@@ -107,7 +105,7 @@
+ This article makes four contributions.
+ \begin{enumerate}
+ \item We describe how the simulator works: each community is simulated separately, and a shared scheduler determines infections between them. We explain how it coordinates the local simulators on time intervals of fixed length (Section~\ref{sec:method}, Algorithm~\ref{alg:scheduler}).
+-\item We show which network the method simulates exactly. The ideal process is exact for a \emph{surrogate network with uniform inter-community connections}: for each connected community pair, every node in one community is connected to every node in the other, and the total coupling weight is distributed equally among these node pairs (Proposition~\ref{prop:surrogate}). We then identify the sources of error and analyse a single export of infection (Proposition~\ref*{prop:ordering}).
++\item We show which network the method simulates exactly. The ideal process is exact for a \emph{surrogate network with uniform inter-community connections}: for each connected community pair, every node in one community is connected to every node in the other, and the total coupling weight is distributed equally among these node pairs (Proposition~\ref{prop:surrogate}). We then identify the sources of error and analyse a single export of infection (Proposition~\ref{prop:ordering}).
+ \item We compare the two-scale method with full-network Gillespie simulation for transmission to one neighbouring community and for spread along chains of communities. We measure differences using the relative shift in the median time of first infection and the Wasserstein distance between the distributions of these times (Sections~\ref*{sec:design} and~\ref*{sec:results}).
+ \item We propose an empirical indicator of accuracy for our benchmarks. It compares the spread of infection times inside a community with the typical transmission time through one cross-community edge (Section~\ref*{sec:res_descriptor}).
+ \end{enumerate}
+@@ -360,31 +358,60 @@
+ 
+ 
+ % English translation of the current Ukrainian main, up to but excluding single export.
+-\section{What the two-scale method actually simulates}
++% Translation of active Section 4 in the current Ukrainian main.
++\section{Theoretical analysis of the two-scale method}
+ \label{sec:analysis}
+ 
+-\subsection{Exactness for a network with uniform inter-community connections}
++The previous section described the two-scale simulation algorithm. The remaining question is how closely its results represent infection spread in the original network. Although the local simulators reproduce the within-community processes exactly, the macro layer uses aggregate connections instead of individual inter-community edges.
++
++In this section, we first identify the network that mathematically corresponds to the ideal two-scale process. This establishes what changes when contacts are aggregated and separates these changes from the numerical synchronisation error. We then investigate how losing information about bridge nodes affects the first transmission time and introduce a characteristic for analysing accuracy in the experiments.
++
++\subsection{Equivalence to simulation on a network with uniform inter-community connections}
+ \label{sec:surrogate}
+ 
+-If the time of each event is determined exactly by~\eqref{eq:hazard_integral}, the two-scale method itself defines a continuous-time Markov chain. It has the same local infection and removal rules as full-network Gillespie. The difference concerns contacts between communities. Instead of the real edges, the method effectively uses weak connections between every pair of nodes in two connected communities.
+-
+-We construct a surrogate network with uniform inter-community connections, $\tilde G$: internal contacts and their rates are unchanged, while every node in one community is connected to every node in the other for each connected pair of communities. The total weight of the inter-community contacts is distributed equally among all these node pairs. The following proposition shows that the two-scale rules give the same infection rates as full-network Gillespie on $\tilde G$.
+-
+-\begin{proposition}[Exactness for a network with uniform inter-community connections]
++The two-scale method replaces explicit inter-community contacts with aggregate infection rates while retaining exact stochastic dynamics within communities. This raises the question of whether the resulting process can be represented as exact simulation on a contact network and, if so, what that network looks like.
++
++To answer this question, consider the ideal two-scale process, in which the time of each macro event is determined exactly by~\eqref{eq:hazard_integral}, without the time-grid approximation. This process is a continuous-time Markov chain (CTMC), because its transition rates depend on the current system state. Local transitions have the same rates as in the full-network model, while inter-community infections are determined by the aggregate rates~\eqref{eq:macro_rate} and the recipient-node selection rule.
++
++We show that, when the susceptible recipient node is selected uniformly, this process is equivalent to exact simulation on a surrogate network with uniform inter-community connections, $\tilde G$ (Figure~\ref{fig:schematic}c). In this network, the total weight of each inter-community connection is distributed equally among all node pairs in the corresponding communities.
++
++\begin{proposition}[Equivalence for a network with uniform inter-community connections]
+ \label{prop:surrogate}
+-Let $\tilde G$ have the same internal contacts and rates as $G$. For each community pair $i\neq j$, replace its real inter-community channels $E_{ij}$ by all channels $V_i\times V_j$. Assign each new channel the rate $\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}/(N_iN_j)$, where $N_i$ and $N_j$ are the numbers of nodes in the respective communities. If the simulator chooses the import target uniformly among susceptible nodes, the ideal two-scale process has the same rates for all transitions as the full-network process on $\tilde G$. Thus, from the same initial state, its distribution coincides with that of full-network Gillespie on $\tilde G$.
++Let $\tilde G$ have the same within-community contacts and their rates as the original network $G$. Replace each inter-community bundle $E_{ij}$ with the full set of channels $V_i\times V_j$, assigning each channel $(u,v)$ the rate
++\[
++\tilde\beta_{uv}
++=
++\frac{\beta_{\mathrm{out}}W_{ij}}{N_iN_j},
++\qquad u\in V_i,\;v\in V_j,\;i\neq j.
++\]
++If the simulator selects the import target uniformly among susceptible nodes, the ideal two-scale process has the same rates for all transitions as the full-network process on $\tilde G$. Thus, from the same initial state, its distribution coincides with that of full-network Gillespie on $\tilde G$.
+ \end{proposition}
+ 
+ \begin{proof}
+-Local infections and removals have the same rates. For a susceptible node $v\in V_j$, the probability of being selected as an import target is $1/s_j(x)$. Its infection rate from other communities is therefore
++Local infections and removals have the same rates in both processes. It therefore suffices to compare the inter-community infection rates.
++
++Consider any susceptible node $v\in V_j$ in system state $x$. In the two-scale process, imports from community $i$ to $j$ occur at rate $\lambda_{ij}(x)$, and the probability of selecting node $v$ is $1/s_j(x)$. Its total infection rate from other communities is therefore
+ \[
+ \begin{aligned}
+ \sum_{i\neq j}\lambda_{ij}(x)\frac{1}{s_j(x)}
+-&=\sum_{i\neq j}\beta_{\mathrm{out}}W_{ij}\frac{y_i(x)}{N_i}\frac{s_j(x)}{N_j}\frac{1}{s_j(x)}\\
+-&=\sum_{i\neq j}\sum_{u\in V_i}\frac{\beta_{\mathrm{out}}W_{ij}}{N_iN_j}\ind\{x_u=I\}.
++&=
++\sum_{i\neq j}
++\beta_{\mathrm{out}}W_{ij}
++\frac{y_i(x)}{N_i}
++\frac{s_j(x)}{N_j}
++\frac{1}{s_j(x)}
++\\
++&=
++\sum_{i\neq j}
++\sum_{u\in V_i}
++\frac{\beta_{\mathrm{out}}W_{ij}}{N_iN_j}
++\ind\{x_u=I\}.
+ \end{aligned}
+ \]
+-The last expression sums the rates of all channels in $\tilde G$ leading from infected nodes to $v$. If $s_j(x)=0$, imports are impossible in both models. Thus, all transition rates coincide. \qed
++
++The last expression is the total infection rate of node $v$ through all inter-community channels of the surrogate network $\tilde G$ that lead to it from infected nodes. If $s_j(x)=0$, the community has no susceptible nodes, and inter-community infection is impossible in both models.
++
++Thus, the rates of all possible transitions coincide. The generators of the two CTMCs are therefore identical, giving the same process distribution from the same initial state.
+ \end{proof}
+ 
+ \begin{corollary}
+@@ -392,15 +419,19 @@
+ If every node in community $i$ is already connected to every node in community $j$ in the original network, and all these channels have the same rate for a given community pair, then $\tilde G=G$. In this case, the ideal two-scale method is also exact for the original network.
+ \end{corollary}
+ 
+-In general, $\tilde G$ preserves the internal contacts and aggregate inter-community weights of $G$, but differs in its inter-community contacts, so $\tilde G\neq G$.
+-The total coupling strength is preserved:
+-\[
+-\sum_{(u,v)\in V_i\times V_j}\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}.
+-\]
+-Its distribution among nodes changes (Figure~\ref{fig:schematic}c). Thus, even with exact event timing, results on $G$ and $\tilde G$ may differ. The time-grid implementation adds a numerical error. These two effects can be checked separately: comparison with full-network Gillespie on $\tilde G$ checks synchronisation, while comparison with full-network Gillespie on $G$ also captures the effects of replacing the contacts.
+-
+-\subsection{Where the error comes from}
++The ideal two-scale method therefore has an exact network interpretation: it reproduces the process on $\tilde G$. In general, however, the original and surrogate networks differ. The established equivalence does not by itself guarantee similar simulation results on these networks. To identify possible reasons for discrepancies, we examine which properties of inter-community contacts are preserved by their replacement and which change.
++
++\subsection{Mechanisms of discrepancy from the full-network model}
+ \label{sec:sources}
++
++By construction, the surrogate network $\tilde G$ preserves within-community contacts and the total coupling rate between each community pair:
++\[
++\sum_{(u,v)\in V_i\times V_j}\tilde\beta_{uv}
++=
++\beta_{\mathrm{out}}W_{ij}.
++\]
++
++This equality concerns the total rate of all channels, however, rather than only those through which infection can be transmitted in the current system state. The actual infection rate depends on the endpoint states of each contact. Equal total inter-community weights therefore do not guarantee the same infection dynamics.
+ 
+ Replacing real inter-community contacts by averaged connections changes three things: the transmission rate, the recipient node, and the possible number of imports. A fourth source of error is the approximate calculation of event times in the implementation.
+ 
+@@ -410,23 +441,134 @@
+ \label{eq:exact_rate}
+ a^\star_{ij}(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}w_{uv}\,\ind\{x_u=I,\,x_v=S\},
+ \end{equation}
+-Only contacts from infected nodes to susceptible nodes contribute to this sum. If all bridge nodes in the source are still susceptible, transmission is impossible. In the two-scale method, the rate depends on the overall infected fraction, so infection of any source node can contribute to export. The method can transmit infection before any real bridge node is infected. We refer to this as \emph{bridge bypass} (Section~\ref*{sec:single_export}).
+-
+-\paragraph{2. The infection location in the recipient changes.}
+-In the full network, infection reaches the endpoint of the contact through which it was transmitted. The two-scale method selects any susceptible node with equal probability. This affects how quickly infection reaches the bridge nodes leading to the next community.
+-
+-\paragraph{3. Additional imports are possible.}
+-In the SI model, a node remains infected once infected. A real directed channel can therefore infect its target node at most once. The $|E_{ij}|$ channels permit at most $|E_{ij}|$ infections; a single channel permits at most one.
+-\par In $\tilde G$, connected communities generally have more contacts than in the original network. The rate $\lambda_{ij}=\beta_{\mathrm{out}}W_{ij}\ibar_i\sbar_j$ can remain positive after the first import. The expected number of imports on $[t_1,t_2]$ is $\mathbb{E}\int_{t_1}^{t_2}\lambda_{ij}(s)\,ds$. If the recipient remains mostly susceptible for a long time, the method may add infections that the original set of contacts cannot transmit.
+-
+-\paragraph{4. Event timing is approximate.}
+-The implementation estimates the rate from the state at the midpoint of an interval and uses this estimate to determine the import time (Section~\ref{sec:timing}). This approximates the integral in~\eqref{eq:hazard_integral}. The resulting error concerns the time grid and is separate from the replacement of contacts.
+-
++Only contacts from infected nodes to susceptible nodes contribute to this sum. If all bridge nodes in the source are still susceptible, transmission is impossible. In the two-scale method, the rate depends on the overall infected fraction, so infection of any source node can contribute to export. The method can transmit infection before any real bridge node is infected. We refer to this as \emph{bridge bypass} (Section~\ref{sec:single_export}).
++
++The aggregate rate does not necessarily exceed the actual rate. If infected nodes are concentrated at the inter-community interface, the opposite can occur. Comparing rates in an individual state is therefore insufficient to establish the overall direction of a shift in transmission time.
++
++\paragraph{2. Import location.}
++In the full network, infection reaches the endpoint of the contact through which it was transmitted. The two-scale method selects any susceptible node with equal probability.
++As a result, infection may reach a node that has no incoming contact from the corresponding source community in the original network. The location of the first infection affects subsequent spread within the community, including the time taken to reach bridge nodes leading to further communities. Changing the import-placement rule can therefore affect both local dynamics and infection spread through a sequence of communities.
++
++\paragraph{3. Additional inter-community infections.}
++In the SI model, each node can move from $S$ to $I$ only once. Each directed channel in the original network can therefore cause at most one infection of its target node. Consequently, at most $|E_{ij}|$ such infections can occur through the bundle $E_{ij}$.
++
++The two-scale method does not track individual inter-community channels. After the first import, the rate $\lambda_{ij}$ can remain positive as long as the source community has infected nodes and the recipient community has susceptible nodes.
++
++For example, if the communities are connected by just one directed channel, it can cause at most one infection in the full network. In contrast, \TS{} can import infection into several different nodes of the recipient community. These additional infections can accelerate internal spread and subsequent transmission to other communities.
++
++\paragraph{4. Numerical synchronisation error.}
++As described in Section~\ref{sec:timing}, the scheduler estimates the rate from the system state at the midpoint of a synchronisation interval and uses it to approximate the integral~\eqref{eq:hazard_integral}. The implemented \TS{} can therefore differ even from the ideal two-scale process on $\tilde G$.
++
++% Ukrainian editorial note retained for review: is this remark needed?
+ \begin{remark}[The first import with randomly placed contacts]
+ \label{rem:placement}
+ Suppose that the endpoints of inter-community channels are selected uniformly and independently of the internal graphs and other contact sets, as in our tests. If the recipient community is still fully susceptible, the target of its first import is also uniform in the full network, after averaging over random contact placement. The two-scale method has the same distribution of the first target. For an individual fixed network, the targets need not coincide. The same distribution of the first target does not imply the same distribution of the first import time. Our tests show small errors in a number of configurations where the spread of internal infection times is small compared with the mean transmission time through one inter-community channel (Section~\ref*{sec:res_descriptor}).
+ \end{remark}
+ 
++Replacing inter-community contacts thus changes not only the nodes through which infection can be transmitted, but also the possible locations and number of infections. These mechanisms can act simultaneously and should not be treated as independent additive components of the total error. Analysing them alone does not establish either the overall direction or the magnitude of discrepancies between the models.
++
++\subsection{Effect of contact aggregation on systematic shifts in export time}
++\label{sec:single_export}
++
++We now examine how replacing individual inter-community contacts with an aggregate connection affects the first transmission time to another community. In particular, we ask whether aggregation can systematically shift the first export time even when the mean transmission rate is preserved.
++
++To isolate the effect of losing information about bridge nodes, consider a simplified network: a connected source community $V_0$ with $n$ nodes and one external susceptible node $\ell$, called a leaf. The leaf is connected to a set $B\subset V_0$ of $k$ bridge nodes, with each channel having rate $\beta_{\mathrm{out}}$. The source follows SI dynamics, and the leaf does not affect internal infection spread before it becomes infected.
++
++In the full-network model, the leaf can become infected only after at least one real bridge node becomes infected. In \TS{}, the aggregate coupling weight is $W_{0\ell}=k$, so before the leaf is infected, the export rate is
++\[
++\lambda_{0\ell}(t)
++=
++\beta_{\mathrm{out}}k\ibar_0(t).
++\]
++The possibility of export in the two-scale model therefore depends on the overall number of infected source nodes, rather than the states of the individual bridges.
++
++Consider the case in which the $k$ bridge nodes are selected uniformly and independently of the internal dynamics. This allows us to compare first-export-time distributions while accounting for random placement of inter-community contacts.
++
++\begin{proposition}[Stochastic ordering of the first export time]
++\label{prop:ordering}
++Let the bridge set $B$ be chosen uniformly from all $k$-element subsets of $V_0$, independently of the internal graph, initial state, and event randomness. Let $T^{\Full}$ and $T^{\TS}$ be the first infection times of the leaf in the full-network and ideal two-scale models, respectively. Then
++\[
++\mathbb{P}(T^{\Full}>t)
++\geq
++\mathbb{P}(T^{\TS}>t),
++\qquad t\geq 0.
++\]
++
++Thus, with randomly placed bridges, the first export time in \TS{} is stochastically no greater than the corresponding time in \Full{}. The same ordering holds for its expectation and quantiles.
++\end{proposition}
++
++\begin{proof}
++Before the leaf becomes infected, infection spread within $V_0$ is independent of external transmission. Both models can therefore be compared using the same internal SI trajectory $X_0$ of the source community.
++
++Let $\tau_u$ be the infection time of node $u$, and let $A_u(t)=\max\{t-\tau_u,0\}$ be the time it has spent infected by time $t$.
++
++In the full-network model, the cumulative export rate up to time $t$ is determined only by infected bridge nodes:
++\[
++H_B(t)
++=
++\beta_{\mathrm{out}}\sum_{u\in B}A_u(t).
++\]
++
++In \TS{}, the corresponding cumulative rate is determined by all source nodes:
++\[
++\bar H(t)
++=
++\beta_{\mathrm{out}}\frac{k}{n}
++\sum_{u\in V_0}A_u(t).
++\]
++
++With a uniform, independent choice of $B$, each source node has probability $k/n$ of belonging to the bridge set. Conditional on the trajectory $X_0$, therefore,
++\[
++\mathbb{E}_B[H_B(t)\mid X_0]
++=
++\bar H(t).
++\]
++
++The cumulative rate in \TS{} is thus the expected cumulative rate in \Full{} over random bridge placement. Equality of these quantities does not, however, imply equality of the export-time distributions.
++
++The probability of no export by time $t$ is the exponential of the negative cumulative rate. Since $z\mapsto e^{-z}$ is convex, Jensen's inequality gives
++\[
++\begin{aligned}
++\mathbb{P}(T^{\Full}>t\mid X_0)
++&=
++\mathbb{E}_B[e^{-H_B(t)}\mid X_0]
++\\
++&\geq
++e^{-\mathbb{E}_B[H_B(t)\mid X_0]}
++\\
++&=
++e^{-\bar H(t)}
++\\
++&=
++\mathbb{P}(T^{\TS}>t\mid X_0).
++\end{aligned}
++\]
++
++Because this inequality holds for every internal trajectory $X_0$, it also holds after averaging over all possible trajectories, proving the proposition.
++\end{proof}
++
++This result shows that the aggregate rate matches the expected actual rate, yet the transmission-time distributions can differ systematically. The reason is the nonlinear dependence of the probability of no event on the cumulative rate: averaging rates is not equivalent to averaging the corresponding probabilities.
++
++In addition to shifting time, aggregation can violate constraints on admissible transmission routes. Let $T_B=\min_{u\in B}\tau_u$ be the infection time of the first real bridge node. In the full-network model, the leaf cannot become infected before $T_B$. In ideal \TS{}, however, the probability of such an early export is
++\begin{equation}
++\label{eq:bypass}
++\mathbb{P}(T^{\TS}<T_B)
++=
++\mathbb{E}\left[
++1-\exp\left(
++-\beta_{\mathrm{out}}\frac{k}{n}
++\int_0^{T_B}y_0(s)\,ds
++\right)
++\right].
++\end{equation}
++
++This expression gives the probability that the aggregate rate causes an export before any real bridge node becomes infected. It shows that even when export-time distributions are close, the two models can differ in whether their transmission paths are admissible.
++
++For randomly placed bridges, we have therefore established the direction of the stochastic shift in the first export time, but not its magnitude. The next question is which properties of internal spread make this discrepancy small or substantial.
++
++% The temporal-descriptor subsection is commented out in the Ukrainian source
++% and is intentionally not restored in this translation.
++
+ 
+ \bibliographystyle{cas-model2-names}
+ \bibliography{twoscale_references}

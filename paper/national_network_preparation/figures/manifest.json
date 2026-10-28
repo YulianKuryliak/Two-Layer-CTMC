@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-16T13:05:55.351969+00:00",
+  "source_sha256": "c295fb3dd0b435d0a5fe3582f5a3d83f43566c5ca4c59f5fb46bf72c20d4be66",
+  "input_manifest_sha256": "4e377762dff3714aeaeb80ab98d1ac49268790e3e25f36635a0e663e8a5b4185",
+  "matplotlib": "3.11.0",
+  "simulations_run": false,
+  "artifact_sha256": {
+    "analysis.json": "bcdc4cd51a40701f1522cd7d92e86a9c59d52fce3100f87a1b5e8e148eb7a004",
+    "department_links.pdf": "c51d0cc7ddaee832b949a436773b038435a2bf6fa70d8e465a20107531a43e8d",
+    "department_links.png": "bb1a2caaff61bc19755c4cae1463477ece7d7646219a7a0ecd03cc4eab8ec41d",
+    "national_structure.pdf": "6b1368f7579befb97f00501d36346ccd459e4ee5df406c9424185e64be9c348a",
+    "national_structure.png": "cb39f270519e1ee2f88d23365baf2490518129ef98eb41174829b7d954a8d83d",
+    "selected_department_weights.csv": "ba91b9d94177be96c62be83ae37b9b57e1082cab09e4ecd209b2ed3395163085",
+    "top_links.tex": "e9ba67ed74ffd300cda43b2c3ce52ed2ed4c19189b86cee35f6a7ed307ea901f"
+  }
+}

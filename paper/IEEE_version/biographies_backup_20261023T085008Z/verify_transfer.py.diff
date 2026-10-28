@@ -1,0 +1,47 @@
+--- paper/IEEE_version/biographies_backup_20261023T085008Z/verify_transfer.py
++++ paper/IEEE_version/verify_transfer.py
+@@ -94,13 +94,25 @@
+     source_file = manifest_path.parent / "source_main-SMPT.tex"
+     source, target = source_file.read_text(), (HERE / "main.tex").read_text()
+     assert sha(source_file) == manifest["source_sha256"]
++    biographies_added = (HERE / "biographies_change.json").is_file()
++    declaration_target = target
++    if biographies_added:
++        biography_change = json.loads((HERE / "biographies_change.json").read_text())
++        biography_before = HERE / biography_change["backup"] / "main.tex"
++        assert sha(biography_before) == biography_change["before_main_sha256"]
++        declaration_target = biography_before.read_text()
++        anchor = biography_change["anchor"]
++        assert declaration_target.count(anchor) == 1
++        assert declaration_target.replace(anchor, biography_change["inserted"] + anchor, 1) == target
++        assert target.count(r"\begin{IEEEbiographynophoto}") == 2
++        assert target.index(r"\bibliography{") < target.index(r"\begin{IEEEbiographynophoto}")
+     acknowledgment_changed = (HERE / "acknowledgment_change.json").is_file()
+     if acknowledgment_changed:
+         change = json.loads((HERE / "acknowledgment_change.json").read_text())
+         before = HERE / change["backup"] / "main.tex"
+         assert sha(before) == change["before_main_sha256"]
+         assert before.read_text().count(change["old"]) == 1
+-        assert before.read_text().replace(change["old"], change["new"], 1) == target
++        assert before.read_text().replace(change["old"], change["new"], 1) == declaration_target
+         assert source.count(change["old"]) == 1
+         source = source.replace(change["old"], change["new"], 1)
+     assert separate_floats(source) == separate_floats(target), "Scientific body or figure contents changed"
+@@ -143,6 +155,7 @@
+     print(json.dumps({
+         "body_preserved_except_citation_layout_and_approved_acknowledgment": True,
+         "approved_acknowledgment_replacement": acknowledgment_changed,
++        "approved_author_biographies_added": biographies_added,
+         "labels": len(labels(target + appendix)), "citation_commands": len(citation_keys(target + appendix)),
+         "unique_cited_keys": len(cited), "numbered_equations": (target + appendix).count(r"\begin{equation}"),
+         "figures": target.count(r"\begin{figure*}"), "tables": len(re.findall(r"\\begin\{table\*?\}", target + appendix)),
+@@ -152,7 +165,8 @@
+         "pages": pages, "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+         "pdf_sha256": sha(HERE / "main.pdf"), "main_tex_sha256": sha(HERE / "main.tex"),
+         "appendices_restored": ["A", "B", "C"] if appendix else [],
+-        "limitations": (["Data availability placeholder and missing author biographies remain; other declarations were not edited."]
++        "limitations": (["Data availability placeholder remains; author photos have not been supplied; other declarations were not edited."
++                         if biographies_added else "Data availability placeholder and missing author biographies remain; other declarations were not edited."]
+                         if appendix else manifest["limitations"]), "simulations_run": False,
+     }, ensure_ascii=False, indent=2))
+ 

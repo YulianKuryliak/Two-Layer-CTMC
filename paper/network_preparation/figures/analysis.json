@@ -1,0 +1,18 @@
+{
+  "interface_TV_min": 0.886299178688979,
+  "interface_TV_max": 0.9923371647509579,
+  "interface_TV_median": 0.9766941864465084,
+  "witness": {
+    "infected_node": 763,
+    "source_class": "2BIO2",
+    "target_class": "2BIO3",
+    "source_size": 34,
+    "target_size": 40,
+    "W_ij": 0.13532097475108643,
+    "exact_hazard_divided_by_beta": 0.0,
+    "macro_hazard_divided_by_beta": 0.0039800286691496,
+    "state": "Only this source node infected; all remaining nodes susceptible.",
+    "meaning": "One fixed-state counterexample, selected to maximize aggregate hazard among zero-exact-hazard source/target choices. Not a frequency or estimated arrival-time bias."
+  },
+  "simulations_run": false
+}

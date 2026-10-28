@@ -1,0 +1,11 @@
+{
+  "scope": "Remove repeated sigma_T estimation/metric comparison in5.3; shorten repetitive transitions in5.1 and6; replace final conclusion with user-provided three sentences.",
+  "equations_figures_captions_labels_refs_unchanged": true,
+  "sections1_4_and7_unchanged": true,
+  "numeric_values_unchanged": "Only added mentions18,0.25,4.5 in requested conclusion, already present in Results.",
+  "pages": 22,
+  "compiler": "LuaLaTeX, stable latexmk/BibTeX pass",
+  "inherited_warnings": "Duplicate sec:discussion from pre-existing placeholder/section; native CAS title/empty anchors and prose underfull remain.",
+  "no_simulations_or_statistics_recomputed": true,
+  "english_main_not_edited": true
+}

@@ -1,0 +1,178 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\orcidauthor{0000-0002-6600-2637}{Yulian Kuryliak}
+\csgdef{mark@corau1}{1}
+\emailauthor{yulian.a.kuryliak@lpnu.ua}{Yulian Kuryliak}
+\orcidauthor{0000-0002-7342-2090}{Michael T. M. Emmerich}
+\emailauthor{michael.t.m.emmerich@jyu.fi}{Michael T. M. Emmerich}
+\citation{keeling2005,pastorsatorras2015,kiss2017}
+\citation{balcan2009,barbosa2018human}
+\citation{eubank2004,danon2011}
+\citation{barbosa2018human,chang2021}
+\citation{gillespie1977exact,gibson2000}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{colizza2007reaction,colizza2008,balcan2010modeling,ajelli2010}
+\citation{kuryliak2025towards}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Вступ}{2}{section.1}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{2}{Вступ}{section.1}{}}
+\citation{gillespie1977exact}
+\citation{gibson2000}
+\citation{ethier1986}
+\citation{anderson2007}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{kuryliak2025simulating}
+\citation{haseltine2002,cao2005slow}
+\citation{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}
+\citation{chang2021}
+\citation{eubank2004,kerr2021}
+\citation{ajelli2010}
+\citation{ball1997}
+\citation{gomes2018cosim}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Пов'язані праці}{4}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{4}{Пов'язані праці}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Точне та наближене стохастичне моделювання.}{4}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Метапопуляційні моделі та моделі мобільності.}{4}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Два рівні перемішування та спільне моделювання.}{4}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Метод двомасштабного моделювання}{5}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{5}{Метод двомасштабного моделювання}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Повномережева еталонна модель}{5}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:reference}{{3.1}{5}{Повномережева еталонна модель}{subsection.3.1}{}}
+\newlabel{eq:partition}{{1}{5}{Повномережева еталонна модель}{equation.3.1}{}}
+\newlabel{eq:full_generator}{{2}{5}{Повномережева еталонна модель}{equation.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Агрегований інтерфейс}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:interface}{{3.2}{5}{Агрегований інтерфейс}{subsection.3.2}{}}
+\newlabel{eq:weight}{{3}{5}{Агрегований інтерфейс}{equation.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Інформація, яку використовують повномережева еталонна модель і двомасштабний симулятор.}}{6}{table.1}\protected@file@percent }
+\newlabel{tab:information}{{1}{6}{Агрегований інтерфейс}{table.1}{}}
+\citation{kuryliak2025simulating}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Схема міжспільнотного інтерфейсу. (a) У повній мережі інфекція переходить лише явними каналами, що примикають до вузлів-мостів. (b) У двомасштабному симуляторі кожна спільнота зберігає локальний рушій Gillespie/CTMC, а макроінтерфейс використовує зведення стану та агреговану вагу $W_{ij}$ для визначення інтенсивності імпорту й розміщення цільового вузла. (c) За рівномірного розміщення ідеальний двомасштабний процес еквівалентний сурогатній мережі з Твердження~\ref {prop:surrogate}, у якій кожна орієнтована міжспільнотна пара вузлів має слабку інтенсивність $\beta _{\mathrm  {out}}W_{ij}/(N_iN_j)$. Помаранчеві вузли інфіковані, сині сприйнятливі.}}{7}{figure.1}\protected@file@percent }
+\newlabel{fig:schematic}{{1}{7}{Агрегований інтерфейс}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Локальні рушії}{7}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:local}{{3.3}{7}{Локальні рушії}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Макрорівень}{7}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:macro}{{3.4}{7}{Макрорівень}{subsection.3.4}{}}
+\newlabel{eq:macro_rate}{{4}{7}{Макрорівень}{equation.3.4}{}}
+\citation{ethier1986,anderson2007}
+\citation{kuryliak2025simulating}
+\citation{kuryliak2025towards}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Сітково синхронізоване двомасштабне моделювання однієї реалізації.}}{8}{algorithm.1}\protected@file@percent }
+\newlabel{alg:scheduler}{{1}{8}{Час за інтегралом інтенсивності та синхронізація}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Час за інтегралом інтенсивності та синхронізація}{8}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:timing}{{3.5}{8}{Час за інтегралом інтенсивності та синхронізація}{subsection.3.5}{}}
+\newlabel{eq:hazard_integral}{{5}{8}{Час за інтегралом інтенсивності та синхронізація}{equation.3.5}{}}
+\newlabel{eq:interpolation}{{6}{8}{Час за інтегралом інтенсивності та синхронізація}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Обчислювальна структура та передбачене застосування}{9}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:cost}{{3.6}{9}{Обчислювальна структура та передбачене застосування}{subsection.3.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Що агрегований інтерфейс зберігає, а що втрачає}{10}{section.4}\protected@file@percent }
+\newlabel{sec:analysis}{{4}{10}{Що агрегований інтерфейс зберігає, а що втрачає}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Представлення за допомогою сурогатної мережі}{10}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:surrogate}{{4.1}{10}{Представлення за допомогою сурогатної мережі}{subsection.4.1}{}}
+\newlabel{prop:surrogate}{{1}{10}{Представлення за допомогою сурогатної мережі}{proposition.1}{}}
+\newlabel{cor:exact}{{1}{10}{Представлення за допомогою сурогатної мережі}{corollary.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Джерела розбіжностей}{10}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:sources}{{4.2}{10}{Джерела розбіжностей}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Інформація про стан межі (з боку джерела).}{10}{section*.4}\protected@file@percent }
+\newlabel{eq:exact_rate}{{7}{10}{Інформація про стан межі (з боку джерела)}{equation.4.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Розміщення (з боку приймача).}{10}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Вичерпання інтерфейсу (з боку приймача).}{10}{section*.6}\protected@file@percent }
+\citation{shaked2007}
+\@writefile{toc}{\contentsline {paragraph}{Синхронізація.}{11}{section*.7}\protected@file@percent }
+\newlabel{rem:placement}{{1}{11}{Синхронізація}{remark.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Одиничний експорт: стохастичне впорядкування та обхід мостів}{11}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:single_export}{{4.3}{11}{Одиничний експорт: стохастичне впорядкування та обхід мостів}{subsection.4.3}{}}
+\newlabel{prop:ordering}{{2}{11}{Одиничний експорт: стохастичне впорядкування та обхід мостів}{proposition.2}{}}
+\newlabel{eq:hazard_variance}{{8}{11}{Одиничний експорт: стохастичне впорядкування та обхід мостів}{equation.4.8}{}}
+\newlabel{eq:bypass}{{9}{12}{Одиничний експорт: стохастичне впорядкування та обхід мостів}{equation.4.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Характеристика співвідношення часових масштабів}{12}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:descriptor}{{4.4}{12}{Характеристика співвідношення часових масштабів}{subsection.4.4}{}}
+\newlabel{eq:rho}{{10}{12}{Характеристика співвідношення часових масштабів}{equation.4.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Дизайн експерименту}{13}{section.5}\protected@file@percent }
+\newlabel{sec:design}{{5}{13}{Дизайн експерименту}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Тестові задачі}{13}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Серії експериментів. Кожна комірка перебору використовує 40 реалізацій мережі (блоків) із 10 повторами інтерфейсу та подій у кожній. ASPL: цільова внутрішня середня довжина найкоротшого шляху (1 позначає повний граф).}}{14}{table.2}\protected@file@percent }
+\newlabel{tab:design}{{2}{14}{Тестові задачі}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Спостережувані величини та метрики}{14}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Статистичні процедури}{14}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Верифікація еталонної моделі}{14}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Результати}{15}{section.6}\protected@file@percent }
+\newlabel{sec:results}{{6}{15}{Результати}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Одиничний експорт із кліки}{15}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:res_clique}{{6.1}{15}{Одиничний експорт із кліки}{subsection.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Тест «кліка--листок» ($n=100$, $k=2$, $\beta =0.005$, 10\,000 запусків для кожної моделі). (a) Емпіричні функції розподілу часу експорту. (b) Емпіричні функції розподілу $T_{\mathrm  {export}}-T_B$; від'ємні значення (заштрихована область) відповідають експорту до зараження будь-якого вузла-моста. (c) Частка таких запусків з обходом мостів із 95\% інтервалами. ``Full Micro'' позначає \textup  {\textsc  {Full}}{}, а ``MicroMacro'' --- \textup  {\textsc  {TwoScale}}{}.}}{16}{figure.2}\protected@file@percent }
+\newlabel{fig:clique_leaf}{{2}{16}{Одиничний експорт із кліки}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Одиничний експорт зі зв'язних випадкових джерел}{16}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:res_source}{{6.2}{16}{Одиничний експорт зі зв'язних випадкових джерел}{subsection.6.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Серія експериментів «джерело--листок»: $n=1000$, $\beta =0.003$, $k=1$ (угорі) та $k=5$ (унизу), 400 парних запусків для кожної точки. Ліворуч: середній час експорту. У центрі: відносна відстань Васерштайна $e_{W}$ між розподілами часу експорту. Праворуч: частка експортів \textup  {\textsc  {TwoScale}}{}, що передували зараженню першого моста; у \textup  {\textsc  {Full}}{} таких випадків не було. Відрізки похибок --- 95\% інтервали блокового бутстрепу. ``Full Micro'' позначає \textup  {\textsc  {Full}}{}, а ``Production MicroMacro'' --- \textup  {\textsc  {TwoScale}}{}.}}{17}{figure.3}\protected@file@percent }
+\newlabel{fig:source_sweep}{{3}{17}{Одиничний експорт зі зв'язних випадкових джерел}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Повторні переходи через ланцюг клік}{17}{subsection.6.3}\protected@file@percent }
+\newlabel{sec:res_cliques}{{6.3}{17}{Повторні переходи через ланцюг клік}{subsection.6.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Ланцюг із десяти клік по 1000 вузлів з одним ребром між послідовними кліками ($k=1$, $\beta =0.003$, 400 запусків для кожної моделі). Ліворуч: поточкова медіана кількості інфікованих вузлів із міжквартильними смугами. Праворуч: емпірична функція розподілу часу прибуття до десятої спільноти ($T_9$). Чотири значення прибуття \textup  {\textsc  {Full}}{} і два \textup  {\textsc  {TwoScale}}{} лежать поза показаним діапазоном; усі вони спостережені.}}{18}{figure.4}\protected@file@percent }
+\newlabel{fig:chain_cliques}{{4}{18}{Повторні переходи через ланцюг клік}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Ланцюги випадкових спільнот}{18}{subsection.6.4}\protected@file@percent }
+\newlabel{sec:res_chain_random}{{6.4}{18}{Ланцюги випадкових спільнот}{subsection.6.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Точність кумулятивних часів прибуття у ланцюгах із десяти спільнот, кожна з яких має $n=1000$ вузлів, залежно від цільового ASPL (рядки) та досягнутої спільноти ($c=1,\dots  ,9$, стовпці), для $k=1$ (угорі) та $k=5$ (унизу). Ліворуч: відносний зсув медіани $b_c$ (від'ємний: \textup  {\textsc  {TwoScale}}{} прибуває раніше). Праворуч: відносна відстань Васерштайна. Для кожної комірки використано 400 парних запусків; невизначеність не показано (термінальні прибуття див. на рисунку~\ref {fig:accuracy_map}).}}{19}{figure.5}\protected@file@percent }
+\newlabel{fig:chain_heatmap}{{5}{19}{Ланцюги випадкових спільнот}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Розмір спільноти та ширина інтерфейсу}{19}{subsection.6.5}\protected@file@percent }
+\newlabel{sec:res_size}{{6.5}{19}{Розмір спільноти та ширина інтерфейсу}{subsection.6.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Точність термінального прибуття у ланцюгах із десяти спільнот для всіх 48 конфігурацій серії за розміром. Колір і напівжирні числа: відносна відстань Васерштайна $e_{W}$ для $T_9$ (\%). Числа курсивом: відносний зсув медіани $b_9$ (\%; від'ємне значення означає, що \textup  {\textsc  {TwoScale}}{} прибуває раніше). Заштриховані комірки: $e_{W}$ не відрізняється від внутрішньопарного пермутаційного порога ($p\ge 0.05$). Для кожної комірки використано 400 парних запусків.}}{20}{figure.6}\protected@file@percent }
+\newlabel{fig:accuracy_map}{{6}{20}{Розмір спільноти та ширина інтерфейсу}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Єдине співвідношення часових масштабів упорядковує розбіжність}{20}{subsection.6.6}\protected@file@percent }
+\newlabel{sec:res_descriptor}{{6.6}{20}{Єдине співвідношення часових масштабів упорядковує розбіжність}{subsection.6.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces (a) Відносна відстань Васерштайна та (b) відносний зсув медіани термінального прибуття залежно від $\rho =\beta \sigma _T$ для всіх 48 конфігурацій ланцюга (кольори: розмір спільноти; зафарбовані кола: $k=1$; порожні трикутники: $k=5$; лінії сполучають ASPL 1--6 за фіксованих $n$ і $k$). Сірі позначки в (a): 95-й процентиль внутрішньопарного пермутаційного порога кожної конфігурації. (c) Локальний середній зсув першого переходу порівняно зі зсувом переходів 2--9 для конфігурацій з ASPL $\ge 3$, із 95\% блоковими бутстреп-інтервалами зсуву першого переходу.}}{21}{figure.7}\protected@file@percent }
+\newlabel{fig:descriptor}{{7}{21}{Єдине співвідношення часових масштабів упорядковує розбіжність}{figure.7}{}}
+\citation{kuryliak2025towards}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Обговорення}{22}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{7}{22}{Обговорення}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Практичні рекомендації}{22}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Визначте, яка спостережувана величина має значення.}{22}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Оцініть співвідношення часових масштабів.}{22}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Перевіряйте абсолютні та відносні похибки.}{22}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Калібруйте відстані відносно вибіркової мінливості.}{22}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Обчислювальна вартість}{22}{subsection.7.2}\protected@file@percent }
+\newlabel{sec:disc_cost}{{7.2}{22}{Обчислювальна вартість}{subsection.7.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Обмеження}{22}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Можливі розширення}{23}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Висновки}{24}{section.8}\protected@file@percent }
+\newlabel{sec:conclusions}{{8}{24}{Висновки}{section.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Формули для кліки та перевірка}{25}{appendix.A}\protected@file@percent }
+\newlabel{app:clique}{{A}{25}{Формули для кліки та перевірка}{appendix.A}{}}
+\newlabel{eq:clique_TB}{{11}{25}{Формули для кліки та перевірка}{equation.A.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Перевірка еталонного симулятора на першій спільноті ланцюгів клік ($\beta =0.003$, 400 запусків для кожної комірки): середній час активації моста та, для $k=1$, середній час очікування після активації (точне значення $1/\beta =333.3$). Наведено середнє $\pm $ стандартна похибка.}}{26}{table.3}\protected@file@percent }
+\newlabel{tab:verification}{{3}{26}{Формули для кліки та перевірка}{table.3}{}}
+\citation{delbarrio1999}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Вибірковий поріг відстані Васерштайна}{27}{appendix.B}\protected@file@percent }
+\newlabel{app:floor}{{B}{27}{Вибірковий поріг відстані Васерштайна}{appendix.B}{}}
+\bibstyle{cas-model2-names}
+\bibdata{twoscale_references}
+\bibcite{ajelli2010}{{1}{2010}{{Ajelli et~al.}}{{Ajelli, Gon{\c {c}}alves, Balcan, Colizza, Hu, Ramasco, Merler and Vespignani}}}
+\bibcite{anderson2007}{{2}{2007}{{Anderson}}{{}}}
+\bibcite{balcan2009}{{3}{2009}{{Balcan et~al.}}{{Balcan, Colizza, Gon{\c {c}}alves, Hu, Ramasco and Vespignani}}}
+\bibcite{balcan2010modeling}{{4}{2010}{{Balcan et~al.}}{{Balcan, Colizza, Gon{\c {c}}alves, Hu, Ramasco and Vespignani}}}
+\bibcite{ball1997}{{5}{1997}{{Ball et~al.}}{{Ball, Mollison and Scalia-Tomba}}}
+\bibcite{barbosa2018human}{{6}{2018}{{Barbosa et~al.}}{{Barbosa, Barthelemy, Ghoshal, James, Lenormand, Louail, Menezes, Ramasco, Simini and Tomasini}}}
+\bibcite{delbarrio1999}{{7}{1999}{{del Barrio et~al.}}{{del Barrio, Gin{\'e} and Matr{\'a}n}}}
+\bibcite{cao2005slow}{{8}{2005}{{Cao et~al.}}{{Cao, Gillespie and Petzold}}}
+\bibcite{chang2021}{{9}{2021}{{Chang et~al.}}{{Chang, Pierson, Koh, Gerardin, Redbird, Grusky and Leskovec}}}
+\bibcite{colizza2007reaction}{{10}{2007}{{Colizza et~al.}}{{Colizza, Pastor-Satorras and Vespignani}}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Відомості про відтворюваність}{28}{appendix.C}\protected@file@percent }
+\newlabel{app:repro}{{C}{28}{Відомості про відтворюваність}{appendix.C}{}}
+\bibcite{colizza2008}{{11}{2008}{{Colizza and Vespignani}}{{}}}
+\bibcite{danon2011}{{12}{2011}{{Danon et~al.}}{{Danon, Ford, House, Jewell, Keeling, Roberts, Ross and Vernon}}}
+\bibcite{ethier1986}{{13}{1986}{{Ethier and Kurtz}}{{}}}
+\bibcite{eubank2004}{{14}{2004}{{Eubank et~al.}}{{Eubank, Guclu, Kumar, Marathe, Srinivasan, Toroczkai and Wang}}}
+\bibcite{gibson2000}{{15}{2000}{{Gibson and Bruck}}{{}}}
+\bibcite{gillespie1977exact}{{16}{1977}{{Gillespie}}{{}}}
+\bibcite{gomes2018cosim}{{17}{2018}{{Gomes et~al.}}{{Gomes, Thule, Broman, Larsen and Vangheluwe}}}
+\bibcite{haseltine2002}{{18}{2002}{{Haseltine and Rawlings}}{{}}}
+\bibcite{keeling2005}{{19}{2005}{{Keeling and Eames}}{{}}}
+\bibcite{kerr2021}{{20}{2021}{{Kerr et~al.}}{{Kerr, Stuart, Mistry, Abeysuriya, Rosenfeld, Hart, N{\'u}{\~n}ez, Cohen, Selvaraj, Hagedorn, George, Jastrzebski, Izzo, Fowler, Palmer, Delport, Scott, Kelly, Bennette, Wagner, Chang, Oron, Wenger, Panovska-Griffiths, Famulare and Klein}}}
+\bibcite{kiss2017}{{21}{2017}{{Kiss et~al.}}{{Kiss, Miller and Simon}}}
+\bibcite{kuryliak2025towards}{{22}{2025}{{Kuryliak and Emmerich}}{{}}}
+\bibcite{kuryliak2025simulating}{{23}{2025}{{Kuryliak et~al.}}{{Kuryliak, Emmerich and Dosyn}}}
+\bibcite{pastorsatorras2015}{{24}{2015}{{Pastor-Satorras et~al.}}{{Pastor-Satorras, Castellano, Van~Mieghem and Vespignani}}}
+\bibcite{shaked2007}{{25}{2007}{{Shaked and Shanthikumar}}{{}}}
+\bibcite{vestergaard2015}{{26}{2015}{{Vestergaard and G{\'e}nois}}{{}}}
+\csxdef{lastpage}{29}
+\gdef \@abspage@last{30}

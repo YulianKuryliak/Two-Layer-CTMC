@@ -29,6 +29,8 @@ class MicroMacroSimulator:
         full_graph: Optional[nx.Graph] = None,
         verbose_steps: bool = False,
         phase_timing: bool = False,
+        alpha_mode: str = "off",
+        correction_mode: str = "off",
     ):
         self.W = W
         self.micro_graphs = micro_graphs
@@ -42,6 +44,8 @@ class MicroMacroSimulator:
         self.full_graph = full_graph
         self.verbose_steps = bool(verbose_steps)
         self.phase_timing = bool(phase_timing)
+        self.alpha_mode = str(alpha_mode)
+        self.correction_mode = str(correction_mode)
 
         self.community_sizes: Optional[List[int]] = None
         self.alphas: Optional[List[float]] = None
@@ -77,6 +81,8 @@ class MicroMacroSimulator:
             alphas=self.alphas,
             full_graph=self.full_graph,
             verbose_steps=self.verbose_steps,
+            alpha_mode=self.alpha_mode,
+            correction_mode=self.correction_mode,
         )
         t_init_done = time.perf_counter()
         if self.phase_timing:

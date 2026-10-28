@@ -1,0 +1,16 @@
+{
+  "compiler": "pdfLaTeX, TeX Live 2023/Debian, standard main_memory=5000000",
+  "memory_words_used": 4638407,
+  "pages": 22,
+  "bibtex_and_stable_final_pass": true,
+  "all_prose_captions_other_figures_preserved": true,
+  "original_data_tables_unchanged": true,
+  "uk_source_unchanged_sha256": "c34f543cadea312c861f4ffd6a71b5cfe8c357639d112294be1f0a16370fea49",
+  "observations_per_curve": 10000,
+  "curves": 4,
+  "right_continuous_steps": "same PGF constantlineto handler; complete unbroken paths preserve dash continuity",
+  "visual_check": "full article page15 compared with prior LuaLaTeX PDF; pilot checked",
+  "zip_members": 166,
+  "no_simulations_or_statistics_recomputed": true,
+  "limitations": "Changing ECDF axis bounds requires regeneration of projected display tables. Inherited CAS title/empty-anchor and prose underfull warnings remain."
+}

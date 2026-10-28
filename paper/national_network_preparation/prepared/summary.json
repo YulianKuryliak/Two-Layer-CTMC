@@ -1,0 +1,54 @@
+{
+  "nodes": 34858,
+  "undirected_edges": 743711,
+  "communities": 100,
+  "geography": "France metropolitan and four overseas departments, excluding Mayotte, COG 2025; ARM collapsed to parent COM",
+  "model": "Municipality-level SI diffusion on symmetric commuting-based proxy; not a person-level epidemic model",
+  "flow_scale": 1000.0,
+  "weight_definition": "A_uv=(F_uv+F_vu)/flow_scale for u!=v; W from interdepartment sums of A; diag(W)=0",
+  "intra_edges": 448147,
+  "inter_edges": 295564,
+  "within_edge_weight_fraction": 0.7317585814477336,
+  "components": 168,
+  "largest_component": 34691,
+  "isolates": 167,
+  "departments_with_disconnected_local_graph": 56,
+  "nonempty_macro_pairs": 4611,
+  "max_department_nodes": 887,
+  "dense_full_adjacency_bytes": 9720641312,
+  "sparse_A_bytes": 17988500,
+  "dense_macro_W_bytes": 80000,
+  "conservation_checks": "PASS",
+  "simulations_run": false,
+  "quality": {
+    "raw_rows": 986967,
+    "raw_total_estimated_workers": 28382870.873830218,
+    "duplicate_original_OD_keys": 0,
+    "missing_flow_fields": 0,
+    "nonpositive_flows": 0,
+    "original_origins": 34800,
+    "original_destinations": 35635,
+    "domestic_rows": 957471,
+    "outside_rows": 29496,
+    "outside_estimated_workers": 497323.27518367406,
+    "outside_categories": [
+      {
+        "reason": "not_in_COG_commune_ARM_dictionary",
+        "size": 29186,
+        "sum": 495782.511479591
+      },
+      {
+        "reason": "outside_scope_Mayotte",
+        "size": 310,
+        "sum": 1540.7637040830743
+      }
+    ],
+    "rows_using_ARM": 53902,
+    "post_crosswalk_domestic_OD_pairs": 919779,
+    "domestic_same_commune_workers": 9647898.373186104,
+    "domestic_distinct_commune_workers": 18237649.225460436,
+    "raw_rows_under_200": 969071,
+    "raw_worker_weight_under_200": 13802667.025423333,
+    "COG_scope_nodes_without_origin_rows": 100
+  }
+}

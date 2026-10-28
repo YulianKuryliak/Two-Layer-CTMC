@@ -1,0 +1,61 @@
+{
+  "checked_at_utc": "2026-10-17T14:44:15.320800+00:00",
+  "status": "local_prepared_browser_connection_pending",
+  "source_sha256": {
+    "README.md": "98aadfb487dbfaec04e7790d6043db615f0486d22b33119261cb9fa916c4520e",
+    "bridge.py": "0a55617da6702b79f305619fdb827ea21d14df40011ebfce065e4759b1ae6524",
+    "manage.py": "4b7655c0322fa10c2491d37e3ba755a41cfd1b5269253d86001278ff41a6ba61",
+    "test_bridge.py": "94f1ab0964c6a13a1d81d7c8e3cb57e55f196a7e27c51ea5fd5d8c4e914ab568"
+  },
+  "offline_tests": {
+    "command": "python3 -B extrascripts/remote_codex/manage.py check",
+    "passed": 9,
+    "failed": 0,
+    "includes": [
+      "fake Codex async lifecycle and timeout",
+      "stdin prompt isolation and duplicate requests",
+      "cancellation and continuation",
+      "official tunnel-client local in-memory proxy MCP handshake/discovery/info",
+      "real Codex OS sandbox credential canary denial in read-only and workspace profiles"
+    ]
+  },
+  "live_codex_check": {
+    "job_id": "729ec13c-923e-49d5-a1e5-6d4e19dd7d68",
+    "thread_id": "01a14a51-522b-76c2-84da-437f9920f0fd",
+    "status": "completed",
+    "started_at": "2026-10-17T14:43:25.629129+00:00",
+    "ended_at": "2026-10-17T14:43:30.440913+00:00",
+    "exit_code": 0,
+    "answer": "WSL_BRIDGE_READY",
+    "model_tools_invoked": false,
+    "bridge_sha256": "0a55617da6702b79f305619fdb827ea21d14df40011ebfce065e4759b1ae6524"
+  },
+  "tunnel_client_install": {
+    "version": "v0.0.16",
+    "release": "https://github.com/openai/tunnel-client/releases/tag/v0.0.16",
+    "asset": "tunnel-client-v0.0.16-linux-amd64.zip",
+    "archive_sha256": "d60cdba019bce451bcc3a15478cc5b9cb11270b049f5b56ea39a80b517f8b117",
+    "binary_sha256": "01260ee973d5510861bc32979739561edd33869f99f9f8cd324f6d0da5b2e692"
+  },
+  "windows_installations": [],
+  "simulations_started": false,
+  "pending": [
+    "Account access to Add custom MCP server; user sees ordinary Apps/Plugins only",
+    "Tunnel ID with correct workspace association",
+    "Runtime API key with tunnel permissions entered locally",
+    "Managed runtime health/readiness and first successful ChatGPT browser codex_info call"
+  ],
+  "limitations": [
+    "No browser-to-WSL call verified",
+    "Global Codex user config ignored for isolated job permissions; existing account auth retained",
+    "No automatic WSL startup after Windows reboot",
+    "Parallel external Codex sessions are not locked by this bridge",
+    "Cancellation does not undo completed file changes"
+  ],
+  "earlier_live_check_job": "c00a0531-dfcb-48f4-bfe8-345e95a288f8",
+  "review": "Read-only code review completed; credential filesystem denies, environment allow-list and per-use managed binary SHA256 checks applied.",
+  "history_before_append": {
+    "bytes": 90101,
+    "sha256": "130e1b434985fa546439d1a8b6291352abb216fe2ed149c1cff6d4fd98e229bd"
+  }
+}

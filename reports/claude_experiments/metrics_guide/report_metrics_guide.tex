@@ -1,0 +1,691 @@
+\documentclass[11pt,a4paper]{article}
+\input{../preamble}
+
+\title{\textbf{Metrics Reference: How to Compare MicroMacro vs.\ Full Micro}\\[0.5em]
+\large Which metrics are correct, which are misleading, and why}
+\author{Two-Scale CTMC Project}
+\date{31 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document explains the full hierarchy of comparison metrics used in the
+project, demonstrates the mathematical mechanism behind each one, and identifies
+which metrics are valid under censoring and which introduce systematic bias.
+The central message: \textbf{conditional mean and conditional median (completed
+runs only) are biased whenever the two models have different completion rates.
+RMST is the correct primary metric.}
+All examples use real data from the calibrated chain-of-cliques benchmark
+and the CE-01 ablation experiment.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+%% ============================================================
+\section{The Core Comparison Problem}
+%% ============================================================
+
+We compare two simulators on the same stochastic epidemic model:
+\begin{itemize}
+  \item \textbf{Full Micro}: exact Gillespie CTMC on the complete network.
+        Ground truth.
+  \item \textbf{MicroMacro (MM)}: two-scale approximation.
+        Uses aggregate macro hazard $\lambda_{ij} = \beta W_{ij}\,\bar{i}_i\,\bar{s}_j$
+        for inter-community transfers.
+\end{itemize}
+
+The key quantity is $T_{\mathrm{last}}$: the time when the epidemic first
+reaches the last community.  In each replication the simulation runs until
+$T_{\mathrm{end}}$; if no arrival has occurred by then, $T_{\mathrm{last}}$
+is \emph{censored} (unknown, only known to be $> T_{\mathrm{end}}$).
+
+The fundamental difficulty: \textbf{the two models typically have different
+completion rates} (fraction of replications where $T_{\mathrm{last}} <
+T_{\mathrm{end}}$), because MM spreads faster than Micro on average due to
+the Jensen effect.
+
+%% ============================================================
+\section{Analyzing Method Differences: Design Before Metrics}
+\label{sec:methodology}
+%% ============================================================
+
+A metric is only meaningful inside a comparison \emph{design}.  The recurring
+failure mode in this project is not picking the wrong formula but asking a
+metric to answer a question it cannot answer, or reading a number that silently
+mixes the effect of interest with a confounder.  This section states the
+principles that should govern any Micro-vs-MM comparison.  The metric catalogue
+(Section~\ref{sec:catalogue}) is then just the toolbox used \emph{inside} these
+principles, not a substitute for them.
+
+\subsection{First decide which question you are asking}
+
+Three questions look similar but demand different designs and license different
+conclusions:
+
+\begin{description}
+  \item[\textbf{Q1 --- Existence.}] Does MM differ from Micro at all, beyond
+        Monte-Carlo noise?  $\to$ significance of $\DRMS$ (bootstrap CI) or a
+        two-sample distributional test.  Needs adequate $N$; nothing else.
+  \item[\textbf{Q2 --- Magnitude and sign.}] In which direction, and by how
+        much?  $\to$ $\DRMS$ and its horizon-normalised form, plus the
+        completion gap.  Needs censoring-aware estimators and a fixed horizon.
+  \item[\textbf{Q3 --- Mechanism / attribution.}] \emph{Why} does the difference
+        arise, and which network property controls it?  $\to$ a controlled
+        ablation that toggles one approximation at a time, plus a parameter
+        surrogate test.  Needs confounder isolation, \emph{not} merely a large
+        effect.
+\end{description}
+
+The central methodological error is answering \textbf{Q3 with a Q2 experiment}:
+reporting a large, uncontrolled $\DRMS$ and \emph{narrating} a mechanism
+(``premature leakage'') that the design never isolated.  A magnitude is not a
+mechanism, and a sign that flips across scenarios (as in the $\beta$-ratio
+sweep) is evidence that confounders, not the named mechanism, drive the number.
+
+\subsection{The isolation principle}
+
+To attribute a difference to a cause, every \emph{other} cause must be held
+fixed.  Concretely:
+\begin{itemize}
+  \item \textbf{Paired seeds.}  Run Micro and every MM variant on the same
+        network realisation and the same micro-layer RNG stream.  The paired
+        difference $\delta_r = T_r^{MM}-T_r^{Micro}$ then removes between-run
+        variance, which otherwise dominates the CI.  CE-01 does this; the
+        chain-of-cliques sweep does not.
+  \item \textbf{One factor at a time --- for attribution.}  To attribute error
+        to a \emph{mechanism}, use the ablation ladder (Section~\ref{sec:ladder})
+        that toggles one approximation per rung.  To map \emph{parameter
+        dependence}, vary parameters on a grid but \emph{record every covariate}
+        so its effect can be regressed out; never read a single one-factor sweep
+        as causal.
+  \item \textbf{Commensurable conditions.}  Two scenarios are comparable only if
+        their horizon and completion regime match
+        (Sections~\ref{sec:cens},~\ref{sec:horizon}).  Otherwise the numbers do
+        not live on the same axis.
+\end{itemize}
+
+\subsection{Precondition 1: report completion, then use censoring-aware estimators}
+\label{sec:cens}
+
+Report $p_{\mathrm{Micro}}$, $p_{\mathrm{MM}}$ and their gap \emph{before} any
+arrival-time number.  Once the gap exceeds $\approx 5$--$10\%$, every
+completed-runs-only metric---conditional mean, conditional median, $W_1$,
+KS---is selection-biased and must \emph{not} carry the headline
+(Section~\ref{sec:bias} shows this producing the wrong sign).  Use RMST /
+survival curves, which include censored runs at their known lower bound.  When
+horizons cannot be matched, fall back to a Kaplan--Meier survival comparison or
+re-truncate both models to a common completion level before comparing.
+
+\subsection{Precondition 2: horizon commensurability}
+\label{sec:horizon}
+
+RMST depends on $T_{\mathrm{end}}$, so a raw $\DRMS$ is meaningful only
+\emph{within} a fixed horizon.  The $\beta$-ratio sweep used
+$T_{\mathrm{end}}\in[2000,20000]$; comparing its raw shifts across $r$ compares
+different axes, and only the \emph{sign} and horizon-normalised quantities
+survive.  Rule: within a scenario report the raw shift; \emph{across} scenarios
+report $\DRMS/T_{\mathrm{end}}$, rel-$W_1$, or the completion-probability gap
+$\Delta p = p_{\mathrm{MM}}-p_{\mathrm{Micro}}$.
+
+\subsection{Choose a normalization independent of the effect}
+\label{sec:norm}
+
+\mbox{rel-}$W_1 = W_1 / \mathbb{E}[T^{Micro}]$ divides by a quantity that lives
+on the \emph{same} time scale as the numerator, so it shrinks large absolute
+errors ``for free'': a longer chain inflates the denominator as fast as the
+numerator, and $3.5\%$ can look reassuring by construction.  Always pair it with
+a scale that is independent of the mean:
+\[
+  \frac{W_1}{\mathrm{IQR}(T^{Micro})}
+  \qquad\text{or}\qquad
+  \frac{W_1}{\Delta T_{\mathrm{hop}}},\quad
+  \Delta T_{\mathrm{hop}} = \frac{\mathbb{E}[T_{\mathrm{last}}]}{L-1}.
+\]
+A $W_1$ that is $3.5\%$ of the mean but $40\%$ of a single per-hop increment is
+not small in any operationally relevant sense.
+
+\subsection{Separate systematic signal from stochastic noise}
+
+Between-run (phase) noise dominates unpaired comparisons and the pointwise
+$I_{\mathrm{tot}}(t)$ band.  Consequences:
+\begin{itemize}
+  \item Prefer the \emph{paired} $\delta_i$ for Q1/Q3: it measures only the
+        approximation error for a shared realisation, removing phase noise.
+  \item Read the $I_{\mathrm{tot}}(t)$ IQR as ``how variable is the epidemic'',
+        not ``how biased is MM'' (Section~\ref{sec:itot}).
+  \item A wide band around two nearly coincident medians is \emph{not} evidence
+        of a large approximation error.
+\end{itemize}
+
+\subsection{Mechanism attribution: the ablation ladder}
+\label{sec:ladder}
+
+Attribution needs a ladder whose rungs each toggle exactly one approximation, so
+the increment in $\DRMS$ between adjacent rungs is charged to that one change:
+
+\begin{center}
+\begin{tabular}{llp{6.2cm}}
+\toprule
+Rung & Hazard $\times$ Placement & What the increment isolates \\
+\midrule
+Full Micro                 & exact / exact     & ground truth ($\DRMS=0$) \\
+Oracle E/E                 & exact / exact-target & numerical/synchronisation only \\
+Oracle E/U                 & exact / uniform   & \textbf{import placement} error \\
+Aggregate A/B              & aggregate / boundary & \textbf{rate abstraction} error \\
+MicroMacro A/U             & aggregate / uniform & placement $+$ rate (deployed model) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+CE-01 run this way attributes the bulk of the error to \emph{rate abstraction},
+with placement significant only under an exact hazard.  \textbf{Caveat:} the
+oracle rungs read the exact edge list and node states; they are \emph{diagnostic
+upper bounds}, not deployable models---a fielded MM may know only aggregate
+parameters, never the exact structure.
+
+\subsection{From attribution to a deployable parameter surrogate}
+\label{sec:surrogate}
+
+Once the ladder localises the error to a specific approximation, the deployable
+question is whether a function of \emph{known parameters}---spectral gap
+$\lambda_2$, mean degree, boundary-degree statistics---can reproduce the oracle
+correction \emph{without} the exact structure.  The correct test is not
+``does error correlate with $\lambda_2$ across networks'' (that correlation is
+confounded by everything that co-varies with $\lambda_2$).  It is: \emph{does
+injecting the surrogate move MM up the ladder toward the oracle rung, with all
+other factors fixed?}  To support this, a parameter sweep must record
+$\lambda_2$, degree, boundary statistics and the horizon per realisation, so the
+surrogate can be fitted and validated out-of-sample rather than fitted to the
+same corner cases that motivated it.
+
+\subsection{Disclose the calibration}
+\label{sec:calib}
+
+Every current bias number assumes $\beta_{\mathrm{macro}}=\beta$ and
+$W_{ij}=k$ set \emph{by fiat}.  Part of $\DRMS$ is then removable by tuning
+$\lambda_{ij}$ (\emph{calibration} error) and part is irreducible given only
+aggregate state (\emph{structural} error).  Report the oracle-calibrated shift
+as the structural floor and label every uncalibrated number as such; otherwise a
+reader cannot tell a property of the method from an artefact of an arbitrary
+choice.
+
+\subsection{Include a negative control}
+\label{sec:negctrl}
+
+A credible difference analysis shows the effect \emph{vanishing} where theory
+says it should.  The clique--bridge--leaf topology ($n=100$, $k=2$) is the
+confounder-free control; report its $W_1$ and KS \emph{with numbers}, even when
+null.  An effect that is quantified only in corner cases (small $k$, slow
+spread, large $\beta_{\mathrm{out}}$) and left qualitative in the clean case is
+not yet established.
+
+\subsection{Checklist}
+
+\begin{enumerate}
+  \item State the question: Q1, Q2, or Q3.  Match the design to it.
+  \item Report completion first; if the gap $>10\%$, drop completed-only metrics
+        from the headline.
+  \item Fix the horizon within a comparison; normalise (and disclose $T_{\mathrm{end}}$)
+        across comparisons.
+  \item Add an effect-independent normalisation next to rel-$W_1$.
+  \item Use paired seeds and paired $\delta_i$ to strip phase noise.
+  \item For mechanism claims, show the ablation ladder, not a single big shift.
+  \item For parameter claims, hold covariates fixed or regress them out, and
+        validate the surrogate out-of-sample.
+  \item Disclose calibration; separate structural from calibration error.
+  \item Include a negative control with numbers.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{6.2cm}p{7.4cm}}
+\toprule
+\textbf{Pitfall} & \textbf{Correct practice} \\
+\midrule
+Conditional mean/median across unequal completion & Report completion; use RMST / survival (Sec.~\ref{sec:cens}) \\
+Raw $\DRMS$ compared across different $T_{\mathrm{end}}$ & Normalise cross-scenario; raw only within horizon (Sec.~\ref{sec:horizon}) \\
+rel-$W_1$ read as ``small'' by itself & Add $W_1/\mathrm{IQR}$ or $W_1/\Delta T_{\mathrm{hop}}$ (Sec.~\ref{sec:norm}) \\
+Mechanism narrated from one large shift & Ablation ladder, one toggle per rung (Sec.~\ref{sec:ladder}) \\
+Error ``explained'' by correlating with $\lambda_2$ & Fix covariates / regress out; validate surrogate (Sec.~\ref{sec:surrogate}) \\
+Bias numbers with $\beta_{\mathrm{macro}}=\beta$ unlabelled & Report structural floor; mark uncalibrated (Sec.~\ref{sec:calib}) \\
+Clean case left qualitative & Negative control with $W_1$/KS numbers (Sec.~\ref{sec:negctrl}) \\
+\bottomrule
+\end{tabular}
+\caption{Mapping from common analysis pitfalls to the corresponding principle.}
+\label{tab:pitfalls}
+\end{table}
+
+%% ============================================================
+\section{Metric Catalogue}
+\label{sec:catalogue}
+%% ============================================================
+
+\subsection{Completion Rate}
+
+\[
+  p_{\mathrm{complete}} = \frac{\#\{T_{\mathrm{last}} < T_{\mathrm{end}}\}}{N}
+\]
+
+\textbf{What it measures:} whether the epidemic traverses the entire chain
+within the simulation horizon.  Affected by both the inherent stochasticity of
+the epidemic and by the approximation bias of MM.
+
+\textbf{Example (clique baseline, 100 reps):}
+\[
+  p_{\mathrm{Micro}} = 0.68,\quad p_{\mathrm{MM}} = 0.82.
+\]
+MM completes 14\% more runs---direct evidence that MM spreads faster on average.
+
+\textbf{Correct use:} Report it first.  A large gap ($|p_{\mathrm{MM}} -
+p_{\mathrm{Micro}}| > 0.1$) is already informative and means all other
+completed-run metrics will be biased (see Section~\ref{sec:bias}).
+
+\textbf{Limitation:} It is a single binary threshold; it does not quantify
+\emph{how much} faster or slower.
+
+\subsection{Conditional Mean and Median (completed runs only)}
+\label{sec:bias}
+
+\[
+  \hat\mu^{\mathrm{cond}} = \frac{1}{|\mathcal{C}|}\sum_{r\in\mathcal{C}} T_r,
+  \quad
+  \mathcal{C} = \{r : T_r < T_{\mathrm{end}}\}.
+\]
+
+\textbf{What it measures:} the average (or median) arrival time
+\emph{among runs that happened to complete}.
+
+\paragraph{Why it is biased when completion rates differ.}
+Suppose Jensen holds: $F^{MM}(t) \geq F^{Micro}(t)$ for all $t$
+(MM is stochastically faster, arrives earlier).  The conditional median is
+\[
+  m^{Micro} = F^{-1}(0.5 \cdot p_{\mathrm{Micro}})
+             = F^{-1}(0.34),
+  \quad
+  m^{MM}    = F^{-1}(0.5 \cdot p_{\mathrm{MM}})
+             = F^{-1}(0.41).
+\]
+We compare $m^{MM}$ to $m^{Micro}$ but they correspond to \emph{different
+percentiles} of the unconditional distribution (41st vs.\ 34th).
+Even when $F^{MM}(t) \geq F^{Micro}(t)$, the 41st percentile of Micro can
+easily exceed the 41st percentile of MM, making $m^{MM} > m^{Micro}$---
+the opposite of what we expect.
+
+\paragraph{Concrete example.}
+Clique baseline, 100 reps:
+\[
+  m_{\mathrm{cond}}^{Micro} = 1949.4,\quad
+  m_{\mathrm{cond}}^{MM}    = 2020.2,\quad
+  \text{shift} = +70.8 \quad \text{(MM appears later!)}.
+\]
+But the censoring-correct RMST shift is $-75.6$ (MM is earlier).
+The $+70.8$ is an artifact: MM's extra 14\% completions are slow runs near
+$T_{\mathrm{end}} = 2500$ that pull the MM conditional median upward.
+
+\textbf{Verdict: do not use conditional mean or median as the primary metric
+when completion rates differ.}  They can show the wrong sign.
+
+\subsection{Restricted Mean Survival Time (RMST)}
+\label{sec:rmst}
+
+\[
+  \mathrm{RMST}
+  = \mathbb{E}\!\left[\min(T_{\mathrm{last}},\, T_{\mathrm{end}})\right]
+  = \int_0^{T_{\mathrm{end}}} P(T_{\mathrm{last}} > t)\, dt.
+\]
+
+\textbf{What it measures:} the expected time until arrival, capped at
+$T_{\mathrm{end}}$.  Censored runs contribute $T_{\mathrm{end}}$ (their lower
+bound), so all runs are included without discarding information.
+Equivalently, RMST is the area under the survival curve $S(t) =
+P(T_{\mathrm{last}} > t)$ from $0$ to $T_{\mathrm{end}}$.
+
+\textbf{Why it handles censoring correctly.}
+For a censored run ($T_r > T_{\mathrm{end}}$), we know the true arrival
+time is at least $T_{\mathrm{end}}$.  Using $\min(T_r, T_{\mathrm{end}}) =
+T_{\mathrm{end}}$ as the contribution is the correct likelihood-consistent
+choice for a right-censored observation.
+
+\textbf{Signed shift:}
+\[
+  \DRMS = \mathrm{RMST}^{MM} - \mathrm{RMST}^{Micro}.
+\]
+\begin{itemize}
+  \item $\DRMS < 0$: MM arrives \emph{earlier} (premature propagation).
+  \item $\DRMS > 0$: MM arrives \emph{later} (over-conservative).
+  \item $\DRMS = 0$: no systematic bias at the chosen horizon.
+\end{itemize}
+
+\textbf{Connection to Jensen.}
+Jensen's inequality implies $S^{Micro}(t) \geq S^{Macro}(t)$ for all $t$,
+hence $\DRMS \leq 0$: integrating the survival inequality gives
+$\mathrm{RMST}^{MM} \leq \mathrm{RMST}^{Micro}$.  RMST is therefore
+the correct metric to \emph{test} the Jensen prediction.
+
+\paragraph{How RMST is computed in this project (code).}
+From \texttt{extrascripts/benchmark\_censoring\_summary.py}:
+\begin{verbatim}
+restricted_micro = np.where(np.isfinite(micro), micro, horizon)
+restricted_macro = np.where(np.isfinite(macro), macro, horizon)
+rmst_shift = np.mean(restricted_macro - restricted_micro)
+\end{verbatim}
+Censored runs ($T_r = \mathrm{NaN}$ or $\infty$) are replaced by \texttt{horizon}
+($T_{\mathrm{end}}$), then the shift is the mean of the pair-wise differences
+over all $N$ replications.  This is equivalent to the area difference between
+survival curves estimated by the empirical CDF.
+
+\paragraph{Bootstrap confidence interval.}
+The CI is obtained by resampling the full table of $(T_r^{Micro}, T_r^{MM})$
+pairs (including censored rows) with replacement, 1000 times.  Pairs are
+resampled jointly (not independently) to preserve within-run correlations if
+the two models share a random seed.
+
+\paragraph{Concrete numbers (calibrated clique benchmark, 100 reps):}
+\begin{center}
+\begin{tabular}{lrrrl}
+\toprule
+Scenario & $\mathrm{RMST}^{Micro}$ & $\mathrm{RMST}^{MM}$ & $\DRMS$ & 95\% CI \\
+\midrule
+baseline $k=5$  & 2089.3 & 2013.6 & $-75.6$  & $[-197.3,\; +34.8]$ \\
+$k=10$          & 1326.0 & 1198.1 & $-127.9$ & $[-217.8,\; \mathbf{-39.7}]$ \\
+$k=20$          & 879.5  & 738.7  & $-140.8$ & $[-190.6,\; \mathbf{-89.4}]$ \\
+$L=15$          & 3342.1 & 3093.7 & $-248.4$ & $[-428.7,\; \mathbf{-51.2}]$ \\
+sparse baseline & 2869.4 & 1640.5 & $-1228.9$& $[-1379.4,\; \mathbf{-1089.6}]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+All scenarios with sufficient completion show $\DRMS < 0$ (bold CI = significant).
+The baseline $k=5$ CI includes zero: not because Jensen is wrong, but because
+100 replications are insufficient (SE $\approx 87$, shift $\approx 0.87$ SE).
+
+\textbf{Limitation:} RMST depends on $T_{\mathrm{end}}$.  A longer horizon
+makes RMST more sensitive to slowly-completing runs.  Always report the
+horizon alongside RMST.
+
+\subsection{Wasserstein-1 Distance (W\texorpdfstring{$_1$}{1})}
+
+\[
+  W_1(P, Q) = \int_{-\infty}^{\infty} |F_P(t) - F_Q(t)|\, dt
+            = \int_0^1 |F_P^{-1}(u) - F_Q^{-1}(u)|\, du.
+\]
+
+\textbf{What it measures:} the average absolute difference between the quantile
+functions of two distributions.  Equivalently, the minimum expected distance
+needed to ``transport'' the mass of distribution $P$ onto $Q$.
+
+\textbf{Relative W$_1$:}
+\[
+  \mathrm{rel}\text{-}W_1 = \frac{W_1}{\mathbb{E}[T^{Micro}]}.
+\]
+This normalises by the Micro mean, giving a dimensionless measure of
+distributional discrepancy.
+
+\textbf{How it is used in this project.}
+$W_1$ is computed only on \textbf{completed} runs.  Therefore it is subject
+to the same censoring bias as the conditional mean when completion rates
+differ.  It answers: ``Among runs that \emph{both} models completed, how
+different are the arrival-time distributions?''  This is valid for
+\emph{distributional shape} comparison but does not capture the
+``MM completes more runs'' effect.
+
+\textbf{Concrete numbers:}
+\begin{center}
+\begin{tabular}{lrrl}
+\toprule
+Scenario & $W_1$ & rel-$W_1$ & Note \\
+\midrule
+clique baseline $k=5$ & 67.0 & 3.5\% & small, CI incl.\ zero \\
+clique $k=10$         & 130.1 & 9.8\% & moderate \\
+clique $k=20$         & 140.8 & 16.0\% & increasing with $k$ \\
+sparse baseline       & ---  & 42.6\% & huge; 99\% vs 100\% complete \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Limitation:} $W_1$ on completed runs is biased when completion rates
+differ.  For the sparse $k=1$ scenario, Micro completes only 2\% and MM
+completes 19\%; $W_1$ is not reported because the two subsets are not
+comparable.
+
+\textbf{When to prefer $W_1$ over RMST:}
+\begin{itemize}
+  \item When both models have 100\% completion (no censoring): $W_1$ and RMST
+        give consistent information; $W_1$ is more sensitive to tail differences.
+  \item When you want to compare distributional \emph{shape} (not just mean):
+        $W_1$ captures quantile-by-quantile differences, not only the mean.
+  \item \textbf{Not} as the primary metric when completion rates differ.
+\end{itemize}
+
+\subsection{Kolmogorov--Smirnov Statistic}
+
+\[
+  D_{\mathrm{KS}} = \sup_t |F^{Micro}(t) - F^{MM}(t)|.
+\]
+
+\textbf{What it measures:} the maximum vertical distance between the two CDFs.
+The associated $p$-value tests whether the two samples could have come from
+the same distribution.
+
+\textbf{Limitation:} KS is a \emph{qualitative} test (is there a difference?)
+not a \emph{quantitative} measure (how large is the difference?).  It is also
+computed on completed runs only.  In this project it is used as a consistency
+check, not a primary metric.
+
+\subsection{Per-Hop Arrival-Time Metrics: W\texorpdfstring{$_1$}{1}(T\texorpdfstring{$_i$}{i}) and Paired Error}
+
+All metrics above operate on the \emph{terminal} arrival time $T_{\mathrm{last}}$.
+The per-hop analysis decomposes the error layer by layer.
+
+\textbf{Per-hop Wasserstein $W_1(T_i)$:}
+Compute the $W_1$ distance between the distribution of arrival times
+$T_i^{Micro}$ and $T_i^{MM}$ for community $i = 0,\ldots,L-1$
+(over all replications that reached community $i$).
+This answers: ``Where in the chain does the distributional error peak?''
+
+\textbf{Paired cumulative error:}
+\[
+  \delta_i = T_i^{MM} - T_i^{Micro} \quad \text{(same replication)}.
+\]
+This is computed only for runs where both models reached community $i$
+(paired observation).  By using the same random seed, within-run correlations
+are preserved and the estimator has much lower variance than between-run
+comparison.
+
+\textbf{Why the paired error is the most sensitive metric.}
+Because between-run variability dominates the RMST uncertainty,
+the paired comparison removes it entirely: each $\delta_i$ measures only
+the \emph{approximation error} for that run, not the natural stochastic
+variability.  The cost is censoring: at the last community ($i=9$) with
+68\% Micro completion, only 68 pairs exist, and the missing 32 are the
+\emph{slowest} Micro runs---exactly those with the largest $|\delta_i|$.
+
+\textbf{Example (calibrated clique baseline):}
+The median paired error at layer 7 is $\approx -200$ (MM arrives
+200 time units earlier); at layer 9 it reverts toward 0 due to
+the censoring of slow Micro runs.  The IQR is $\pm 400$---large, because
+each run experiences different local dynamics.
+
+%% ============================================================
+\section{The I\texorpdfstring{$_{\mathrm{tot}}$}{tot}(t) Plot: Phase Noise vs.\ Approximation Error}
+\label{sec:itot}
+%% ============================================================
+
+The total-infected count at time $t$:
+\[
+  I_{\mathrm{tot}}(t) = \sum_{c=0}^{L-1} I_c(t).
+\]
+In the chain-of-cliques setup with $n=100$ nodes per community, $I_{\mathrm{tot}}$
+is approximately a step function: each community contributes a sigmoid step
+of height $n$.
+
+\paragraph{What the IQR band on $I_{\mathrm{tot}}(t)$ actually measures.}
+At a fixed time $t$, the pointwise IQR across replications reflects:
+\begin{enumerate}
+  \item \textbf{Phase noise} ($\approx 90\%$ of width): natural variability
+        in how many communities have been infected by time $t$.
+        Different runs are at different ``steps'' of the staircase.
+  \item \textbf{Approximation error} ($\approx 10\%$ of width): the systematic
+        difference between Micro and MM in how fast communities are infected.
+\end{enumerate}
+
+Because phase noise dominates the IQR width, the $I_{\mathrm{tot}}(t)$ silhouette is
+\textbf{not a useful measure of approximation quality}.  Comparing the widths of
+Micro and MM IQR bands tells you about natural epidemic variability, not about
+the bias of MM.
+
+\paragraph{When the $I_{\mathrm{tot}}(t)$ plot is useful.}
+\begin{itemize}
+  \item \textbf{Sanity check}: if the two medians are dramatically different
+        (as in the sparse baseline: $\Delta I \approx 400$ at $t=1500$),
+        that is direct evidence of a large bias.
+  \item \textbf{Qualitative regime identification}: the step structure shows
+        how many communities are typically infected at each time.
+  \item \textbf{Not for}: quantifying small-to-moderate biases (clique case),
+        or comparing distributional shapes.
+\end{itemize}
+
+%% ============================================================
+\section{Metric Hierarchy and Recommendations}
+%% ============================================================
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{3.4cm}p{2.1cm}p{4.0cm}p{4.5cm}}
+\toprule
+\textbf{Metric} & \textbf{Handles censoring?} & \textbf{Use when} & \textbf{Do not use when} \\
+\midrule
+Completion rate          & n/a        & Always report first                 & --- \\
+RMST / $\DRMS$           & \textbf{Yes} & Primary metric; always valid       & --- \\
+$W_1(T_{\mathrm{last}})$ & No         & Both models $\approx100\%$ complete & Completion rates differ $>5\%$ \\
+Cond.\ mean shift        & No         & Completion rates $\approx$ equal    & Completion rates differ \\
+Cond.\ median shift      & No         & Completion rates $\approx$ equal    & Completion rates differ \\
+Paired $\delta_i$        & Partial    & Sensitive error detection per hop   & Last layer (censoring of slow runs) \\
+$W_1(T_i)$ per hop       & No         & Error growth through chain          & First/last layers with few completions \\
+$I_{\mathrm{tot}}(t)$    & n/a        & Regime identification, sanity check & Quantifying approximation error \\
+KS statistic             & No         & Qualitative test only               & Primary quantitative comparison \\
+\bottomrule
+\end{tabular}
+\caption{Metric hierarchy.  \textbf{Bold}: recommended primary metric.}
+\label{tab:hierarchy}
+\end{table}
+
+\paragraph{Recommended reporting order for each scenario.}
+\begin{enumerate}
+  \item Completion rates $p_{\mathrm{Micro}}$, $p_{\mathrm{MM}}$ and their
+        difference.
+  \item $\DRMS$ with 95\% bootstrap CI.  Use this to test Jensen and to
+        assess practical bias.
+  \item rel-$W_1(T_{\mathrm{last}})$ \emph{only if} both completion rates
+        $\geq 0.9$.  Provides distributional shape information beyond the mean.
+  \item Per-hop paired error $\delta_i$: median and IQR across replications.
+        For identifying where in the chain the error accumulates.
+  \item $I_{\mathrm{tot}}(t)$ median: for visual context only, not for
+        quantitative conclusions.
+\end{enumerate}
+
+%% ============================================================
+\section{Worked Example: CE-01 Ablation}
+%% ============================================================
+
+CE-01 uses 100 \emph{paired} replications (same network and seed for all
+variants); $T_{\mathrm{end}} = 4000$; all five variants complete 100\%
+of runs (no censoring).  This is the ideal setting: all metrics are valid.
+
+\paragraph{Primary result table.}
+\begin{center}
+\begin{tabular}{lrrrl}
+\toprule
+Variant & Completion & $\mathbb{E}[T_{\mathrm{last}}]$ & $\DRMS$ & 95\% CI \\
+\midrule
+Full Micro         & 1.00 & 2936.7 & $0$       & --- \\
+Oracle E/E         & 1.00 & 2944.3 & $+7.5$    & $[-93.6,\;+120.3]$ \\
+Oracle E/U         & 1.00 & 2775.5 & $-161.2$  & $[-266.8,\;-48.8]$ \\
+Aggregate A/B      & 1.00 & 2735.5 & $-201.2$  & $[-302.4,\;-106.7]$ \\
+MicroMacro (A/U)   & 1.00 & 2715.9 & $-220.8$  & $[-307.9,\;-120.2]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Because all variants complete 100\% of runs and share the same seeds,
+$\DRMS = \mathbb{E}[T^{\mathrm{variant}}] - \mathbb{E}[T^{Micro}]$ exactly
+(no censoring, no between-run confounding).  The conditional mean and RMST
+are identical here.
+
+\paragraph{Why RMST still matters even at 100\% completion.}
+The RMST formulation generalises cleanly to the censored case.
+Using RMST throughout---even when it reduces to the plain mean---ensures
+the same code and the same interpretation across all experiments.
+This avoids introducing separate code paths that could silently compute
+the wrong thing when some runs are censored.
+
+%% ============================================================
+\section{Statistical Power and Sample Size}
+%% ============================================================
+
+A common question: how many replications are needed to detect a given
+$\DRMS$ with 80\% power at the 5\% significance level?
+
+For a one-sample $t$-test on $\Delta_r = \min(T_r^{MM}, T_{\mathrm{end}}) -
+\min(T_r^{Micro}, T_{\mathrm{end}})$ with standard deviation $\sigma_\Delta$:
+\[
+  N \approx \left(\frac{(z_{0.025} + z_{0.20})\, \sigma_\Delta}{\delta}\right)^2
+           = \left(\frac{2.80\, \sigma_\Delta}{\delta}\right)^2,
+\]
+where $\delta = |\DRMS|$ is the target effect size.
+
+\paragraph{Calibrated clique baseline ($k=5$).}
+From bootstrap: $\sigma_\Delta \approx 590$ (std of pairwise differences),
+$|\DRMS| = 75.6$.  Required $N \approx (2.80 \times 590 / 75.6)^2 \approx 480$.
+Current 100 replications give power $\approx 25\%$---consistent with the CI
+including zero.
+
+\paragraph{Calibrated clique $k=10$.}
+$\sigma_\Delta \approx 450$, $|\DRMS| = 127.9$.
+Required $N \approx (2.80 \times 450 / 127.9)^2 \approx 97$.
+100 replications are just sufficient; CI excludes zero.
+
+\paragraph{CE-01 (paired).}
+Pairing the replications (same seed) reduces $\sigma_\Delta$ dramatically
+(between-run variance is removed).  100 paired replications are sufficient
+for all four contrasts with $|\DRMS| \geq 160$.
+
+\textbf{Practical rule of thumb:} for the chain benchmark without pairing,
+use at least $N = 300$ replications when $|\DRMS| < 100$.
+
+%% ============================================================
+\section{Summary}
+%% ============================================================
+
+\begin{enumerate}
+  \item \textbf{RMST and $\DRMS$} are the correct primary metrics.
+        They handle censoring, connect directly to the Jensen inequality,
+        and have well-understood statistical properties.
+
+  \item \textbf{Conditional mean/median} (completed runs only) introduces
+        selection bias whenever completion rates differ.  It can show the
+        \emph{wrong sign} (e.g., clique baseline: conditional median $= +70.8$
+        while RMST $= -75.6$).
+
+  \item \textbf{W$_1$ distance} is valid for distributional shape comparison
+        when both models have near-100\% completion.  Use it alongside RMST,
+        not instead of it.
+
+  \item \textbf{$I_{\mathrm{tot}}(t)$ pointwise plots} reflect phase noise,
+        not approximation error.  Useful for visual context (especially
+        sparse case) but not for quantifying bias.
+
+  \item \textbf{Per-hop paired error $\delta_i$} is the most sensitive
+        diagnostic: it removes between-run variance by using paired seeds.
+        Interpret the last-layer value cautiously due to censoring of
+        slow Micro runs.
+
+  \item \textbf{100 replications} are insufficient for the clique baseline
+        ($k=5$) to detect the Jensen bias at 5\% significance.
+        Need $\approx 400$--$500$ replications or paired seeds.
+\end{enumerate}
+
+\end{document}

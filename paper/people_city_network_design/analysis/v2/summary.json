@@ -1,0 +1,78 @@
+{
+  "kind": "deterministic_data_and_partition_audit",
+  "simulations_run": false,
+  "synthetic_people_generated": 0,
+  "seeds": null,
+  "commune_count": 34858,
+  "population_source_rows": 34903,
+  "urban_composition_rows": 34875,
+  "available_population_sum": 67760573.0,
+  "missing_population_communes": [
+    {
+      "commune_code": "15031",
+      "name": "Celles"
+    },
+    {
+      "commune_code": "15035",
+      "name": "Chalinargues"
+    },
+    {
+      "commune_code": "15047",
+      "name": "Chavagnac"
+    },
+    {
+      "commune_code": "15171",
+      "name": "Sainte-Anastasie"
+    }
+  ],
+  "age_margin_max_abs": 6.402842700481415e-10,
+  "age_margin_nonzero_communes": 0,
+  "workers_exceed_population15plus_communes": 21,
+  "max_worker_excess": 346.4444360756388,
+  "rural_communes": 27307,
+  "rural_population": 14011180.0,
+  "urban_units": 2457,
+  "domestic_workers": 27885547.59864654,
+  "partitions": [
+    {
+      "partition": "commune",
+      "groups": 34858,
+      "same_group_worker_fraction": 0.3459820302633891,
+      "largest_available_population_sum": 2113705.0,
+      "groups_with_missing_population": 4,
+      "dense_macro_lower_bound_gib": 45.265263468027115
+    },
+    {
+      "partition": "urban_rural_commune",
+      "groups": 29764,
+      "same_group_worker_fraction": 0.6235196700296733,
+      "largest_available_population_sum": 10944094.0,
+      "groups_with_missing_population": 4,
+      "dense_macro_lower_bound_gib": 33.00218641757965
+    },
+    {
+      "partition": "urban_rural_department",
+      "groups": 2553,
+      "same_group_worker_fraction": 0.6537960427988616,
+      "largest_available_population_sum": 10944094.0,
+      "groups_with_missing_population": 1,
+      "dense_macro_lower_bound_gib": 0.2428073063492775
+    }
+  ],
+  "illustrative_csr_degree20_gib": 15.65052393078804,
+  "csr_note": "Hypothetical average degree20 on available population sum, int32 neighbor+float64 weight+int64 offsets; one adjacency only. Four commune rows have NA population values in the downloaded source; no imputation was performed; totals are sums over available values.",
+  "bretagne": {
+    "communes": 1202,
+    "population": 3422845.0,
+    "workers_within_region": 1372552.4479522342,
+    "workers_to_other_domestic_regions": 45470.79814463621,
+    "workers_from_other_domestic_regions": 32500.129417725606,
+    "resident_workers_to_outside_domestic_scope": 1672.6338383732364
+  },
+  "notes": [
+    "F/Phi count estimated workers, never contact weights W.",
+    "R:department is an auxiliary rural group, not a city.",
+    "No outside-resident origins in this source scope.",
+    "Five dense arrays give a conservative lower bound, not peak RAM or timing."
+  ]
+}

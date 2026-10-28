@@ -1,0 +1,753 @@
+\documentclass[12pt]{article}
+
+% Standalone Applied Network Science draft: no external figures or bibliography files.
+% This version frames the paper as prediction under incomplete network information.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin=2.45cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{authblk}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs,tabularx,array}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing,fit,shapes.geometric,patterns}
+
+% -----------------------------------------------------------------------------
+% Debug and editorial layer
+% -----------------------------------------------------------------------------
+\newif\ifDEBUG
+\DEBUGfalse
+
+\ifDEBUG
+  \long\def\michaelreplace#1{{\color{blue}#1}}
+  \newcommand{\michaelnote}[1]{%
+    \par\smallskip\noindent
+    \fcolorbox{blue!45}{blue!5}{%
+      \parbox{0.96\linewidth}{\textcolor{blue}{\textbf{Michael note.} #1}}%
+    }%
+    \par\smallskip
+  }
+\else
+  \long\def\michaelreplace#1{#1}
+  \newcommand{\michaelnote}[1]{}
+\fi
+
+% -----------------------------------------------------------------------------
+% Theorem environments and notation
+% -----------------------------------------------------------------------------
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\calI}{\mathcal I}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Eop}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Wone}{W_1}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Full}{\mathrm{Full}}
+\newcommand{\Macro}{\mathrm{Macro}}
+\newcommand{\SIR}{\mathrm{SIR}}
+\newcommand{\SI}{\mathrm{SI}}
+\newcommand{\MSE}{\operatorname{MSE}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{\michaelreplace{Two-Scale Stochastic Epidemic Dynamics under Incomplete Network Information}}
+\author[1]{Yulian Kuryliak}
+\author[2]{Michael Emmerich}
+\affil[1]{PTNU, Lviv, Ukraine}
+\affil[2]{Faculty of Information Technology, University of Jyv\"askyl\"a, Jyv\"askyl\"a, Finland}
+\date{Applied Network Science draft v4 -- theory and information version}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\michaelreplace{Large-scale epidemic forecasts are often made under incomplete contact-network information. A fully microscopic model may define the reference spreading process, but the modeller may only know local community structure, aggregate mobility weights, or community-level prevalence. We study this situation for two-scale stochastic epidemic dynamics on community networks. The full-information reference is a continuous-time Markov chain (CTMC) on a contact graph with a fixed community partition. The incomplete-information model preserves exact local CTMC dynamics inside communities, but replaces cross-community edges by macro-level import hazards and placement rules based on retained summaries. The central question is not computational speedup, but predictive information loss: what is lost when the full contact network is replaced by a micro--macro abstraction, and how does the loss affect inter-community first-arrival predictions? We make four contributions. First, we formulate two-scale epidemic modelling as conditional prediction under nested information sets. Second, we prove a value-of-information identity showing that enriching the interface can only reduce mean-squared prediction error for the full inter-community intensity, with the improvement equal to a conditional-variance reduction. Third, we show that community prevalence is not generally sufficient: microscopic states with identical community counts can have different active cross-community exposure and different edge-conditioned target laws. Fourth, we analyze two benchmark families. The clique--bridge--leaf motif gives a minimal non-identifiability example and shows, via a Jensen survival gap, why a mean hazard need not preserve first-arrival distributions. Chains of cliques then show how local interface discrepancies can accumulate along a community path. The paper identifies interface exposure and target placement as key information variables for faithful two-scale epidemic prediction, and provides a theoretical foundation for later empirical validation on real contact networks.}
+\end{abstract}
+
+\noindent\textbf{Keywords:} applied network science; epidemic networks; incomplete information; two-scale dynamics; community networks; stochastic spreading; continuous-time Markov chains; first-arrival prediction; network abstraction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\michaelreplace{Epidemic spreading on large networks is shaped by mechanisms observed at different resolutions. Within a local community, such as a school, workplace, city district, or household cluster, infection and recovery occur as stochastic person-to-person events on a contact network. Between communities, infection is seeded by commuting, travel, shared institutions, or other inter-community contacts. A fully microscopic model would specify all of these contacts simultaneously. In practice, however, this full contact network is rarely known. Some local contact structure may be observed or generated synthetically, whereas inter-community coupling is often available only through aggregate mobility, coarse flow estimates, or weighted links between communities.}
+
+\michaelreplace{This paper studies two-scale epidemic dynamics as prediction under incomplete network information. The full contact network is treated as the reference object: if every edge and every node state were known, it would determine the exact CTMC intensity of each possible transmission. The two-scale abstraction observes less. It may keep exact stochastic dynamics inside each community, but communicate between communities only through aggregate summaries such as prevalence, susceptibility, and coupling weights. The scientific question is therefore not whether a reduced model is faster. It is what prediction accuracy is lost when contact information is hidden, and which additional interface summaries are most valuable for recovering it.}
+
+Network epidemic theory has established that contact heterogeneity and network structure influence epidemic thresholds, invasion, extinction, and timing \citep{keeling2005networks,pastor2015epidemic}. Metapopulation and mobility-network models provide scalable representations of spatial spread by coupling aggregate populations through flows \citep{colizza2008epidemic,balcan2009multiscale,ajelli2010comparing}. Exact stochastic simulation algorithms, including Gillespie-type methods and network or temporal variants, provide a continuous-time reference for event-level epidemic dynamics \citep{gillespie1977exact,anderson2007modified,vestergaard2015temporal,kuryliak2025gillespie}. A related reduction literature studies lumping, Markov population abstractions, and structural coarse graining of spreading processes on networks \citep{gfeller2007spectral,grossmann2019reducing,ward2022micro}. Applied Network Science explicitly encourages applied research using network science, including theory with clear applied impact \citep{menezes2016editorial}; this motivates a contribution that is theoretical in form but targeted at practical epidemic forecasting with incomplete network data.
+
+\michaelreplace{The gap is that existing multiscale and coarse-grained epidemic models often specify an aggregate interface without isolating the information value of the omitted microscopic contacts. If a community exports infection through a small set of bridge nodes, then overall prevalence may be a poor proxy for export readiness. If an imported infection is placed uniformly in the destination community, then the post-import local outbreak may differ from the full contact process in which the target is selected through a specific active edge. These issues are not implementation details. They are information constraints: the macro layer cannot condition on facts that it does not observe.}
+
+\michaelreplace{The paper contributes a theory of what the micro--macro abstraction loses relative to the full contact network. The first contribution is an explicit full-information CTMC reference and an incomplete-information two-scale model. The second contribution is a value-of-information theorem for inter-community intensity prediction under nested information sets. The third contribution is a set of exactness and non-identifiability results: local CTMC exactness does not imply full-process exactness; prevalence-only hazards are not exact unless the active interface exposure is determined by the retained macro variables; and exact target placement requires the edge-conditioned target distribution. The fourth contribution is a pair of network benchmark families that make the theory visible. The clique--bridge--leaf motif isolates one interface, while a chain of cliques repeats the interface to show how local prediction differences can accumulate over a network path.}
+
+\michaelreplace{No real-world case study is included in this theory draft by design. Real contact datasets introduce confounders that are orthogonal to the present question: uncertain community partitions, unobserved contacts, temporal sampling, privacy-preserving aggregation, behavior change, and unknown calibration of transmission rates. A field case is essential for the next empirical step, but it is not the cleanest way to prove which information is lost by abstraction. Here we use controlled network motifs because they provide a known full-information reference and allow causal statements about the value of specific interface summaries. The intended sequence is therefore theory first, empirical validation second.}
+
+The paper is organized as follows. Section~\ref{sec:related} positions the work relative to network epidemiology, stochastic simulation, metapopulation modelling, and network reduction. Section~\ref{sec:information_view} introduces the full-information versus incomplete-information perspective. Section~\ref{sec:reference} defines the full CTMC. Section~\ref{sec:twoscale} defines the two-scale abstraction. Section~\ref{sec:value_information} gives the theoretical results. Sections~\ref{sec:clique_leaf} and~\ref{sec:chain_cliques} develop the clique--bridge--leaf and chain-of-cliques benchmark families. Section~\ref{sec:scope} explains the scope and the role of future real-world validation. Section~\ref{sec:discussion} concludes.
+
+\michaelnote{v4 audit objective: make the paper a theory/network-science manuscript about the value of information for prediction accuracy, not a computational-speedup manuscript. All plots are inline TikZ/PGFPlots and use schematic or theoretical quantities, not empirical results.}
+
+\section{Related work, scope, and novelty}
+\label{sec:related}
+
+\subsection{Network epidemics and stochastic event timing}
+
+Network epidemic models represent spreading as a process on nodes and edges. This perspective is essential when degree heterogeneity, community structure, bridges, or temporal contacts influence invasion and extinction \citep{keeling2005networks,pastor2015epidemic}. The exact CTMC or Gillespie representation is a natural reference for such processes because event times are generated from current propensities rather than from a fixed time grid \citep{gillespie1977exact}. Extensions such as modified next-reaction methods and temporal Gillespie algorithms clarify how time-dependent propensities and changing contact structure can be handled by integrated hazards \citep{anderson2007modified,vestergaard2015temporal}.
+
+\subsection{Metapopulation models and two-scale abstractions}
+
+Metapopulation epidemic models replace detailed contacts by aggregate subpopulations connected through mobility or transportation patterns \citep{colizza2008epidemic,balcan2009multiscale,ajelli2010comparing}. They are powerful when the main question concerns large-scale spatial spread and when detailed contact data are unavailable. The present work is close in spirit but asks a more specific network-science question: if local dynamics inside communities remain microscopic and stochastic, what must the inter-community interface know to preserve first-arrival predictions? In this sense, the two-scale model is not only a computational device. It is also an information model.
+
+\subsection{Network coarse graining and reduction}
+
+A broad literature studies graph coarse graining, lumpability, aggregation of Markov processes, and reductions of dynamics on networks \citep{gfeller2007spectral,grossmann2019reducing,ward2022micro}. These methods typically ask how a large network process can be represented by fewer states, fewer nodes, or a lower-dimensional population model. Our novelty is complementary: we do not aggregate the local CTMC inside each community. Instead, we hold local stochastic dynamics fixed and analyze the information bottleneck at the inter-community interface. This leads to different objects of interest: active cross-community exposure, edge-conditioned target placement, and first-arrival timing.
+
+\subsection{Novelty in one paragraph}
+
+\michaelreplace{The main novelty is the separation of local stochastic exactness from interface information. A two-scale model can simulate every community exactly between imports and still produce different inter-community predictions if the macro interface cannot see the active transmission edges. We formalize this as conditional prediction under incomplete information, prove a value-of-information identity for inter-community intensities, show non-identifiability of prevalence-only hazards, provide exactness conditions for a sufficient interface, and use transparent network motifs to visualize why the effect appears. This makes the paper suitable for Applied Network Science: it studies dynamics on and through networks, but its contribution is a network-science theory of which structural information is needed for faithful prediction.}
+
+\begin{table}[ht]
+\centering
+\caption{How the present theory differs from adjacent literatures.}
+\label{tab:novelty}
+\begin{tabularx}{\textwidth}{p{0.25\textwidth}XX}
+\toprule
+Literature & Typical question & Present paper's distinction \\
+\midrule
+Network epidemics & How does graph structure affect spread? & Focuses on which graph information must be retained by a two-scale abstraction. \\
+Metapopulation models & How do aggregate populations coupled by mobility spread disease? & Keeps local CTMC dynamics explicit and studies the interface as incomplete information. \\
+Gillespie simulation & How to sample exact event times from propensities? & Uses the full CTMC as reference, not primarily as an implementation target. \\
+Coarse graining/lumping & How to reduce a network process? & Holds local micrographs fixed and analyzes lost inter-community exposure and placement information. \\
+Empirical case studies & How well does a model explain one observed system? & First isolates structural information loss on controlled benchmarks; field validation is scoped as next step. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Full contact network versus incomplete abstraction}
+\label{sec:information_view}
+
+Let $\calF_t$ represent the full information generated by the microscopic contact network and node states up to time $t$. A two-scale model operates with a smaller information set $\calI_t\subseteq\calF_t$. This smaller information set may contain the community partition, local microstates inside simulated communities, aggregate community counts, and macro weights $W_{ij}$, but not all cross-community endpoint states and edges.
+
+\begin{table}[ht]
+\centering
+\caption{Information retained and lost by a prevalence-based two-scale abstraction.}
+\label{tab:information_loss}
+\begin{tabularx}{\textwidth}{p{0.27\textwidth}XX}
+\toprule
+Prediction component & Full contact network & Incomplete two-scale abstraction \\
+\midrule
+Source infectious state & Which export endpoints are infectious & Often only source prevalence $\bar i_i$ \\
+Destination susceptibility & Which import endpoints are susceptible & Often only destination susceptibility $\bar s_j$ \\
+Cross-community structure & Exact edges $(u,v)\in E_{ij}$ and weights $\beta_{uv}$ & Aggregate coupling weight $W_{ij}$ \\
+Transmission intensity & Active edge-level hazard $a^\star_{ij}(X_t)$ & Predicted macro hazard $\lambda_{ij}(t)$ \\
+Import placement & Edge-conditioned target law & Abstract rule, often uniform among susceptibles \\
+Prediction target & First-arrival law and post-import microstate & Approximate arrival and placement law \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>=Latex,transform shape]
+\tikzstyle{box}=[draw,rounded corners,align=center,minimum width=3.1cm,minimum height=1.05cm]
+\node[box,fill=gray!8] (full) at (0,0) {Full contact\\network\\$G=(V,E), X_t$};
+\node[box,fill=gray!8] (local) at (4.4,0) {Local micro\\information\\$G_i, X_i(t)$};
+\node[box,fill=gray!8] (macro) at (8.8,0) {Macro interface\\$W_{ij},\bar i_i,\bar s_j$};
+\draw[->,thick] (full) -- node[above,align=center]{partition} (local);
+\draw[->,thick] (local) -- node[above,align=center]{summaries} (macro);
+\node[draw,rounded corners,fill=orange!10,align=center,below=1.1cm of local,minimum width=8.5cm] (loss) {Information possibly lost at the interface:\\active export exposure, susceptible import exposure, edge-pair dependence, target placement};
+\draw[->,dashed,thick] (full.south) .. controls +(0,-1.0) and +(-3.0,0.25) .. (loss.west);
+\draw[->,dashed,thick] (macro.south) .. controls +(0,-1.0) and +(3.0,0.25) .. (loss.east);
+\draw[decorate,decoration={brace,amplitude=5pt,mirror},thick] ($(full.south west)+(0,-0.2)$) -- ($(full.south east)+(0,-0.2)$) node[midway,below=0.25cm]{full information};
+\draw[decorate,decoration={brace,amplitude=5pt,mirror},thick] ($(macro.south west)+(0,-0.2)$) -- ($(macro.south east)+(0,-0.2)$) node[midway,below=0.25cm]{incomplete information};
+\end{tikzpicture}%
+}
+\caption{Two-scale epidemic dynamics as prediction under incomplete network information. The local CTMCs can remain exact while the macro interface loses information needed to predict inter-community first arrivals.}
+\label{fig:information_view}
+\end{figure}
+
+This framing separates the algorithmic question from the informational question. The algorithmic question asks how quickly a specified stochastic process can be simulated. The informational question asks how accurately the full process can be predicted from the summaries retained by an abstraction. This paper focuses on the informational question.
+
+\section{Full-information reference process}
+\label{sec:reference}
+
+Let $G=(V,E)$ be a finite directed graph of microscopic transmission channels. An undirected contact can be represented by two directed channels. The node set is partitioned into $M$ communities,
+\begin{equation}
+  V=\bigsqcup_{i=1}^{M}V_i,\qquad N_i=|V_i|.
+\end{equation}
+For $i\neq j$, define the oriented cross-community edge set
+\begin{equation}
+  E_{ij}=\{(u,v)\in E:u\in V_i,\ v\in V_j\},
+\end{equation}
+and let $E_{ii}$ denote within-community edges. At time $t$, node $v$ has state $X_v(t)\in\{S,I,R\}$. In community $i$ we write
+\begin{align*}
+S_i(t)&=\{v\in V_i:X_v(t)=S\},& s_i(t)&=|S_i(t)|,& \bar s_i(t)&=s_i(t)/N_i,\\
+I_i(t)&=\{v\in V_i:X_v(t)=I\},& i_i(t)&=|I_i(t)|,& \bar i_i(t)&=i_i(t)/N_i,\\
+R_i(t)&=\{v\in V_i:X_v(t)=R\},& r_i(t)&=|R_i(t)|,& \bar r_i(t)&=r_i(t)/N_i.
+\end{align*}
+Capital letters denote node sets, lower-case letters denote counts, and barred quantities denote fractions.
+
+For a configuration $x\in\{S,I,R\}^{V}$, infection along an oriented edge $(u,v)\in E$ has propensity
+\begin{equation}
+  a_{u\to v}(x)=\beta_{uv}\ind\{x_u=I,\ x_v=S\},
+\end{equation}
+and recovery of node $u$ has propensity
+\begin{equation}
+  a_u^{\mathrm{rec}}(x)=\gamma_u\ind\{x_u=I\}.
+\end{equation}
+Let $x^{v:I}$ be the configuration obtained by changing $v$ to state $I$, and let $x^{u:R}$ be the configuration obtained by changing $u$ to state $R$. The full-network CTMC has generator
+\begin{align}
+(\calL f)(x)
+&=\sum_{(u,v)\in E}\beta_{uv}\ind\{x_u=I,\ x_v=S\}\,[f(x^{v:I})-f(x)] \notag\\
+&\quad +\sum_{u\in V}\gamma_u\ind\{x_u=I\}\,[f(x^{u:R})-f(x)]
+\label{eq:full_generator}
+\end{align}
+for bounded test functions $f$. This full process is the reference model.
+
+The exact instantaneous cross-community infection intensity from $i$ to $j$ at state $x$ is
+\begin{equation}
+  a^\star_{ij}(x)=\sum_{(u,v)\in E_{ij}}\beta_{uv}\ind\{x_u=I,\ x_v=S\}.
+  \label{eq:exact_cross_intensity}
+\end{equation}
+The associated full-information target distribution, conditional on an $i\to j$ infection event, is
+\begin{equation}
+  \pi^\star_{ij}(v\mid x)
+  =\frac{\ind\{x_v=S\}\sum_{u\in V_i:(u,v)\in E_{ij}}\beta_{uv}\ind\{x_u=I\}}
+  {a^\star_{ij}(x)},\qquad v\in V_j,
+  \label{eq:exact_target_distribution}
+\end{equation}
+whenever $a^\star_{ij}(x)>0$. Equation~\eqref{eq:exact_cross_intensity} is the rate information and Eq.~\eqref{eq:exact_target_distribution} is the placement information that may be lost under abstraction.
+
+\section{Two-scale model under incomplete network information}
+\label{sec:twoscale}
+
+The two-scale model preserves exact CTMC dynamics on each induced local graph $G_i=(V_i,E_{ii})$. Between external imports, each community evolves by the same infection and recovery rules as the full CTMC restricted to $V_i$. Inter-community transmission is represented by a macro import process on the directed graph of communities.
+
+A common incomplete-information macro hazard is
+\begin{equation}
+  \lambda_{ij}(t)=\beta_{\mathrm{out}}W_{ij}\bar i_i(t)\bar s_j(t),
+  \label{eq:prevalence_macro_hazard}
+\end{equation}
+where $W_{ij}\geq0$ is a directed community-coupling weight. In an empirical setting, $W_{ij}$ may be a mobility volume or estimated interaction strength. In a controlled benchmark, it may be chosen as the number or total weight of cross-community contacts. Unless additional assumptions make community prevalence representative of cross-community endpoints, Eq.~\eqref{eq:prevalence_macro_hazard} is a predictor of Eq.~\eqref{eq:exact_cross_intensity}, not an identity.
+
+The total macro hazard is
+\begin{equation}
+  \Theta(t)=\sum_{i\neq j}\lambda_{ij}(t).
+\end{equation}
+Conditional on the aggregate path, macro event timing is generated by the cumulative-hazard equation
+\begin{equation}
+  \int_{t_0}^{t^*}\Theta(s)\,ds=E,
+  \qquad E\sim\Exp(1).
+  \label{eq:macro_budget}
+\end{equation}
+When a macro event occurs and $\Theta(t)>0$, the pair $i\to j$ is selected with probability $\lambda_{ij}(t)/\Theta(t)$. A destination node is then selected from $S_j(t)$ according to an import-placement rule $\Pi_{ij}(\cdot\mid t)$. Uniform placement is simple, but it is generally not equivalent to the full-information distribution in Eq.~\eqref{eq:exact_target_distribution}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  width=0.86\textwidth,
+  height=5.2cm,
+  ymin=0,ymax=1.12,
+  ylabel={Normalized MSE},
+  symbolic x coords={Prevalence only,Interface exposure,Exact interface},
+  xtick=data,
+  x tick label style={align=center,text width=3.1cm},
+  bar width=22pt,
+  nodes near coords,
+  every node near coord/.append style={font=\small},
+  title={Schematic value of interface information},
+  ymajorgrids=true,
+  grid style={gray!25}
+]
+\addplot coordinates {(Prevalence only,1.00) (Interface exposure,0.35) (Exact interface,0.00)};
+\end{axis}
+\end{tikzpicture}
+\caption{Inline PGFPlots visualization of Proposition~\ref{prop:value_info}. The heights are normalized schematic values, not empirical data. The theorem states that mean-squared prediction error for the full inter-community intensity cannot increase when the macro interface receives a richer information set.}
+\label{fig:value_info_plot}
+\end{figure}
+
+\section{Theoretical results: what information is valuable?}
+\label{sec:value_information}
+
+This section gives the core theoretical results. They are stated for the full CTMC and the two-scale abstraction above. The guiding variable is the full-information cross-community intensity
+\begin{equation}
+  Y_{ij}(t)=a^\star_{ij}(X(t)).
+\end{equation}
+A reduced model that sees only $\calI_t\subseteq\calF_t$ cannot generally use $Y_{ij}(t)$ itself. It must predict it from the retained information.
+
+\begin{table}[ht]
+\centering
+\caption{Theoretical results and their meaning for prediction under incomplete network information.}
+\label{tab:theory_map}
+\begin{tabularx}{\textwidth}{p{0.28\textwidth}XX}
+\toprule
+Result & Mathematical statement & Prediction meaning \\
+\midrule
+Conditional local exactness & Local CTMC law is exact after import times and targets are fixed. & Prediction loss is caused by the import process, not local Gillespie dynamics. \\
+Value of interface information & MSE decreases under nested information sets. & Additional interface summaries have quantifiable prediction value. \\
+Non-identifiability & Equal prevalence can imply different active exposure. & Prevalence-only hazards cannot be exact in general. \\
+Exact placement criterion & Import target law must match the edge-conditioned law. & Correct event time alone is insufficient for correct post-import state. \\
+Sufficient interface & Exact pair intensities plus target laws reproduce the full CTMC. & Full topology is not necessary if the right interface statistics are retained. \\
+Jensen survival gap & $\Eop[e^{-A_t}\mid\calI_t]\geq e^{-\Eop[A_t\mid\calI_t]}$. & Mean hazards need not preserve first-arrival distributions. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Conditional exactness of the micro layer}
+
+\begin{proposition}[Conditional local exactness]
+\label{prop:local_exactness}
+Fix the initial microstate in each community. Also fix the complete import process into every community, including all import times and target nodes. Conditional on this import process, the two-scale model evolves each restricted process $X_i(t)=X(t)|_{V_i}$ as the exact CTMC on $G_i=(V_i,E_{ii})$, with the specified imports applied as exogenous $S\to I$ jumps. Consequently, prediction discrepancy relative to the full-network CTMC is generated by the law of the import process, not by the local CTMC dynamics between imports.
+\end{proposition}
+
+\begin{proof}
+Between two imports, the local channels and propensities coincide with the restriction of the full CTMC to $V_i$. At an import time, the prescribed target node is changed by the specified exogenous jump. Hence, once the import sequence is fixed, the local sample-path law is the law of the corresponding locally forced CTMC. The remaining discrepancy is the difference between the full-network import law and the import law predicted from incomplete information.
+\end{proof}
+
+\subsection{Best prediction under an information set}
+
+Under squared-error loss, the best $\calI_t$-measurable predictor of $Y_{ij}(t)$ is the conditional expectation
+\begin{equation}
+  \widehat a^{\calI}_{ij}(t)=\Eop\bigl[Y_{ij}(t)\mid \calI_t\bigr].
+  \label{eq:conditional_intensity_predictor}
+\end{equation}
+A prevalence-only hazard such as Eq.~\eqref{eq:prevalence_macro_hazard} should therefore be understood as a modelling approximation to this conditional predictor. It is exact under the chosen information only when it equals Eq.~\eqref{eq:conditional_intensity_predictor}.
+
+\begin{proposition}[Value of interface information]
+\label{prop:value_info}
+Let $\calG_t\subseteq\calH_t\subseteq\calF_t$ be two information sets, and let $Y=Y_{ij}(t)$ be square-integrable. Then
+\begin{align}
+&\Eop\bigl[(Y-\Eop[Y\mid\calG_t])^2\bigr]
+-\Eop\bigl[(Y-\Eop[Y\mid\calH_t])^2\bigr] \notag\\
+&\hspace{2cm}=\Eop\bigl[(\Eop[Y\mid\calH_t]-\Eop[Y\mid\calG_t])^2\bigr]\geq0.
+\label{eq:value_of_information}
+\end{align}
+Thus, enriching the interface from $\calG_t$ to $\calH_t$ cannot increase mean-squared prediction error for the instantaneous inter-community intensity. The improvement is the variance explained by the additional information.
+\end{proposition}
+
+\begin{proof}
+This is the Pythagorean identity for conditional expectations in $L^2$. Conditional expectation is the orthogonal projection of $Y$ onto the subspace of square-integrable random variables measurable with respect to the corresponding sigma-field. Since the subspace for $\calG_t$ is contained in the subspace for $\calH_t$, the projection error cannot increase, and the difference of squared errors is the squared norm of the difference between the two projections.
+\end{proof}
+
+\begin{remark}
+The result is an information theorem, not a runtime theorem. If $\calG_t$ contains only community prevalence and $\calH_t$ additionally contains active interface exposure, Eq.~\eqref{eq:value_of_information} quantifies how much uncertainty about the next inter-community intensity is removed by communicating the additional summary.
+\end{remark}
+
+\subsection{Non-identifiability of prevalence-only hazards}
+
+\begin{proposition}[Non-identifiability from community counts]
+\label{prop:nonidentifiability}
+Suppose a macro hazard $\lambda_{ij}(x)$ depends only on $\bar i_i(x)$, $\bar s_j(x)$, and $W_{ij}$. If there exist microscopic states $x$ and $y$ such that
+\begin{equation}
+  \bar i_i(x)=\bar i_i(y),\qquad \bar s_j(x)=\bar s_j(y),
+\end{equation}
+with the same $W_{ij}$ but
+\begin{equation}
+  a^\star_{ij}(x)\neq a^\star_{ij}(y),
+\end{equation}
+then no prevalence-only macro hazard can be exact for both states.
+\end{proposition}
+
+\begin{proof}
+The macro hazard assigns the same value to $x$ and $y$ because its retained arguments are identical. The full-information intensities differ. Therefore the same macro value cannot equal both exact intensities.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Latex,scale=0.95,transform shape]
+\node[draw,rounded corners,align=center,minimum width=4.2cm,minimum height=2.0cm,fill=gray!5] (xstate) at (0,0) {State $x$\\same prevalence\\no infected interface node\\$a^\star_{ij}(x)=0$};
+\node[draw,rounded corners,align=center,minimum width=4.2cm,minimum height=2.0cm,fill=gray!5] (ystate) at (5.1,0) {State $y$\\same prevalence\\infected interface nodes\\$a^\star_{ij}(y)>0$};
+\draw[<->,thick] (xstate) -- node[above=0.38cm,fill=white,inner sep=1.5pt,align=center]{identical macro\\counts} (ystate);
+\begin{scope}[shift={(10.2,-1.6)}]
+\begin{axis}[
+  width=5.0cm,height=4.2cm,
+  ybar,
+  ymin=0,ymax=2.3,
+  ylabel={Exact intensity / $\beta_{\rm out}$},
+  symbolic x coords={$x$,$y$},
+  xtick=data,
+  nodes near coords,
+  bar width=22pt,
+  title={Different full hazards},
+  ymajorgrids=true,
+  grid style={gray!25}
+]
+\addplot coordinates {($x$,0) ($y$,2)};
+\end{axis}
+\end{scope}
+\end{tikzpicture}
+\caption{Visualization of Proposition~\ref{prop:nonidentifiability}. Two microscopic states may have the same prevalence and the same macro weight but different active cross-community exposure. A prevalence-only macro hazard must assign them the same value and therefore cannot be exact for both. The plotted values are schematic.}
+\label{fig:nonidentifiability}
+\end{figure}
+
+\subsection{Placement information}
+
+Rate information determines when a macro event occurs and which community pair fires. Placement information determines the post-import microstate. Both can affect prediction.
+
+\begin{proposition}[Exact placement criterion]
+\label{prop:placement}
+Fix a microscopic state $x$ with $a^\star_{ij}(x)>0$ and condition on an $i\to j$ transmission event. The two-scale import rule reproduces the immediate post-event destination-state distribution of the full CTMC if and only if
+\begin{equation}
+  \Pi_{ij}(v\mid x)=\pi^\star_{ij}(v\mid x)\qquad \text{for all }v\in S_j(x),
+\end{equation}
+where $\pi^\star_{ij}$ is defined in Eq.~\eqref{eq:exact_target_distribution}.
+\end{proposition}
+
+\begin{proof}
+Conditioning on an $i\to j$ event fixes the community-level event but not the target node. In the full CTMC, the target is distributed according to the edge-conditioned law $\pi^\star_{ij}$. In the two-scale model, it is distributed according to $\Pi_{ij}$. The post-event destination state is obtained by infecting the selected target. The post-event laws coincide exactly when the target distributions coincide.
+\end{proof}
+
+\subsection{A sufficient interface for exact cross-community coupling}
+
+\begin{proposition}[Interface-sufficient exactness]
+\label{prop:interface_sufficient}
+Consider an SIR or SI process in which a cross-community infection event changes only the destination node from $S$ to $I$. Suppose the interface information at time $t$ contains, for every ordered pair $i\neq j$, the exact active intensity $a^\star_{ij}(X(t))$ and the exact target distribution $\pi^\star_{ij}(\cdot\mid X(t))$. If macro event times are generated from the total intensity $\sum_{i\neq j}a^\star_{ij}(X(t))$, if the firing pair is selected proportionally to $a^\star_{ij}$, and if the target is selected from $\pi^\star_{ij}$, then the two-scale construction reproduces the full-network CTMC law.
+\end{proposition}
+
+\begin{proof}
+The local channels are identical to the full CTMC within each $V_i$. The proposed interface uses the exact total cross-community intensity, the exact distribution of the firing community pair, and the exact destination-target distribution conditional on that pair. Since a cross-community infection changes only the destination node state, the source identity is not needed to update the epidemic configuration. Therefore every possible next transition and its propensity matches the full generator in Eq.~\eqref{eq:full_generator}. Repeating the argument after each jump gives equality of CTMC laws.
+\end{proof}
+
+\begin{remark}
+The proposition does not say that the macro layer must know the entire microscopic graph. It identifies sufficient statistics for exact epidemic-state coupling: active pair intensities and target distributions. Practical interface-aware approximations can estimate these quantities from compact summaries.
+\end{remark}
+
+\subsection{Accumulated hazard and survival prediction}
+
+Even a good instantaneous mean predictor does not automatically preserve first-arrival distributions when it is used as a plug-in deterministic hazard. Let
+\begin{equation}
+  A_t=\int_0^t a^\star_{ij}(X(s))\,ds
+\end{equation}
+be the full accumulated cross-community hazard for a single event channel or motif, and let $\bar A_t^{\calI}=\Eop[A_t\mid\calI_t]$ be the accumulated hazard predicted from incomplete information.
+
+\begin{proposition}[Jensen gap for plug-in survival]
+\label{prop:jensen}
+For any information set $\calI_t$,
+\begin{equation}
+  \Eop\bigl[e^{-A_t}\mid\calI_t\bigr]
+  \geq e^{-\Eop[A_t\mid\calI_t]}
+  =e^{-\bar A_t^{\calI}}.
+  \label{eq:jensen_survival}
+\end{equation}
+Consequently, replacing a random accumulated hazard by its conditional mean can underestimate survival and predict earlier first arrivals in the minimal one-channel setting.
+\end{proposition}
+
+\begin{proof}
+The function $z\mapsto e^{-z}$ is convex. Jensen's inequality conditional on $\calI_t$ gives Eq.~\eqref{eq:jensen_survival}.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=5.4cm,
+  xlabel={$t$},
+  ylabel={Survival probability},
+  xmin=0,xmax=4,
+  ymin=0,ymax=1.02,
+  legend pos=north east,
+  title={Jensen survival gap for an averaged hazard},
+  ymajorgrids=true,
+  xmajorgrids=true,
+  grid style={gray!20},
+  samples=200
+]
+\addplot[very thick,blue,domain=0:4] {0.5+0.5*exp(-2*x)};
+\addlegendentry{$\mathbb{E}[e^{-A_t}]$}
+\addplot[very thick,red,dashed,domain=0:4] {exp(-x)};
+\addlegendentry{$e^{-\mathbb{E}[A_t]}$}
+\end{axis}
+\end{tikzpicture}
+\caption{Visualization of Proposition~\ref{prop:jensen}. The plot uses the illustrative random hazard $A_t=0$ with probability $1/2$ and $A_t=2t$ with probability $1/2$, so $\Eop[A_t]=t$. The exact survival $\Eop[e^{-A_t}]$ is larger than the plug-in survival $e^{-\Eop[A_t]}$.}
+\label{fig:jensen_plot}
+\end{figure}
+
+\begin{remark}
+This is a mechanism, not a universal sign theorem for all two-scale simulations. Recovery, placement, repeated imports, and downstream state changes can compensate for or reverse the signed effect. The statement says that averaging hazard before applying the nonlinear survival transform changes the predicted first-arrival law unless the remaining hazard uncertainty is negligible.
+\end{remark}
+
+\section{Clique--bridge--leaf motif}
+\label{sec:clique_leaf}
+
+The clique--bridge--leaf motif is the minimal network in which incomplete interface information matters. Community $0$ is a clique $K_n$ with node set $V_0$. Community $1$ is a single susceptible leaf $A$. A bridge set $B\subset V_0$ of size $k$ connects to $A$, and no other node in the clique has an edge to the leaf. For analytical clarity, consider SI dynamics without recovery.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.95,>=Latex]
+\coordinate (center) at (0,0);
+\foreach \ang/\name in {90/a,150/b,210/c,270/d,330/e,30/f}{
+  \node[circle,draw,minimum size=7mm,inner sep=0pt] (\name) at (\ang:1.25cm) {};
+}
+\foreach \x/\y in {a/b,a/c,a/d,a/e,a/f,b/c,b/d,b/e,b/f,c/d,c/e,c/f,d/e,d/f,e/f}{\draw[gray!35] (\x)--(\y);}
+\node[circle,draw,fill=orange!35,minimum size=7mm,inner sep=0pt] at (e) {};
+\node[circle,draw,fill=orange!35,minimum size=7mm,inner sep=0pt] at (f) {};
+\node[circle,draw,minimum size=8mm,inner sep=0pt,right=3.1cm of f] (leaf) {$A$};
+\draw[thick,->] (e) -- (leaf);
+\draw[thick,->] (f) -- (leaf);
+\node[below=1.55cm of center,align=center] {source community $K_n$ with bridge set $B$};
+\node[below=0.65cm of leaf,align=center] {leaf receiver};
+\node[above=0.3cm of leaf,align=center] {$a^{\Full}_{01}=\beta_{\rm out}B_I(t)$};
+\end{tikzpicture}
+\caption{Clique--bridge--leaf motif. The full contact process exports infection only through infected bridge nodes. A prevalence-only macro hazard cannot distinguish infection in ordinary clique nodes from infection in bridge nodes.}
+\label{fig:clique_bridge_leaf}
+\end{figure}
+
+Let
+\begin{equation}
+  B_I(t)=\sum_{b\in B}\ind\{X_b(t)=I\}
+\end{equation}
+be the number of infected bridge nodes. In the full contact network, the exact import intensity into the leaf is
+\begin{equation}
+  a^{\Full}_{01}(t)=\beta_{\mathrm{out}}B_I(t)\ind\{X_A(t)=S\}.
+  \label{eq:bridge_exact_hazard}
+\end{equation}
+A prevalence-only abstraction with $W_{01}=k$ uses
+\begin{equation}
+  \lambda^{\Macro}_{01}(t)=\beta_{\mathrm{out}}k\frac{i_0(t)}{n}\ind\{X_A(t)=S\}.
+  \label{eq:bridge_macro_hazard}
+\end{equation}
+If the initial infected node is not a bridge node, then $i_0(0)>0$ and Eq.~\eqref{eq:bridge_macro_hazard} is positive at time zero, whereas Eq.~\eqref{eq:bridge_exact_hazard} remains zero until a bridge node is infected. This is the simplest form of information loss: the macro state knows that infection exists in the source community, but not whether infection has reached the export-relevant part of the network.
+
+For a single bridge node, let
+\begin{equation}
+  T_B=\inf\{t:B_I(t)>0\}
+\end{equation}
+be the bridge activation time, and let $T_A$ be the infection time of the leaf. Under SI dynamics with $k=1$,
+\begin{equation}
+  T_A=T_B+Z,
+  \qquad Z\sim\Exp(\beta_{\mathrm{out}}),
+\end{equation}
+conditionally on the history up to $T_B$, and
+\begin{equation}
+  \Eop[T_A]=\Eop[T_B]+\frac{1}{\beta_{\mathrm{out}}}.
+\end{equation}
+If the initial infected node is chosen uniformly from all $n$ clique nodes, including the bridge, then
+\begin{equation}
+  \Eop[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}n},
+  \qquad H_{n-1}=\sum_{m=1}^{n-1}\frac{1}{m}.
+\end{equation}
+More generally, for $k$ bridge nodes and a uniform all-node initial seed,
+\begin{equation}
+  \Eop[T_B]
+  =\sum_{m=1}^{n-k}
+  \frac{\binom{n-k}{m}}{\binom{n}{m}}
+  \frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+  \label{eq:bridge_activation_general}
+\end{equation}
+The factor $\binom{n-k}{m}/\binom{n}{m}$ is the probability that the first $m$ infected clique nodes contain no bridge node. As $k$ increases, bridge activation becomes more representative of overall prevalence; as $k$ decreases, interface exposure becomes a more important missing variable.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=5.4cm,
+  xlabel={Infected nodes in source clique},
+  ylabel={Hazard / $\beta_{\rm out}$},
+  xmin=0,xmax=100,
+  ymin=0,ymax=2.2,
+  legend pos=north west,
+  title={Exact bridge hazard versus prevalence hazard},
+  ymajorgrids=true,
+  xmajorgrids=true,
+  grid style={gray!20}
+]
+\addplot[very thick,blue,const plot] coordinates {(0,0) (20,0) (20,1) (55,1) (55,2) (100,2)};
+\addlegendentry{Exact bridge exposure $B_I$}
+\addplot[very thick,red,dashed,domain=0:100] {2*x/100};
+\addlegendentry{Prevalence proxy $k i_0/n$, $k=2$}
+\end{axis}
+\end{tikzpicture}
+\caption{Illustrative inline plot for the clique--bridge--leaf mechanism. The exact export hazard is zero until bridge nodes are infected; the prevalence proxy increases as soon as infection grows anywhere in the clique. The breakpoint values are schematic and chosen for visualization.}
+\label{fig:bridge_hazard_plot}
+\end{figure}
+
+\section{Chains of cliques and accumulation of prediction loss}
+\label{sec:chain_cliques}
+
+A single clique--bridge--leaf motif isolates one interface. A chain of cliques repeats the same information bottleneck along a path of communities. Let communities $0,1,\ldots,L-1$ each contain a clique of size $n$. For each consecutive pair $(\ell,\ell+1)$, a bridge set in community $\ell$ connects to one or more entry nodes in community $\ell+1$. The epidemic starts in community $0$ and must cross interfaces sequentially.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=1.0cm,scale=0.92,transform shape]
+\foreach \i in {0,...,4}{
+  \node[draw,circle,minimum size=1.0cm,fill=gray!8] (C\i) at (2.2*\i,0) {$V_{\i}$};
+}
+\foreach \i/\j in {0/1,1/2,2/3,3/4}{
+  \draw[->,thick] (C\i) -- node[above] {interface} (C\j);
+}
+\node[below=0.55cm of C0] {$T_0=0$};
+\node[below=0.55cm of C1] {$T_1$};
+\node[below=0.55cm of C2] {$T_2$};
+\node[below=0.55cm of C3] {$T_3$};
+\node[below=0.55cm of C4] {$T_{L-1}$};
+\draw[decorate,decoration={brace,amplitude=5pt,mirror},thick] ($(C0.south west)+(0,-1.0)$) -- ($(C4.south east)+(0,-1.0)$) node[midway,below=0.3cm]{$T_{L-1}=\sum_{\ell=0}^{L-2}\Delta_\ell$};
+\end{tikzpicture}
+\caption{Chain-of-cliques benchmark. Each interface repeats the same information bottleneck. Local first-arrival discrepancies may accumulate into terminal-arrival discrepancies.}
+\label{fig:chain_diagram}
+\end{figure}
+
+Let $T_\ell$ be the first time at which community $\ell$ becomes infected, with $T_0=0$, and define the local transition delay
+\begin{equation}
+  \Delta_\ell=T_{\ell+1}-T_\ell,
+  \qquad \ell=0,\ldots,L-2.
+\end{equation}
+The terminal arrival time is
+\begin{equation}
+  T_{L-1}=\sum_{\ell=0}^{L-2}\Delta_\ell.
+  \label{eq:terminal_sum}
+\end{equation}
+In the full model, each $\Delta_\ell$ is controlled by the time needed for infection to reach the export-relevant interface structure and then to cross an active edge. In the two-scale incomplete-information model, the corresponding predicted delay is controlled by the macro hazard derived from retained community summaries.
+
+\begin{proposition}[Accumulation bound for first-arrival predictions]
+\label{prop:w1_bound}
+Let $T_{L-1}^{\Full}$ and $T_{L-1}^{\Macro}$ be terminal arrival times in a full-information model and an incomplete-information two-scale model. For any coupling of their local delays,
+\begin{equation}
+  \Wone\bigl(T_{L-1}^{\Full},T_{L-1}^{\Macro}\bigr)
+  \leq
+  \Eop\left[\left|\sum_{\ell=0}^{L-2}
+  (\Delta_\ell^{\Full}-\Delta_\ell^{\Macro})\right|\right]
+  \leq
+  \sum_{\ell=0}^{L-2}\Eop\left[|\Delta_\ell^{\Full}-\Delta_\ell^{\Macro}|\right].
+  \label{eq:w1_bound}
+\end{equation}
+If the local delays are modeled as independent across interfaces and optimally coupled pairwise, then
+\begin{equation}
+  \Wone\bigl(T_{L-1}^{\Full},T_{L-1}^{\Macro}\bigr)
+  \leq
+  \sum_{\ell=0}^{L-2}\Wone\bigl(\Delta_\ell^{\Full},\Delta_\ell^{\Macro}\bigr).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first inequality follows from the definition of $\Wone$ as the infimum of $\Eop|X-Y|$ over couplings and by evaluating it under the chosen coupling. Equation~\eqref{eq:terminal_sum} gives the difference as a sum of local delay differences. The second inequality is the triangle inequality. Under independent interface-delay approximations, taking the product of optimal pairwise couplings gives the final bound.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=5.4cm,
+  xlabel={Number of communities $L$},
+  ylabel={Upper bound on terminal $W_1$},
+  xmin=2,xmax=20,
+  ymin=0,ymax=19.5,
+  legend pos=north west,
+  title={Linear accumulation bound along a community chain},
+  ymajorgrids=true,
+  xmajorgrids=true,
+  grid style={gray!20},
+  samples=50
+]
+\addplot[very thick,blue,domain=2:20] {0.25*(x-1)};
+\addlegendentry{$\epsilon=0.25$}
+\addplot[very thick,red,dashed,domain=2:20] {0.50*(x-1)};
+\addlegendentry{$\epsilon=0.50$}
+\addplot[very thick,black,dotted,domain=2:20] {1.00*(x-1)};
+\addlegendentry{$\epsilon=1.00$}
+\end{axis}
+\end{tikzpicture}
+\caption{Visualization of Proposition~\ref{prop:w1_bound}. If each interface contributes at most $\epsilon$ Wasserstein discrepancy in the local delay, the terminal-arrival discrepancy is bounded by a sum over interfaces. The plot is theoretical and schematic.}
+\label{fig:accumulation_plot}
+\end{figure}
+
+The chain benchmark also clarifies the role of network structure. Dense cliques mix rapidly, so bridge infection may quickly become representative of community prevalence. Sparse communities, long paths to interface nodes, or heterogeneous gateway placement can make prevalence a weak predictor of export readiness. Thus, the relevant structural quantity is not prevalence alone but the relation between prevalence, internal mixing, and export-relevant contact geometry.
+
+\section{Scope: why controlled benchmarks before real-world case studies?}
+\label{sec:scope}
+
+\michaelreplace{A real-world case study is an important next step, but it is not the cleanest first test of the theory. The present paper studies the value of network information. To measure that value, one needs to know both the full-information reference and the incomplete-information abstraction. In many empirical settings, the full contact network is precisely the unobserved object. Treating a partial dataset as if it were the full truth would mix three distinct effects: information loss caused by abstraction, measurement error in the observed network, and calibration error in epidemiological parameters.}
+
+Controlled graph families avoid this ambiguity. In the clique--bridge--leaf motif, one can prove exactly which information is missing: the macro model sees prevalence but not bridge activation. In a chain of cliques, one can prove how local delay discrepancies can propagate. These motifs are not intended to replace empirical validation. They are designed to establish mechanisms that a later empirical study can test.
+
+The next empirical step should therefore use public or privacy-preserving contact data with a meaningful community partition and compare three levels of information: a full-contact or high-resolution reference, a prevalence-only two-scale abstraction, and an interface-aware abstraction. The prediction targets should include first-arrival distributions, post-import placement effects, and outbreak completion probabilities, not only mean prevalence curves.
+
+\section{Discussion and outlook}
+\label{sec:discussion}
+
+\michaelreplace{The main message is that two-scale epidemic models should be evaluated as prediction models under incomplete network information. A full contact network determines exact inter-community intensities and target distributions. A micro--macro abstraction sees only selected summaries. The difference between these information sets determines what the reduced model can and cannot predict.}
+
+A prevalence-only hazard is not automatically inadequate. It is appropriate when prevalence is informative about active cross-community exposure. This can occur when interface nodes are numerous, well mixed with the community interior, and not topologically special. It is less reliable when inter-community transmission depends on narrow bridge sets, hidden gateway geometry, or local paths that make export readiness lag behind overall infection growth.
+
+The value-of-information identity suggests a constructive research program. Instead of asking whether the macro layer should receive the entire microscopic graph, one can ask which additional summaries produce the largest reduction in prediction uncertainty. Candidate summaries include infected interface exposure, susceptible destination exposure, degree-weighted gateway counts, and local placement distributions. Such summaries preserve the two-scale separation while making the interface more faithful to the full contact process.
+
+The theory also clarifies why validation should emphasize first-arrival distributions and post-import placement, not only prevalence curves. Two models can have similar mean prevalence but different inter-community timing. In downstream chains, small timing discrepancies may accumulate. In recovery models, the same issue can affect completion probability or outbreak probability, because delayed or misplaced imports may fade out differently.
+
+Future work should develop three directions. First, empirical network case studies should estimate the predictive value of interface-aware summaries on real or high-quality synthetic contact networks. Second, statistical calibration should distinguish between fitting a scalar mobility rate and adding information to the interface; a scalar correction cannot recover distinctions between microscopic states that are identical at the macro level. Third, a separate computational-science simulation paper should study algorithmic efficiency, implementation choices, and runtime scaling. The present ANS paper is concerned with the information question: how prediction accuracy changes when the full contact network is replaced by a two-scale abstraction.
+
+\section*{Declarations}
+\textbf{Funding.} To be completed.\\
+\textbf{Competing interests.} The authors declare no competing interests.\\
+\textbf{Authors' contributions.} Y.K. developed the initial simulator and benchmark constructions. M.E. contributed the information-theoretic framing, mathematical restructuring, and manuscript development. Both authors will review and approve the final manuscript.\\
+\textbf{Data and code availability.} This theory draft does not report empirical results. Reproducible code and empirical data for validation will be described in a companion computational-science study or a later empirical extension.
+
+\begin{thebibliography}{99}
+
+\bibitem[Ajelli et~al.(2010)]{ajelli2010comparing}
+Ajelli M, Goncalves B, Balcan D, Colizza V, Hu H, Ramasco JJ, Merler S, Vespignani A (2010) Comparing large-scale computational approaches to epidemic modeling: agent-based versus structured metapopulation models. \emph{BMC Infectious Diseases} 10:190.
+
+\bibitem[Anderson(2007)]{anderson2007modified}
+Anderson DF (2007) A modified next reaction method for simulating chemical systems with time dependent propensities and delays. \emph{Journal of Chemical Physics} 127:214107.
+
+\bibitem[Balcan et~al.(2009)]{balcan2009multiscale}
+Balcan D, Colizza V, Goncalves B, Hu H, Ramasco JJ, Vespignani A (2009) Multiscale mobility networks and the spatial spreading of infectious diseases. \emph{Proceedings of the National Academy of Sciences} 106:21484--21489.
+
+\bibitem[Colizza and Vespignani(2008)]{colizza2008epidemic}
+Colizza V, Vespignani A (2008) Epidemic modeling in metapopulation systems with heterogeneous coupling pattern: theory and simulations. \emph{Journal of Theoretical Biology} 251:450--467.
+
+\bibitem[Gfeller and De Los Rios(2007)]{gfeller2007spectral}
+Gfeller D, De Los Rios P (2007) Spectral coarse graining of complex networks. \emph{Physical Review Letters} 99:038701.
+
+\bibitem[Gillespie(1977)]{gillespie1977exact}
+Gillespie DT (1977) Exact stochastic simulation of coupled chemical reactions. \emph{Journal of Physical Chemistry} 81:2340--2361.
+
+\bibitem[Grossmann and Bortolussi(2019)]{grossmann2019reducing}
+Grossmann G, Bortolussi L (2019) Reducing spreading processes on networks to Markov population models. \emph{QEST 2019}, 292--309.
+
+\bibitem[Keeling and Eames(2005)]{keeling2005networks}
+Keeling MJ, Eames KTD (2005) Networks and epidemic models. \emph{Journal of the Royal Society Interface} 2:295--307.
+
+\bibitem[Kuryliak et~al.(2025)]{kuryliak2025gillespie}
+Kuryliak Y, Emmerich MTM, Dosyn D (2025) Simulating epidemic peak dynamics on complex networks using efficient Gillespie algorithms. \emph{Infection, Genetics and Evolution} 132:105768.
+
+\bibitem[Menezes and Cherifi(2016)]{menezes2016editorial}
+Menezes R, Cherifi H (2016) Editorial. \emph{Applied Network Science} 1:1. doi:10.1007/s41109-016-0002-3.
+
+\bibitem[Pastor-Satorras et~al.(2015)]{pastor2015epidemic}
+Pastor-Satorras R, Castellano C, Van Mieghem P, Vespignani A (2015) Epidemic processes in complex networks. \emph{Reviews of Modern Physics} 87:925--979.
+
+\bibitem[Vestergaard and Genois(2015)]{vestergaard2015temporal}
+Vestergaard CL, Genois M (2015) Temporal Gillespie algorithm: fast simulation of contagion processes on time-varying networks. \emph{PLoS Computational Biology} 11:e1004579.
+
+\bibitem[Ward et~al.(2022)]{ward2022micro}
+Ward JA, Evans AJ, Malleson NS (2022) Micro-scale foundation with error quantification for the approximation of dynamics on networks. \emph{Communications Physics} 5:71.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,53 @@
+% Recovered from main-SMPT-twoscale.tex; scientific content retained.
+\appendices
+
+\section{Clique formulas and verification}
+\label{app:clique}
+
+Consider an $n$-node clique with SI dynamics, per-edge rate $\beta$, a uniformly placed seed and a uniformly placed set of $k$ bridge nodes. When $m$ nodes are infected, the next internal infection occurs at rate $\beta m(n-m)$, independently of which nodes are infected, and the infected set is a uniform $m$-subset. The probability that none of the first $m$ infected nodes is a bridge is $\binom{n-k}{m}/\binom{n}{m}$, hence
+\begin{equation}
+\label{eq:clique_TB}
+\mathbb{E}[T_B]=\sum_{m=1}^{n-k}\frac{\binom{n-k}{m}}{\binom{n}{m}}\frac{1}{\beta m(n-m)},
+\end{equation}
+For one bridge this simplifies to
+\begin{equation}
+\mathbb{E}[T_B]=\frac{H_{n-1}}{\beta n}\ \ (k=1),
+\end{equation}
+where $H_{n-1}$ is the harmonic number; the case of a bridge seed ($T_B=0$) is included. For $k=1$, the export time in \Full{} is $T_B$ plus an independent $\Exp(\beta)$ waiting time. The expected time to infect the whole clique is $2H_{n-1}/(\beta n)$. Table~\ref{tab:verification} compares~\eqref{eq:clique_TB} with the first community of the clique chains.
+
+\begin{table}[!htbp]
+\centering
+\caption{Verification of the reference simulator on the first community of the clique chains ($\beta=0.003$, 400 runs per cell): mean bridge-activation time and, for $k=1$, mean wait after activation (exact value $1/\beta=333.3$). Values are mean $\pm$ standard error.}
+\label{tab:verification}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $k$ & Exact $\mathbb{E}[T_B]$ & \Full{} $T_B$ & \Full{} wait\\
+\midrule
+50 & 1 & 29.86 & $29.72\pm0.71$ & $354.0\pm16.9$\\
+100 & 1 & 17.26 & $17.05\pm0.38$ & $326.5\pm17.0$\\
+250 & 1 & 8.13 & $7.84\pm0.15$ & $347.4\pm16.6$\\
+1000 & 1 & 2.49 & $2.51\pm0.04$ & $353.8\pm17.9$\\
+50 & 5 & 15.97 & $15.96\pm0.55$ & --\\
+100 & 5 & 10.31 & $9.64\pm0.29$ & --\\
+250 & 5 & 5.35 & $5.16\pm0.12$ & --\\
+1000 & 5 & 1.80 & $1.77\pm0.03$ & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Sampling floor of the Wasserstein distance}
+\label{app:floor}
+
+Let $F_R$ and $G_R$ be empirical CDFs of two independent samples of size $R$ from the same continuous law $F$. Then $W_1=\int|F_R-G_R|\,dx$, and $\sqrt{R}\,(F_R-G_R)$ is approximately $\sqrt{2}$ times a Brownian bridge evaluated at $F(x)$ \cite{delbarrio1999}. Since $\mathbb{E}|B(u)|=\sqrt{2u(1-u)/\pi}$ for a Brownian bridge $B$,
+\[
+\mathbb{E}[W_1]\approx\frac{2}{\sqrt{\pi R}}\int\sqrt{F(x)\bigl(1-F(x)\bigr)}\,dx .
+\]
+For an exponential law with mean $\mu$, the integral equals $\mu\pi/2$, so that $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, which is 8.9\% for $R=400$ and 1.8\% for $R=10\,000$. Arrival times that are sums of several crossings are less dispersed relative to their mean, and their floor is correspondingly lower; the permutation floors of the chain configurations ranged from 1.6\% to 5.9\%.
+
+\section{Reproducibility details}
+\label{app:repro}
+
+Seeds are derived deterministically from the experiment parameters. Each \TS{} engine draws from a private pseudorandom stream; midpoint probes copy the stream state of their engine and do not advance it. Two \Full{} runs ($n=50$, ASPL 6, $k=1$) had not reached the tenth community by $T=30\,000$. They were rerun to $T=40\,000$ with the same graphs, initial nodes and event seeds. Their event histories up to 30\,000 were verified to match the saved runs, and their terminal arrivals occurred at about 31\,059 and 31\,007. No horizon value was substituted for an unobserved event. The permutation and bootstrap analyses of the chain configurations, the descriptor $\sigma_T$ and Figures~\ref{fig:accuracy_map}--\ref{fig:descriptor} were computed from the saved runs by the scripts \path{extrascripts/analysis/smpt_twoscale_paper_metrics.py} and \path{extrascripts/visualization/smpt_twoscale_paper_figures.py}.
+

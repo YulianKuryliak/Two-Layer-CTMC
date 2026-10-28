@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "baseline": "parallel sources",
+  "originals_sha256_checked": 10,
+  "section_scope": "1–3",
+  "full_EN_citation_sequence": "unchanged",
+  "UK_front_citation_sequence": "unchanged",
+  "section1_3_citations_per_language": 25,
+  "labels_per_language": 18,
+  "numbered_equations_per_language": 6,
+  "english_front_and_section4_onward": "byte-identical to parallel baseline",
+  "uk_front": "unchanged before section1",
+  "uk_section4_onward": "original parallel middle/back inputs, hashes unchanged",
+  "schematic": "TikZ source byte-identical to parallel baseline in both languages; no old schematic PDF input",
+  "bilingual_pages": 28,
+  "pdf_text_colors_pages3_to9": {
+    "#000000": 50281,
+    "#2f4f4f": 20
+  },
+  "build": "EN/UK/Bilingual LuaLaTeX + BibTeX passed, stable labels, no undefined references",
+  "visual_review": "scheme/table, macro timing formulas and numerical example, algorithm and cost/parallelism prose checked",
+  "scientific_review": "passes after workshop timing source check; semantic agreement, single implementation, retained macro/local thresholds, conditional unimplemented parallelism and no guaranteed speedup/storage claim",
+  "remaining_warnings": "inherited CAS title-page overfull box and Ukrainian small-caps font substitution; no changed-body overflow",
+  "simulator_changes": false,
+  "simulations_started": false,
+  "results_updated": false
+}

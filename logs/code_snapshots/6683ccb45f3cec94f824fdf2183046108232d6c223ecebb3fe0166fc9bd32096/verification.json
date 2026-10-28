@@ -1,0 +1,16 @@
+{
+  "retained": "Sections1-5 and first Results6.1-6.4, all figures including descriptor(c), bibliography",
+  "archived": "Exact tail from6.5 through second Results and material before bibliography; complete prior main/PDF/ZIP also preserved",
+  "retained_prefix_bytes": 168911,
+  "retained_prefix_byte_identical": true,
+  "archived_tail_bytes": 68802,
+  "archived_subsections": 8,
+  "active_unique_labels": 43,
+  "pages": 21,
+  "compiler": "LuaLaTeX via latexmk with BibTeX and stable second pass",
+  "english_main_unchanged": true,
+  "no_undefined_or_duplicate_references_or_missing_glyphs": true,
+  "zip_main_parity": true,
+  "no_data_or_statistical_recomputation": true,
+  "inherited_warnings": "CAS title117.0831pt/empty-anchor and prose-underfull warnings remain"
+}

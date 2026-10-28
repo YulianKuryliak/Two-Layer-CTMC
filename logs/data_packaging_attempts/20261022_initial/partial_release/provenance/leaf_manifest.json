@@ -1,0 +1,39 @@
+{
+  "purpose": "Editable PGFPlots conversion from saved leaf-benchmark outputs; no simulation or statistical recomputation.",
+  "sources": {
+    "output/main_clean_benchmarks_independent_rng/benchmark_observables.csv": "18e21d563275650cc69bf96f9f76afbccffcb5e480fea281080f9406cf157d2a",
+    "output/analysis/clique_leaf/summary_metrics.json": "84dcf615c11b2a569d07d661fa6487fdde54930223f2c1802483227fa7dd6e98",
+    "output/analysis/n1000_random_connected_tree_augmented_aspl1to6_rep400_random_initial/figures/aspl_export_summary.csv": "6c399c6ce12a1fe1f7c159c19f83d011bcce6a609a916279bf6443bfb9b9325c"
+  },
+  "clique_leaf": {
+    "replications_per_model": 10000,
+    "w1_export": 3.249121805373057,
+    "ks_export": 0.01419999999999999,
+    "bypass_counts": {
+      "Full": 0,
+      "TwoScale": 98
+    }
+  },
+  "source_sweep": {
+    "cells_per_k": 21,
+    "paired_runs_per_cell": 400,
+    "shared_ymax": {
+      "time": 1643.8264697370298,
+      "w1": 13.026367573972825,
+      "bypass": 39.9
+    }
+  },
+  "generated": {
+    "leaf_clique_export_full.dat": "c3b6e7f05f8504aea4c0579c3345e79f19564059bdabe2dba340bd9bbe7c19aa",
+    "leaf_clique_export_twoscale.dat": "a16538c3fb2a4152e465ae6b6bdb965dd3c128a72b1f78a3a419ab3614a3ae4e",
+    "leaf_clique_signed_delay_full.dat": "0ffa04b0f028c9baa83b37a41350ca627dce7af97a88011ba390fbfded2a725b",
+    "leaf_clique_signed_delay_twoscale.dat": "2806b583faeed6642c3f6549659ee4ce17a23e8b4cd213167ba204b13e5e5feb",
+    "leaf_clique_bypass.dat": "0d4efe431cf955e84dee37cc2c6f9b6719053f09d0d049a522a09217a82f9438",
+    "leaf_source_sweep_k1.dat": "41346273bb515b2b690f36e72074d7ccde19c6c5e80d72eb29eb4d2f448381c3",
+    "leaf_source_sweep_k1_bypass_ci.dat": "a48938e076bcbbf9454b87bbae27ff4ecbc372da2e0a7177dd9835acecd29439",
+    "leaf_source_sweep_k5.dat": "cdad8e49d64aab881395eb42ee01adf632b86426f19ad8a9a38bfe32c5654cda",
+    "leaf_source_sweep_k5_bypass_ci.dat": "07a473e5d6873113029a60b788a8ef6864068b3e2bbc742bd5c767a1a5a29303",
+    "clique_leaf.tex": "84307df5d8a1cf5023408f417a94a5b6ac65a5fd0ce53d1b123d278d91a78487",
+    "source_sweep.tex": "ed8774ee55bd6946c2334d99f2a6a6e4a5ae621b9196bad9ff770276b5df2b88"
+  }
+}

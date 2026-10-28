@@ -1,0 +1,19 @@
+{
+  "scope": "Sections 1-3 and 4.1-4.2, stopping before single export",
+  "root_sha256": "6186e1844b2ddf0556bd9af2f4ce74c7cb14cbea6acc67f33e1176adb0be4a4f",
+  "ukrainian_main_sha256": "c79a673c4a736474c7bb970eb013113e2b1dc2d195fb9afed94ecb32515ef89f",
+  "labels": 25,
+  "mathematical_and_citation_parity": true,
+  "external_references": [
+    "prop:ordering",
+    "sec:design",
+    "sec:discussion",
+    "sec:res_descriptor",
+    "sec:results",
+    "sec:single_export"
+  ],
+  "warnings": [
+    "Overfull \\hbox (117.0831pt too wide) detected at line 89"
+  ],
+  "simulations_run": false
+}

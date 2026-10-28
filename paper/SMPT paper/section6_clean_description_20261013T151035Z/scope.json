@@ -1,0 +1,9 @@
+{
+  "scope": "Section6 introduction and two leaf captions; remove development-history narrative",
+  "before_sha256": "2081b381db3ccdd4a3302b060caef7b1e5421d1ce7964c6561794ddf854fe50b",
+  "after_sha256": "9e06de01393e00ab5abe4bffe32dcf7d5a881836c6104d434b0ed92e91ddf2c9",
+  "sections1_5_unchanged": true,
+  "bibliography_unchanged": true,
+  "scientific_values_and_figures": "unchanged",
+  "provenance": "Historical dataset/implementation distinctions remain in section6_corrected_20261013 and comparison report; omitted from article narrative at user request."
+}

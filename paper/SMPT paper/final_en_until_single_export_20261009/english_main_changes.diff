@@ -1,0 +1,167 @@
+--- main-SMPT.tex before
++++ main-SMPT.tex after
+@@ -39,17 +39,14 @@
+ \newcommand{\ind}{\mathbf{1}}
+ \newcommand{\eW}{e_{W}}
+ 
+-% Later-section reference numbers are preserved for this partial manuscript.
++% Full-paper numbers for material not yet translated into this partial main.
+ \AtBeginDocument{
+-% Reference numbers for omitted sections, from the original English article.
+ \newlabel{prop:ordering}{{2}{11}{}{}{}}
+-\newlabel{prop:surrogate}{{1}{10}{}{}{}}
+-\newlabel{sec:analysis}{{4}{10}{}{}{}}
+ \newlabel{sec:design}{{5}{13}{}{}{}}
+ \newlabel{sec:discussion}{{7}{22}{}{}{}}
+ \newlabel{sec:res_descriptor}{{6.6}{20}{}{}{}}
+ \newlabel{sec:results}{{6}{15}{}{}{}}
+-\newlabel{sec:surrogate}{{4.1}{10}{}{}{}}
++\newlabel{sec:single_export}{{4.3}{11}{}{}{}}
+ }
+ \begin{document}
+ \let\WriteBookmarks\relax
+@@ -82,7 +79,7 @@
+ 
+ % Provisional abstract for checking the native SMPT front-matter layout.
+ \begin{abstract}
+-Stochastic epidemic models often combine detailed contact networks within communities with aggregate information about contacts between them. We describe a two-scale simulator for this setting. Each community is simulated by a local Gillespie engine, while a macro layer generates cross-community infections from aggregate rates and places them uniformly among susceptible nodes. We specify the local event clocks, the import rule, and the grid-based scheduler. We distinguish the implemented scheduler from an ideal continuous-time process, which is exact for a surrogate network with uniform inter-community coupling. Comparisons with full-network Gillespie simulation examine how this approximation changes infection arrival times and their distributions. The aim is to identify conditions under which aggregate coupling reproduces the quantities of interest and to explain the sources of discrepancy.
++Stochastic epidemic models often combine detailed contact networks within communities with aggregate information about contacts between them. We describe a two-scale simulator for this setting. Each community is simulated by a local Gillespie engine, while a macro layer generates cross-community infections from aggregate rates and places them uniformly among susceptible nodes. We specify the local event clocks, the import rule, and the grid-based scheduler. We distinguish the implemented scheduler from an ideal continuous-time process, which is exact for a surrogate network with uniform inter-community connections. Comparisons with full-network Gillespie simulation examine how this approximation changes infection arrival times and their distributions. The aim is to identify conditions under which aggregate coupling reproduces the quantities of interest and to explain the sources of discrepancy.
+ \end{abstract}
+ 
+ \begin{keywords}
+@@ -110,12 +107,12 @@
+ This article makes four contributions.
+ \begin{enumerate}
+ \item We describe how the simulator works: each community is simulated separately, and a shared scheduler determines infections between them. We explain how it coordinates the local simulators on time intervals of fixed length (Section~\ref{sec:method}, Algorithm~\ref{alg:scheduler}).
+-\item We show which network the method simulates exactly. It is exact for a \emph{surrogate network}: the real cross-community edges are replaced by weak connections between all node pairs, preserving the total weight (Proposition~\ref*{prop:surrogate}). We then identify the sources of error and analyse a single export of infection (Proposition~\ref*{prop:ordering}).
++\item We show which network the method simulates exactly. The ideal process is exact for a \emph{surrogate network with uniform inter-community connections}: for each connected community pair, every node in one community is connected to every node in the other, and the total coupling weight is distributed equally among these node pairs (Proposition~\ref{prop:surrogate}). We then identify the sources of error and analyse a single export of infection (Proposition~\ref*{prop:ordering}).
+ \item We compare the two-scale method with full-network Gillespie simulation for transmission to one neighbouring community and for spread along chains of communities. We measure differences using the relative shift in the median time of first infection and the Wasserstein distance between the distributions of these times (Sections~\ref*{sec:design} and~\ref*{sec:results}).
+ \item We propose an empirical indicator of accuracy for our benchmarks. It compares the spread of infection times inside a community with the typical transmission time through one cross-community edge (Section~\ref*{sec:res_descriptor}).
+ \end{enumerate}
+ 
+-We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref*{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref*{sec:design} and~\ref*{sec:results} present the experiments and results. Section~\ref*{sec:discussion} discusses use, cost, and limitations.
++We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref*{sec:design} and~\ref*{sec:results} present the experiments and results. Section~\ref*{sec:discussion} discusses use, cost, and limitations.
+ 
+ 
+ %======================================================================
+@@ -131,7 +128,7 @@
+ Metapopulation models represent each subpopulation by counts and connect the subpopulations by mobility flows. They have been used to study global spread and the conditions for invasion \citep{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}. Detailed mobility data can also be combined with local transmission models \citep{chang2021}. Agent-based models instead represent individuals throughout the model \citep{eubank2004,kerr2021}. \citet{ajelli2010} compared these two broad approaches. The method studied here keeps individual nodes and contacts inside each community, but replaces the unknown individual contacts between communities by one aggregate stochastic interface.
+ 
+ \paragraph{Two levels of mixing and co-simulation.}
+-Some epidemic models combine contacts in small local groups with uniform mixing at a wider level \citep{ball1997}. Our surrogate network is related to this idea, but uniform mixing is used only between connected pairs of communities, and its strength is set by their aggregate weight.
++Some epidemic models combine contacts in small local groups with uniform mixing at a wider level \citep{ball1997}. Our surrogate network with uniform inter-community connections is related to this idea, but uniform mixing is used only between connected pairs of communities, and its strength is set by their aggregate weight.
+ 
+ The implementation also has features of co-simulation. In co-simulation, separate subsystem solvers move forward on a shared time grid and exchange a limited amount of information \citep{gomes2018cosim}. Here, the local community simulators are those subsystems. They send their infected and susceptible counts to the macro layer. In this implementation, those exchanged counts are used to draw a cross-community infection time and then to choose its receiving community and target node. The scheduler can therefore treat the local simulators as black boxes.
+ 
+@@ -140,7 +137,7 @@
+ \section{The two-scale simulation method}
+ \label{sec:method}
+ 
+-The experiments use one implementation of the two-scale simulator, in which the local simulators exchange information with the macro scheduler at fixed time intervals. To understand its error, we also consider a process with the same rates but exact timing of every event. We call this theoretical description the \emph{ideal process}. It separates the error caused by changing the network from the additional error caused by the time grid. The ideal process is exact for the surrogate network defined later; this does not make it exact for the original physical network. Below, we explain the reference model, the available data, and the steps of the implemented simulator.
++The experiments use one implementation of the two-scale simulator, in which the local simulators exchange information with the macro scheduler at fixed time intervals. To understand its error, we also consider a process with the same rates but exact timing of every event. We call this theoretical description the \emph{ideal process}. It separates the error caused by changing the network from the additional error caused by the time grid. The ideal process is exact for the surrogate network with uniform inter-community connections defined later; this does not make it exact for the original physical network. Below, we explain the reference model, the available data, and the steps of the implemented simulator.
+ 
+ \subsection{Full-network reference model}
+ \label{sec:reference}
+@@ -264,7 +261,7 @@
+ \node[commbox,fit=(d1)(d2)(d3)(d4)] {};
+ \node[align=center] at (10.25,-0.35) {$W_{ij}/(N_iN_j)$ per\\cross-community channel};
+ \end{tikzpicture}
+-\caption{\textcolor{black}{Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b) The two-scale simulator keeps a separate local simulator for each community. The macro layer receives community counts, uses $W_{ij}$ to generate a cross-community infection, and places it on a uniformly selected susceptible node. (c) The ideal two-scale process is equivalent to a surrogate network in which every ordered node pair across the two communities has a weak connection. The connections together have total weight $W_{ij}$. Orange nodes are infected and blue nodes are susceptible.}}
++\caption{\textcolor{black}{Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b) The two-scale simulator keeps a separate local simulator for each community. The macro layer receives community counts, uses $W_{ij}$ to generate a cross-community infection, and places it on a uniformly selected susceptible node. (c) The ideal two-scale process is equivalent to a process on a surrogate network with uniform inter-community connections: for each connected community pair, all ordered node pairs have the same contact weight. The connections together have total weight $W_{ij}$. Orange nodes are infected and blue nodes are susceptible.}}
+ \label{fig:schematic}
+ \end{figure}
+ 
+@@ -298,7 +295,7 @@
+ 
+ When such an event occurs, first select the source and receiving communities $(i,j)$ with probability $\lambda_{ij}/\Theta$. Then choose one susceptible node uniformly in the receiving community $j$ and infect it. If there are 20 susceptible nodes, each has probability $1/20$. This selection does not use real bridge nodes, because the aggregate interface does not know them. In later formulas, we write this target probability as $\Pi_{ij}(v\mid x)=1/s_j$ for $v\in S_j$, where $x$ is the current network state. Thus, $\Pi$ simply denotes the probability of choosing a particular susceptible node. Other target rules can be used if bridge-node information is available.
+ 
+-This aggregate rate is generally an approximation to transmission through the real physical edges. For fixed community counts, it is the expected rate under uniformly random selection of the edge endpoints, before their particular identities, states, and epidemic history are taken into account. This does not guarantee the correct rate for an epidemic already realised on specific edges. For uniform all-to-all coupling, it is the actual rate, as explained in Section~\ref*{sec:analysis}.
++This aggregate rate is generally an approximation to transmission through the real physical edges. For fixed community counts, it is the expected rate under uniformly random selection of the edge endpoints, before their particular identities, states, and epidemic history are taken into account. This does not guarantee the correct rate for an epidemic already realised on specific edges. For uniform all-to-all coupling, it is the actual rate, as explained in Section~\ref{sec:analysis}.
+ 
+ \subsection{Timing and synchronisation}
+ \label{sec:timing}
+@@ -311,7 +308,7 @@
+ \end{equation}
+ The next macro event occurs at the first time $t^\ast$ when $A(t^\ast)=E$.
+ 
+-In words, the area under the rate curve grows until it first reaches the random threshold. If it never reaches the threshold, no further macro event occurs. This is the standard cumulative-rate construction \citep{ethier1986,anderson2007}. If $\Theta$ is constant, the waiting time is $E/\Theta$. Drawing $E=-\ln U$, with $U$ uniform on $(0,1)$, gives the familiar Gillespie waiting time. When $\Theta$ changes after a local event, we keep the same threshold and continue accumulating with the new rate. We draw a new macro threshold only after a macro event. Exact calculation of its first crossing defines the ideal process; the time-grid calculation below approximates that crossing. Section~\ref*{sec:surrogate} shows that the ideal process is exact for the surrogate network.
++In words, the area under the rate curve grows until it first reaches the random threshold. If it never reaches the threshold, no further macro event occurs. This is the standard cumulative-rate construction \citep{ethier1986,anderson2007}. If $\Theta$ is constant, the waiting time is $E/\Theta$. Drawing $E=-\ln U$, with $U$ uniform on $(0,1)$, gives the familiar Gillespie waiting time. When $\Theta$ changes after a local event, we keep the same threshold and continue accumulating with the new rate. We draw a new macro threshold only after a macro event. Exact calculation of its first crossing defines the ideal process; the time-grid calculation below approximates that crossing. Section~\ref{sec:surrogate} shows that the ideal process is exact for the surrogate network with uniform inter-community connections.
+ 
+ The scheduler divides time into intervals of length $\tau$. On each interval, it approximates the varying macro rate by its value at the midpoint. Let $A$ be the amount already accumulated since the previous macro event. For the current interval $[t,t_g)$, copy every local simulator, including its random-number state, and advance each copy to the midpoint. The copies give an estimate $\Theta_{\mathrm{mid}}$ of the total macro rate. The estimated increase over the remaining interval is $\Theta_{\mathrm{mid}}(t_g-t)$. If $A$ plus this increase is below $E$ (the random macro threshold), the real simulators move to $t_g$. Otherwise, estimate the event time by
+ \begin{equation}
+@@ -353,6 +350,75 @@
+ The grid scheduler adds work by copying local states and coordinating the communities. Therefore, neither lower memory use nor faster execution is guaranteed. The method is useful when individual cross-community contacts are unavailable or too numerous to represent explicitly.
+ 
+ 
++% English translation of the current Ukrainian main, up to but excluding single export.
++\section{What the two-scale method actually simulates}
++\label{sec:analysis}
++
++\subsection{Exactness for a network with uniform inter-community connections}
++\label{sec:surrogate}
++
++If the time of each event is determined exactly by~\eqref{eq:hazard_integral}, the two-scale method itself defines a continuous-time Markov chain. It has the same local infection and removal rules as full-network Gillespie. The difference concerns contacts between communities. Instead of the real edges, the method effectively uses weak connections between every pair of nodes in two connected communities.
++
++We construct a surrogate network with uniform inter-community connections, $\tilde G$: internal contacts and their rates are unchanged, while every node in one community is connected to every node in the other for each connected pair of communities. The total weight of the inter-community contacts is distributed equally among all these node pairs. The following proposition shows that the two-scale rules give the same infection rates as full-network Gillespie on $\tilde G$.
++
++\begin{proposition}[Exactness for a network with uniform inter-community connections]
++\label{prop:surrogate}
++Let $\tilde G$ have the same internal contacts and rates as $G$. For each community pair $i\neq j$, replace its real inter-community channels $E_{ij}$ by all channels $V_i\times V_j$. Assign each new channel the rate $\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}/(N_iN_j)$, where $N_i$ and $N_j$ are the numbers of nodes in the respective communities. If the simulator chooses the import target uniformly among susceptible nodes, the ideal two-scale process has the same rates for all transitions as the full-network process on $\tilde G$. Thus, from the same initial state, its distribution coincides with that of full-network Gillespie on $\tilde G$.
++\end{proposition}
++
++\begin{proof}
++Local infections and removals have the same rates. For a susceptible node $v\in V_j$, the probability of being selected as an import target is $1/s_j(x)$. Its infection rate from other communities is therefore
++\[
++\begin{aligned}
++\sum_{i\neq j}\lambda_{ij}(x)\frac{1}{s_j(x)}
++&=\sum_{i\neq j}\beta_{\mathrm{out}}W_{ij}\frac{y_i(x)}{N_i}\frac{s_j(x)}{N_j}\frac{1}{s_j(x)}\\
++&=\sum_{i\neq j}\sum_{u\in V_i}\frac{\beta_{\mathrm{out}}W_{ij}}{N_iN_j}\ind\{x_u=I\}.
++\end{aligned}
++\]
++The last expression sums the rates of all channels in $\tilde G$ leading from infected nodes to $v$. If $s_j(x)=0$, imports are impossible in both models. Thus, all transition rates coincide. \qed
++\end{proof}
++
++\begin{corollary}
++\label{cor:exact}
++If every node in community $i$ is already connected to every node in community $j$ in the original network, and all these channels have the same rate for a given community pair, then $\tilde G=G$. In this case, the ideal two-scale method is also exact for the original network.
++\end{corollary}
++
++In general, $\tilde G$ preserves the internal contacts and aggregate inter-community weights of $G$, but differs in its inter-community contacts, so $\tilde G\neq G$.
++The total coupling strength is preserved:
++\[
++\sum_{(u,v)\in V_i\times V_j}\tilde\beta_{uv}=\beta_{\mathrm{out}}W_{ij}.
++\]
++Its distribution among nodes changes (Figure~\ref{fig:schematic}c). Thus, even with exact event timing, results on $G$ and $\tilde G$ may differ. The time-grid implementation adds a numerical error. These two effects can be checked separately: comparison with full-network Gillespie on $\tilde G$ checks synchronisation, while comparison with full-network Gillespie on $G$ also captures the effects of replacing the contacts.
++
++\subsection{Where the error comes from}
++\label{sec:sources}
++
++Replacing real inter-community contacts by averaged connections changes three things: the transmission rate, the recipient node, and the possible number of imports. A fourth source of error is the approximate calculation of event times in the implementation.
++
++\paragraph{1. The states of the real bridge nodes are not used.}
++In the full network, the transmission rate from $V_i$ to $V_j$ is
++\begin{equation}
++\label{eq:exact_rate}
++a^\star_{ij}(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}w_{uv}\,\ind\{x_u=I,\,x_v=S\},
++\end{equation}
++Only contacts from infected nodes to susceptible nodes contribute to this sum. If all bridge nodes in the source are still susceptible, transmission is impossible. In the two-scale method, the rate depends on the overall infected fraction, so infection of any source node can contribute to export. The method can transmit infection before any real bridge node is infected. We refer to this as \emph{bridge bypass} (Section~\ref*{sec:single_export}).
++
++\paragraph{2. The infection location in the recipient changes.}
++In the full network, infection reaches the endpoint of the contact through which it was transmitted. The two-scale method selects any susceptible node with equal probability. This affects how quickly infection reaches the bridge nodes leading to the next community.
++
++\paragraph{3. Additional imports are possible.}
++In the SI model, a node remains infected once infected. A real directed channel can therefore infect its target node at most once. The $|E_{ij}|$ channels permit at most $|E_{ij}|$ infections; a single channel permits at most one.
++\par In $\tilde G$, connected communities generally have more contacts than in the original network. The rate $\lambda_{ij}=\beta_{\mathrm{out}}W_{ij}\ibar_i\sbar_j$ can remain positive after the first import. The expected number of imports on $[t_1,t_2]$ is $\mathbb{E}\int_{t_1}^{t_2}\lambda_{ij}(s)\,ds$. If the recipient remains mostly susceptible for a long time, the method may add infections that the original set of contacts cannot transmit.
++
++\paragraph{4. Event timing is approximate.}
++The implementation estimates the rate from the state at the midpoint of an interval and uses this estimate to determine the import time (Section~\ref{sec:timing}). This approximates the integral in~\eqref{eq:hazard_integral}. The resulting error concerns the time grid and is separate from the replacement of contacts.
++
++\begin{remark}[The first import with randomly placed contacts]
++\label{rem:placement}
++Suppose that the endpoints of inter-community channels are selected uniformly and independently of the internal graphs and other contact sets, as in our tests. If the recipient community is still fully susceptible, the target of its first import is also uniform in the full network, after averaging over random contact placement. The two-scale method has the same distribution of the first target. For an individual fixed network, the targets need not coincide. The same distribution of the first target does not imply the same distribution of the first import time. Our tests show small errors in a number of configurations where the spread of internal infection times is small compared with the mean transmission time through one inter-community channel (Section~\ref*{sec:res_descriptor}).
++\end{remark}
++
++
+ \bibliographystyle{cas-model2-names}
+ \bibliography{twoscale_references}
+ \end{document}

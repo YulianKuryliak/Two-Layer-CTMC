@@ -1,0 +1,33 @@
+{
+  "main_manuscript_unchanged": true,
+  "raw_hashes": "PASS",
+  "graphml_roundtrip": "PASS",
+  "community_order": "PASS",
+  "api_wrapper_construction": "PASS (no .run calls)",
+  "unit_tests": "5/5 PASS",
+  "simulations_run": false,
+  "limitations": [
+    "No epidemiological rate calibration",
+    "No arrival-time error or rho estimates",
+    "Static aggregation loses temporal ordering",
+    "ID 28 has conflicting class labels; alternatives retained"
+  ],
+  "utc": "2026-10-16T12:55:07.542005+00:00",
+  "pdf_build": "PASS: stable LuaLaTeX/latexmk; 9 pages",
+  "pdf_pages": 9,
+  "pdf_overfull_boxes": 0,
+  "pdf_missing_glyphs": 0,
+  "pdf_font_warnings": 0,
+  "pdf_visual_review": "Pages 1,2,4,6,9 inspected across builds; both standalone charts inspected",
+  "no_abstract_or_conclusions": true,
+  "existing_outputs_verified_and_skipped": true,
+  "source_diff_review": "Reviewed no-index git diff for new source/document files; unrelated pre-existing changes excluded",
+  "existing_history_whitespace_note": "git diff --check reports pre-existing CRLF trailing-whitespace lines; those were not changed",
+  "artifact_sha256": {
+    "article.tex": "aabe28487b9be3592b387550ba8a06c84d71dc4dbcf67502c5bab53e103f202e",
+    "article.pdf": "3ee4b899d1984e6b7bdb5ef234e8d495ab1e4175fe3fe32b3a78f6d5dd02979d",
+    "article.txt": "8f59b12fecf847fb81c219cdb4fc45ff5a58a3fb7def9cb40a6c05d2d2830d7f",
+    "prepared/manifest.json": "7b4ee2cf4673e442b40af0105cc2f1e1a98c259457ac0053ac0826784cdc96c5",
+    "figures/manifest.json": "6ea03e707b3495892de9712585c6ec54014ceaea9a334a3775f4674897272bc3"
+  }
+}

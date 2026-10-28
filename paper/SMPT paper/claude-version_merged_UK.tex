@@ -1,0 +1,43 @@
+\documentclass[a4paper,fleqn]{cas-sc}
+\usepackage{fontspec}
+\setmainfont{Nimbus Roman}
+\setsansfont{Nimbus Sans}
+\setmonofont{Nimbus Mono PS}
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\microtypesetup{expansion=false}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\setlength{\emergencystretch}{3em}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\floatname{algorithm}{Алгоритм}
+\floatstyle{plain}
+\restylefloat{figure}
+\restylefloat{table}
+\newtheorem{proposition}{Твердження}
+\newtheorem{corollary}{Наслідок}
+\newdefinition{remark}{Зауваження}
+\newproof{proof}{Доведення}
+\newcommand{\ibar}{\bar{y}}
+\newcommand{\sbar}{\bar{s}}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\Full}{\textup{\textsc{Full}}}
+\newcommand{\TS}{\textup{\textsc{TwoScale}}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\eW}{e_{W}}
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+\input{claude-version_merged_uk_front.tex}
+\input{bilingual_parts/uk_middle.tex}
+\input{bilingual_parts/uk_back.tex}
+\bibliographystyle{cas-model2-names}
+\bibliography{twoscale_references}
+\end{document}

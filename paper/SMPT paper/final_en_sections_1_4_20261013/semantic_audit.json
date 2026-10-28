@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-13",
+  "scope": "Active Sections 1-4 in current Ukrainian main",
+  "ukrainian_sha256": "9e9b9ad196fe3229e1db239f3f956e796eb7c3d44195ace46495b771b191b63c",
+  "english_sha256": "d6c0784c550d4afd1c075c3a885e68206e15e8ad73f9808d85675c6eb1567c63",
+  "semantic_review": {
+    "sections_1_2_4": "Independent paragraph-by-paragraph read-only review: no material omissions or distortions",
+    "section_3": "Primary agent paragraph-by-paragraph review of model, table/caption, local clocks, macro layer, timing, seven scheduler steps and cost caveats"
+  },
+  "refinements": [
+    "Gillespie method instead of Gillespie-type method",
+    "Counts of people in different states in both introductory and related-work passages",
+    "Co-simulation explanation follows Ukrainian sentence order and explicit random-event statement",
+    "Table caption mirrors data and rules wording"
+  ],
+  "preserved": [
+    "Headings and paragraph heading structure",
+    "28 labels",
+    "25 citations",
+    "8 numbered equations",
+    "All displayed equations",
+    "TikZ drawing"
+  ],
+  "intentional_differences": [
+    "Editorial ??? remark note is invisible TEX comment",
+    "Malformed escaped X_0 is properly typeset",
+    "Duplicated respectively is translated once",
+    "References to absent later sections are non-linking"
+  ],
+  "ukrainian_unchanged": true,
+  "build": "Two successful pdfLaTeX passes",
+  "simulations_run": false
+}

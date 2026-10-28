@@ -1,0 +1,42 @@
+{
+  "start_utc": "2026-10-16T12:44:41.714834+00:00",
+  "end_utc": "2026-10-16T12:44:43.415283+00:00",
+  "source_sha256": "1fa2f2443a78159651e77cdec7b5e31fe2ea6bbee6f60c7752e478f38a192040",
+  "input_sha256": {
+    "HighSchool2013_proximity_net.csv.gz": "ecf4a90312c8d72057f72e936c366b470e63876da7db846300044795f045e2ea",
+    "HighSchool2013_metadata.txt": "b960986186214d2dede8496a6d5c270805d150b88a0b76419815f1b5ccca4dd8"
+  },
+  "source_urls": {
+    "HighSchool2013_proximity_net.csv.gz": "https://sociopatterns.org/assets/data/HighSchool2013_proximity_net.csv.gz",
+    "HighSchool2013_metadata.txt": "https://sociopatterns.org/assets/data/HighSchool2013_metadata.txt"
+  },
+  "landing_page": "https://sociopatterns.org/datasets/high-school-contact-and-friendship-networks/",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.18.33.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "networkx": "3.6.1",
+  "numpy": "2.5.0",
+  "seeds": null,
+  "simulations_run": false,
+  "artifact_sha256": {
+    "W.csv": "82deed71daac2a30cc1797e549e04784d7dffd74d0ae7b9503f0bf5e737d4ecb",
+    "W_binary.csv": "60cd009e7e4c10694a64909de4fc859afaa419f77143c86ceea141d9d2f9d9d7",
+    "W_contact_labels.csv": "2138046dd1b443c6da16c72ceef08d0429f3a190d35cc754a5e71a4a6236ce80",
+    "communities.csv": "6c882fd49c8e7d7a8734c3c29a724574b7df5d2f6bf0b58d2af39ea620bf7ff5",
+    "communities_contact_labels.csv": "0409b70c7d9853fd87f640f452156272af36c0f637de817720358bddd080b0af",
+    "community_nodes.json": "dfb90742d274e1d3b44971e3f7c553a3e00288fcbd2a9514fab640476cc5af07",
+    "edges.csv": "1cbbddab6f27281161255aa2c0d5e8c219c5c5478dbd032bd5c695a34c5a5aa1",
+    "full_graph.graphml": "3ac8b4eecf7ebdb90590d8498b78dbe4e8f85bf3d01e9348bc9e23535fe4e2fe",
+    "interfaces.csv": "3796eea9d4d96f91b9620e227d26d0a1d73e2e3806be1cece521279f572b4fac",
+    "local_0.graphml": "71bddeaae26b1dd9b3cfc74b3ed145ea65acbdccb570fcc17d3cf3d0b8cb4a84",
+    "local_1.graphml": "273779eca7b40e340e5eca9bdeee4abbefa567bb209c78aa78f193e7d303797b",
+    "local_2.graphml": "49e1a9593da17a55266c165f3e67d561d0d49a1b6a22a4e8d3d9723131aee608",
+    "local_3.graphml": "85fad85bea7df57486ed4c2c79840e3e5f190ddd7e50d7fdbd5f8b350fdec29d",
+    "local_4.graphml": "9f404d4c2c91fe0d1fea42ae46dc5ae5dd7e41119ab35aeb50b3889a4c45563c",
+    "local_5.graphml": "c41b44fc97036b5ec09eb5c1a8f6d8951ede5b788466f236df7e7388948c6512",
+    "local_6.graphml": "b599229fc9798b98970867213f064faeb631e17e4d998ca6db8815008aaa474a",
+    "local_7.graphml": "d20857eea4aea70f46555510554a72c9a40a9088e471d0c4b290f9ca9f1c75a7",
+    "local_8.graphml": "fdbc5b947ba7b601e7c02978c9fb373825a61e85f00e38ec0efe3f00e8f3bc38",
+    "nodes.csv": "1661643ae851eb7bf0925f88a8f63e59ccb290c3b0e3bb8c7de8f064be1b98cd",
+    "summary.json": "fa9793917feaeebefea328b8e85dffdb00c285969289284555f2e96c34a39e4d"
+  }
+}

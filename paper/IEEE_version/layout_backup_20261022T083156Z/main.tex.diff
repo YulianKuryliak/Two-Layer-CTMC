@@ -1,0 +1,365 @@
+diff --git a/paper/IEEE_version/layout_backup_20261022T083156Z/main.tex b/paper/IEEE_version/main.tex
+index f5f9674..306cd9d 100755
+--- a/paper/IEEE_version/layout_backup_20261022T083156Z/main.tex
++++ b/paper/IEEE_version/main.tex
+@@ -11,6 +11,8 @@
+ \usepackage{cite}
+ \usepackage{amsmath,amssymb,amsfonts}
+ \usepackage{graphicx}
++% Permit wide figures at the bottom as well as the top of a text page.
++\usepackage{stfloats}
+ \usepackage{tikz}
+ \usepackage{pgfplots}
+ \usepgfplotslibrary{groupplots,fillbetween}
+@@ -23,6 +25,8 @@
+ \usepackage{microtype}
+ \microtypesetup{expansion=false}
+ \IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
++\urlstyle{same}
++\DeclareUrlCommand\path{\urlstyle{same}}
+ \setlength{\emergencystretch}{2em}
+ \hyphenation{inter-community intra-community Gillespie}
+ \floatstyle{ruled}
+@@ -53,18 +57,17 @@
+   \def\@evenfoot{\raisebox{8pt}{\AccessEvenFooter}}}
+ \makeatother
+ \pagestyle{headings}
++% Keep float spacing compact while retaining the IEEE page dimensions.
++\setlength{\dbltextfloatsep}{12pt plus 2pt minus 2pt}
++\setlength{\dblfloatsep}{10pt plus 2pt minus 2pt}
++\renewcommand{\dbltopfraction}{0.9}
++\renewcommand{\dblfloatpagefraction}{0.75}
+ % Allow for the bullet and gap in the template's abstract/index-term boxes.
+ % The class aliases these two lengths; separate them before adjusting the box.
+ \newlength{\AccessAbstractWidth}
+ \setlength{\AccessAbstractWidth}{\titlewidth}
+ \addtolength{\AccessAbstractWidth}{-10pt}
+ \let\abstractwidth\AccessAbstractWidth
+-% Reserved references inherited from the source; appendix text is not included.
+-\AtBeginDocument{
+-\newlabel{app:floor}{{B}{}{}{}{}}
+-\newlabel{app:clique}{{A}{}{}{}{}}
+-\newlabel{app:repro}{{C}{}{}{}{}}
+-}
+ % BEGIN EDITABLE PLOT STYLE
+ % Shared plotting style; all text inherits the article font.
+ \providecommand{\ArrivalCellFont}{\fontsize{6}{7}\selectfont}
+@@ -162,7 +165,6 @@ This article makes four contributions.
+ 
+ We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref{sec:design} and~\ref{sec:results} present the experiments and results. Section~\ref{sec:discussion} discusses use, cost, and limitations.
+ 
+-
+ %======================================================================
+ \section{Related work}
+ \label{sec:related}
+@@ -180,7 +182,6 @@ Some epidemic models combine contacts in small local groups with uniform mixing
+ 
+ The implementation also has features of co-simulation. In co-simulation, separate subsystem solvers move forward on a shared time grid and exchange a limited amount of information \cite{gomes2018cosim}. Here, the local community simulators are those subsystems. They send their infected and susceptible counts to the macro layer. The macro layer uses these data to generate the time of a cross-community infection and select the receiving community and target node. The local simulators can therefore remain black boxes for the scheduler. In this implementation, the exchanged data are used to create random infection events.
+ 
+-
+ %======================================================================
+ \section{The two-scale simulation method}
+ \label{sec:method}
+@@ -226,27 +227,7 @@ W_{ij}=\sum_{(u,v)\in E_{ij}}w_{uv},
+ \end{equation}
+ If all weights equal one, $W_{ij}$ is the number of directed channels from $V_i$ to $V_j$. In an application, this total may instead come from transport, migration, mobility, or contact data. The macro layer also receives the current susceptible and infected counts from each local simulator. It does not know which nodes are endpoints of real cross-community edges. Table~\ref{tab:information} gives the main difference, and Figure~\ref{fig:schematic} shows it visually.
+ 
+-\begin{table*}[!t]
+-\color{black}
+-\centering
+-\caption{\textcolor{black}{Data and rules of the two models. In all experiments, \TS{} selects the target node uniformly among susceptible nodes.}}
+-\label{tab:information}
+-\small
+-\begin{tabular}{>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}}
+-\toprule
+-Information or action & \Full{} & \TS{}\\
+-\midrule
+-Local contacts, rates, and node states & known & known by local simulators\\
+-Individual cross-community edges and bridge nodes & known & unknown\\
+-Total cross-community weight $W_{ij}$ & obtained from the edges & given directly\\
+-Cross-community event rate & uses states of real edge endpoints & uses $\ibar_i$, $\sbar_j$, and $W_{ij}$\\
+-Target of a cross-community infection & endpoint of the active edge & a susceptible node drawn by the target rule\\
+-Number of possible SI infections through one bundle & at most the number of its channels & at most $s_j$ target infections\\
+-\bottomrule
+-\end{tabular}
+-\end{table*}
+-
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \color{black}
+ \centering
+ \begin{tikzpicture}[
+@@ -322,6 +303,26 @@ Number of possible SI infections through one bundle & at most the number of its
+ \label{fig:schematic}
+ \end{figure*}
+ 
++\begin{table*}[!t]
++\color{black}
++\centering
++\caption{\textcolor{black}{Data and rules of the two models. In all experiments, \TS{} selects the target node uniformly among susceptible nodes.}}
++\label{tab:information}
++\small
++\begin{tabular}{>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}}
++\toprule
++Information or action & \Full{} & \TS{}\\
++\midrule
++Local contacts, rates, and node states & known & known by local simulators\\
++Individual cross-community edges and bridge nodes & known & unknown\\
++Total cross-community weight $W_{ij}$ & obtained from the edges & given directly\\
++Cross-community event rate & uses states of real edge endpoints & uses $\ibar_i$, $\sbar_j$, and $W_{ij}$\\
++Target of a cross-community infection & endpoint of the active edge & a susceptible node drawn by the target rule\\
++Number of possible SI infections through one bundle & at most the number of its channels & at most $s_j$ target infections\\
++\bottomrule
++\end{tabular}
++\end{table*}
++
+ \subsection{Local simulators}
+ \label{sec:local}
+ 
+@@ -406,7 +407,6 @@ The separate local simulators also provide an opportunity for parallel execution
+ 
+ The grid scheduler adds work by copying local states and coordinating the communities. Therefore, neither lower memory use nor faster execution is guaranteed. The method is useful when individual cross-community contacts are unavailable or too numerous to represent explicitly.
+ 
+-
+ % English translation of the current Ukrainian main, active Sections 1--4.
+ % Translation of active Section 4 in the current Ukrainian main.
+ \section{Theoretical analysis of the two-scale method}
+@@ -813,7 +813,6 @@ We also check the mean transmission time to the leaf after the single bridge bec
+ 
+ These checks assess the agreement of the \Full{} implementation with known analytical results, but do not establish the accuracy of the two-scale approximation.
+ 
+-
+ \section{Results}
+ \label{sec:results}
+ 
+@@ -821,7 +820,6 @@ In this section, we compare \Full{} and \TS{} in terms of the timing of infectio
+ 
+ The chain comparisons cover 48 configurations, with 400 paired \Full{} and \TS{} runs in each, for a total of 19\,200 pairs.
+ 
+-
+ \subsection{Temporal accuracy and admissibility of inter-community transmission}
+ \label{sec:res_clique}
+ 
+@@ -829,13 +827,7 @@ The first experiment tests whether \TS{} can reproduce the infection export time
+ 
+ In this case, the export-time distributions were close (Figure~\ref{fig:clique_leaf}). The mean time to infection of the leaf was 110.18 in \Full{} and 112.62 in \TS{}, and the normalised Wasserstein distance was $\eW=2.95\%$. The paired difference in means was $+2.43$, with a 95\% bootstrap interval of $[-0.35,5.27]$, which contains zero. Thus, this experiment did not detect a significant systematic shift in the mean export time.
+ 
+-The similarity of the time distributions in this experiment is consistent with rapid and uniform infection spread within the clique. Because of its symmetric structure, infection spreads quickly among the nodes regardless of their positions, including the bridge nodes.
+-
+-The expected time to infection of the first bridge is only $\mathbb{E}[T_B]=8.36$, whereas the mean export time exceeds 110. Thus, the actual and aggregate transmission rates differ for a relatively short period compared with the overall waiting time for export. This is consistent with the small discrepancy observed between the models.
+-
+-However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
+-
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE clique_leaf
+ % Editable PGFPlots version of clique_leaf_endpoint_and_mechanism.
+@@ -874,7 +866,6 @@ However, similar time distributions do not imply that the admissible infection r
+   \path[fill=black!8] (axis cs:-20,0) rectangle (axis cs:0,.55);
+   \addplot+[black!75, no markers, line width=.35pt] coordinates {(0,0) (0,.55)};
+ 
+-
+   \node[anchor=north west, font=\scriptsize, text=black!65] at (axis cs:-18,.51) {export before bridge};
+ \nextgroupplot[
+   title={\textbf{c} Bridge bypass},
+@@ -903,15 +894,17 @@ First export of infection in the clique--leaf network ($n=100$, $k=2$, $\beta=0.
+ \label{fig:clique_leaf}
+ \end{figure*}
+ 
+-To determine how this effect depends on internal structure, we replace the clique with connected random graphs having different average shortest path lengths (ASPL). In this series, graph density also decreases as ASPL increases.
++The similarity of the time distributions in this experiment is consistent with rapid and uniform infection spread within the clique. Because of its symmetric structure, infection spreads quickly among the nodes regardless of their positions, including the bridge nodes.
+ 
+-In dense networks with short paths, premature exports remained rare: their fraction did not exceed 0.5\% for ASPL $\leq 1.75$. It increased with ASPL and, at ASPL 6, reached 32.5\% for both values of $k$ examined (Figure~\ref{fig:source_sweep}).
++The expected time to infection of the first bridge is only $\mathbb{E}[T_B]=8.36$, whereas the mean export time exceeds 110. Thus, the actual and aggregate transmission rates differ for a relatively short period compared with the overall waiting time for export. This is consistent with the small discrepancy observed between the models.
+ 
+-The timing of export also changed. At ASPL 6, the mean export time in \TS{} was 8.3\% lower than in \Full{} for $k=1$ and 6.2\% lower for $k=5$. The corresponding 95\% bootstrap intervals were $[-13.1,-3.5]\%$ and $[-10.3,-2.3]\%$. A positive shift in the mean export time was not observed in any configuration in this series.
++However, similar time distributions do not imply that the admissible infection route is preserved. In 98 of the 10\,000 \TS{} runs (0.98\%), the leaf was infected before either of the two real bridge nodes. This event order is impossible in \Full{}. The aggregate interface can reproduce the timing of transmission accurately while allowing transitions that are impossible in the original network.
+ 
+-The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
++To determine how this effect depends on internal structure, we replace the clique with connected random graphs having different average shortest path lengths (ASPL). In this series, graph density also decreases as ASPL increases.
+ 
+-\begin{figure*}[!t]
++In dense networks with short paths, premature exports remained rare: their fraction did not exceed 0.5\% for ASPL $\leq 1.75$. It increased with ASPL and, at ASPL 6, reached 32.5\% for both values of $k$ examined (Figure~\ref{fig:source_sweep}).
++
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE source_sweep
+ % Editable PGFPlots version of fig_aspl_export_fidelity.
+@@ -978,13 +971,16 @@ Error bars show 95\% block-bootstrap intervals.
+ \label{fig:source_sweep}
+ \end{figure*}
+ 
++The timing of export also changed. At ASPL 6, the mean export time in \TS{} was 8.3\% lower than in \Full{} for $k=1$ and 6.2\% lower for $k=5$. The corresponding 95\% bootstrap intervals were $[-13.1,-3.5]\%$ and $[-10.3,-2.3]\%$. A positive shift in the mean export time was not observed in any configuration in this series.
++
++The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
++
+ Sampling variability must be considered when interpreting the Wasserstein distance. For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}). Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.
+ 
+ Unlike the temporal distance, every premature export directly indicates a violation of the admissible transmission order. For example, at ASPL 4 and $k=1$, such violations occurred in 19.75\% of runs, although the time distributions remained relatively close.
+ 
+ The first export demonstrates two distinct consequences of aggregation. Even when the transmission times are close, the model can violate the physical constraints imposed by inter-community contacts. When internal spread becomes slower and less uniform, this loss of information can also produce a noticeable shift in the export time.
+ 
+-
+ \subsection{Propagation of discrepancies along a chain of communities}
+ \label{sec:res_chain_random}
+ 
+@@ -992,13 +988,7 @@ We examine successive inter-community crossings in a chain of ten communities.
+ 
+ We first consider a chain of cliques, in which internal infection spreads much faster than inter-community transmission. Even after nine consecutive crossings, the time distributions remained close (Figure~\ref{fig:chain_cliques}).
+ 
+-The median arrival time at the last community was 2785 in \Full{} and 2877 in \TS{}. The normalised Wasserstein distance was 3.34\% and did not exceed the permutation threshold of 5.1\% ($p=0.32$). Thus, at this sample size, the test did not detect a statistically significant difference between the distributions.
+-
+-For a clique with $n$ nodes and $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}$, the ratio of the mean time to infect the entire clique to the mean transmission time through one active inter-community edge is $2H_{n-1}/n$, which is only about $1.5\%$ for $n=1000$.
+-
+-Internal spread is therefore much faster than inter-community transmission, which explains the small discrepancies observed between the models. In addition, information about which particular nodes are bridges has relatively little effect on the crossing time.
+-
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE chain_cliques
+ \begin{tikzpicture}
+@@ -1028,17 +1018,15 @@ Right: empirical distribution functions of the arrival time at the last communit
+ \label{fig:chain_cliques}
+ \end{figure*}
+ 
+-A different pattern appears in chains of random communities with longer internal paths. \TS{} systematically predicts earlier infection arrival, but the size of this lead behaves differently in absolute and relative terms (Figure~\ref{fig:chain_heatmap}).
+-
+-At ASPL 6 and $k=1$, the median first-crossing time in \TS{} was 7.1\% lower, whereas the time to reach the last community was 13.8\% lower. For $k=5$, the corresponding values were 8.7\% and 10.1\%.
++The median arrival time at the last community was 2785 in \Full{} and 2877 in \TS{}. The normalised Wasserstein distance was 3.34\% and did not exceed the permutation threshold of 5.1\% ($p=0.32$). Thus, at this sample size, the test did not detect a statistically significant difference between the distributions.
+ 
+-However, the relative discrepancy did not increase in proportion to the number of inter-community crossings. After the initial changes, it mostly stabilised or changed slowly. For example, at ASPL 5 and $k=1$, the median lead was 9.6\% for the first crossing and 8.7\% for arrival at the last community.
++For a clique with $n$ nodes and $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}$, the ratio of the mean time to infect the entire clique to the mean transmission time through one active inter-community edge is $2H_{n-1}/n$, which is only about $1.5\%$ for $n=1000$.
+ 
+-At the same time, the absolute difference between the median arrival times in this configuration increased from approximately 107 to 896 time units.
++Internal spread is therefore much faster than inter-community transmission, which explains the small discrepancies observed between the models. In addition, information about which particular nodes are bridges has relatively little effect on the crossing time.
+ 
+-Successive inter-community crossings can accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
++A different pattern appears in chains of random communities with longer internal paths. \TS{} systematically predicts earlier infection arrival, but the size of this lead behaves differently in absolute and relative terms (Figure~\ref{fig:chain_heatmap}).
+ 
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE chain_heatmap
+ \begin{tikzpicture}
+@@ -1157,23 +1145,20 @@ Each configuration uses 400 paired runs. Uncertainty is not shown; results for t
+ \label{fig:chain_heatmap}
+ \end{figure*}
+ 
++At ASPL 6 and $k=1$, the median first-crossing time in \TS{} was 7.1\% lower, whereas the time to reach the last community was 13.8\% lower. For $k=5$, the corresponding values were 8.7\% and 10.1\%.
+ 
+-\subsection{Effects of community size and number of inter-community edges}
+-\label{sec:res_size}
+-
+-At the same ASPL, the accuracy of \TS{} may depend on community size and the number of inter-community edges. We compare the arrival time at the last community, $T_9$, for different community sizes $n$, ASPL values, and numbers of inter-community edges $k$ (Figure~\ref{fig:accuracy_map}).
+-
+-In configurations with short internal paths ($\mathrm{ASPL}\leq2$), the discrepancies were mostly small. For 14 of these 16 configurations, the permutation test did not detect a statistically significant difference between the arrival-time distributions.
++However, the relative discrepancy did not increase in proportion to the number of inter-community crossings. After the initial changes, it mostly stabilised or changed slowly. For example, at ASPL 5 and $k=1$, the median lead was 9.6\% for the first crossing and 8.7\% for arrival at the last community.
+ 
+-At $\mathrm{ASPL}\geq3$, the discrepancies became more pronounced. In 31 of the 32 configurations, the permutation test detected a difference between the distributions ($p<0.01$). These results were obtained without correction for multiple comparisons.
++At the same time, the absolute difference between the median arrival times in this configuration increased from approximately 107 to 896 time units.
+ 
+-The magnitude of the discrepancy also depended strongly on community size. At fixed ASPL $\geq3$, the normalised Wasserstein distance decreased monotonically with increasing $n$ for both values of $k$.
++Successive inter-community crossings can accumulate a substantial absolute timing discrepancy even when its relative size remains approximately constant. This matters in forecasting problems, in which even a relatively small error can correspond to a substantial difference in the time at which infection reaches a distant community.
+ 
+-For example, at ASPL 6 and $k=1$, it was 40.9\% for $n=50$ but only 13.6\% for $n=1000$. For $k=5$, the corresponding values were 32.6\% and 10.8\%.
++\subsection{Effects of community size and number of inter-community edges}
++\label{sec:res_size}
+ 
+-Increasing the number of inter-community edges from one to five also generally reduced the discrepancies in sparse communities, although it did not remove them completely.
++At the same ASPL, the accuracy of \TS{} may depend on community size and the number of inter-community edges. We compare the arrival time at the last community, $T_9$, for different community sizes $n$, ASPL values, and numbers of inter-community edges $k$ (Figure~\ref{fig:accuracy_map}).
+ 
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE accuracy
+ \begin{tikzpicture}
+@@ -1274,11 +1259,20 @@ Each configuration uses 400 paired runs.
+ \label{fig:accuracy_map}
+ \end{figure*}
+ 
++In configurations with short internal paths ($\mathrm{ASPL}\leq2$), the discrepancies were mostly small. For 14 of these 16 configurations, the permutation test did not detect a statistically significant difference between the arrival-time distributions.
++
++At $\mathrm{ASPL}\geq3$, the discrepancies became more pronounced. In 31 of the 32 configurations, the permutation test detected a difference between the distributions ($p<0.01$). These results were obtained without correction for multiple comparisons.
++
++The magnitude of the discrepancy also depended strongly on community size. At fixed ASPL $\geq3$, the normalised Wasserstein distance decreased monotonically with increasing $n$ for both values of $k$.
++
++For example, at ASPL 6 and $k=1$, it was 40.9\% for $n=50$ but only 13.6\% for $n=1000$. For $k=5$, the corresponding values were 32.6\% and 10.8\%.
++
++Increasing the number of inter-community edges from one to five also generally reduced the discrepancies in sparse communities, although it did not remove them completely.
++
+ The fraction of \TS{} inter-community crossings that occurred before infection of the first real bridge in the source also depended strongly on structure: it ranged from 0.1--2.3\% at ASPL 1 to 31--51\% at ASPL 6.
+ 
+ Discrepancies between the models generally increase as internal paths become longer. However, at the same ASPL, their magnitude can differ substantially with community size and the number of inter-community edges. ASPL alone is insufficient for assessing accuracy.
+ 
+-
+ \subsection{Relationship between discrepancies and the ratio of time scales}
+ \label{sec:res_descriptor}
+ 
+@@ -1286,19 +1280,7 @@ We assess the relationship between discrepancies and temporal heterogeneity of i
+ 
+ Figure~\ref{fig:descriptor}(a,b) shows the normalised Wasserstein distance $\eW$ and median shift $b_9$ as functions of $\rho$ for all 48 chain configurations.
+ 
+-The measure $\rho$ had a stronger rank association with $\eW$ than target ASPL. The Spearman correlation between $\rho$ and $\eW$ was 0.91 across all configurations and 0.98 for configurations with $\mathrm{ASPL}\geq3$. The corresponding values for ASPL were 0.82 and 0.66.
+-
+-For $\rho<0.25$, the distance $\eW$ did not exceed 4.5\% in any of the 18 configurations. For 15 of them, the permutation test did not detect a difference between the distributions. By contrast, for $\rho\geq0.25$, the observed distance exceeded the permutation threshold in all 30 configurations.
+-
+-For $\rho\geq0.3$, the results were approximately described by the empirical relationship
+-\begin{equation}
+-\eW \approx 15\rho\,\%.
+-\end{equation}
+-In this range, we also observed $b_9\approx-\eW$: the distance between the distributions mainly corresponded to a shift towards earlier arrival times in \TS{}.
+-
+-When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
+-
+-\begin{figure*}[!t]
++\begin{figure*}[!tbp]
+ \centering
+ % BEGIN EDITABLE FIGURE descriptor
+ \begin{tikzpicture}
+@@ -1357,9 +1339,18 @@ Error bars show 95\% block-bootstrap intervals for the shift in the first crossi
+ \label{fig:descriptor}
+ \end{figure*}
+ 
++The measure $\rho$ had a stronger rank association with $\eW$ than target ASPL. The Spearman correlation between $\rho$ and $\eW$ was 0.91 across all configurations and 0.98 for configurations with $\mathrm{ASPL}\geq3$. The corresponding values for ASPL were 0.82 and 0.66.
++
++For $\rho<0.25$, the distance $\eW$ did not exceed 4.5\% in any of the 18 configurations. For 15 of them, the permutation test did not detect a difference between the distributions. By contrast, for $\rho\geq0.25$, the observed distance exceeded the permutation threshold in all 30 configurations.
++
++For $\rho\geq0.3$, the results were approximately described by the empirical relationship
++\begin{equation}
++\eW \approx 15\rho\,\%.
++\end{equation}
++In this range, we also observed $b_9\approx-\eW$: the distance between the distributions mainly corresponded to a shift towards earlier arrival times in \TS{}.
++
++When the spread of internal infection times is small relative to the expected inter-community transmission time, aggregation of bridge nodes has a comparatively small effect on the time distributions.
+ 
+-% Finish the Results floats before the Discussion starts.
+-\clearpage
+ \section{Discussion}
+ \label{sec:discussion}
+ 
+@@ -1390,6 +1381,9 @@ We examined how internal structure, community size, and the number of inter-comm
+ 
+ In our tests, the smallest discrepancies occurred when infection spread rapidly within communities. In all 18 configurations with $\rho<0.25$, the normalised Wasserstein distance did not exceed 4.5\%. At the same time, close time distributions did not guarantee preservation of admissible transmission routes.
+ 
++% The appendices restore material already present in the complete TwoScale draft.
++\input{appendices}
++
+ \section*{Code availability}
+ The source code of the simulators is available at
+ \url{https://github.com/YulianKuryliak/Two-Layer-CTMC}.
+@@ -1419,12 +1413,9 @@ Anthropic Claude models to assist with drafting, translation, language editing,
+ organisation of the text and coding. The authors reviewed and edited the content as needed
+ and take full responsibility for the content of the published article.
+ 
+-
+-
+-
+-\clearpage
+ \bibliographystyle{IEEEtran}
+-\IEEEtriggeratref{13}
++% Balance the final columns with the native IEEE reference trigger.
++\IEEEtriggeratref{5}
+ \bibliography{references_fixed,references_missing}
+ \EOD
+ \end{document}

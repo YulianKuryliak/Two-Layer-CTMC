@@ -1,0 +1,2297 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.25)  6 OCT 2026 13:26
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**claude-version_merged_bilingual_UK_EN_parallel.tex
+(./claude-version_merged_bilingual_UK_EN_parallel.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count187
+\c@section=\count188
+\c@subsection=\count189
+\c@subsubsection=\count190
+\c@paragraph=\count191
+\c@subparagraph=\count192
+\c@figure=\count193
+\c@table=\count194
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count195
+\Gm@cntv=\count196
+\c@Gm@tempcnt=\count197
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
+\Gm@dimlist=\toks18
+) (/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2024/01/21 v0.5y Insert pages of external PDF documents (AM)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count198
+\calc@Bcount=\count199
+\calc@Adimen=\dimen149
+\calc@Bdimen=\dimen150
+\calc@Askip=\skip50
+\calc@Bskip=\skip51
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count266
+\calc@Cskip=\skip52
+) (/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2023/05/03 v3.0c eso-pic (RN)
+\ESO@tempdima=\dimen151
+\ESO@tempdimb=\dimen152
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+)) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen153
+\Gin@req@width=\dimen154
+)
+\AM@pagewidth=\dimen155
+\AM@pageheight=\dimen156
+\AM@fboxrule=\dimen157
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2024/01/21 v0.5y Pdfpages driver for pdfTeX (AM)
+)
+\pdfpages@includegraphics@status=\count267
+\AM@pagebox=\box51
+\AM@global@opts=\toks19
+\AM@pagecnt=\count268
+\AM@toc@title=\toks20
+\AM@lof@heading=\toks21
+\c@AM@survey=\count269
+\AM@templatesizebox=\box52
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count270
+\l__pdf_internal_box=\box53
+)
+
+LaTeX Warning: Unused global option(s):
+    [a3paper].
+
+(./claude-version_merged_bilingual_UK_EN_parallel.aux)
+\openout1 = `claude-version_merged_bilingual_UK_EN_parallel.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a3paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: landscape 
+* h-part:(L,W,R)=(0.0pt, 1195.01575pt, 0.0pt)
+* v-part:(T,H,B)=(0.0pt, 845.04684pt, 0.0pt)
+* \paperwidth=1195.01575pt
+* \paperheight=845.04684pt
+* \textwidth=1195.01575pt
+* \textheight=845.04684pt
+* \oddsidemargin=-72.26999pt
+* \evensidemargin=-72.26999pt
+* \topmargin=-109.26999pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=144.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count271
+\scratchdimen=\dimen158
+\scratchbox=\box54
+\nofMPsegments=\count272
+\nofMParguments=\count273
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count274
+\MPscratchDim=\dimen159
+\MPnumerator=\count275
+\makeMPintoPDFobject=\count276
+\everyMPtoPDFconversion=\toks23
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+)) (/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PD
+F (HO)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+))
+<claude-version_merged_parallel_UK.pdf, id=1, 546.29295pt x 745.46204pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 6.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 6.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_EN.pdf, id=4, 546.29295pt x 745.46204pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 6.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 6.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=7, page=1, 546.29295pt x 745.46204pt
+>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=8, page=1, 546.29295pt x 745.46204pt
+>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 1>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page1 used on 
+input line 6.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[1
+
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf{/home/uakuryliyu/.texlive2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+}>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 7.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 7.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 7.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 7.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=52, page=2, 546.29295pt x 745.46204p
+t>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=53, page=2, 546.29295pt x 745.46204p
+t>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 2>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page2 used on 
+input line 7.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[2
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 8.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 8.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 8.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 8.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=181, page=3, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=182, page=3, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 3>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page3 used on 
+input line 8.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[3
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 9.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 9.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 9.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 9.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=190, page=4, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=191, page=4, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 4>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page4 used on 
+input line 9.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[4
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 10.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 10.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 10.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 10.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=199, page=5, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=200, page=5, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 5>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page5 used on 
+input line 10.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[5
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 11.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 11.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 11.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 11.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=213, page=6, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=214, page=6, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 6>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page6 used on 
+input line 11.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[6
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 12.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 12.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 12.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 12.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=292, page=7, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=293, page=7, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 7>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page7 used on 
+input line 12.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[7
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 13.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 13.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 13.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 13.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=331, page=8, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=332, page=8, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 8>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page8 used on 
+input line 13.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[8
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 14.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 14.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 14.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 14.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=355, page=9, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=356, page=9, 546.29295pt x 745.46204
+pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 9>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page9 used on 
+input line 14.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[9
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 15.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 15.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 15.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 15.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=401, page=10, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=402, page=10, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 10>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page10 used on
+ input line 15.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[10
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 16.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 16.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 16.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 16.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=411, page=11, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=412, page=11, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 11>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page11 used on
+ input line 16.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[11
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 17.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 17.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 17.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 17.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=436, page=12, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=437, page=12, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 12>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page12 used on
+ input line 17.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[12
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 18.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 18.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 18.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 18.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=445, page=13, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=446, page=13, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 13>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page13 used on
+ input line 18.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[13
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 19.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 19.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 19.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 19.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=455, page=14, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=456, page=14, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 14>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page14 used on
+ input line 19.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[14
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 20.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 20.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 20.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 20.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=469, page=15, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=470, page=15, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 15>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page15 used on
+ input line 20.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[15
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 21.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 21.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 21.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 21.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=478, page=16, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=479, page=16, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 16>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page16 used on
+ input line 21.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[16
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 22.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 22.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 22.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 22.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=487, page=17, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=488, page=17, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 17>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page17 used on
+ input line 22.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[17
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 23.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 23.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 23.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 23.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=500, page=18, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=501, page=18, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 18>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page18 used on
+ input line 23.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[18
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 24.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 24.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 24.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 24.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=511, page=19, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=512, page=19, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 19>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page19 used on
+ input line 24.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[19
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 25.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 25.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 25.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 25.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=525, page=20, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=526, page=20, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 20>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page20 used on
+ input line 25.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[20
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 26.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 26.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 26.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 26.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=538, page=21, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=539, page=21, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 21>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page21 used on
+ input line 26.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[21
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 27.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 27.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 27.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 27.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=615, page=22, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=616, page=22, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 22>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page22 used on
+ input line 27.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[22
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 28.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 28.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 28.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 28.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=725, page=23, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=726, page=23, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 23>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page23 used on
+ input line 28.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[23
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 29.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 29.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 29.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 29.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=734, page=24, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=735, page=24, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 24>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page24 used on
+ input line 29.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[24
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 30.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 30.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 30.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 30.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=743, page=25, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=744, page=25, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 25>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page25 used on
+ input line 30.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[25
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 31.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 31.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 31.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 31.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=753, page=26, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=754, page=26, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 26>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page26 used on
+ input line 31.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[26
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 32.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 32.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 32.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 32.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=762, page=27, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=763, page=27, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 27>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page27 used on
+ input line 32.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[27
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 33.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 33.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 33.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 33.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=771, page=28, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=772, page=28, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 28>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page28 used on
+ input line 33.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[28
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 34.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 34.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 34.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 34.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=780, page=29, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=781, page=29, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 29>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page29 used on
+ input line 34.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[29
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>]
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 35.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf  used on input l
+ine 35.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 35.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf  used on input l
+ine 35.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+<claude-version_merged_parallel_UK.pdf, id=816, page=30, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 546.29163pt x 745.4602pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+<claude-version_merged_parallel_EN.pdf, id=817, page=30, 546.29295pt x 745.4620
+4pt>
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_UK.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_UK.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_UK.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+File: claude-version_merged_parallel_EN.pdf Graphic file (type pdf)
+<use claude-version_merged_parallel_EN.pdf, page 30>
+Package pdftex.def Info: claude-version_merged_parallel_EN.pdf , page30 used on
+ input line 35.
+(pdftex.def)             Requested size: 597.82321pt x 815.77933pt.
+[30
+
+ <./claude-version_merged_parallel_UK.pdf> <./claude-version_merged_parallel_EN
+.pdf>] (./claude-version_merged_bilingual_UK_EN_parallel.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 3383 strings out of 476182
+ 62261 string characters out of 5795595
+ 1924975 words of memory out of 5000000
+ 25383 multiletter control sequences out of 15000+600000
+ 558069 words of font info for 36 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 72i,17n,79p,280b,425s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texmf/fonts/type1/public/lm/
+lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf
+/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc1
+0.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts
+/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></
+usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/pu
+blic/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/t
+exmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmr
+i10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fo
+nts/type1/public/lm/lmri7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri8.pfb
+></usr/share/texmf/fonts/type1/public/lm/lmri9.pfb></usr/share/texmf/fonts/type
+1/public/lm/lmss9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/symbols/msbm10.pfb>
+Output written on claude-version_merged_bilingual_UK_EN_parallel.pdf (30 pages,
+ 3200388 bytes).
+PDF statistics:
+ 862 PDF objects out of 1000 (max. 8388607)
+ 424 compressed objects within 5 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 911 words of extra memory for PDF output out of 10000 (max. 10000000)
+

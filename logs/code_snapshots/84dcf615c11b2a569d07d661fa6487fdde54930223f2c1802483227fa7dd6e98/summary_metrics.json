@@ -1,0 +1,14 @@
+{
+  "replications_per_model": 10000,
+  "W1_export": 3.249121805373057,
+  "relative_W1_percent_of_full_mean": 2.9488603295016165,
+  "KS_export": 0.01419999999999999,
+  "mean_export_full": 110.18228882756841,
+  "mean_export_micromacro": 112.61644421076845,
+  "paired_mean_shift_micromacro_minus_full": 2.4341553832000353,
+  "paired_mean_shift_bootstrap_95_low": -0.3527006218614533,
+  "paired_mean_shift_bootstrap_95_high": 5.273615325492375,
+  "bridge_bypass_full_count": 0,
+  "bridge_bypass_micromacro_count": 98,
+  "bridge_bypass_micromacro_percent": 0.98
+}

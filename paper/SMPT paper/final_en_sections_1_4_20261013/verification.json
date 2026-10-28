@@ -1,0 +1,27 @@
+{
+  "scope": "Current active Ukrainian Sections 1--4 only",
+  "english_root_sha256": "a8e0c7e461671431b0ace13263fa291ac397b1f7d0bb95a0806ccb9c9de04b1c",
+  "ukrainian_root_sha256": "9e9b9ad196fe3229e1db239f3f956e796eb7c3d44195ace46495b771b191b63c",
+  "sections": 4,
+  "labels": 28,
+  "citations": 25,
+  "numbered_equations": 8,
+  "display_equation_and_tikz_parity": true,
+  "heading_parity": true,
+  "excluded": "Section 5 and commented temporal-descriptor drafts",
+  "editorial_cleanup": [
+    "Literal escaped X_0 rendered in math",
+    "Remark editorial question kept as TEX comment",
+    "Repeated respectively removed"
+  ],
+  "external_references": [
+    "sec:design",
+    "sec:discussion",
+    "sec:res_descriptor",
+    "sec:results"
+  ],
+  "warnings": [
+    "Overfull \\hbox (117.0831pt too wide) detected at line 87"
+  ],
+  "simulations_run": false
+}

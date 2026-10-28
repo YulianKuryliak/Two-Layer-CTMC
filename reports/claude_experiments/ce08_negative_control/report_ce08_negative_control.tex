@@ -1,0 +1,29 @@
+\documentclass[11pt,a4paper]{article}
+\input{../preamble}
+\title{CE-08: Dense Negative Control}
+\author{Two-Layer CTMC Experiments Pipeline}
+\date{August 4, 2026}
+\begin{document}\maketitle
+\begin{abstract}
+CE-08 tests whether the large sparse-community discrepancy persists in a short, well-mixed clique chain. Across 200 paired replications, completion was identical and the RMST shift was small with a confidence interval spanning zero. The negative control therefore behaves as expected: the approximation does not exhibit a detectable systematic timing bias when internal mixing is fast and the chain is short. This supports, but does not prove, the boundary-reachability mechanism proposed for sparse communities.
+\end{abstract}
+\section{Design and results}
+The network contains $L=3$ cliques of size $n=100$, $k=2$, $\beta_{in}=\beta_{out}=0.003$, and $T_{end}=1500$. Both models completed all 200 runs.
+\begin{table}[H]\centering
+\begin{tabular}{rrrrrr}\toprule
+$p_M$ & $p_{MM}$ & $\Delta$RMST & 95\% CI & rel-$W_1$ & KS $p$\\\midrule
+1.00 & 1.00 & 8.20 & $[-38.99,54.45]$ & 0.0647 & 0.545\\
+\bottomrule\end{tabular}
+\caption{Terminal-arrival comparison; differences are MicroMacro minus Full Micro.}
+\end{table}
+\begin{figure}[H]\centering
+\includegraphics[width=.72\linewidth]{figures/terminal_cdf.png}
+\caption{Terminal empirical CDFs. The independent statistical unit is a paired replication.}
+\end{figure}
+\section{Interpretation and implications}
+The RMST estimate is only $0.55\%$ of the horizon and its interval includes zero. This is evidence against a universal scheduler offset large enough to explain the sparse-chain results. A correction intended for sparse communities should therefore self-disable on clique-like or rapidly mixing communities; otherwise it risks introducing error where the baseline already agrees.
+
+Failure to reject a difference is not proof of equivalence because no predeclared equivalence margin was used. The result is nevertheless a useful falsifiability check: the same comparison pipeline does not mechanically report a large premature bias in every topology.
+\section*{Reproduction}
+\texttt{.venv/bin/python extrascripts/run\_ce08\_negative\_control.py --grid full --workers 12 --resume}
+\end{document}

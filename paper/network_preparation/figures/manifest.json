@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-16T12:46:18.365934+00:00",
+  "source_sha256": "531269c663833bd0bac3037062c6f6f102cbe63d04b0ee5b3493535db04101fa",
+  "prepared_manifest_sha256": "7b4ee2cf4673e442b40af0105cc2f1e1a98c259457ac0053ac0826784cdc96c5",
+  "matplotlib": "3.11.0",
+  "kind": "deterministic_saved_data_analysis",
+  "seeds": null,
+  "simulations_run": false,
+  "artifact_sha256": {
+    "analysis.json": "eed755c6c85205e2f636a8c317296118652c023c4a2265ae7f5894b8af8e76fb",
+    "macro_contacts.pdf": "4a7fc49c6bf42d862a2084ee39181abee5842e96ed2542cbea2983a3da9f5365",
+    "macro_contacts.png": "9322a8543eda8415badcb49294575d2419b8e6a10ebe4e78630b07914da66ef6",
+    "structure_checks.pdf": "ac3eb7fe9381537fb6a38a8360619ab3a4075d941f262680359dca9746d3dd45",
+    "structure_checks.png": "a282aa27c84fe192b54b1c83f4ab5badfa5c84268d406188cef2760f47cc01eb"
+  }
+}

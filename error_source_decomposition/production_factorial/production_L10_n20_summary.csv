@@ -1,0 +1,7 @@
+arm,n,RMST,completion,macro_events,repeated_macro_events
+cache_preserve,20,1638.7872940729999,1.0,81.2,72.2
+current,20,1738.515203248517,1.0,71.0,62.0
+current_single_entry,20,3308.4441052329885,0.8,8.6,0.0
+independent_rng,20,2857.9293846310056,1.0,41.6,32.6
+independent_single_entry,20,3284.320357680392,0.85,8.85,0.0
+event_driven_A_U,20,2596.7743415967802,1.0,,

@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 621, in <module>
+    main()
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 425, in main
+    finalize(out)
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 589, in finalize
+    validation = verifier.check_data(out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022/scripts/verify_dataset.py", line 120, in check_data
+    np.testing.assert_allclose(table.plotrho, .003 * reference.sigma_full, rtol=2e-14)
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 1780, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 988, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=2e-14, atol=0
+
+Mismatched elements: 1 / 6 (16.7%)
+Mismatch at index:
+ [0]: 0.0018132088979128 (ACTUAL), 0.0018132088979128567 (DESIRED)
+Max absolute difference among violations: 5.65953534e-17
+Max relative difference among violations: 3.12128147e-14
+ ACTUAL: array([0.001813, 0.037432, 0.177042, 0.431198, 0.695501, 1.013513])
+ DESIRED: array([0.001813, 0.037432, 0.177042, 0.431198, 0.695501, 1.013513])

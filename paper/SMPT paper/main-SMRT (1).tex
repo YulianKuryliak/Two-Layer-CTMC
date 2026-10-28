@@ -1,0 +1,379 @@
+\documentclass[a4paper,fleqn]{cas-sc}
+
+% Elsevier CAS / Simulation Modelling Practice and Theory manuscript.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\microtypesetup{expansion=false}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\setlength{\emergencystretch}{3em}
+\hyphenation{inter-community intra-community community-structured micro-state macro-level Gillespie}
+
+% Clean manuscript mode: retain the editorial macros used in the existing
+% methods section, but suppress edit colours and reading-status boxes.
+\newif\ifDEBUG
+\DEBUGfalse
+\long\def\michaelreplace#1{#1}
+\long\def\yulianreplace#1{#1}
+\newcommand{\michaelnote}[1]{}
+\newcommand{\ReadStatusTwo}[5]{}
+\newcommand{\SubsectionStatus}[1]{}
+% Safe figure inclusion compatible with either project-root/Images/... or ../Images/...
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{../#2}{%
+      \includegraphics[#1]{../#2}%
+    }{%
+      \fbox{%
+        \begin{minipage}[c][0.25\textheight][c]{0.88\linewidth}%
+        \centering
+        \textbf{Figure placeholder}\\[0.5em]
+        Missing graphics file:\par\smallskip\path{#2}%
+        \end{minipage}%
+      }%
+    }%
+  }%
+}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Two-Scale Stochastic Simulation of Epidemic Dynamics in Community Networks}
+\shortauthors{Kuryliak and Emmerich}
+
+\title[mode=title]{Two-Scale Stochastic Simulation of Epidemic Dynamics in Community Networks}
+
+\author[1]{Yulian Kuryliak}[orcid=0000-0002-6600-2637]
+\cormark[1]
+\ead{yulian.a.kuryliak@lpnu.ua}
+\affiliation[1]{organization={Institute of Computer Science and Information Technologies, Lviv Polytechnic National University},
+            addressline={12 Stepan Bandera Street},
+            city={Lviv},
+            postcode={79000},
+            country={Ukraine}}
+
+\author[2]{Michael T. M. Emmerich}[orcid=0000-0002-7342-2090]
+\ead{michael.t.m.emmerich@jyu.fi}
+\affiliation[2]{organization={Faculty of Information Technology, University of Jyv\"askyl\"a},
+            addressline={P.O. Box 35 (Agora)},
+            city={Jyv\"askyl\"a},
+            postcode={FI-40014},
+            country={Finland}}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+Aggregate connections between communities can be useful for predicting epidemic arrival times without specifying every cross-community contact. We evaluate this approximation for susceptible--infected (SI) dynamics using Production MicroMacro with independent random-number streams and a full-network Gillespie reference. Local infections remain node-level events; cross-community infections are timed from community-wide fractions and placed uniformly among susceptible receiving nodes. Paired experiments compare a source connected to one leaf and chains of ten communities. Across the tested chain grid, internal average shortest-path lengths of 1--2 give terminal-arrival distributions with relative Wasserstein distances of 1.1--4.4\% for community sizes from 50 to 1000. For path lengths of 3--6, the discrepancy decreases consistently with community size; at path length 3 it falls from about 12--14\% for 50 nodes to about 2\% for 1000 nodes. Small communities with long internal paths are less favourable, with discrepancies reaching about 41\%. A bridge-ordering diagnostic shows why close timing distributions need not preserve individual transmission routes. These results support aggregate coupling for propagation-time estimates in the tested short-path regimes and identify when a more detailed interface is needed.
+\end{abstract}
+
+\begin{keywords}
+Gillespie simulation \sep community networks \sep SI dynamics
+\end{keywords}
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+Detailed local epidemic models can be coupled without specifying every contact between communities. This is useful when within-community networks are available or can be constructed, while interactions between locations are known only through aggregate weights. The practical issue is the accuracy of the resulting propagation times: does the simpler interface retain enough information to predict when infection reaches another community?
+
+Contact structure shapes epidemic spread, while mobility and connectivity influence transmission between geographic populations \cite{keeling2005,pastorsatorras2015,balcan2009}. Complete contact networks are seldom directly observed \cite{danon2011}. If the full network is specified, a continuous-time Markov chain (CTMC) and Gillespie simulation provide a microscopic reference \cite{gillespie1977exact}. Efficient network algorithms reduce the computational cost of that reference \cite{vestergaard2015,kuryliak2025simulating}, but still require the relevant microscopic transmission channels.
+
+Our earlier conference work introduced a two-scale architecture with separate local stochastic engines and aggregate inter-community coupling \cite{kuryliak2025towards}. The present contribution is its implementation and experimental accuracy assessment. MicroMacro retains individual nodes and contacts inside each community, but replaces cross-community edges by state-dependent transmission rates and a rule for placing imported infections. In the experiments, the full network is known for reference simulation, while MicroMacro receives only the aggregate representation of its cross-community connections.
+
+We study SI infection on static graphs, focusing on first-export times, first-arrival times and epidemic prevalence. A source--leaf experiment distinguishes timing accuracy from preservation of the microscopic bridge ordering. Chain experiments then test repeated crossings and vary internal path length, community size and interface width. The objective is to quantify useful agreement and identify unfavourable configurations, rather than to reproduce every microscopic transmission history. The resulting recommendations concern these measured observables and graph families.
+
+\section{Related work}
+\label{sec:related_work}
+
+Microscopic network models describe transmission through explicit contacts. Gillespie's algorithm samples the CTMC defined by these contacts \cite{gillespie1977exact}; temporal and network-oriented extensions address changing or large networks \cite{vestergaard2015,kuryliak2025simulating}. These methods provide the reference used here. Their detailed contact representation differs from an aggregate interface, which exchanges only community-level quantities.
+
+Metapopulation models instead connect subpopulations through aggregate flows. Network heterogeneity can affect invasion between populations \cite{colizza2007reaction}, and multiscale mobility models combine commuting and long-distance transport \cite{balcan2009,balcan2010modeling}. More detailed mobility data can connect local epidemic populations through a dynamic movement network \cite{chang2021}. Such coupling is a useful modelling strategy, but the local populations are generally represented by compartments rather than explicit internal contact graphs.
+
+The two-scale approach places the aggregation boundary between communities, not inside them \cite{kuryliak2025towards}. Each local subsystem retains node-level stochastic infections. What changes is the information used to time and place a cross-community infection. This paper evaluates the accuracy of that interface through controlled comparisons with the full contact network.
+
+\section{SI model and simulation method}
+\label{sec:model_architecture}
+
+\subsection{Full-network reference}
+\label{sec:full_network_ctmc_reference}
+
+The contact graph $G=(V,E)$ is partitioned into communities $V_i$ of size $N_i$. Each node is either susceptible ($S$) or infected ($I$); there is no recovery. A contact of weight $w_{uv}$ from an infected node $u$ to a susceptible node $v$ infects $v$ at rate
+\[
+a_{u\to v}(x)=\beta w_{uv}\mathbf{1}\{x_u=I,\ x_v=S\}.
+\]
+Undirected contacts permit either transmission direction, depending on the endpoint states. Full Micro simulates these enabled infections over the entire network using Gillespie sampling: the total rate determines the exponential waiting time, and the individual rates determine the selected infection. All reported experiments have unit edge weights and equal internal and external transmission parameters. We therefore use one $\beta$ in their description.
+
+\subsection{Local dynamics and aggregate transfers}
+\label{sec:two_scale_simulator}
+
+MicroMacro runs a local Gillespie engine on the internal graph of each community. Write $S_i(t)$ and $I_i(t)$ for its susceptible and infected node sets, $s_i(t)$ and $i_i(t)$ for their counts, and $\bar s_i=s_i/N_i$ and $\bar i_i=i_i/N_i$ for their fractions. The macro layer uses these fractions and the total inter-community contact weight $W_{ij}$ to assign
+\[
+\lambda_{ij}(t)=\beta W_{ij}\bar i_i(t)\bar s_j(t),
+\qquad
+\Theta(t)=\sum_{i\ne j}\lambda_{ij}(t).
+\]
+For the unit-weight interfaces, $W_{ij}$ is the number of connecting edges. No spectral or boundary-aware correction is enabled in the reported Production baseline.
+
+At a macro event, the source--destination pair is sampled with probability $\lambda_{ij}/\Theta$. The destination engine then infects a uniformly chosen susceptible node. Subsequent imports into an already infected community remain allowed while susceptible nodes remain. Each import updates the local propensities and invalidates the cached local event; the engine draws its next event from the updated state. Thus, local infection rules are retained, while both the timing and receiving node of cross-community infections are approximated.
+
+Each MicroModel has a private pseudorandom stream. Midpoint clones copy the RNG state of their corresponding source community, and refreshing a clone synchronizes that state again. Clone calculations do not advance the source stream. This changes RNG ownership, not the aggregate rate, uniform placement, repeated-import rule or Production cache policy. A shared-RNG regression gate reproduces the original Production paths on control seeds.
+
+\subsection{Production hazard timing}
+
+The ideal cumulative-hazard rule draws $E\sim\mathrm{Exp}(1)$ and places the next macro event when
+\[
+\int_{t_0}^{t^\ast}\Theta(s)\,ds=E.
+\]
+The changing intensity is coupled to local infections and imports; it is not an externally specified deterministic Poisson intensity. Production approximates the integral using midpoint micro states over intervals of length at most $\tau_{\mathrm{micro}}$.
+
+For a subinterval starting at $t$ with width $\Delta$, refreshed clones advance to $t+\Delta/2$ and supply the midpoint intensity $\Theta_{\mathrm{mid}}$. If the accumulated hazard $A+\Theta_{\mathrm{mid}}\Delta$ remains below $E$, the actual engines advance to the interval boundary. Otherwise the estimated crossing is
+\[
+t^\ast=t+\frac{E-A}{\Theta_{\mathrm{mid}}}.
+\]
+The actual engines advance to $t^\ast$, and the transfer pair is selected from their updated fractions, rather than from the midpoint clone states. After the import, the macro threshold is renewed and the remainder of the interval is processed from the updated state. The experiments retain this scheduler with $\tau_{\mathrm{micro}}=1$ and macro scaling factor 1. The integral rule motivates the clock; the midpoint calculation is the numerical implementation being evaluated.
+
+\section{Evaluation design and metrics}
+\label{sec:evaluation}
+
+\subsection{Paired experiments}
+
+Full Micro and MicroMacro share the graph, edge weights, initial infected node and epidemiological parameters within each pair. Their stochastic event histories need not coincide: the simulators implement different cross-community mechanisms. Deterministic seeds are saved for each realization. All comparisons below use the independent-RNG MicroMacro baseline.
+
+Table~\ref{tab:experimental_design} summarizes the series. Here $n$ is the size of one source or chain community, $L$ the number of chain communities, and $k$ the number of edges per interface. For a source connected to one leaf, the $k$ source endpoints are distinct bridge nodes. ASPL is the mean number of edges in the shortest path between two distinct nodes within a community.
+
+\begin{table}[tbp]
+\centering
+\caption{Experimental configurations. All series use SI dynamics, unit edge weights and $\tau_{\mathrm{micro}}=1$. The connected random graphs are random labelled trees augmented with random edges.}
+\label{tab:experimental_design}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.25\linewidth}p{0.13\linewidth}p{0.27\linewidth}}
+\toprule
+Series & Structure & $\beta$ & Paired observations per cell\\
+\midrule
+Clique--leaf & $n=100$, $k=2$ & 0.005 & 10,000 runs\\
+Random source--leaf & $n=1000$, $k=1,5$; ASPL 1--6, step 0.25 & 0.003 & 40 graph blocks $\times$ 10 interfaces/events\\
+Community chains & $L=10$, $n=50,100,250,1000$, $k=1,5$; ASPL 1--6, step 1 & 0.003 & 40 chain-network blocks $\times$ 10 interfaces/events\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The older clique--leaf benchmark starts from node 0 in the source clique, with bridge nodes sampled by the network seed. The source--leaf sweep and chain series use a pseudorandom initial node in the first/source community, shared by both simulators. A bridge node is not excluded from that choice. Random graphs are accepted only when their ASPL lies within 0.1 of the target; ASPL 1 is the complete-graph control. Density is calibrated separately at each target and size. Therefore ASPL identifies a structural regime, while internal degree and route redundancy also vary. Complete-graph blocks repeat the same topology with different interfaces and event histories.
+
+Every export or arrival used in the reported metrics was observed. Observation limits are not substituted for event times, and comparisons do not discard unfinished arrivals to produce a selectively completed sample. The clique--leaf horizon is 1000 and the later series use 30000, with two Full runs extended to 40000 to observe their terminal arrivals. Appendix~\ref{app:reproducibility} gives the extension details. Observing an arrival is distinct from infecting every node in the network.
+
+\subsection{Timing agreement and bridge ordering}
+
+Let $T_{\mathrm{export}}$ be the first infection time of the leaf, and $T_i$ the first infection time in chain community $i$. Chain indices start at zero, so the terminal time is $T_9$. All times are measured from the initial infection, not from the preceding community arrival.
+
+We use the percentage difference between medians to describe the direction and size of the typical arrival shift:
+\[
+b_i=100\,\frac{\mathrm{median}(T_i^{\mathrm{MM}})
+                    -\mathrm{median}(T_i^{\mathrm{Full}})}
+                   {\mathrm{median}(T_i^{\mathrm{Full}})}.
+\]
+Negative values mean earlier MicroMacro arrival. This is a difference of medians, not the median of paired differences.
+
+Wasserstein-1 measures the difference between whole time distributions. With equal sample sizes, sort each simulator's observed times independently and average the absolute differences between corresponding ranks:
+\[
+W_1=\frac{1}{R}\sum_{r=1}^R
+          \left|T_{(r)}^{\mathrm{MM}}-T_{(r)}^{\mathrm{Full}}\right|,
+\qquad
+e_W=100\,\frac{W_1}{\overline T^{\mathrm{Full}}}.
+\]
+$W_1$ has time units; $e_W$ expresses its scale as a percentage of the mean Full time. It has no sign and is not the percentage error of an individual run. Medians characterize typical arrival, while $W_1$ also responds to differences in distribution shape and tails.
+
+For the leaf experiments, $T_B$ is the first infection time of any true bridge node. Bridge bypass is the fraction of MicroMacro runs with $T_{\mathrm{export}}<T_B$. It detects an export ordering impossible in Full, whose bridge node must be infectious before it transmits. Its absence alone is not a complete test of transmission routes.
+
+Confidence intervals in the source--leaf figures are obtained by bootstrap resampling whole graph blocks, keeping all paired observations within a selected block together. These pointwise 95\% intervals describe uncertainty in an estimated mean or fraction, not the spread of individual event times. Empirical Wasserstein curves and heatmap cells are descriptive estimates without corresponding uncertainty bars. The chain prevalence bands instead show the interquartile range of runs at each time.
+\section{Approximation mechanisms and timing accuracy}
+\label{sec:accuracy_error}
+
+\subsection{What determines transmission accuracy}
+
+Transmission between communities depends on infection reaching the nodes that connect them. MicroMacro estimates this transmission pressure from community-wide infected and susceptible fractions. The practical question is how closely this simpler description predicts export and arrival times across the network.
+
+The analysis below concerns SI dynamics on fixed graphs: infected nodes remain infectious and there is no recovery. Full Micro and MicroMacro use the same within-community infection rules. The approximation changes how infections pass between communities, and these changes can also affect later local spread. We examine the information used to time a transmission, the choice of its receiving node, and the numerical treatment of its time. Together, these mechanisms explain what the subsequent experiments measure.
+
+\subsection{Three mechanisms of approximation}
+
+\paragraph{Transmission intensity.}
+The states of the actual inter-community contacts determine the instantaneous transmission rate in Full Micro. For transmission from community $i$ to $j$, the microscopic rate is
+\begin{equation}
+\label{eq:true_inter_intensity_error}
+a^\star_{ij}(x)
+=\beta_{\mathrm{out}}
+\sum_{(u,v)\in E_{ij}}w_{uv}\,
+\mathbf{1}\{x_u=I,\ x_v=S\},
+\end{equation}
+This contrasts with the fraction-based macro rate defined in Section~\ref{sec:two_scale_simulator}.
+Here $E_{ij}$ contains the oriented contacts from community $i$ to $j$, and $W_{ij}$ sums their weights. In the unit-weight benchmarks it is the number of connecting edges, and $\beta_{\mathrm{out}}=\beta$. The aggregate rate describes transmission using the prevalence of infection in the source and susceptibility in the receiver. It therefore loses the identities of the nodes participating in these contacts. For example, moving an infection from an interior node to a bridge node leaves the infected fraction unchanged but can activate an export edge. This distinction matters most while the boundary infection state differs appreciably from the community-wide fraction.
+
+\paragraph{Receiving node.}
+The location of an imported infection affects its route to the next interface. Full Micro infects the susceptible endpoint of the transmitting edge, whereas Production MicroMacro selects a susceptible node uniformly within the receiving community. This can change subsequent propagation even when the import times are similar. In the single-leaf experiments, the receiver has only one node, so the first import has no location choice. Chains additionally expose the consequences of placement within a larger receiver.
+
+\paragraph{Numerical timing.}
+Production estimates the changing macro intensity using copies of the micro models advanced to the midpoint of a synchronization interval. It accumulates intensity using this midpoint estimate and interpolates the time at which a random hazard threshold is reached. The actual micro models are then advanced to that time, and the transfer is selected using their updated states. Thus, the synchronization step $\tau_{\mathrm{micro}}$ also enters the timing approximation. The experiments use a fixed step and measure the combined Production discrepancy; they do not assign separate numerical contributions to the three mechanisms above.
+
+\subsection{A clique connected to one leaf}
+
+A microscopic export can occur only after at least one true bridge node is infected. The clique--bridge--leaf construction makes this boundary condition easy to inspect: a source clique contains $n$ nodes, and a susceptible external leaf is connected to $k$ distinct source nodes. These are its bridge nodes. Let $B_I(t)$ count the infected bridge nodes and let $i_0(t)$ count all infected source nodes. While the leaf is susceptible, the two export rates are
+\[
+a^{\mathrm{Full}}_{01}(t)=\beta_{\mathrm{out}}B_I(t),
+\qquad
+\lambda^{\mathrm{MM}}_{01}(t)=\beta_{\mathrm{out}}k\,\frac{i_0(t)}{n}.
+\]
+The aggregate rate replaces the actual bridge count by a count estimated from the infected fraction. If some interior nodes are infected but every bridge is susceptible, Full has zero export intensity while the aggregate intensity is already positive. An export before the first true bridge infection is therefore a direct diagnostic of the missing boundary information.
+
+Fast internal spread offers a reason for close timing distributions despite this difference. If the bridges become infected quickly compared with the subsequent wait for transmission to the leaf, the period of boundary mismatch is short. Once the entire source is infected, both rates equal $\beta_{\mathrm{out}}k$ while the leaf remains susceptible. The numerical experiments assess how large a timing difference remains and how frequently the boundary-ordering diagnostic detects an early export.
+
+For one bridge ($k=1$), the Full export time has a particularly simple interpretation. Infection first reaches the bridge at time $T_B$, then crosses its single active edge:
+\[
+T_A=T_B+Z,\qquad Z\sim\mathrm{Exp}(\beta_{\mathrm{out}}).
+\]
+Under SI dynamics, the bridge remains infectious, so further infections inside the clique do not change this post-bridge clock. For $k>1$, additional infected bridges can increase the export rate after $T_B$. The single-bridge formula is an explanatory case; the numerical clique--leaf benchmark below uses $k=2$. The rates $\beta_{\mathrm{in}}$ and $\beta_{\mathrm{out}}$ distinguish the two waiting mechanisms here and are equal within each reported experimental configuration.
+
+Averaging a bridge hazard can also change the distribution of export time, because the probability of waiting depends nonlinearly on its accumulated intensity. Appendix~\ref{app:clique_analytic_checks} gives reference formulas and the resulting ideal conditional-mean comparison for an autonomous clique source. The Production experiments evaluate the implemented midpoint clock rather than an exact integral of that ideal hazard.
+
+\subsection{From mechanisms to experiments}
+
+The most promising timing regime is one in which internal spread rapidly activates the interface compared with the wait for export. The clique benchmark tests this regime and compares timing agreement with the bridge-ordering diagnostic. Replacing the clique by connected random graphs then examines what changes when access to the interface is slower and more dependent on internal structure.
+
+The chain experiments extend the comparison to repeated crossings. They test whether close export times remain close arrival times after several communities and how the discrepancy changes with community size and internal path length. Import placement becomes relevant because an infection received in one community must subsequently reach another boundary.
+
+For these propagation tasks, the useful outcome is a quantified agreement in export or arrival times at the required level of accuracy. We therefore compare typical times and their distributions, with the bridge diagnostic providing additional information about transmission ordering. This connects the approximation mechanisms to the measured accuracy and to the network conditions in which the aggregate interface is useful.
+
+
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Close export times with a simplified transmission route}
+\label{sec:clique_leaf_numerical}
+
+The clique--bridge--leaf benchmark gives close export-time distributions: $W_1=3.249$ time units, approximately 2.95\% of the mean Full export time (Figure~\ref{fig:clique_leaf_density_panels}). This is a favourable timing approximation in this rapidly spreading source when a roughly 3\% distributional difference is acceptable. Bridge activation is also similar in the two simulators. The mean export times are 110.18 for Full and 112.62 for MicroMacro; the paired mean difference has a bootstrap interval of approximately $[-0.35,5.27]$, so its small positive sign is not resolved.
+
+\begin{figure}[h]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/clique_leaf/metric_density_panels.png}
+    \caption{Clique--bridge--leaf benchmark: $n=100$, $k=2$, $\beta=0.005$, and 10,000 paired runs. Densities show first bridge infection, the signed difference $T_{\mathrm{export}}-T_B$, and first export. A negative middle-panel value is possible only for MicroMacro and records export before any true bridge infection.}
+    \label{fig:clique_leaf_density_panels}
+\end{figure}
+
+Timing agreement coexists with a specific loss of contact information. In 98 of the 10,000 MicroMacro runs (0.98\%), the leaf is infected before either true bridge node; Full has no such exports. The middle-panel quantity $T_{\mathrm{export}}-T_B$ is therefore a physical post-bridge waiting time in Full, but a signed ordering diagnostic in MicroMacro. A negative value identifies bridge bypass, rather than a negative causal delay.
+
+Rapid spread through the clique plausibly limits the period during which bridge states differ from the community-wide fraction. After all source nodes are infected, both models assign the same export intensity. Much of the remaining export-time variation comes from waiting for transmission across the interface. The practical conclusion is positive but task-specific: a few-percent distributional difference can be acceptable for predicting when export occurs, while reconstructing its actual contact route requires boundary-node information.
+
+\subsection{Internal structure and first-export accuracy}
+\label{sec:random_source_export}
+
+In the connected-source sweep, export times remain close over much of the structural range, even as bridge bypass becomes more frequent. At target ASPL 4 with $k=1$, relative $W_1$ is 2.22\%, but 19.75\% of MicroMacro exports precede the first true bridge infection. The source--leaf design is particularly informative here because the receiver has only one node: there is no choice of receiving location for the first export. Timing differences reflect source-rate abstraction and numerical timing, rather than placement within the leaf.
+
+\begin{figure}[tbp]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/fig_aspl_export_fidelity.png}
+    \caption{Single-source export with a random initial infected node: $n=1000$, $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}=0.003$, and $k=1$ (top) or $k=5$ (bottom). Left: mean first-export times for Full Micro and Production MicroMacro. Centre: empirical Wasserstein distance normalized by the mean Full export time. Right: percentage of MicroMacro replications exporting before the first true bridge infection; Full Micro had no such events. Whiskers in the left and right columns are pointwise $95\%$ percentile-bootstrap intervals over graph blocks. Zero observed bypasses are displayed as points without a degenerate interval and do not establish zero population probability. Each point uses 400 paired replications. The horizontal coordinate is target ASPL; internal density changes along this tree-augmented graph family.}
+    \label{fig:aspl_export_fidelity}
+\end{figure}
+
+At the long-path endpoint, a clearer early-export tendency appears. For ASPL 6, mean export time is about 1511 in Full versus 1386 in MicroMacro for $k=1$, and 1005 versus 943 for $k=5$. These are earlier MicroMacro exports by about 8\% and 6\%, with relative $W_1$ of about 8.5\% and 6.6\%. Bridge bypass reaches 32.5\% for both widths. Increasing $k$ accelerates export in both simulators and moderates the timing difference at this endpoint, but does not remove the missing bridge-ordering information.
+
+A likely explanation is that slower internal propagation leaves the actual boundary susceptible for longer while the aggregate rate already accumulates export pressure. This is an interpretation of the measured behaviour, not a separate estimate of one error component. Along the calibrated family, longer ASPL also means changing density and alternative routes. ASPL is therefore a useful descriptor of the tested regimes, rather than an independently varied cause.
+
+For export-time prediction, these results distinguish a modest discrepancy in the middle of the sweep from a larger, earlier shift at its sparse endpoint. The irregular intermediate $W_1$ values need not follow the smoother bypass curve: the former measures the total difference between time distributions, while the latter measures one particular ordering violation. The useful accuracy criterion is the timing discrepancy required by the application, not bypass frequency alone.
+
+\subsection{Repeated crossings through a chain of cliques}
+\label{sec:chain_cliques_propagation}
+
+Close timing distributions persist after nine inter-community crossings in the chain of ten 1000-node cliques with $k=1$. The terminal-arrival Wasserstein distance is about 99.5 time units, or 3.34\% of the mean Full arrival time. The medians are about 2785 for Full and 2877 for MicroMacro. Thus, a sequence of aggregate interfaces can reproduce the overall propagation-time scale closely, rather than merely matching a single export.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/chain_cliques/chain_cliques_n1000_k1_propagation_cdf_random_initial.png}
+    \caption{Propagation through a chain of ten $1000$-node cliques with one inter-community edge per adjacent pair ($k=1$). Left: pointwise median number of infected nodes across 400 replications, with interquartile bands. Right: empirical CDF of the first infection time $T_9$ in the tenth community. The displayed time axis ends at $6000$; four Full Micro and two MicroMacro arrivals lie to its right, but all were observed before $T_{\max}=30000$.}
+    \label{fig:chain_cliques_propagation_cdf}
+\end{figure}
+
+The stepwise prevalence curves reflect rapid infection within each clique followed by waiting at its interface. An isolated 1000-node clique takes approximately five time units on average to become fully infected from one seed at the stated rate, compared with an average wait of $1/\beta\simeq333$ along one active external edge. Once the source clique is infected, the exact and aggregate export rates agree. This separation of time scales plausibly makes the short internal growth and boundary-access phases less consequential for terminal arrival.
+
+The CDFs cross, so their difference is not a uniform delay of one simulator. Nevertheless, the approximately 3.3\% distributional discrepancy after nine crossings supports aggregate coupling for coarse arrival-time prediction in this dense regime. The next comparison asks how far that favourable behaviour extends when internal propagation is slower.
+
+\subsection{Cumulative arrival differences in random-community chains}
+\label{sec:chain_random_aspl}
+
+Short-path random communities retain much of the clique-chain agreement, while longer-path communities produce persistent earlier MicroMacro arrivals. For $n=1000$ and target ASPL 2--3, terminal relative $W_1$ is about 1--2.5\%. At ASPL 6 it rises to 13.6\% for $k=1$ and 10.9\% for $k=5$, with median arrivals earlier by about 13.9\% and 10.7\%, respectively (Figure~\ref{fig:chain_aspl_median_map}).
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/aspl_chain/aspl_chain_median_arrival_error_map_labeled.png}
+    \caption{Arrival-time accuracy in ten-community chains. ASPL $1$ is the clique control; ASPL $2$--$6$ denote connected random graphs. Rows distinguish interface widths $k=1$ and $k=5$; columns give cumulative first-arrival times at communities $1$--$9$, measured from the start of the run. Left: percentage difference between MicroMacro and Full medians, relative to the Full median (negative means earlier MicroMacro arrival). Right: empirical Wasserstein-1 distance relative to the mean Full arrival time. Cell numbers are percentages; each uses 400 pairs with observed arrivals. No uncertainty intervals are shown.}
+    \label{fig:chain_aspl_median_map}
+\end{figure}
+
+Similar percentages across communities do not mean that the timing difference stops accumulating. At ASPL 5 and $k=1$, the median lead is about 10\% at both the first and last reached communities, but its absolute size grows from about 107 to 1018 time units. Each heatmap column concerns arrival measured from the beginning of the simulation. Both cumulative travel time and absolute discrepancy can grow together, leaving their ratio nearly constant. This is a descriptive cumulative pattern; differences of the displayed medians are not estimates of individual crossing delays.
+
+Delayed boundary access is a plausible explanation for the early arrivals in sparse communities. Aggregate transmission can begin while the true export bridge is still susceptible, and uniform import placement can change the route to the next interface. These effects have more time to matter than in a rapidly infected clique. Their separate contributions are not measured by this sweep.
+
+For propagation-time applications, the map shows both a favourable short-path regime and a persistent sparse-end timing bias. It also shows why absolute time should accompany percentages: a roughly 10\% difference at the far end of a chain can represent a substantial scheduling error even when the colour changes little along the row. Additional interpretation of the metric panels is given in Appendix~\ref{app:heatmap_interpretation}.
+
+\subsection{Community size and terminal-arrival accuracy}
+\label{sec:chain_size_aspl}
+
+Larger communities have consistently smaller relative terminal-arrival discrepancies at every fixed ASPL 3--6 and both interface widths in the tested grid. At ASPL 3, relative $W_1$ falls from about 12--14\% for 50-node communities to about 2\% for 1000-node communities (Figure~\ref{fig:chain_aspl_size_terminal}). This is the main practical extension of the fixed-size comparison: the same path-length regime can be considerably more favourable at a larger community size.
+
+\begin{figure}[tbp]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/aspl_chain/aspl_chain_size_terminal_arrival_heatmap.png}
+    \caption{Terminal-arrival error across community size and internal graph structure in ten-community chains. Rows show interface widths $k=1$ and $k=5$; columns show the signed shift of the median $T_9$ (MicroMacro minus Full, divided by the Full median) and empirical $W_1$ divided by the mean Full $T_9$. Cell labels are percentages; negative shifts indicate earlier MicroMacro arrival. ASPL $1$ is the clique control. Each cell uses 400 observed paired arrivals. Colour scales are shared between the two $k$ rows for each metric.}
+    \label{fig:chain_aspl_size_terminal}
+\end{figure}
+
+For ASPL 1--2, the terminal distributions are close at every tested size, with relative $W_1$ between 1.1\% and 4.4\%. Small communities are therefore not inherently unsuitable. The strongest discrepancies occur in the small, long-path cells: ASPL 5--6 with $n=50$ gives about 26--41\%. Increasing size reduces these discrepancies, but does not make the sparse endpoint negligible; at ASPL 6 with $n=1000$, they remain about 11--14\%.
+
+At a fixed target ASPL, larger graphs require recalibration of internal degree and also change the fraction of boundary nodes. Greater route redundancy and the relation between internal spread and export waiting may help make aggregate fractions more representative of boundary availability. These are possible explanations, while the established result is the consistent size-associated decrease across this calibrated grid.
+
+The consequence for use is concrete. Short-path communities provide the most broadly favourable cases, including small communities. For moderately longer paths, larger communities can still give a few-percent terminal distributional difference. Small, sparse communities with long paths need a more detailed interface or Full simulation when arrival-time precision matters. Matching ASPL alone is insufficient to transfer an accuracy assessment between sizes.
+
+\section{Discussion and conclusions}
+
+Aggregate coupling is a useful approximation for the propagation-time tasks studied here when internal spread reaches the interface quickly. Across ten-community chains with ASPL 1--2, terminal relative $W_1$ is 1.1--4.4\% over community sizes from 50 to 1000. The close agreement survives nine crossings. This supports the implemented method for estimating arrival-time distributions in these tested short-path regimes when a few-percent distributional discrepancy meets the application requirement.
+
+The favourable range also depends on community size. At every ASPL 3--6 and both interface widths, larger communities have smaller relative $W_1$ in the calibrated grid. At ASPL 3, the decrease from about 12--14\% to about 2\% is practically substantial. Large size is not sufficient by itself: ASPL 5--6 still gives about 9--14\% at $n=1000$, and the smallest long-path communities show differences of several tens of percent. For accurate arrival schedules in those configurations, Full or a separately validated boundary-aware interface is preferable.
+
+Timing prediction and contact reconstruction are different tasks. A close export distribution can coexist with bridge bypass because the aggregate fraction does not retain the infection state of a particular contact. MicroMacro is consequently suited to time-of-spread and coarse propagation summaries at an acceptable measured discrepancy, not to recovering the individual transmission route. An application should check the time scale at its destination of interest, since a stable relative discrepancy can accumulate into a large absolute lead downstream.
+
+These recommendations concern SI infection on the tested static synthetic networks, with the stated transmission rates and fixed synchronization step. ASPL and size describe the tested configurations rather than universal causal accuracy thresholds; density changes with their calibration. The experiments assess the combined Production approximation. Separating rate, placement and numerical contributions, and extending the evaluation to recovery or empirical temporal contacts, are useful next steps.
+
+\clearpage
+\appendix
+\input{stage1_clique_analytical_appendix.tex}
+
+\section{Observation and interpretation details}
+\label{app:reproducibility}
+
+All reported event-time samples contain observed exports or arrivals. In the size sweep, two Full runs at $n=50$, target ASPL 6 and $k=1$ had no terminal arrival by 30000. They were rerun to 40000 on the same graphs with identical initial nodes and event seeds. Their histories through 30000 matched the saved runs; terminal arrivals occurred at approximately 31059 and 31007. Their paired MicroMacro results and all other observed runs were retained. The extensions supply actual arrival times, not a censoring cap or a selectively completed subsample.
+
+Source--leaf uncertainty resamples whole graph blocks because observations on the same graph share its topology. For the complete-graph control, blocks share the same internal topology and differ in interface and event realizations. The older clique--leaf benchmark uses a paired bootstrap over its 10,000 run pairs. Heatmaps report empirical distances and shifts without inferential acceptance thresholds. Saved seeds, parameters and checkpoints retain the detailed experiment provenance.
+
+\subsection{Reading cumulative heatmaps}
+\label{app:heatmap_interpretation}
+
+The percentage difference can fall while the absolute difference rises. For the $n=1000$, $k=1$ clique chain, the median shift decreases from about 12.6\% at the first reached community to 3.3\% at the last, while the difference between medians grows from about 30 to 92 time units. The denominator grows faster than the numerator. This does not identify a special defect at the first interface.
+
+Signed median shift and relative Wasserstein distance answer different questions even when their heatmaps look similar. The former gives the direction of a typical-time change; the latter measures the whole distribution. If sorted quantile differences mostly have one sign, Wasserstein distance can be close to the absolute difference between means, so a predominantly directional separation produces similar patterns. This is not evidence that the distributions are exact translations. Medians are not additive, and local crossing delays cannot be recovered by subtracting cumulative medians.
+
+\bibliographystyle{cas-model2-names}
+\bibliography{../references_fixed,manuscript_references}
+\end{document}

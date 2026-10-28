@@ -1,8 +1,24 @@
 import random
+from functools import partial
 from typing import List, Optional, Tuple
 
 import networkx as nx
 import numpy as np
+
+# Upper bound on the spectral damping exponent alpha_i. alpha = 1/mu2 can blow
+# up for very sparse communities (mu2 -> 0); the cap avoids over-damping early
+# export to near-zero. Correction is damping-only: alpha is clamped to [1, cap].
+_ALPHA_MAX = 6.0
+
+
+def _in_community(nodes, node):
+    return node in nodes
+
+
+def _community_view(full_graph, nodes):
+    # No .nodes attribute on the predicate: FilterAtlas then preserves the
+    # parent graph's insertion order instead of iterating an unordered set.
+    return nx.subgraph_view(full_graph, filter_node=partial(_in_community, frozenset(nodes)))
 
 
 def _compute_micro_alphas(micro_graphs: List[nx.Graph]) -> List[float]:
@@ -19,16 +35,80 @@ def _compute_micro_alphas(micro_graphs: List[nx.Graph]) -> List[float]:
         inv_sqrt_deg[nonzero] = 1.0 / np.sqrt(deg[nonzero])
         D_inv_sqrt = np.diag(inv_sqrt_deg)
         L_norm = np.eye(n) - (D_inv_sqrt @ A @ D_inv_sqrt)
-        eigvals = np.linalg.eigvalsh(L_norm)
+        eigvals = np.sort(np.linalg.eigvalsh(L_norm))
         if eigvals.size < 2:
             alphas.append(1.0)
             continue
-        lambda2_tilde = float(np.sort(eigvals)[-2])
-        if lambda2_tilde <= 0.0:
+        # Spectral gap = second-smallest eigenvalue (Fiedler value) of the
+        # normalized Laplacian, in (0, ~1]. Large gap (dense/well-mixed) ->
+        # fast internal spread -> macro instant-availability assumption is
+        # nearly correct -> alpha ~ 1. Small gap (sparse) -> slow spread to the
+        # boundary -> macro over-estimates early export -> alpha > 1 damps it.
+        mu2 = float(eigvals[1])
+        if mu2 <= 0.0:
             alphas.append(1.0)
             continue
-        alphas.append(1.0 / lambda2_tilde)
+        alphas.append(max(1.0, min(1.0 / mu2, _ALPHA_MAX)))
     return alphas
+
+
+def _compute_boundary_descriptors(
+    micro_graphs: List[nx.Graph],
+    full_graph: nx.Graph,
+    communities_nodes: List[List[int]],
+) -> Tuple[List[int], List[float]]:
+    """
+    Compute boundary-count and Fiedler values for each community.
+    
+    Returns (boundary_counts, mu2_values).
+    boundary_counts[i] = number of nodes in community i with cross-community edges
+    mu2_values[i] = Fiedler value (2nd-smallest eigenvalue of L_norm) for community i
+    
+    These are PARAMETERS-ONLY descriptors (no node identities, only counts and 
+    aggregate spectral statistics).
+    """
+    comm_of = {}
+    for c, nodes in enumerate(communities_nodes):
+        for u in nodes:
+            comm_of[u] = c
+    
+    # Identify boundary nodes: those with cross-community edges
+    boundary_sets = {c: set() for c in range(len(communities_nodes))}
+    for u, v in full_graph.edges():
+        cu = comm_of.get(u)
+        cv = comm_of.get(v)
+        if cu is not None and cv is not None and cu != cv:
+            boundary_sets[cu].add(u)
+            boundary_sets[cv].add(v)
+    
+    boundary_counts: List[int] = []
+    mu2_values: List[float] = []
+    
+    for c, G in enumerate(micro_graphs):
+        boundary_counts.append(len(boundary_sets[c]))
+        
+        # Compute Fiedler value (mu2) for this community
+        n = G.number_of_nodes()
+        if n < 2:
+            mu2_values.append(1.0)  # single-node: well-mixed by definition
+            continue
+        
+        A = nx.to_numpy_array(G, weight="weight", dtype=float)
+        deg = A.sum(axis=1)
+        inv_sqrt_deg = np.zeros_like(deg)
+        nonzero = deg > 0
+        inv_sqrt_deg[nonzero] = 1.0 / np.sqrt(deg[nonzero])
+        D_inv_sqrt = np.diag(inv_sqrt_deg)
+        L_norm = np.eye(n) - (D_inv_sqrt @ A @ D_inv_sqrt)
+        eigvals = np.sort(np.linalg.eigvalsh(L_norm))
+        
+        if eigvals.size < 2:
+            mu2_values.append(1.0)
+        else:
+            mu2 = float(eigvals[1])
+            mu2_values.append(max(mu2, 1e-8))  # floor to avoid div-by-zero
+    
+    return boundary_counts, mu2_values
 
 
 def generate_two_scale_network(
@@ -42,10 +122,13 @@ def generate_two_scale_network(
     leaf_count: int = 0,
     leaf_degree: int = 1,
     star_leaf_attachment: str = "random",
+    share_topology: bool = False,
 ) -> Tuple[List[nx.Graph], nx.Graph, np.ndarray]:
     """
     Generate a two-layer network with micro graphs plus inter-community edges.
     Returns (micro_graphs, full_graph, W).
+    With share_topology=True, communities are read-only views into full_graph;
+    node and edge iteration order is preserved, without a second edge store.
     """
     if n_communities < 1:
         raise ValueError("n_communities must be >= 1")
@@ -168,6 +251,7 @@ def generate_two_scale_network(
                     if nx.is_connected(candidate):
                         mapping = {i: nodes[i] for i in range(n)}
                         Gc = nx.relabel_nodes(candidate, mapping, copy=True)
+                        del candidate
                         break
                 if Gc is None:
                     raise RuntimeError("Failed to generate a connected random graph; increase edge_prob or max_tries")
@@ -195,9 +279,15 @@ def generate_two_scale_network(
                     Gc.add_edge(leaf, target, weight=1.0)
         else:
             raise RuntimeError(f"Unsupported micro_graph_type: {micro_graph_type}")
-        micro_graphs.append(Gc)
         full_graph.add_nodes_from(nodes)
         full_graph.add_edges_from(Gc.edges(data=True))
+        if share_topology:
+            # A plain predicate (without a .nodes attribute) keeps NetworkX's
+            # filter iterator in parent-node order, rather than set order.
+            micro_graphs.append(_community_view(full_graph, nodes))
+        else:
+            micro_graphs.append(Gc)
+        del Gc
         next_node += size_this_community
 
     W = np.zeros((n_communities, n_communities), dtype=float)
@@ -276,6 +366,13 @@ def generate_two_scale_network(
     # Attach reusable network-level metadata for simulator/orchestrator initialization.
     full_graph.graph["community_sizes"] = [G.number_of_nodes() for G in micro_graphs]
     full_graph.graph["alphas"] = _compute_micro_alphas(micro_graphs)
+    
+    # Compute boundary descriptors for parameters-only error-reduction corrections
+    boundary_counts, mu2_values = _compute_boundary_descriptors(
+        micro_graphs, full_graph, communities_nodes
+    )
+    full_graph.graph["boundary_counts"] = boundary_counts
+    full_graph.graph["mu2_values"] = mu2_values
 
     return micro_graphs, full_graph, W
 

@@ -1,0 +1,26 @@
+{
+  "output_pdf": "paper/SMPT paper/main-SMPT_UK.pdf",
+  "pages": 21,
+  "sections_1_5_byte_identical": true,
+  "english_tex_pdf_byte_identical": true,
+  "unique_labels": 45,
+  "results_section_number": 6,
+  "six_results_figures": true,
+  "corrected_chain_figures_copied": 4,
+  "corrected_chain_figure_hashes_match": true,
+  "undefined_citations_references": false,
+  "missing_glyphs": false,
+  "overfull_warnings": [
+    "Overfull \\hbox (117.0831pt too wide) detected at line 82"
+  ],
+  "scientific_review": "corrected-chain numeric and provenance audit passed; in-sample fit and exploratory significance qualified; legacy leaf figures labelled",
+  "limitations": "Only corrected chains rerun exists (19200 pairs); leaf results historical. Sections7+ and appendices not included, existing reserved labels retained. No simulations or plot regeneration launched.",
+  "uk_source_sha256": "2081b381db3ccdd4a3302b060caef7b1e5421d1ce7964c6561794ddf854fe50b",
+  "pdf_sha256": "4505610f9ee18a3eca78b4eaac90cb5e70ddbf1c341ed802767be725afd8f2b8",
+  "final_build_log": "build_pass8.log",
+  "visual_checks": [
+    "historical leaf figures/captions pages15-16",
+    "corrected chain heatmap page18",
+    "corrected accuracy and descriptor page19"
+  ]
+}

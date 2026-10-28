@@ -1,0 +1,65 @@
+{
+  "purpose": "pdfLaTeX-compatible streaming ECDF drawing coordinates",
+  "all_observations_retained": true,
+  "right_continuous_steps": true,
+  "no_statistics_recomputed": true,
+  "files": [
+    {
+      "source": "paper/SMPT paper/figures_pgfplots/leaf_clique_export_full.dat",
+      "source_sha256": "c3b6e7f05f8504aea4c0579c3345e79f19564059bdabe2dba340bd9bbe7c19aa",
+      "drawing_file": "paper/SMPT paper/figures_pgfplots/leaf_clique_export_full_path.dat",
+      "drawing_sha256": "60a8207d695acabf60851ff5c6a13c26c802131fdc088c9e901c09bb0fe7f38e",
+      "points": 10001,
+      "bounds": [
+        0.0,
+        600.0,
+        0.0,
+        1.01
+      ],
+      "max_inverse_coordinate_error": 1.1368683772161603e-13
+    },
+    {
+      "source": "paper/SMPT paper/figures_pgfplots/leaf_clique_export_twoscale.dat",
+      "source_sha256": "a16538c3fb2a4152e465ae6b6bdb965dd3c128a72b1f78a3a419ab3614a3ae4e",
+      "drawing_file": "paper/SMPT paper/figures_pgfplots/leaf_clique_export_twoscale_path.dat",
+      "drawing_sha256": "78c7457f67bf557ac5efb340e87c3aeabfd0eb7e69d85ecd3c50cd6af8a4e338",
+      "points": 10001,
+      "bounds": [
+        0.0,
+        600.0,
+        0.0,
+        1.01
+      ],
+      "max_inverse_coordinate_error": 1.1368683772161603e-13
+    },
+    {
+      "source": "paper/SMPT paper/figures_pgfplots/leaf_clique_signed_delay_full.dat",
+      "source_sha256": "0ffa04b0f028c9baa83b37a41350ca627dce7af97a88011ba390fbfded2a725b",
+      "drawing_file": "paper/SMPT paper/figures_pgfplots/leaf_clique_signed_delay_full_path.dat",
+      "drawing_sha256": "9ae1951c12be573574155125b1eba85143bfd095a442d05c2454aa12f2ee32c3",
+      "points": 10001,
+      "bounds": [
+        -20.0,
+        100.0,
+        0.0,
+        0.55
+      ],
+      "max_inverse_coordinate_error": 5.684341886080802e-14
+    },
+    {
+      "source": "paper/SMPT paper/figures_pgfplots/leaf_clique_signed_delay_twoscale.dat",
+      "source_sha256": "2806b583faeed6642c3f6549659ee4ce17a23e8b4cd213167ba204b13e5e5feb",
+      "drawing_file": "paper/SMPT paper/figures_pgfplots/leaf_clique_signed_delay_twoscale_path.dat",
+      "drawing_sha256": "39010a781d450a92d4a054e28d0d63ca390564978c71964c908d2571b270cee3",
+      "points": 10001,
+      "bounds": [
+        -20.0,
+        100.0,
+        0.0,
+        0.55
+      ],
+      "max_inverse_coordinate_error": 5.684341886080802e-14
+    }
+  ],
+  "editing": "Style/width/height remain editable in the main. If axis bounds or raw observations change, regenerate these display coordinates with this script."
+}

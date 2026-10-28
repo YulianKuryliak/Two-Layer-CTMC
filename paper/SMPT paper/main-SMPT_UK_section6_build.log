@@ -1,0 +1,1716 @@
+This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2026.6.25)  13 OCT 2026 14:56
+ restricted system commands enabled.
+**main-SMPT_UK.tex
+(./main-SMPT_UK.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+Lua module: luaotfload 2024-02-14 3.28 Lua based OpenType font support
+Lua module: lualibs 2023-07-13 2.76 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2023-07-13 2.76 ConTeXt Lua libraries -- extended c
+ollection.
+luaotfload | conf : Root cache directory is "/home/uakuryliyu/.texlive2023/texmf
+-var/luatex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2023-12-28.lua" from kpse-res
+olved path "/home/uakuryliyu/texmf/tex/luatex/luaotfload/fontloader-2023-12-28.l
+ua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.134
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "/home/uakuryliyu/.texlive2023/texmf
+-var/luatex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'.
+Inserting `tracingstacklevels' in `input_level_string'. (./cas-sc.cls
+Document Class: cas-sc 2024/05/04, 2.4: Formatting class for CAS single column 
+articles
+\c@blind=\count185
+\@bls=\dimen139
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
+\mathindent=\skip48
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+luaotfload | db : Font names database loaded from /home/uakuryliyu/.texlive2023/
+texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz)
+\c@part=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen140
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: luatex.def on input line 107.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/luatex.def
+File: luatex.def 2022/09/22 v1.2d Graphics/color driver for luatex
+))
+\Gin@req@height=\dimen141
+\Gin@req@width=\dimen142
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks18
+\ex@=\dimen143
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen144
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count194
+LaTeX Info: Redefining \frac on input line 236.
+\uproot@=\count195
+\leftroot@=\count196
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count197
+\DOTSCASE@=\count198
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen145
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count199
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count266
+\dotsspace@=\muskip16
+\c@parentequation=\count267
+\dspbrk@lvl=\count268
+\tag@help=\toks19
+\row@=\count269
+\column@=\count270
+\maxfields@=\count271
+\andhelp@=\toks20
+\eqnshift@=\dimen146
+\alignsep@=\dimen147
+\tagshift@=\dimen148
+\tagwidth@=\dimen149
+\totwidth@=\dimen150
+\lineht@=\dimen151
+\@envbody=\toks21
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-01-22 L3 programming layer (loader) 
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
+File: l3backend-luatex.def 2024-01-04 L3 backend support: PDF output (LuaTeX)
+\l__color_backend_stack_int=\count272
+Inserting `l3color' in `luaotfload.parse_color'.
+\l__pdf_internal_box=\box53
+))
+(/home/uakuryliyu/texmf/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2024-02-18 L3 Experimental document command parser
+)
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count273
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen152
+\lightrulewidth=\dimen153
+\cmidrulewidth=\dimen154
+\belowrulesep=\dimen155
+\belowbottomsep=\dimen156
+\aboverulesep=\dimen157
+\abovetopsep=\dimen158
+\cmidrulesep=\dimen159
+\cmidrulekern=\dimen160
+\defaultaddspace=\dimen161
+\@cmidla=\count274
+\@cmidlb=\count275
+\@aboverulesep=\dimen162
+\@belowrulesep=\dimen163
+\@thisruleclass=\count276
+\@lastruleclass=\count277
+\@thisrulewidth=\dimen164
+)
+(/home/uakuryliyu/texmf/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen165
+\ar@mcellbox=\box54
+\extrarowheight=\dimen166
+\NC@list=\toks23
+\extratabsurround=\skip54
+\backup@length=\skip55
+\ar@cellbox=\box55
+)
+\rotheadsize=\dimen167
+\c@nlinenum=\count278
+\TeXr@lab=\toks24
+)
+(/home/uakuryliyu/texmf/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip56
+\multirow@cntb=\count279
+\multirow@dima=\skip57
+\bigstrutjot=\dimen168
+)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2022/06/20 v1.0f Color table columns (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2022/01/06 v1.3d Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: luatex.def on input line 149.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+\everycr=\toks25
+\minrowclearance=\skip58
+\rownum=\count280
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/dcolumn.sty
+Package: dcolumn 2023/07/08 v1.06 decimal alignment package (DPC)
+)
+(/home/uakuryliyu/texmf/tex/latex/sttools/stfloats.sty
+Package: stfloats 2017/03/27 v3.3 Improve float mechanism and baselineskip sett
+ings
+\@dblbotnum=\count281
+\c@dblbotnumber=\count282
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(/home/uakuryliyu/texmf/tex/generic/xstring/xstring.sty
+(/home/uakuryliyu/texmf/tex/generic/xstring/xstring.tex
+\xs_counta=\count283
+\xs_countb=\count284
+)
+Package: xstring 2023/08/22 v1.86 String manipulations (CT)
+)
+(/home/uakuryliyu/texmf/tex/latex/footmisc/footmisc.sty
+Package: footmisc 2023/07/05 v6.0f a miscellany of footnote facilities
+\FN@temptoken=\toks26
+\footnotemargin=\dimen169
+\@outputbox@depth=\dimen170
+Package footmisc Info: Declaring symbol style bringhurst on input line 696.
+Package footmisc Info: Declaring symbol style chicago on input line 704.
+Package footmisc Info: Declaring symbol style wiley on input line 713.
+Package footmisc Info: Declaring symbol style lamport-robust on input line 724.
+
+Package footmisc Info: Declaring symbol style lamport* on input line 744.
+Package footmisc Info: Declaring symbol style lamport*-robust on input line 765
+.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: luatex.def on input line 274.
+LaTeX Info: Redefining \color on input line 758.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/svgnam.def
+File: svgnam.def 2023/11/15 v3.01 Predefined colors according to SVG 1.1 (UK)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks27
+))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count285
+)
+\@linkdim=\dimen171
+\Hy@linkcounter=\count286
+\Hy@pagecounter=\count287
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count288
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 4062.
+Package hyperref Info: Hyper figures OFF on input line 4179.
+Package hyperref Info: Link nesting OFF on input line 4184.
+Package hyperref Info: Hyper index ON on input line 4187.
+Package hyperref Info: Plain pages OFF on input line 4194.
+Package hyperref Info: Backreferencing OFF on input line 4199.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4446.
+\c@Hy@tempcnt=\count289
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4784.
+\XeTeXLinkMargin=\dimen172
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count290
+\Field@Width=\dimen173
+\Fld@charsize=\dimen174
+Package hyperref Info: Hyper figures OFF on input line 6063.
+Package hyperref Info: Link nesting OFF on input line 6068.
+Package hyperref Info: Hyper index ON on input line 6071.
+Package hyperref Info: backreferencing OFF on input line 6078.
+Package hyperref Info: Link coloring ON on input line 6081.
+Package hyperref Info: Link coloring with OCG OFF on input line 6088.
+Package hyperref Info: PDF/A mode OFF on input line 6093.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count291
+\c@Item=\count292
+\c@Hfootnote=\count293
+)
+Package hyperref Info: Driver (autodetected): hluatex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hluatex.def
+File: hluatex.def 2024-01-20 v7.01h Hyperref driver for luaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count294
+\c@bookmark@seq@number=\count295
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+85.
+)
+\Hy@SectionHShift=\skip59
+)
+(./cas-common.sty
+\l_stm_title_before_dim=\dimen175
+\l_stm_title_after_dim=\dimen176
+\g_ead_int=\count296
+\g_uad_int=\count297
+\@eadauthor=\toks28
+\g_stm_tnote_int=\count298
+\g_stm_fnote_int=\count299
+\g_stm_cor_int=\count300
+\g_stm_au_int=\count301
+\g_stm_aau_int=\count302
+\l_autype_int=\count303
+\l_stm_augroup_before_dim=\dimen177
+\l_stm_augroup_after_dim=\dimen178
+\l_stm_augroup_lskip_tl=\dimen179
+\l_stm_augroup_rskip_tl=\dimen180
+\g_stm_aff_int=\count304
+\g_stm_aff_ext_int=\count305
+\g_stm_aff_int_int=\count306
+\g_stm_fn_aff_ext_int=\count307
+\g_stm_fn_aff_int_int=\count308
+\l_stm_aff_before_dim=\dimen181
+\l_stm_aff_after_dim=\dimen182
+\l_stm_aff_lskip_dim=\dimen183
+\l_stm_aff_rskip_dim=\dimen184
+\g_stm_augr_int=\count309
+\g_stm_aaugr_int=\count310
+ (/home/uakuryliyu/texmf/tex/latex/moreverb/moreverb.sty
+Package: moreverb 2008/06/03 v2.3a `more' verbatim facilities
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2023-11-06 v1.5v LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks29
+\verbatim@line=\toks30
+\verbatim@in@stream=\read2
+)
+\tab@position=\count311
+\tab@size=\count312
+\listing@line=\count313
+)
+\g_stm_abs_box=\box56
+\casgrabsbox=\box57
+\casauhlbox=\box58
+\g_stm_key_box=\box59
+\g_stm_jtype_int=\count314
+\g_stm_blind_int=\count315
+\c@au=\count316
+\c@cnote=\count317
+\c@tnote=\count318
+\c@fnote=\count319
+\c@aff=\count320
+\g_stm_notes_box=\box60
+\g_stm_front_box=\box61
+\paraindent=\dimen185
+\subparaindent=\dimen186
+\FullWidth=\dimen187
+\l_tbl_width_dim=\dimen188
+\l_tbl_abovecap_skip=\skip60
+\l_tbl_belowcap_skip=\skip61
+\l_tbl_abovetbl_skip=\skip62
+\l_tbl_belowtbl_skip=\skip63
+\l_fig_width_dim=\dimen189
+\cascaptionbox=\box62
+\l_fig_abovecap_skip=\skip64
+\l_fig_belowcap_skip=\skip65
+\l_fig_abovefig_skip=\skip66
+\l_fig_belowfig_skip=\skip67
+
+(/home/uakuryliyu/texmf/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen190
+\WF@size=\dimen191
+\c@WF@wrappedlines=\count321
+\WF@box=\box63
+\WF@everypar=\toks31
+Package: wrapfig 2003/01/31  v 3.6
+)
+\l_wrap_figwidth_dim=\dimen192
+\l_wrap_fighspace_dim=\dimen193
+\l_wrap_figvspace_dim=\dimen194
+\l_wrap_fighcorr_dim=\dimen195
+\l_wrap_figvcorr_dim=\dimen196
+\l_above_bio_dim=\dimen197
+\l_wrap_figlcorr_int=\count322
+\l_wrap_figlines_int=\count323
+\l_bio_text_box=\box64
+\c@ca_biography_ctr=\count324
+\l_ca_temp_inta=\count325
+\leftMargin=\dimen198
+\@enLab=\toks32
+\@sep=\skip68
+\@@sep=\skip69
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
+2.
+
+(/usr/share/texmf/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+))
+***********************************************************
+ Stix and Charis fonts are not available 
+ in TeX system. Hence CMR fonts are used.
+***********************************************************
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count326
+\Gm@cntv=\count327
+\c@Gm@tempcnt=\count328
+\Gm@bindingoffset=\dimen199
+\Gm@wd@mp=\dimen256
+\Gm@odd@mp=\dimen257
+\Gm@even@mp=\dimen258
+\Gm@layoutwidth=\dimen259
+\Gm@layoutheight=\dimen260
+\Gm@layouthoffset=\dimen261
+\Gm@layoutvoffset=\dimen262
+\Gm@dimlist=\toks33
+))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+Package: fontspec 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaTeX
+Lua module: fontspec 2022/01/15 2.8a Font selection for XeLaTeX and LuaLaTeX
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
+Package: fontspec-luatex 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaT
+eX
+\l__fontspec_script_int=\count329
+\l__fontspec_language_int=\count330
+\l__fontspec_strnum_int=\count331
+\l__fontspec_tmp_int=\count332
+\l__fontspec_tmpa_int=\count333
+\l__fontspec_tmpb_int=\count334
+\l__fontspec_tmpc_int=\count335
+\l__fontspec_em_int=\count336
+\l__fontspec_emdef_int=\count337
+\l__fontspec_strong_int=\count338
+\l__fontspec_strongdef_int=\count339
+\l__fontspec_tmpa_dim=\dimen263
+\l__fontspec_tmpb_dim=\dimen264
+\l__fontspec_tmpc_dim=\dimen265
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+luaotfload | cache : Lookup cache loaded from /home/uakuryliyu/.texlive2023/texm
+f-var/luatex-cache/generic/names/luaotfload-lookup-cache.luc.
+
+Package fontspec Info: Font family 'NimbusRoman(0)' created for font 'Nimbus
+(fontspec)             Roman' with options
+(fontspec)             [Ligatures=TeX,SmallCapsFont={Nimbus Roman}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"NimbusRoman:mode=node;script=latn;language=dflt;+tli
+g;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <->"NimbusRoman:mode=node;script=latn;language=dflt;+tli
+g;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"NimbusRoman/B:mode=node;script=latn;language=dflt;+t
+lig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->"NimbusRoman:mode=node;script=latn;language=dflt;+tli
+g;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"NimbusRoman/I:mode=node;script=latn;language=dflt;+t
+lig;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"NimbusRoman:mode=node;script=latn;language=dflt;+tli
+g;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"NimbusRoman/BI:mode=node;script=latn;language=dflt;+
+tlig;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"NimbusRoman:mode=node;script=latn;language=dflt;+tli
+g;"
+
+luaotfload | aux : font no 35 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 36 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 37 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 38 (nil) does not define feature smcp for script latn
+ with language dflt
+
+Package fontspec Info: Font family 'NimbusSans(0)' created for font 'Nimbus
+(fontspec)             Sans' with options [Ligatures=TeX].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"NimbusSans:mode=node;script=latn;language=dflt;+tlig
+;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"NimbusSans/B:mode=node;script=latn;language=dflt;+tl
+ig;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"NimbusSans/I:mode=node;script=latn;language=dflt;+tl
+ig;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"NimbusSans/BI:mode=node;script=latn;language=dflt;+t
+lig;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+
+luaotfload | aux : font no 45 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 46 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 47 (nil) does not define feature smcp for script latn
+ with language dflt
+luaotfload | aux : font no 48 (nil) does not define feature smcp for script latn
+ with language dflt
+
+Package fontspec Info: Font family 'NimbusMonoPS(0)' created for font 'Nimbus
+(fontspec)             Mono PS' with options
+(fontspec)             [WordSpace={1,0,0},HyphenChar=None,PunctuationSpace=Word
+Space].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"NimbusMonoPS:mode=node;script=latn;language=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"NimbusMonoPS/B:mode=node;script=latn;language=dflt;"
+
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->"NimbusMonoPS/I:mode=node;script=latn;language=dflt;"
+
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"NimbusMonoPS/BI:mode=node;script=latn;language=dflt;
+"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+(fontspec)             and font adjustment code:
+(fontspec)             \fontdimen 2\font =1\fontdimen 2\font \fontdimen 3\font
+(fontspec)             =0\fontdimen 3\font \fontdimen 4\font =0\fontdimen
+(fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
+(fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip70
+\bibsep=\skip71
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count340
+)
+(/home/uakuryliyu/texmf/tex/latex/pgf/frontendlayer/tikz.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgf.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks34
+\pgfutil@tempdima=\dimen266
+\pgfutil@tempdimb=\dimen267
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box65
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks35
+\pgfkeys@temptoks=\toks36
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.t
+ex
+\pgfkeys@tmptoks=\toks37
+))
+\pgf@x=\dimen268
+\pgf@y=\dimen269
+\pgf@xa=\dimen270
+\pgf@ya=\dimen271
+\pgf@xb=\dimen272
+\pgf@yb=\dimen273
+\pgf@xc=\dimen274
+\pgf@yc=\dimen275
+\pgf@xd=\dimen276
+\pgf@yd=\dimen277
+\w@pgf@writea=\write3
+\r@pgf@reada=\read3
+\c@pgf@counta=\count341
+\c@pgf@countb=\count342
+\c@pgf@countc=\count343
+\c@pgf@countd=\count344
+\t@pgf@toka=\toks38
+\t@pgf@tokb=\toks39
+\t@pgf@tokc=\toks40
+\pgf@sys@id@count=\count345
+ (/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-luatex.def
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-luatex.def
+File: pgfsys-luatex.def 2023-01-15 v3.1.10 (3.1.10)
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count346
+\pgfsyssoftpath@bigbuffer@items=\count347
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen278
+\pgfmath@count=\count348
+\pgfmath@box=\box66
+\pgfmath@toks=\toks41
+\pgfmath@stack@operand=\toks42
+\pgfmath@stack@operation=\toks43
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.cod
+e.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.integerarithmetic
+s.code.tex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count349
+))
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfint.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen279
+\pgf@picmaxx=\dimen280
+\pgf@picminy=\dimen281
+\pgf@picmaxy=\dimen282
+\pgf@pathminx=\dimen283
+\pgf@pathmaxx=\dimen284
+\pgf@pathminy=\dimen285
+\pgf@pathmaxy=\dimen286
+\pgf@xx=\dimen287
+\pgf@xy=\dimen288
+\pgf@yx=\dimen289
+\pgf@yy=\dimen290
+\pgf@zx=\dimen291
+\pgf@zy=\dimen292
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.te
+x
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen293
+\pgf@path@lasty=\dimen294
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen295
+\pgf@shorten@start@additional=\dimen296
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box67
+\pgf@hbox=\box68
+\pgf@layerbox@main=\box69
+\pgf@picture@serial@count=\count350
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen297
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.
+tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen298
+\pgf@pt@y=\dimen299
+\pgf@pt@temp=\dimen300
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.t
+ex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen301
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen302
+\pgf@sys@shading@range@num=\count351
+\pgf@shadingcount=\count352
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box70
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box71
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen303
+\pgf@nodesepend=\dimen304
+)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+))
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgffor.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfkeys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/home/uakuryliyu/texmf/tex/latex/pgf/math/pgfmath.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen305
+\pgffor@skip=\dimen306
+\pgffor@stack=\toks44
+\pgffor@toks=\toks45
+))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.t
+ex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count353
+\pgfplotmarksize=\dimen307
+)
+\tikz@lastx=\dimen308
+\tikz@lasty=\dimen309
+\tikz@lastxsaved=\dimen310
+\tikz@lastysaved=\dimen311
+\tikz@lastmovetox=\dimen312
+\tikz@lastmovetoy=\dimen313
+\tikzleveldistance=\dimen314
+\tikzsiblingdistance=\dimen315
+\tikz@figbox=\box72
+\tikz@figbox@bg=\box73
+\tikz@tempbox=\box74
+\tikz@tempbox@bg=\box75
+\tikztreelevel=\count354
+\tikznumberofchildren=\count355
+\tikznumberofcurrentchild=\count356
+\tikz@fig@count=\count357
+ (/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count358
+\pgfmatrixcurrentcolumn=\count359
+\pgf@matrix@numberofcolumns=\count360
+)
+\tikz@expandcount=\count361
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yfit.code.tex
+File: tikzlibraryfit.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.te
+x
+File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowinset=\dimen316
+\pgfarrowlength=\dimen317
+\pgfarrowwidth=\dimen318
+\pgfarrowlinewidth=\dimen319
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count362
+\float@exts=\toks46
+\float@box=\box76
+\@float@everytoks=\toks47
+\@floatcapt=\box77
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2023/03/13 v3.1a Micro-typographical refinements (RS)
+\MT@toks=\toks48
+\MT@tempbox=\box78
+\MT@count=\count363
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1059.
+LaTeX Info: Redefining \leftprotrusion on input line 1060.
+\MT@prot@toks=\toks49
+LaTeX Info: Redefining \rightprotrusion on input line 1078.
+LaTeX Info: Redefining \textls on input line 1368.
+\MT@outer@kern=\dimen320
+LaTeX Info: Redefining \textmicrotypecontext on input line 1988.
+\MT@listname@count=\count364
+
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-luatex.def
+File: microtype-luatex.def 2023/03/13 v3.1a Definitions specific to luatex (RS)
+
+Lua module: microtype 2023/03/13 3.1a microtype module.
+Module microtype Info: overwriting function `keepligature' on input line 63
+LaTeX Info: Redefining \lsstyle on input line 688.
+LaTeX Info: Redefining \lslig on input line 688.
+\MT@outer@space=\skip72
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2023/03/13 v3.1a microtype main configuration file (RS)
+))
+(/home/uakuryliyu/texmf/tex/latex/xurl/xurl.sty
+Package: xurl 2022/01/09 v 0.10 modify URL breaks
+)
+\@float@every@algorithm=\toks50
+\c@algorithm=\count365
+\@float@every@figure=\toks51
+\@float@every@table=\toks52
+\c@proposition=\count366
+\c@corollary=\count367
+\c@remark=\count368
+\c@proof=\count369
+
+(./main-SMPT_UK_section6_build.aux)
+\openout1 = main-SMPT_UK_section6_build.aux
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 4
+8.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count370
+\scratchdimen=\dimen321
+\scratchbox=\box79
+\nofMPsegments=\count371
+\nofMParguments=\count372
+\everyMPshowfont=\toks53
+\MPscratchCnt=\count373
+\MPscratchDim=\dimen322
+\MPnumerator=\count374
+\makeMPintoPDFobject=\count375
+\everyMPtoPDFconversion=\toks54
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package hyperref Info: Link coloring ON on input line 48.
+
+(./main-SMPT_UK_section6_build.out) (./main-SMPT_UK_section6_build.out)
+\@outlinefile=\write4
+
+\openout4 = main-SMPT_UK_section6_build.out
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+*geometry* verbose mode - [ preamble ] result:
+* driver: luatex
+* paper: custom
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(38.98026pt, 468.3324pt, 38.98026pt)
+* v-part:(T,H,B)=(54.06023pt, 637.34175pt, 54.06023pt)
+* \paperwidth=546.29291pt
+* \paperheight=745.4622pt
+* \textwidth=468.3324pt
+* \textheight=637.34175pt
+* \oddsidemargin=-33.28973pt
+* \evensidemargin=-33.28973pt
+* \topmargin=-42.20976pt
+* \headheight=12.0pt
+* \headsep=12.0pt
+* \topskip=10.0pt
+* \footskip=12.0pt
+* \marginparwidth=57.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
+(fontspec)             this).
+
+\symlegacymaths=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 48.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 48.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 48.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 48.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 48.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 48.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 48.
+LaTeX Font Info:    Redeclaring math accent \check on input line 48.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 48.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 48.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 48.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 48.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 48.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/NimbusRoman(0)/m/n on input line 48.
+
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 48.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/NimbusRoman(0)/m/n on input line 48
+.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/NimbusRoman(0)/m/n --> TU/NimbusRoman(0)/m/n on inpu
+t line 48.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/NimbusRoman(0)/m/it on input line 4
+8.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/NimbusRoman(0)/b/n on input line 48
+.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/NimbusSans(0)/m/n on input line 48.
+
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/NimbusMonoPS(0)/m/n on input line 4
+8.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/NimbusRoman(0)/m/n --> TU/NimbusRoman(0)/b/n on inpu
+t line 48.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/NimbusRoman(0)/b/it on input line 
+48.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/NimbusSans(0)/b/n on input line 48
+.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/NimbusMonoPS(0)/b/n on input line 4
+8.
+LaTeX Info: Redefining \microtypecontext on input line 48.
+Package microtype Info: Applying patch `item' on input line 48.
+Package microtype Info: Applying patch `toc' on input line 48.
+Package microtype Info: Applying patch `eqnum' on input line 48.
+Package microtype Info: Applying patch `footnote' on input line 48.
+Package microtype Info: Applying patch `verbatim' on input line 48.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: No font expansion.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of spacing.
+Package microtype Info: No adjustment of kerning.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `NimbusRoman' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+\verbatim@out=\write5
+
+\openout5 = main-SMPT_UK_section6_build.abs
+LaTeX Font Info:    Trying to load font information for U+msa on input line 82.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 82.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
+(RS)
+)
+Overfull \hbox (117.0831pt too wide) detected at line 82
+[]
+ []
+
+(./main-SMPT_UK_section6_build.abs)
+Underfull \hbox (badness 1067) in paragraph at lines 82--82
+ \TU/NimbusRoman(0)/m/n/8 рівномірно серед сприйнятли
+вих вузлів. Ми описуємо локальні годинники, 
+правило
+ []
+
+
+Package hyperref Warning: Ignoring empty anchor on input line 82.
+
+
+Package hyperref Warning: Ignoring empty anchor on input line 82.
+
+<thumbnails/cas-email.jpeg, id=7, 225.84375pt x 225.84375pt>
+File: thumbnails/cas-email.jpeg Graphic file (type jpg)
+<use thumbnails/cas-email.jpeg>
+Package luatex.def Info: thumbnails/cas-email.jpeg  used on input line 82.
+(luatex.def)             Requested size: 7.99838pt x 8.0pt.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `NimbusMonoPS' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+Package hyperref Warning: Ignoring empty anchor on input line 82.
+
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `NimbusSans' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+[1
+
+{/home/uakuryliyu/.texlive2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}<./t
+humbnails/cas-email.jpeg>]
+Underfull \hbox (badness 10000) in paragraph at lines 96--101
+[]\TU/NimbusRoman(0)/m/n/10 Головне питання: коли таког
+о агрегованого зв’язку достатньо для відт
+ворення потрібної нам
+ []
+
+
+Underfull \hbox (badness 2556) in paragraph at lines 96--101
+\TU/NimbusRoman(0)/m/n/10 характеристики повномереже
+вого CTMC? Ми досліджуємо часи прибуття інфе
+кції, їхні розподіли та
+ []
+
+
+Underfull \hbox (badness 2285) in paragraph at lines 96--101
+\TU/NimbusRoman(0)/m/n/10 можливість передавання чере
+з справжні контакти. Близькі часи ще не гар
+антують можливого шляху
+ []
+
+
+Underfull \hbox (badness 1158) in paragraph at lines 106--107
+\TU/NimbusRoman(0)/m/it/10 рівномірними міжспільнотни
+ми зв’язками\TU/NimbusRoman(0)/m/n/10 : між кожними дв
+ома зв’язаними спільнотами всі вузли
+ []
+
+
+Underfull \hbox (badness 2644) in paragraph at lines 106--107
+\TU/NimbusRoman(0)/m/n/10 однієї з’єднано з усіма вуз
+лами іншої, а загальну вагу зв’язку розпод
+ілено порівну між цими
+ []
+
+
+Underfull \hbox (badness 1902) in paragraph at lines 111--112
+[]\TU/NimbusRoman(0)/m/n/10 Ми розглядаємо динаміку «с
+прийнятливий--інфікований» (SI) на статични
+х синтетичних мережах і
+ []
+
+
+Underfull \hbox (badness 2591) in paragraph at lines 119--120
+[]\TU/NimbusRoman(0)/m/n/10 Деякі багатомасштабні мето
+ди прискорюють моделювання хімічних реакц
+ій, наближено описуючи
+ []
+
+[2]
+Underfull \hbox (badness 2495) in paragraph at lines 153--155
+\TU/NimbusRoman(0)/m/sc/10 Тут $\OML/cmm/m/it/10 q[]$ \TU/NimbusRoman(0)/m/s
+c/10 --- сумарна інтенсивність зараження вузл
+а $\OML/cmm/m/it/10 v$\TU/NimbusRoman(0)/m/sc/10 , а $\OML/cmm/m/it/10 r[]$ \
+TU/NimbusRoman(0)/m/sc/10 --- інтенсивність видалення в
+узла $\OML/cmm/m/it/10 u$\TU/NimbusRoman(0)/m/sc/10 . Для
+ []
+
+
+Underfull \hbox (badness 1603) in paragraph at lines 156--157
+[]\TU/NimbusRoman(0)/m/sc/10 Час переходу між станами є 
+експоненційним і визначається сумарною ін
+тенсивністю всіх подій у
+ []
+
+[3]
+Underfull \hbox (badness 1590) in paragraph at lines 272--273
+\TU/NimbusRoman(0)/m/sc/10 зараження та видалення з [], 
+використовуючи лише локальні ребра $\OML/cmm/m/i
+t/10 E[]$\TU/NimbusRoman(0)/m/sc/10 . Реалізація оновлює ли
+ше ті
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 276--283
+\TU/NimbusRoman(0)/m/sc/10 сумарної локальної інтенси
+вності від тієї події до моменту імпорту. П
+ісля імпорту сумарна локальна
+ []
+
+[4]
+Underfull \hbox (badness 1881) in paragraph at lines 303--305
+\TU/NimbusRoman(0)/m/sc/10 Кожен множник має простий з
+міст. $\OML/cmm/m/it/10 []W[]$ \TU/NimbusRoman(0)/m/sc/10 задає за
+гальну силу зв’язку; $[]$ --- частку інфікова
+них у
+ []
+
+
+Underfull \hbox (badness 1092) in paragraph at lines 306--307
+[]\TU/NimbusRoman(0)/m/sc/10 Коли така подія відбуваєть
+ся, спочатку вибирають спільноту-джерело т
+а спільноту-одержувача $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 i;
+ j\OT1/cmr/m/n/10 )$
+ []
+
+[5]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 336.
+
+Underfull \hbox (badness 1348) in paragraph at lines 355--356
+[]\TU/NimbusRoman(0)/m/sc/10 Часова сітка потрібна, оск
+ільки планувальник працює з локальними си
+муляторами як із «чорними
+ []
+
+
+Underfull \hbox (badness 3088) in paragraph at lines 355--356
+\TU/NimbusRoman(0)/m/sc/10 скриньками». Якщо вони тако
+ж повідомляють часи наступних локальних п
+одій, планувальник може
+ []
+
+[6]
+Underfull \hbox (badness 2173) in paragraph at lines 381--382
+\TU/NimbusRoman(0)/m/sc/10 зберігаючи точну стохастич
+ну динаміку всередині спільнот. Виникає пи
+тання, чи можна представити
+ []
+
+
+Underfull \hbox (badness 1371) in paragraph at lines 385--386
+[]\TU/NimbusRoman(0)/m/sc/10 Покажемо, що за рівномірно
+го вибору сприйнятливого вузла-одержувача 
+цей процес еквівалентний
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--390
+[][]\TU/NimbusRoman(0)/m/it/10 Нехай $[]$
+ []
+
+[7]
+Underfull \hbox (badness 4752) in paragraph at lines 462--463
+[]\TU/NimbusRoman(0)/m/sc/10 Водночас агрегована інтен
+сивність не обов’язково перевищує справж
+ню. Якщо інфіковані вузли
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 465--467
+\TU/NimbusRoman(0)/m/sc/10 джерелом у початковій мереж
+і. Місце першого зараження впливає на пода
+льше поширення всередині
+ []
+
+
+Underfull \hbox (badness 1184) in paragraph at lines 465--467
+\TU/NimbusRoman(0)/m/sc/10 розміщення імпортів може вп
+ливати як на локальну динаміку, так і на ча
+с поширення інфекції через
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 485--488
+[]\TU/NimbusRoman(0)/m/sc/10 Нехай кінці
+ []
+
+
+Underfull \hbox (badness 4242) in paragraph at lines 509--510
+\TU/NimbusRoman(0)/m/sc/10 Це дозволяє порівняти розпо
+діли часу першого експорту з урахуванням в
+ипадкового розташування
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 513--514
+[]\TU/NimbusRoman(0)/m/it/10 Нехай множину мостів $\OML/cmm/m
+/it/10 B$
+ []
+
+
+Underfull \hbox (badness 1158) in paragraph at lines 552--553
+[]\TU/NimbusRoman(0)/m/sc/10 Таким чином, накопичена ін
+тенсивність TwoScale дорівнює математичному с
+подіванню накопиченої
+ []
+
+
+Underfull \hbox (badness 3364) in paragraph at lines 575--576
+[]\TU/NimbusRoman(0)/m/sc/10 Отриманий результат показ
+ує, що агрегована інтенсивність відповіда
+є математичному сподіванню
+ []
+
+
+Underfull \hbox (badness 1019) in paragraph at lines 575--576
+\TU/NimbusRoman(0)/m/sc/10 справжньої інтенсивності, а
+ле розподіли часу передавання можуть сист
+ематично відрізнятися. Причина
+ []
+
+
+Underfull \hbox (badness 1616) in paragraph at lines 578--580
+[]\TU/NimbusRoman(0)/m/sc/10 Окрім зміщення часу, агрег
+ація може порушувати обмеження на допусти
+мі маршрути передавання.
+ []
+
+[10]
+Underfull \hbox (badness 1242) in paragraph at lines 675--682
+[]\TU/NimbusRoman(0)/m/sc/10 Теоретичний аналіз у попер
+едньому розділі показав, як агрегація міжс
+пільнотних контактів змінює
+ []
+
+
+Underfull \hbox (badness 3281) in paragraph at lines 697--698
+\TU/NimbusRoman(0)/m/sc/10 впливом структури мережі ви
+користаємо повний граф. Не обов’язково вр
+аховувати спільноту в яку
+ []
+
+
+Underfull \hbox (badness 2005) in paragraph at lines 743--751
+[]\TU/NimbusRoman(0)/m/it/11 Ланцюг клік.[] \TU/NimbusRoman(0)/m/sc/1
+0 Попередні тести розглядають лише один мі
+жспільнотний перехід. Щоб перевірити, як
+ []
+
+
+Underfull \hbox (badness 4391) in paragraph at lines 768--775
+[]\TU/NimbusRoman(0)/m/it/11 Ланцюги випадкових спільн
+от.[] \TU/NimbusRoman(0)/m/sc/10 Нарешті, поєднуємо посл
+ідовні міжспільнотні переходи зі зміною
+ []
+
+[11]
+Underfull \hbox (badness 1117) in paragraph at lines 840--847
+[]\TU/NimbusRoman(0)/m/sc/10 Для кожної пари запусків Full 
+і TwoScale використовуємо однакові внутрішні 
+графи, міжспільнотні
+ []
+
+[12]
+Underfull \hbox (badness 8170) in paragraph at lines 973--979
+[]\TU/NimbusRoman(0)/m/sc/10 Частку передчасних експор
+тів визначаємо як відсоток таких випадків 
+серед усіх досліджених
+ []
+
+
+Underfull \hbox (badness 5189) in paragraph at lines 973--979
+\TU/NimbusRoman(0)/m/sc/10 міжспільнотних переходів TwoSc
+ale. Ця метрика характеризує частоту поруше
+ння необхідної умови
+ []
+
+
+Underfull \hbox (badness 1163) in paragraph at lines 983--994
+\TU/NimbusRoman(0)/m/sc/10 першого переходу $\OML/cmm/m/it/10 T[
+]$ \TU/NimbusRoman(0)/m/sc/10 та наступних переходів $\OML/
+cmm/m/it/10 T[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 T[]$\TU/NimbusRoman(0)/m/
+sc/10 . Перший перехід дозволяє оцінити розбі
+жності,
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 1055--1061
+[]\TU/NimbusRoman(0)/m/sc/10 Показник $\OML/cmm/m/it/10 $ \TU/NimbusRo
+man(0)/m/sc/10 не є безпосередньою метрикою похи
+бки. Його розглядаємо як можливу пояснювал
+ьну
+ []
+
+[13]
+Underfull \hbox (badness 5726) in paragraph at lines 1083--1090
+[]\TU/NimbusRoman(0)/m/sc/10 Для підсумкових показникі
+в ланцюгів формуємо 2000 бутстреп-вибірок і 
+повторно обчислюємо
+ []
+
+
+Underfull \hbox (badness 1205) in paragraph at lines 1092--1100
+\TU/NimbusRoman(0)/m/sc/10 розподілу, оскільки кожна з 
+них містить скінченну кількість випадкови
+х спостережень. Тому потрібно
+ []
+
+
+Underfull \hbox (badness 1389) in paragraph at lines 1092--1100
+\TU/NimbusRoman(0)/m/sc/10 перевірити, чи перевищує сп
+остережувана відстань рівень, який можна о
+тримати внаслідок вибіркової
+ []
+
+
+Underfull \hbox (badness 2269) in paragraph at lines 1101--1110
+[]\TU/NimbusRoman(0)/m/sc/10 Для цього в кожній парі зап
+усків із ймовірністю $\OT1/cmr/m/n/10 1/2$ \TU/NimbusRoman(0)
+/m/sc/10 випадково міняємо місцями отримані ч
+аси
+ []
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 1147--1151
+[]\TU/NimbusRoman(0)/m/sc/10 Ці перевірки оцінюють узго
+дженість реалізації Full з відомими аналіти
+чними результатами, але не
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 1163--1166
+\TU/NimbusRoman(0)/m/sc/10 нові запуски TwoScale після вип
+равлення залишкового локального годинник
+а та роботи з генератором
+ []
+
+
+Underfull \hbox (badness 1939) in paragraph at lines 1163--1166
+\TU/NimbusRoman(0)/m/sc/10 випадкових чисел. Перерахов
+ано всі 48 конфігурацій, по 400 пар у кожній; е
+талонні результати Full
+ []
+
+[14]
+<Images/clique_leaf/clique_leaf_endpoint_and_mechanism.png, id=309, 915.6609pt 
+x 271.9761pt>
+File: Images/clique_leaf/clique_leaf_endpoint_and_mechanism.png Graphic file (t
+ype png)
+<use Images/clique_leaf/clique_leaf_endpoint_and_mechanism.png>
+Package luatex.def Info: Images/clique_leaf/clique_leaf_endpoint_and_mechanism.
+png  used on input line 1178.
+(luatex.def)             Requested size: 468.3324pt x 139.10437pt.
+
+Underfull \hbox (badness 1466) in paragraph at lines 1186--1187
+[]\TU/NimbusRoman(0)/m/it/10 Зі збільшенням довжини вну
+трішніх шляхів обхід мостів стає поширени
+м, а агрегований експорт
+ []
+
+
+Underfull \hbox (badness 1708) in paragraph at lines 1186--1187
+\TU/NimbusRoman(0)/m/sc/10 показано серію експеримент
+ів «джерело--листок». Середні часи активац
+ії мостів у двох моделях були
+ []
+
+<Images/fig_aspl_export_fidelity.png, id=312, 1020.2115pt x 514.3215pt>
+File: Images/fig_aspl_export_fidelity.png Graphic file (type png)
+<use Images/fig_aspl_export_fidelity.png>
+Package luatex.def Info: Images/fig_aspl_export_fidelity.png  used on input lin
+e 1190.
+(luatex.def)             Requested size: 468.3324pt x 236.10419pt.
+[15<./Images/clique_leaf/clique_leaf_endpoint_and_mechanism.png>]
+Underfull \hbox (badness 5245) in paragraph at lines 1202--1203
+[]\TU/NimbusRoman(0)/m/it/10 Коли внутрішнє поширення ш
+видке, близьке узгодження зберігається пі
+сля дев’яти послідовних
+ []
+
+
+Underfull \hbox (badness 1005) in paragraph at lines 1202--1203
+\TU/NimbusRoman(0)/m/it/10 агрегованих переходів. \TU/Nimbu
+sRoman(0)/m/sc/10 У ланцюзі з десяти клік по 1000 вуз
+лів із $\OML/cmm/m/it/10 k \OT1/cmr/m/n/10 = 1$ \TU/NimbusRoman(0)/m/sc/10
+ медіанний час прибуття до
+ []
+
+<Images/twoscale/corrected_chain_20261008/chain_cliques_n1000_k1_propagation_cd
+f_random_initial.pdf, id=325, 734.79518pt x 285.44443pt>
+File: Images/twoscale/corrected_chain_20261008/chain_cliques_n1000_k1_propagati
+on_cdf_random_initial.pdf Graphic file (type pdf)
+<use Images/twoscale/corrected_chain_20261008/chain_cliques_n1000_k1_propagatio
+n_cdf_random_initial.pdf>
+Package luatex.def Info: Images/twoscale/corrected_chain_20261008/chain_cliques
+_n1000_k1_propagation_cdf_random_initial.pdf  used on input line 1206.
+(luatex.def)             Requested size: 468.3324pt x 181.93465pt.
+[16<./Images/fig_aspl_export_fidelity.png>]
+<Images/twoscale/corrected_chain_20261008/aspl_chain_median_arrival_error_map_l
+abeled.pdf, id=336, 694.8322pt x 564.91002pt>
+File: Images/twoscale/corrected_chain_20261008/aspl_chain_median_arrival_error_
+map_labeled.pdf Graphic file (type pdf)
+<use Images/twoscale/corrected_chain_20261008/aspl_chain_median_arrival_error_m
+ap_labeled.pdf>
+Package luatex.def Info: Images/twoscale/corrected_chain_20261008/aspl_chain_me
+dian_arrival_error_map_labeled.pdf  used on input line 1218.
+(luatex.def)             Requested size: 468.3324pt x 380.76338pt.
+<Images/twoscale/corrected_chain_20261008/fig_accuracy_map.pdf, id=340, 482.678
+6pt x 227.11249pt>
+File: Images/twoscale/corrected_chain_20261008/fig_accuracy_map.pdf Graphic fil
+e (type pdf)
+<use Images/twoscale/corrected_chain_20261008/fig_accuracy_map.pdf>
+Package luatex.def Info: Images/twoscale/corrected_chain_20261008/fig_accuracy_
+map.pdf  used on input line 1230.
+(luatex.def)             Requested size: 468.3324pt x 220.37161pt.
+ [17<./Images/twoscale/corrected_chain_20261008/chain_cliques_n1000_k1_propagati
+on_cdf_random_initial.pdf>]
+<Images/twoscale/corrected_chain_20261008/fig_descriptor.pdf, id=363, 529.95187
+pt x 195.38997pt>
+File: Images/twoscale/corrected_chain_20261008/fig_descriptor.pdf Graphic file 
+(type pdf)
+<use Images/twoscale/corrected_chain_20261008/fig_descriptor.pdf>
+Package luatex.def Info: Images/twoscale/corrected_chain_20261008/fig_descripto
+r.pdf  used on input line 1242.
+(luatex.def)             Requested size: 468.3324pt x 172.67413pt.
+
+[18<./Images/twoscale/corrected_chain_20261008/aspl_chain_median_arrival_error_m
+ap_labeled.pdf>] [19<./Images/twoscale/corrected_chain_20261008/fig_accuracy_map
+.pdf><./Images/twoscale/corrected_chain_20261008/fig_descriptor.pdf>]
+[20] (./main-SMPT_UK_section6_build.bbl) [21
+
+]
+(./main-SMPT_UK_section6_build.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+Package rerunfilecheck Info: File `main-SMPT_UK_section6_build.out' has not cha
+nged.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+)
+
+Here is how much of LuaTeX's memory you used:
+ 29351 strings out of 476553
+ 156292,1977958 words of node,token memory allocated
+ 787 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 1 local_par, 7 glue, 4 kern, 1 penalty, 1 margin_ke
+rn, 3 glyph, 43 attribute, 61 glue_spec, 43 attribute_list, 2 write, 6 pdf_actio
+n nodes
+   avail lists: 1:5,2:3557,3:2237,4:374,5:2700,6:119,7:13264,8:43,9:964,10:25,11
+:798
+ 50451 multiletter control sequences out of 65536+600000
+ 116 fonts using 11368343 bytes
+ 87i,14n,88p,2578b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/fonts/opentype/urw-base35/NimbusSans-Regular.otf></usr/share/fonts/o
+pentype/urw-base35/NimbusMonoPS-Regular.otf></usr/share/fonts/opentype/urw-base3
+5/NimbusRoman-Bold.otf></usr/share/fonts/opentype/urw-base35/NimbusRoman-Italic.
+otf></usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/symbols/msbm7.pfb>
+Output written on main-SMPT_UK_section6_build.pdf (21 pages, 1141188 bytes).
+
+PDF statistics: 612 PDF objects out of 1000 (max. 8388607)
+ 487 compressed objects within 5 object streams
+ 126 named destinations out of 1000 (max. 131072)
+ 16 words of extra memory for PDF output out of 10000 (max. 100000000)
+

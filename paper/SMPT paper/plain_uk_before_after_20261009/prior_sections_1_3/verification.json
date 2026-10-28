@@ -1,0 +1,25 @@
+﻿{
+  "scope": "Ukrainian sections 1--3 only",
+  "base": "paper/SMPT paper/readability_revision_parallel_black_20261008/sections_1_3_UK.tex",
+  "original_sha256": "6f0f597712d7c81c57a136017878f05e6cd846602be9ab35d23f130fc14f73a6",
+  "preserved": {
+    "labels": 18,
+    "citation_commands": 25,
+    "equations": 6,
+    "tikz_unchanged": true
+  },
+  "aligned_blocks": 41,
+  "pdfs": {
+    "sections_1_3_UK_before_after": {
+      "pages": 7,
+      "text_chars": 62951,
+      "no_unresolved_references_or_overfull_boxes": true
+    },
+    "sections_1_3_UK_simple": {
+      "pages": 9,
+      "text_chars": 28778,
+      "no_unresolved_references_or_overfull_boxes": true
+    }
+  },
+  "limitations": "Editorial revision of the existing paper; no experiments, new data or validation of corrected rerun results."
+}

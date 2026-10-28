@@ -1,0 +1,25 @@
+{
+  "clique_leaf_observations": 20000,
+  "clique_leaf_pairs": 10000,
+  "source_leaf_pairs": 16800,
+  "source_leaf_cells": 42,
+  "chain_pairs": 19200,
+  "chain_cells": 48,
+  "table_3_rows": 8,
+  "common_30000_completed": {
+    "Full": 19198,
+    "TwoScale": 19200
+  },
+  "extended_full_runs": 2,
+  "plot_tables_checked": 37,
+  "simulations_run": false,
+  "bootstrap_or_permutation_recomputed": false,
+  "raw_members": 54949,
+  "raw_checkpoint_counts": {
+    "raw/clique_leaf.tar": 10000,
+    "raw/source_leaf.tar": 16800,
+    "raw/chains.tar": 19200
+  },
+  "raw_chain_cells_sampled": 48,
+  "raw_source_hashes_verified_while_writing": true
+}

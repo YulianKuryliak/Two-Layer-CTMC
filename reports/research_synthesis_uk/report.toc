@@ -1,0 +1,50 @@
+\contentsline {section}{\numberline {1}Мета та рамка аналізу}{3}{section.1}%
+\contentsline {section}{\numberline {2}Позначення}{3}{section.2}%
+\contentsline {section}{\numberline {3}Карта доказів}{5}{section.3}%
+\contentsline {section}{\numberline {4}Аналітичний boundary benchmark}{6}{section.4}%
+\contentsline {section}{\numberline {5}Сумірність усіх джерел доказів}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Номенклатурний drift у планах}{8}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Короткі паспорти всіх експериментів}{8}{section.6}%
+\contentsline {section}{\numberline {7}Системні benchmarks основної статті}{9}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Calibrated chain of cliques}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Chain of sparse connected communities}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Наслідки для калібрування}{10}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Що саме створює розбіжність}{11}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Rate abstraction: прямо підтверджене джерело premature leakage}{11}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Import placement: важливий, але залежний від hazard context}{11}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Synchronization залишається окремою невизначеністю}{12}{subsection.8.3}%
+\contentsline {section}{\numberline {9}Коли похибка мала або змінює знак}{12}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Швидке внутрішнє mixing і короткі well-mixed chains}{12}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Повільний export усуває premature bias, але не гарантує agreement}{13}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Коли розбіжність стає великою}{13}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Великий export-to-mixing ratio}{13}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Sparse communities і вузькі interfaces}{13}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Довгі chains накопичують локальну похибку}{14}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Recovery змінює не лише timing, а й outbreak probability}{14}{subsection.10.4}%
+\contentsline {section}{\numberline {11}Що показали спроби корекції}{14}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Scalar calibration: корисний перший рівень, але не розв'язання}{14}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Spectral damping: правильний напрям лише в частині regimes}{14}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Static boundary placement не є універсальною заміною}{15}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Literal lag і latent-boundary corrections були надто сильними}{15}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Multi-topology validation є обов'язковим acceptance gate}{15}{subsection.11.5}%
+\contentsline {section}{\numberline {12}Комплексна інтерпретація всього evidence chain}{16}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Де результати взаємно підсилюють один одного}{16}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Де результати не можна звести до простої історії}{16}{subsection.12.2}%
+\contentsline {paragraph}{Early-bias theorem проти late regimes.}{16}{section*.9}%
+\contentsline {paragraph}{Interface width не є одновимірним predictor.}{16}{section*.10}%
+\contentsline {paragraph}{Placement effect залежить від hazard path.}{16}{section*.11}%
+\contentsline {paragraph}{Event-driven і production magnitudes не узгоджені.}{16}{section*.12}%
+\contentsline {subsection}{\numberline {12.3}Що відомо про corrections у сукупності}{17}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Рівень доказовості основних тверджень}{17}{subsection.12.4}%
+\contentsline {section}{\numberline {13}Синтез: предиктори розбіжності}{18}{section.13}%
+\contentsline {section}{\numberline {14}Рекомендована архітектура калібрування}{18}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Рівень 1: regime classification і identity gate}{18}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Рівень 2: scalar calibration}{18}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Рівень 3: gated state-dependent correction}{19}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}Рівень 4: окрема calibration для completion у SIR}{19}{subsection.14.4}%
+\contentsline {section}{\numberline {15}Статистичний protocol для вибору correction}{19}{section.15}%
+\contentsline {section}{\numberline {16}Що вже можна стверджувати}{20}{section.16}%
+\contentsline {section}{\numberline {17}Що поки не можна стверджувати}{20}{section.17}%
+\contentsline {section}{\numberline {18}Пріоритети наступних кроків}{20}{section.18}%
+\contentsline {section}{\numberline {19}Загальний висновок}{21}{section.19}%
+\contentsline {section}{\numberline {A}Джерела синтезу}{21}{appendix.A}%

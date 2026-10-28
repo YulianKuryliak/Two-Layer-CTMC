@@ -1,0 +1,851 @@
+This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian) 
+ restricted system commands enabled.
+(./main-SMPT_UK.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ (./cas-sc.cls
+Document Class: cas-sc 2024/05/04, 2.4: Formatting class for CAS single column 
+articles
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/fleqn.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/luatex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def))
+(/home/uakuryliyu/texmf/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/home/uakuryliyu/texmf/tex/latex/makecell/makecell.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty))
+(/home/uakuryliyu/texmf/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(/usr/share/texlive/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/home/uakuryliyu/texmf/tex/latex/sttools/stfloats.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty)
+(/home/uakuryliyu/texmf/tex/generic/xstring/xstring.sty
+(/home/uakuryliyu/texmf/tex/generic/xstring/xstring.tex))
+(/home/uakuryliyu/texmf/tex/latex/footmisc/footmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/svgnam.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/dvipsnam.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hluatex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(./cas-common.sty (/home/uakuryliyu/texmf/tex/latex/moreverb/moreverb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty))
+(/home/uakuryliyu/texmf/tex/latex/wrapfig/wrapfig.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf/tex/latex/lm/t1lmr.fd))
+***********************************************************
+ Stix and Charis fonts are not available 
+ in TeX system. Hence CMR fonts are used.
+***********************************************************
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/home/uakuryliyu/texmf/tex/latex/pgf/frontendlayer/tikz.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgf.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/pgf.revision.tex)))
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.t
+ex)) (/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgf.cfg)
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-luatex.def
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.cod
+e.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+ (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.integerarithmetic
+s.code.tex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfint.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.te
+x) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.
+tex) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgffor.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfkeys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/home/uakuryliyu/texmf/tex/latex/pgf/math/pgfmath.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgffor.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ytopaths.code.tex)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ypositioning.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yfit.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.te
+x) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-luatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/home/uakuryliyu/texmf/tex/latex/xurl/xurl.sty)
+No file main-SMPT_UK_clean_build.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+Overfull \hbox (117.0831pt too wide) detected at line 82
+[]
+(./main-SMPT_UK_clean_build.abs)
+Underfull \hbox (badness 1067) in paragraph at lines 82--82
+ \TU/NimbusRoman(0)/m/n/8 рівномірно серед сприйнятли
+вих вузлів. Ми описуємо локальні годинники,
+ правило
+
+Package hyperref Warning: Ignoring empty anchor on input line 82.
+
+
+Package hyperref Warning: Ignoring empty anchor on input line 82.
+
+
+Package natbib Warning: Citation `keeling2005' on page 1 undefined on input lin
+e 88.
+
+
+Package natbib Warning: Citation `pastorsatorras2015' on page 1 undefined on in
+put line 88.
+
+
+Package natbib Warning: Citation `kiss2017' on page 1 undefined on input line 8
+8.
+
+
+Package natbib Warning: Citation `balcan2009' on page 1 undefined on input line
+ 88.
+
+
+Package natbib Warning: Citation `barbosa2018human' on page 1 undefined on inpu
+t line 88.
+
+
+Package natbib Warning: Citation `eubank2004' on page 1 undefined on input line
+ 90.
+
+
+Package natbib Warning: Citation `danon2011' on page 1 undefined on input line 
+90.
+
+
+Package natbib Warning: Citation `barbosa2018human' on page 1 undefined on inpu
+t line 90.
+
+
+Package natbib Warning: Citation `chang2021' on page 1 undefined on input line 
+90.
+
+
+Package natbib Warning: Citation `gillespie1977exact' on page 1 undefined on in
+put line 92.
+
+
+Package natbib Warning: Citation `gibson2000' on page 1 undefined on input line
+ 92.
+
+
+Package natbib Warning: Citation `vestergaard2015' on page 1 undefined on input
+ line 92.
+
+
+Package natbib Warning: Citation `kuryliak2025simulating' on page 1 undefined o
+n input line 92.
+
+
+Package natbib Warning: Citation `colizza2007reaction' on page 1 undefined on i
+nput line 92.
+
+
+Package natbib Warning: Citation `colizza2008' on page 1 undefined on input lin
+e 92.
+
+
+Package natbib Warning: Citation `balcan2010modeling' on page 1 undefined on in
+put line 92.
+
+
+Package natbib Warning: Citation `ajelli2010' on page 1 undefined on input line
+ 92.
+
+
+Package natbib Warning: Citation `kuryliak2025towards' on page 1 undefined on i
+nput line 94.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 96--101
+[]\TU/NimbusRoman(0)/m/n/10 Головне питання: коли таког
+о агрегованого зв’язку достатньо для відт
+ворення потрібної нам
+
+Underfull \hbox (badness 2556) in paragraph at lines 96--101
+\TU/NimbusRoman(0)/m/n/10 характеристики повномереже
+вого CTMC? Ми досліджуємо часи прибуття інфе
+кції, їхні розподіли та
+
+Underfull \hbox (badness 2285) in paragraph at lines 96--101
+\TU/NimbusRoman(0)/m/n/10 можливість передавання чере
+з справжні контакти. Близькі часи ще не гар
+антують можливого шляху
+[1{/home/uakuryliyu/.texlive2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+
+
+LaTeX Warning: Reference `sec:method' on page 2 undefined on input line 105.
+
+
+LaTeX Warning: Reference `alg:scheduler' on page 2 undefined on input line 105.
+
+
+
+LaTeX Warning: Reference `prop:surrogate' on page 2 undefined on input line 106
+.
+
+
+LaTeX Warning: Reference `prop:ordering' on page 2 undefined on input line 106.
+
+
+
+Underfull \hbox (badness 1158) in paragraph at lines 106--107
+\TU/NimbusRoman(0)/m/it/10 рівномірними міжспільнотни
+ми зв’язками\TU/NimbusRoman(0)/m/n/10 : між кожними дв
+ома зв’язаними спільнотами всі вузли
+
+Underfull \hbox (badness 2644) in paragraph at lines 106--107
+\TU/NimbusRoman(0)/m/n/10 однієї з’єднано з усіма вуз
+лами іншої, а загальну вагу зв’язку розпод
+ілено порівну між цими
+
+LaTeX Warning: Reference `sec:design' on page 2 undefined on input line 107.
+
+
+LaTeX Warning: Reference `sec:results' on page 2 undefined on input line 107.
+
+
+LaTeX Warning: Reference `sec:res_descriptor' on page 2 undefined on input line
+ 108.
+
+
+LaTeX Warning: Reference `sec:related' on page 2 undefined on input line 111.
+
+
+LaTeX Warning: Reference `sec:method' on page 2 undefined on input line 111.
+
+
+LaTeX Warning: Reference `sec:analysis' on page 2 undefined on input line 111.
+
+
+LaTeX Warning: Reference `sec:design' on page 2 undefined on input line 111.
+
+
+LaTeX Warning: Reference `sec:results' on page 2 undefined on input line 111.
+
+
+Underfull \hbox (badness 1902) in paragraph at lines 111--112
+[]\TU/NimbusRoman(0)/m/n/10 Ми розглядаємо динаміку «с
+прийнятливий--інфікований» (SI) на статични
+х синтетичних мережах і
+
+Package natbib Warning: Citation `gillespie1977exact' on page 2 undefined on in
+put line 117.
+
+
+Package natbib Warning: Citation `gibson2000' on page 2 undefined on input line
+ 117.
+
+
+Package natbib Warning: Citation `ethier1986' on page 2 undefined on input line
+ 117.
+
+
+Package natbib Warning: Citation `anderson2007' on page 2 undefined on input li
+ne 117.
+
+
+Package natbib Warning: Citation `vestergaard2015' on page 2 undefined on input
+ line 117.
+
+
+Package natbib Warning: Citation `kuryliak2025simulating' on page 2 undefined o
+n input line 117.
+
+
+Package natbib Warning: Citation `kuryliak2025simulating' on page 2 undefined o
+n input line 117.
+
+
+Underfull \hbox (badness 1845) in paragraph at lines 117--118
+\TU/NimbusRoman(0)/m/n/10 події (\TU/NimbusRoman(0)/b/n/10 ?\TU/NimbusRoma
+n(0)/m/n/10 ). Обидва методи точні для CTMC, який во
+ни моделюють. Якщо інтенсивність змінюєть
+ся з
+
+Package natbib Warning: Citation `haseltine2002' on page 2 undefined on input l
+ine 119.
+
+
+Package natbib Warning: Citation `cao2005slow' on page 2 undefined on input lin
+e 119.
+
+
+Package natbib Warning: Citation `colizza2007reaction' on page 2 undefined on i
+nput line 122.
+
+
+Package natbib Warning: Citation `colizza2008' on page 2 undefined on input lin
+e 122.
+
+
+Package natbib Warning: Citation `balcan2009' on page 2 undefined on input line
+ 122.
+
+
+Package natbib Warning: Citation `balcan2010modeling' on page 2 undefined on in
+put line 122.
+
+
+Package natbib Warning: Citation `chang2021' on page 2 undefined on input line 
+122.
+
+
+Package natbib Warning: Citation `eubank2004' on page 2 undefined on input line
+ 122.
+
+
+Package natbib Warning: Citation `kerr2021' on page 2 undefined on input line 1
+22.
+
+
+Package natbib Warning: Citation `ajelli2010' on page 2 undefined on input line
+ 122.
+
+
+Underfull \hbox (badness 1043) in paragraph at lines 122--123
+\TU/NimbusRoman(0)/m/n/10 глобального поширення та ум
+ов проникнення інфекції (\TU/NimbusRoman(0)/b/n/10 ????\TU
+/NimbusRoman(0)/m/n/10 ). Докладні дані мобільності т
+акож можна
+
+Underfull \hbox (badness 1057) in paragraph at lines 122--123
+\TU/NimbusRoman(0)/m/n/10 та контакти всередині спіль
+ноти, але замінює невідомі індивідуальні к
+онтакти між спільнотами одним
+
+Package natbib Warning: Citation `ball1997' on page 2 undefined on input line 1
+25.
+
+
+Underfull \hbox (badness 1107) in paragraph at lines 125--126
+[]\TU/NimbusRoman(0)/m/it/11 Два рівні перемішування та 
+спільне моделювання.[] \TU/NimbusRoman(0)/m/n/10 Деякі 
+епідемічні моделі поєднують контакти в
+
+Package natbib Warning: Citation `gomes2018cosim' on page 2 undefined on input 
+line 127.
+
+
+Underfull \hbox (badness 1281) in paragraph at lines 127--128
+\TU/NimbusRoman(0)/m/n/10 рухаються вперед за спільно
+ю часовою сіткою та обмінюються обмеженим 
+набором даних (\TU/NimbusRoman(0)/b/n/10 ?\TU/NimbusRoman(0)/m/n/10
+ ). У нас
+[2]
+Underfull \hbox (badness 2495) in paragraph at lines 153--155
+\TU/NimbusRoman(0)/m/sc/10 Тут $\OML/cmm/m/it/10 q[]$ \TU/NimbusRoman(0)/m/s
+c/10 --- сумарна інтенсивність зараження вузл
+а $\OML/cmm/m/it/10 v$\TU/NimbusRoman(0)/m/sc/10 , а $\OML/cmm/m/it/10 r[]$ \
+TU/NimbusRoman(0)/m/sc/10 --- інтенсивність видалення в
+узла $\OML/cmm/m/it/10 u$\TU/NimbusRoman(0)/m/sc/10 . Для
+
+Underfull \hbox (badness 1603) in paragraph at lines 156--157
+[]\TU/NimbusRoman(0)/m/sc/10 Час переходу між станами є 
+експоненційним і визначається сумарною ін
+тенсивністю всіх подій у
+[3]
+
+LaTeX Warning: Reference `tab:information' on page 4 undefined on input line 17
+3.
+
+
+LaTeX Warning: Reference `fig:schematic' on page 4 undefined on input line 173.
+
+
+
+LaTeX Warning: Reference `eq:full_generator' on page 4 undefined on input line 
+272.
+
+
+Package natbib Warning: Citation `kuryliak2025simulating' on page 4 undefined o
+n input line 272.
+
+
+Underfull \hbox (badness 1077) in paragraph at lines 272--273
+\TU/NimbusRoman(0)/m/sc/10 зараження та видалення з [], 
+використовуючи лише локальні ребра $\OML/cmm/m/i
+t/10 E[]$\TU/NimbusRoman(0)/m/sc/10 . Реалізація оновлює ли
+ше ті
+
+Underfull \hbox (badness 1629) in paragraph at lines 276--283
+\TU/NimbusRoman(0)/m/sc/10 сумарної локальної інтенси
+вності від тієї події до моменту імпорту. П
+ісля імпорту сумарна локальна
+[4]
+
+LaTeX Warning: Reference `sec:timing' on page 5 undefined on input line 293.
+
+
+LaTeX Warning: Reference `sec:timing' on page 5 undefined on input line 304.
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 303--305
+\TU/NimbusRoman(0)/m/sc/10 Кожен множник має простий з
+міст. $\OML/cmm/m/it/10 ^^L[]W[]$ \TU/NimbusRoman(0)/m/sc/10 задає з
+агальну силу зв’язку; $[]$ --- частку інфіков
+аних у
+
+Underfull \hbox (badness 1092) in paragraph at lines 306--307
+[]\TU/NimbusRoman(0)/m/sc/10 Коли така подія відбуваєть
+ся, спочатку вибирають спільноту-джерело т
+а спільноту-одержувача $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 i
+; j\OT1/cmr/m/n/10 )$
+
+LaTeX Warning: Reference `sec:analysis' on page 5 undefined on input line 308.
+
+
+Package natbib Warning: Citation `ethier1986' on page 5 undefined on input line
+ 323.
+
+
+Package natbib Warning: Citation `anderson2007' on page 5 undefined on input li
+ne 323.
+
+
+LaTeX Warning: Reference `sec:surrogate' on page 5 undefined on input line 323.
+
+
+[5]
+
+LaTeX Warning: Reference `alg:scheduler' on page 6 undefined on input line 332.
+
+
+
+LaTeX Warning: Reference `eq:macro_rate' on page 6 undefined on input line 344.
+
+
+
+LaTeX Warning: Reference `eq:interpolation' on page 6 undefined on input line 3
+46.
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 355--356
+[]\TU/NimbusRoman(0)/m/sc/10 Часова сітка потрібна, оск
+ільки планувальник працює з локальними си
+муляторами як із «чорними
+
+Underfull \hbox (badness 3088) in paragraph at lines 355--356
+\TU/NimbusRoman(0)/m/sc/10 скриньками». Якщо вони тако
+ж повідомляють часи наступних локальних п
+одій, планувальник може
+
+Package natbib Warning: Citation `kuryliak2025simulating' on page 6 undefined o
+n input line 360.
+
+
+Package natbib Warning: Citation `kuryliak2025towards' on page 6 undefined on i
+nput line 360.
+
+[6]
+Underfull \hbox (badness 2173) in paragraph at lines 381--382
+\TU/NimbusRoman(0)/m/sc/10 зберігаючи точну стохастич
+ну динаміку всередині спільнот. Виникає пи
+тання, чи можна представити
+
+LaTeX Warning: Reference `eq:hazard_integral' on page 7 undefined on input line
+ 383.
+
+
+LaTeX Warning: Reference `eq:macro_rate' on page 7 undefined on input line 383.
+
+
+
+LaTeX Warning: Reference `fig:schematic' on page 7 undefined on input line 385.
+
+
+
+Underfull \hbox (badness 1371) in paragraph at lines 385--386
+[]\TU/NimbusRoman(0)/m/sc/10 Покажемо, що за рівномірно
+го вибору сприйнятливого вузла-одержувача 
+цей процес еквівалентний
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--390
+[][]\TU/NimbusRoman(0)/m/it/10 Нехай $[]$
+[7]
+
+LaTeX Warning: Reference `sec:single_export' on page 8 undefined on input line 
+460.
+
+
+Underfull \hbox (badness 4752) in paragraph at lines 462--463
+[]\TU/NimbusRoman(0)/m/sc/10 Водночас агрегована інтен
+сивність не обов’язково перевищує справж
+ню. Якщо інфіковані вузли
+
+Underfull \hbox (badness 1472) in paragraph at lines 465--467
+\TU/NimbusRoman(0)/m/sc/10 джерелом у початковій мереж
+і. Місце першого зараження впливає на пода
+льше поширення всередині
+
+Underfull \hbox (badness 1184) in paragraph at lines 465--467
+\TU/NimbusRoman(0)/m/sc/10 розміщення імпортів може вп
+ливати як на локальну динаміку, так і на ча
+с поширення інфекції через
+[8]
+
+LaTeX Warning: Reference `sec:timing' on page 9 undefined on input line 480.
+
+
+LaTeX Warning: Reference `eq:hazard_integral' on page 9 undefined on input line
+ 480.
+
+
+LaTeX Warning: Reference `sec:res_descriptor' on page 9 undefined on input line
+ 487.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 485--488
+[]\TU/NimbusRoman(0)/m/sc/10 Нехай кінці
+
+Underfull \hbox (badness 4242) in paragraph at lines 509--510
+\TU/NimbusRoman(0)/m/sc/10 Це дозволяє порівняти розпо
+діли часу першого експорту з урахуванням в
+ипадкового розташування
+
+Underfull \hbox (badness 10000) in paragraph at lines 513--514
+[][]\TU/NimbusRoman(0)/m/it/10 Нехай множину мостів $\OML/cmm
+/m/it/10 B$
+[9]
+Underfull \hbox (badness 1158) in paragraph at lines 552--553
+[]\TU/NimbusRoman(0)/m/sc/10 Таким чином, накопичена ін
+тенсивність TwoScale дорівнює математичному с
+подіванню накопиченої
+
+Underfull \hbox (badness 3364) in paragraph at lines 575--576
+[]\TU/NimbusRoman(0)/m/sc/10 Отриманий результат показ
+ує, що агрегована інтенсивність відповіда
+є математичному сподіванню
+
+Underfull \hbox (badness 1019) in paragraph at lines 575--576
+\TU/NimbusRoman(0)/m/sc/10 справжньої інтенсивності, а
+ле розподіли часу передавання можуть сист
+ематично відрізнятися. Причина
+
+Underfull \hbox (badness 1616) in paragraph at lines 578--580
+[]\TU/NimbusRoman(0)/m/sc/10 Окрім зміщення часу, агрег
+ація може порушувати обмеження на допусти
+мі маршрути передавання.
+
+Underfull \hbox (badness 1242) in paragraph at lines 675--682
+[]\TU/NimbusRoman(0)/m/sc/10 Теоретичний аналіз у попер
+едньому розділі показав, як агрегація міжс
+пільнотних контактів змінює
+[10]
+
+LaTeX Warning: Reference `alg:scheduler' on page 11 undefined on input line 694
+.
+
+
+Underfull \hbox (badness 3281) in paragraph at lines 697--698
+\TU/NimbusRoman(0)/m/sc/10 впливом структури мережі ви
+користаємо повний граф. Не обов’язково вр
+аховувати спільноту в яку
+
+Underfull \hbox (badness 2005) in paragraph at lines 743--751
+[]\TU/NimbusRoman(0)/m/it/11 Ланцюг клік.[] \TU/NimbusRoman(0)/m/sc/1
+0 Попередні тести розглядають лише один мі
+жспільнотний перехід. Щоб перевірити, як
+
+Underfull \hbox (badness 4391) in paragraph at lines 768--775
+[]\TU/NimbusRoman(0)/m/it/11 Ланцюги випадкових спільн
+от.[] \TU/NimbusRoman(0)/m/sc/10 Нарешті, поєднуємо посл
+ідовні міжспільнотні переходи зі зміною
+
+Underfull \hbox (badness 1117) in paragraph at lines 840--847
+[]\TU/NimbusRoman(0)/m/sc/10 Для кожної пари запусків Full
+ і TwoScale використовуємо однакові внутрішні 
+графи, міжспільнотні
+[11] [12]
+Underfull \hbox (badness 8170) in paragraph at lines 973--979
+[]\TU/NimbusRoman(0)/m/sc/10 Частку передчасних експор
+тів визначаємо як відсоток таких випадків 
+серед усіх досліджених
+
+Underfull \hbox (badness 5189) in paragraph at lines 973--979
+\TU/NimbusRoman(0)/m/sc/10 міжспільнотних переходів TwoS
+cale. Ця метрика характеризує частоту поруше
+ння необхідної умови
+
+Underfull \hbox (badness 1163) in paragraph at lines 983--994
+\TU/NimbusRoman(0)/m/sc/10 першого переходу $\OML/cmm/m/it/10 T[
+]$ \TU/NimbusRoman(0)/m/sc/10 та наступних переходів $\OML/
+cmm/m/it/10 T[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 T[]$\TU/NimbusRoman(0)/m/
+sc/10 . Перший перехід дозволяє оцінити розбі
+жності,
+
+Underfull \hbox (badness 1406) in paragraph at lines 1055--1061
+[]\TU/NimbusRoman(0)/m/sc/10 Показник $\OML/cmm/m/it/10 ^^Z$ \TU/Nimbus
+Roman(0)/m/sc/10 не є безпосередньою метрикою пох
+ибки. Його розглядаємо як можливу пояснюва
+льну
+[13]
+Underfull \hbox (badness 5726) in paragraph at lines 1083--1090
+[]\TU/NimbusRoman(0)/m/sc/10 Для підсумкових показникі
+в ланцюгів формуємо 2000 бутстреп-вибірок і 
+повторно обчислюємо
+
+Underfull \hbox (badness 1205) in paragraph at lines 1092--1100
+\TU/NimbusRoman(0)/m/sc/10 розподілу, оскільки кожна з 
+них містить скінченну кількість випадкови
+х спостережень. Тому потрібно
+
+Underfull \hbox (badness 1389) in paragraph at lines 1092--1100
+\TU/NimbusRoman(0)/m/sc/10 перевірити, чи перевищує сп
+остережувана відстань рівень, який можна о
+тримати внаслідок вибіркової
+
+Underfull \hbox (badness 2269) in paragraph at lines 1101--1110
+[]\TU/NimbusRoman(0)/m/sc/10 Для цього в кожній парі зап
+усків із ймовірністю $\OT1/cmr/m/n/10 1/2$ \TU/NimbusRoman(0)
+/m/sc/10 випадково міняємо місцями отримані ч
+аси
+
+Underfull \hbox (badness 1348) in paragraph at lines 1147--1151
+[]\TU/NimbusRoman(0)/m/sc/10 Ці перевірки оцінюють узго
+дженість реалізації Full з відомими аналіти
+чними результатами, але не
+
+LaTeX Warning: Reference `sec:design' on page 14 undefined on input line 1163.
+
+
+LaTeX Warning: Reference `sec:design' on page 14 undefined on input line 1166.
+
+
+LaTeX Warning: Reference `fig:clique_leaf' on page 14 undefined on input line 1
+171.
+
+
+LaTeX Warning: Reference `prop:ordering' on page 14 undefined on input line 117
+1.
+
+
+LaTeX Warning: Reference `fig:clique_leaf' on page 14 undefined on input line 1
+173.
+
+
+LaTeX Warning: Reference `prop:ordering' on page 14 undefined on input line 118
+5.
+
+
+LaTeX Warning: Reference `fig:source_sweep' on page 14 undefined on input line 
+1185.
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 1185--1186
+[]\TU/NimbusRoman(0)/m/it/10 Зі збільшенням довжини вну
+трішніх шляхів обхід мостів стає поширени
+м, а агрегований експорт
+
+Underfull \hbox (badness 1708) in paragraph at lines 1185--1186
+\TU/NimbusRoman(0)/m/sc/10 показано серію експеримент
+ів «джерело--листок». Середні часи активац
+ії мостів у двох моделях були
+[14]
+
+LaTeX Warning: Reference `prop:ordering' on page 15 undefined on input line 119
+4.
+
+
+LaTeX Warning: Reference `fig:chain_cliques' on page 15 undefined on input line
+ 1201.
+
+
+Underfull \hbox (badness 5245) in paragraph at lines 1201--1202
+[]\TU/NimbusRoman(0)/m/it/10 Коли внутрішнє поширення ш
+видке, близьке узгодження зберігається пі
+сля дев’яти послідовних
+
+Underfull \hbox (badness 1005) in paragraph at lines 1201--1202
+\TU/NimbusRoman(0)/m/it/10 агрегованих переходів. \TU/Nimbu
+sRoman(0)/m/sc/10 У ланцюзі з десяти клік по 1000 вуз
+лів із $\OML/cmm/m/it/10 k \OT1/cmr/m/n/10 = 1$ \TU/NimbusRoman(0)/m/sc/10
+ медіанний час прибуття до
+
+LaTeX Warning: Reference `fig:chain_heatmap' on page 15 undefined on input line
+ 1213.
+
+[15<./Images/clique_leaf/clique_leaf_endpoint_and_mechanism.png>] [16<./Images/
+fig_aspl_export_fidelity.png><./Images/twoscale/corrected_chain_20261008/chain_
+cliques_n1000_k1_propagation_cdf_random_initial.pdf>]
+
+LaTeX Warning: Reference `fig:accuracy_map' on page 17 undefined on input line 
+1218.
+
+
+LaTeX Warning: Reference `fig:accuracy_map' on page 17 undefined on input line 
+1218.
+
+
+LaTeX Warning: Reference `fig:accuracy_map' on page 17 undefined on input line 
+1225.
+
+[17<./Images/twoscale/corrected_chain_20261008/aspl_chain_median_arrival_error_
+map_labeled.pdf>]
+
+LaTeX Warning: Reference `fig:descriptor' on page 18 undefined on input line 12
+37.
+
+[18<./Images/twoscale/corrected_chain_20261008/fig_accuracy_map.pdf>]
+
+LaTeX Warning: Reference `fig:descriptor' on page 19 undefined on input line 12
+46.
+
+
+LaTeX Warning: Reference `rem:placement' on page 19 undefined on input line 124
+6.
+
+[19<./Images/twoscale/corrected_chain_20261008/fig_descriptor.pdf>]
+No file main-SMPT_UK_clean_build.bbl.
+
+Package natbib Warning: There were undefined citations.
+
+(./main-SMPT_UK_clean_build.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main-SMPT_UK_clean_build.out' has changed
+.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+)
+(see the transcript file for additional information)
+ 723 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 1 local_par, 6 glue, 4 kern, 1 penalty, 1 margin_k
+ern, 3 glyph, 37 attribute, 61 glue_spec, 37 attribute_list, 3 write nodes
+   avail lists: 1:3,2:3500,3:2316,4:145,5:1493,6:90,7:12930,8:43,9:1210,10:19,1
+1:44
+</usr/share/fonts/opentype/urw-base35/NimbusSans-Regular.otf></usr/share/fonts/
+opentype/urw-base35/NimbusRoman-Bold.otf></usr/share/fonts/opentype/urw-base35/
+NimbusRoman-Italic.otf></usr/share/fonts/opentype/urw-base35/NimbusRoman-Regula
+r.otf></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on main-SMPT_UK_clean_build.pdf (19 pages, 1101153 bytes).
+SyncTeX written on main-SMPT_UK_clean_build.synctex.gz.
+Transcript written on main-SMPT_UK_clean_build.log.

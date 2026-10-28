@@ -1,0 +1,1126 @@
+\documentclass[a4paper,fleqn]{cas-sc}
+
+% Elsevier CAS / Simulation Modelling Practice and Theory manuscript.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\microtypesetup{expansion=false}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\setlength{\emergencystretch}{3em}
+\hyphenation{inter-community intra-community community-structured micro-state macro-level Gillespie}
+
+% Clean manuscript mode: retain the editorial macros used in the existing
+% methods section, but suppress edit colours and reading-status boxes.
+\newif\ifDEBUG
+\DEBUGfalse
+\long\def\michaelreplace#1{#1}
+\long\def\yulianreplace#1{#1}
+\newcommand{\michaelnote}[1]{}
+\newcommand{\ReadStatusTwo}[5]{}
+\newcommand{\SubsectionStatus}[1]{}
+
+% Safe figure inclusion compatible with either project-root/Images/... or ../Images/...
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{../#2}{%
+      \includegraphics[#1]{../#2}%
+    }{%
+      \fbox{%
+        \begin{minipage}[c][0.25\textheight][c]{0.88\linewidth}%
+        \centering
+        \textbf{Figure placeholder}\\[0.5em]
+        Missing graphics file:\par\smallskip\path{#2}%
+        \end{minipage}%
+      }%
+    }%
+  }%
+}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Two-Scale Stochastic Simulation of Epidemic Dynamics in Community Networks}
+\shortauthors{Kuryliak and Emmerich}
+
+\title[mode=title]{Two-Scale Stochastic Simulation of Epidemic Dynamics in Community Networks}
+
+\author[1]{Yulian Kuryliak}[orcid=0000-0002-6600-2637]
+\cormark[1]
+\ead{yulian.a.kuryliak@lpnu.ua}
+\affiliation[1]{organization={Institute of Computer Science and Information Technologies, Lviv Polytechnic National University},
+            addressline={12 Stepan Bandera Street},
+            city={Lviv},
+            postcode={79000},
+            country={Ukraine}}
+
+\author[2]{Michael T. M. Emmerich}[orcid=0000-0002-7342-2090]
+\ead{michael.t.m.emmerich@jyu.fi}
+\affiliation[2]{organization={Faculty of Information Technology, University of Jyv\"askyl\"a},
+            addressline={P.O. Box 35 (Agora)},
+            city={Jyv\"askyl\"a},
+            postcode={FI-40014},
+            country={Finland}}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+We study continuous-time stochastic simulation on community-structured epidemic networks when local dynamics and inter-community coupling are available at different levels of resolution. The two-scale formulation preserves node-level continuous-time Markov chain dynamics within communities while replacing explicit cross-community transmission channels by aggregate, state-dependent import hazards. Building on our earlier two-scale architecture, the present study focuses on the fidelity of this aggregate interface. We formulate the full microscopic CTMC as a controlled reference process and show that, conditional on externally supplied import times and target nodes, each local Gillespie engine remains exact with respect to its local CTMC. The remaining discrepancy can therefore be localized to the inter-community interface. We decompose this discrepancy into loss of event-rate information, loss of event-placement information, and numerical synchronization error. An analytically tractable clique--bridge--leaf benchmark is then used to show why matching aggregate or conditional-mean hazards does not, in general, imply matching event-time distributions. This framework provides a basis for evaluating when aggregate inter-community coupling is an adequate representation of a more detailed stochastic network process.
+\end{abstract}
+
+\begin{keywords}
+stochastic simulation \sep multi-scale simulation \sep Gillespie algorithm \sep community networks \sep aggregate coupling \sep epidemic modeling
+\end{keywords}
+
+\maketitle
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+Epidemic spreading in large structured populations is governed by the interplay between local stochastic dynamics, heterogeneity of the contact structure, and spatial coupling between communities. Network-based epidemic models have shown that properties of the contact structure can substantially alter epidemic dynamics relative to homogeneous-mixing assumptions \cite{keeling2005,pastorsatorras2015}. At larger spatial scales, transmission between cities, regions, or countries is additionally shaped by population mobility, and such interactions are often represented as weighted networks or flow matrices connecting geographic subpopulations \cite{balcan2009}.
+
+This leads to a practical setting in which different parts of the same system may be represented at different levels of information resolution. The local dynamics of a community may be modeled at the level of individual nodes and contacts, even when the particular local network is partially reconstructed or synthetically generated, whereas inter-community interactions may be available only in the form of aggregate coupling strengths, transportation flows, or other mobility indicators. Complete contact networks are rarely observed directly in real populations, and network models are therefore often constructed from partial information about contacts \cite{danon2011}. At the same time, an aggregate measure of connectivity between two communities does not uniquely determine the microscopic contact structure that produced it.
+
+If the complete microscopic network is specified, its stochastic dynamics can be represented as a continuous-time Markov chain (CTMC) and simulated using exact methods such as Gillespie's stochastic simulation algorithm \cite{gillespie1977exact}. Temporal Gillespie methods and specialized algorithms for large and sparse networks reduce the computational cost of such event-driven simulation \cite{vestergaard2015,kuryliak2025simulating}, but they do not remove the requirement that the relevant microscopic interaction channels be explicitly defined. At the other extreme, fully aggregated metapopulation models naturally operate on flows between communities, but typically aggregate the local population state as well. This creates an intermediate modeling problem: how to preserve detailed local stochastic dynamics without requiring reconstruction of the complete microscopic interface between communities.
+
+In our previous work, we introduced a two-scale architecture for this setting in the context of epidemic spreading \cite{kuryliak2025twoscale}. The population is partitioned into communities, each simulated by an independent local stochastic engine, while inter-community interactions are represented by a weighted macro-network. The evolving local states determine time-varying macro-level intensities, and inter-community event times are generated through cumulative-hazard accumulation. This construction allows the inter-community interface itself to be aggregated without replacing the local dynamics by an aggregated population model. However, the quantitative error introduced by aggregation of inter-community connections and by the placement rule for imported events was left for further investigation in the previous work.
+
+The central question of the present study is therefore how accurately a stochastic process generated through an aggregate inter-community interface can reproduce the corresponding full microscopic process. In the full CTMC, an inter-community event depends on the states of specific cross-community edges and their endpoint nodes. In the two-scale model, this information is replaced by an aggregate coupling strength and summary statistics of the source and destination communities. Consequently, different microscopic configurations may correspond to the same macrostate while having different true inter-community event intensities. Moreover, aggregation removes information not only about \emph{when} an inter-community event should occur, but also about \emph{where} it should be realized within the receiving community.
+
+In this work, we develop the two-scale stochastic approach as a method for coupling detailed local models through an aggregate inter-community interface and systematically evaluate its fidelity against a full microscopic CTMC. We use a controlled validation setting in which the complete inter-community structure is known to the experimenter and serves only as a reference, whereas the two-scale simulator receives only its aggregate representation. This design makes it possible to isolate information loss at the interface from the stochastic dynamics of the local simulators. The main objectives are to formalize this interface coarse-graining, decompose its error into event-rate approximation, event-placement approximation, and synchronization effects, and determine the regimes in which the aggregate representation reproduces the full stochastic process with sufficient fidelity.
+
+
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Microscopic stochastic simulation on networks}
+
+Network epidemic modeling provides an explicit representation of heterogeneous contacts that is absent from homogeneous-mixing compartmental models. Reviews by Keeling and Eames and by Pastor-Satorras et al. summarize how network structure, degree heterogeneity, correlations, and temporal organization affect stochastic spreading processes \cite{keeling2005,pastorsatorras2015}. When the contact network and transition channels are specified, epidemic dynamics can be formulated as a CTMC and simulated by event-driven methods. Gillespie's stochastic simulation algorithm provides exact trajectory sampling for a specified set of reaction channels and propensities \cite{gillespie1977exact}. Extensions such as the temporal Gillespie algorithm address time-varying networks \cite{vestergaard2015}, while our previous work developed an efficient network-oriented Gillespie implementation for epidemic dynamics on large complex networks \cite{kuryliak2025simulating}. These approaches differ in implementation and target setting, but they share a common requirement: the microscopic interaction channels relevant to the process must be explicitly available or computable from the model state.
+
+\subsection{Metapopulation and mobility-based models}
+
+At the spatial level, metapopulation models replace individual inter-location contacts by flows between geographic subpopulations. Colizza and Vespignani showed that the topology and heterogeneity of a metapopulation network influence whether a local outbreak can invade the larger system \cite{colizza2007reaction}. Balcan et al. integrated short-range commuting and long-range airline traffic into a multiscale mobility network and demonstrated that both mobility scales shape the spatiotemporal propagation of infection \cite{balcan2009}. The GLEaM framework operationalized this idea at large scale by coupling stochastic compartmental dynamics in geographic subpopulations through empirically informed mobility flows \cite{balcan2010modeling}. More recent data-driven approaches can construct coupling networks at substantially finer spatial and temporal resolution; for example, Chang et al. used high-resolution mobility data to connect local metapopulation processes through a dynamic network of movements between census areas and points of interest \cite{chang2021}. These studies demonstrate that aggregate inter-location coupling can be both empirically meaningful and computationally useful, but the local epidemic state is generally represented at a population or compartmental level rather than as an explicit node-level contact process.
+
+\subsection{Hybrid, multiresolution, and co-simulation approaches}
+
+A related line of research combines models of different resolutions within one simulation. Bicker et al. proposed spatial and temporal hybridization of agent-based and population-based epidemic models, using fine-grained simulation only in the regions or time periods where individual-level detail is required \cite{bicker2025}. This addresses the trade-off between computational cost and model granularity by assigning different representations to different parts of the simulated system. In co-simulation, the resolution boundary is expressed through subsystem interfaces: independently solved components exchange a limited set of coupling variables at synchronization points. Kyllingstad et al. review error estimation and macro-step control for co-simulation with minimal subsystem interfaces, emphasizing that useful coupled simulations can be constructed even when the orchestrator has little or no access to subsystem internals \cite{kyllingstad2025}. In distributed multi-resolution simulation, Zhang et al. similarly study the temporal organization of interactions between models and quantify cumulative deviation caused by delayed responses \cite{zhang2024multiresolution}.
+
+The present setting is related to these approaches but places the coarse-graining boundary differently. Unlike conventional metapopulation models, every local community may retain microscopic stochastic network dynamics. Unlike spatial hybridization, different regions are not assigned different model resolutions; the aggregation is applied specifically to the interaction interface between otherwise detailed local models. Finally, unlike generic co-simulation, the interface here does not only exchange state variables: it defines the stochastic mechanism by which inter-community events are timed and placed in the receiving subsystem. The resulting fidelity question is therefore whether aggregate, state-dependent coupling can reproduce the event process that would have been generated by an unavailable or deliberately hidden microscopic inter-community network.
+
+\section{Mathematical Model and Architecture of the Two-Scale Stochastic Simulator}
+\label{sec:model_architecture}
+
+\michaelreplace{We use the following notation consistently.  The full microscopic state is $X(t)$, while $X_i(t)$ is its restriction to community $V_i$.  Capital letters $S_i(t)$, $I_i(t)$, and $R_i(t)$ denote sets of susceptible, infectious, and removed nodes in community $i$.  Lowercase letters $s_i(t)$, $i_i(t)$, and $r_i(t)$ denote their cardinalities.  Barred quantities such as $\bar s_i(t)=s_i(t)/N_i$ and $\bar i_i(t)=i_i(t)/N_i$ denote normalized community fractions.  The notation $i_i(t)$ means ``the number of infectious nodes in community $i$''; the first $i$ is the state label and the subscript $i$ is the community index.}
+
+\michaelreplace{The symbols $a^\star_{ij}$ and $\lambda_{ij}$ are deliberately kept distinct.  The quantity $a^\star_{ij}(x)$ is the exact inter-community infection intensity from community $i$ to community $j$ in the full microscopic CTMC at state $x$.  The quantity $\lambda_{ij}(t)$ is the macro-level approximation used by the two-scale simulator.  Similarly, $\pi^\star_{ij}$ denotes the exact edge-conditioned target distribution in the full network, whereas $\Pi_{ij}$ denotes the import-placement rule chosen by the two-scale simulator.}
+
+\begin{center}
+\michaelreplace{\begin{tabular}{ll}
+\hline
+Symbol & Meaning \\
+\hline
+$G=(V,E)$ & full microscopic contact graph \\
+$V=\bigsqcup_{i=1}^M V_i$ & fixed partition into communities \\
+$N_i=|V_i|$ & size of community $i$ \\
+$E_{ii}$ & within-community edges in $V_i$ \\
+$E_{ij}$ & oriented edges from $V_i$ to $V_j$, $i\ne j$ \\
+$S_i,I_i,R_i$ & node sets in community $i$ \\
+$s_i,i_i,r_i$ & corresponding counts \\
+$\bar s_i,\bar i_i,\bar r_i$ & corresponding fractions \\
+$a^\star_{ij}$ & exact microscopic inter-community intensity \\
+$\lambda_{ij}$ & macro inter-community hazard approximation \\
+$\Theta$ & total macro hazard, $\Theta=\sum_{i\ne j}\lambda_{ij}$ \\
+$\pi^\star_{ij}$ & exact edge-conditioned target distribution \\
+$\Pi_{ij}$ & two-scale import-placement distribution \\
+\hline
+\end{tabular}}
+\end{center}
+
+
+\subsection{Full-Network CTMC Reference Model}
+\label{sec:full_network_ctmc_reference}
+
+Before introducing the two-scale approximation, we define the exact microscopic process on the full network. This process is the reference model against which all later approximation errors are measured.
+
+\michaelreplace{Let \(G=(V,E)\) be the full microscopic contact network.  Throughout the generator below, \(E\) is interpreted as the set of oriented transmission channels; an undirected contact is represented by the two oriented channels whenever transmission is possible in both directions.  Each node has state in \(\{S,I,R\}\), and the node set is partitioned into communities}
+\[
+V=\bigsqcup_{i=1}^{M} V_i .
+\]
+For a configuration \(x\in\{S,I,R\}^{V}\), the infection propensity along an oriented edge \((u,v)\in E\) is
+\[
+a_{u\to v}(x)
+=\beta_{uv}\,\mathbf{1}\{x_u=I,\ x_v=S\}.
+\]
+The recovery propensity of node \(u\in V\) is
+\[
+a_u^{\mathrm{rec}}(x)
+=\gamma_u\,\mathbf{1}\{x_u=I\}.
+\]
+Here \(\beta_{uv}\) is the edge-level transmission rate and \(\gamma_u\) is the node-level recovery rate. For a node \(v\), let \(x^{v:I}\) denote the configuration obtained from \(x\) by changing node \(v\) to state \(I\). Similarly, \(x^{u:R}\) denotes the configuration obtained by changing node \(u\) to state \(R\).
+
+The full-network CTMC is the process with generator
+\[
+\begin{aligned}
+(\mathcal L f)(x)
+&=
+\sum_{(u,v)\in E}
+\beta_{uv}\,\mathbf{1}\{x_u=I,\ x_v=S\}
+\bigl[f(x^{v:I})-f(x)\bigr]
+\\
+&\quad+
+\sum_{u\in V}
+\gamma_u\,\mathbf{1}\{x_u=I\}
+\bigl[f(x^{u:R})-f(x)\bigr],
+\end{aligned}
+\]
+for bounded test functions \(f\). This generator gives the exact full-network Gillespie/CTMC reference process. The two-scale simulator introduced below is therefore not defined in isolation: it is an approximation of this reference process, obtained by preserving local within-community CTMC dynamics while replacing the full collection of cross-community infection channels by macro-level import mechanisms.
+
+\subsection{Two-Scale Simulator}
+\label{sec:two_scale_simulator}
+
+The two-scale simulator is defined on the fixed community partition
+\[
+V=\bigsqcup_{i=1}^{M}V_i,
+\qquad N_i=|V_i|.
+\]
+For each community \(i\), let \(E_{ii}\) denote the within-community edges and let
+\[
+E_{ij}=\{(u,v)\in E:\ u\in V_i,\ v\in V_j\},
+\qquad i\neq j,
+\]
+denote the oriented inter-community edges from community \(i\) to community \(j\) in the full reference network.
+
+At time \(t\), the node-level state in community \(i\) is summarized by the sets
+\[
+\begin{aligned}
+S_i(t) &= \{v\in V_i : X_v(t)=S\},\\
+I_i(t) &= \{v\in V_i : X_v(t)=I\},\\
+R_i(t) &= \{v\in V_i : X_v(t)=R\}.
+\end{aligned}
+\]
+We distinguish these sets from their cardinalities,
+\[
+s_i(t)=|S_i(t)|,\qquad i_i(t)=|I_i(t)|,\qquad r_i(t)=|R_i(t)|,
+\]
+and from the normalized macro summaries
+\[
+\bar{s}_i(t)=\frac{s_i(t)}{N_i},\qquad
+\bar{i}_i(t)=\frac{i_i(t)}{N_i},\qquad
+\bar{r}_i(t)=\frac{r_i(t)}{N_i}.
+\]
+Thus \(S_i(t),I_i(t),R_i(t)\) are node sets, \(s_i(t),i_i(t),r_i(t)\) are counts, and \(\bar{s}_i(t),\bar{i}_i(t),\bar{r}_i(t)\) are fractions.
+
+Each community has a local micro CTMC engine running on the induced graph \(G_i=(V_i,E_{ii})\). Between external imports, this engine simulates exactly the within-community infection and recovery channels. The macro layer observes only the community summaries, not the full boundary-node configuration. For each ordered pair \(i\neq j\), it assigns the effective inter-community hazard
+\[
+\lambda_{ij}(t)
+=\beta_{\mathrm{out}}\,W_{ij}\,\bar{i}_i(t)\,\bar{s}_j(t),
+\]
+where \(W_{ij}\) is the aggregate coupling weight from community \(i\) to community \(j\), and \(\beta_{\mathrm{out}}\) is the macro-level transmission-rate parameter.
+
+Let
+\[
+\Theta(t)=\sum_{i\neq j}\lambda_{ij}(t)
+\]
+be the total macro hazard. When a macro event occurs at time \(t\) and \(\Theta(t)>0\), the ordered source--destination pair is selected according to
+\[
+\mathbb P\{(i,j)\text{ is selected}\mid\text{macro event at }t\}
+=\frac{\lambda_{ij}(t)}{\Theta(t)}.
+\]
+After selecting \(i\to j\), the simulator chooses a target node in the destination community using an import placement rule
+\[
+\Pi_{ij}(\cdot\mid t)
+\quad\text{on}\quad S_j(t).
+\]
+For example, a simple rule is uniform placement over susceptible nodes,
+\[
+\Pi_{ij}(v\mid t)=\frac{1}{s_j(t)},\qquad v\in S_j(t),
+\]
+when \(s_j(t)>0\). More structured rules may use degree, boundary information, or an edge-conditioned oracle distribution. Once a target \(v\in S_j(t)\) is selected, the destination microstate is updated by the imported jump \(v:S\to I\), and the local propensities in community \(j\) are recomputed.
+
+The synchronization mechanism couples these parts in continuous time. Micro engines advance their local CTMCs and export updated summaries \((\bar{i}_i(t),\bar{s}_i(t))\). The macro layer accumulates the total hazard \(\Theta(t)\) from these summaries. If the macro hazard budget is reached, the simulator interpolates the macro event time, selects the source--destination pair, applies the import placement rule, and updates the affected micro engine. This handshake is the mechanism by which the two-scale process replaces explicit cross-community CTMC channels by macro-generated imports.
+
+\subsection{Micro Layer: Intra-Community CTMC Dynamics}
+\ReadStatusTwo{}{Yulian}{1}{Michael}{0}
+
+\michaelreplace{The micro simulator is the local stochastic engine of the two-scale framework. Its role is to represent intra-community CTMC dynamics explicitly on the contact graph of a single community, while the interaction between communities is handled separately at the macro layer. In the present work, the micro layer follows the logic of the classical continuous-time Gillespie stochastic simulation algorithm~\cite{gillespie1977exact}, and is based on the efficient network-oriented implementation described in detail in~\cite{kuryliak2025simulating}.}
+
+\michaelreplace{Let community \(i\) be represented by the local graph \(G_i=(V_i,E_{ii})\), where nodes are individuals and edges are potential transmission contacts inside the community. At time \(t\), each node is in one of the states \(S\), \(I\), \(R\). The local state may therefore be written either as the node-level configuration \(X_i(t)\) or through the sets \(S_i(t)\), \(I_i(t)\), and \(R_i(t)\) defined above. The micro layer evolves through elementary stochastic events. For the internal SIR dynamics considered here, these are infection and recovery; other compartmental transitions can be added with analogous propensities:}
+\[
+S+I \xrightarrow{\beta_{\mathrm{in}}} I+I,
+\qquad
+I \xrightarrow{\gamma} R,
+\]
+where \(\beta_{\mathrm{in}}\) is the within-community infection rate and \(\gamma\) is the recovery rate.
+
+\michaelreplace{The Gillespie construction is based on event rates. For each susceptible node \(v\in S_i(t)\) and each infectious node \(u\in I_i(t)\), transmission along an active oriented contact \(u\to v\) occurs at rate \(\beta_{\mathrm{in}}\).  Equivalently, the total infection rate of susceptible node \(v\) is}
+\[
+\lambda^{\mathrm{inf}}_v(t)=\beta_{\mathrm{in}}\, m_v(t),
+\quad
+\lambda^{\mathrm{rec}}_u(t)=\gamma.
+\]
+\michaelreplace{where \(m_v(t)\) is the number of infectious neighbors of \(v\) at time \(t\). Thus, the infection rate of a node is determined by its current local infectious neighborhood. The coefficients \(\beta_{\mathrm{in}}\) and \(\gamma\) are the within-community infection and recovery rates.}
+
+Summing over nodes gives the type-specific local rates
+\[
+\theta_i^{\mathrm{inf}}(t)=\sum_{v\in S_i(t)} \lambda^{\mathrm{inf}}_v(t),
+\qquad
+\theta_i^{\mathrm{rec}}(t)=\sum_{u\in I_i(t)} \lambda^{\mathrm{rec}}_u(t)=\gamma i_i(t),
+\]
+Since all infectious nodes recover with the same rate \(\gamma\), this recovery selection is uniform over the currently infectious nodes. 
+
+Hence the total local event rate
+\[
+\theta_i(t)=\theta_i^{\mathrm{inf}}(t)+\theta_i^{\mathrm{rec}}(t).
+\]
+Here \(\theta_i(t)\) is the total event rate of community \(i\) at the micro layer.
+
+\michaelreplace{Given the current local state, if \(\theta_i(t)>0\), the waiting time to the next internal event is sampled from the exponential law}
+\[
+\Delta t_i=\frac{-\ln U}{\theta_i(t)},
+\qquad U\sim\mathcal U(0,1).
+\]
+\michaelreplace{If \(\theta_i(t)=0\), then no internal event is scheduled until a later external import or parameter change makes the local rate positive.}
+A second uniform random variable \(U_2\sim\mathcal U(0,1)\) is then used to choose the event type according to the relative propensities:
+\[
+\text{infection if } U_2\,\theta_i(t) < \theta_i^{\mathrm{inf}}(t),
+\qquad
+\text{recovery otherwise.}
+\]
+
+Once the event type has been selected, a specific node $e$ is chosen at random with probability proportional to its corresponding rate \(\lambda^{\mathrm{event}}_e(t)\). Thus, for an event of the given type,
+\[
+\mathbb P(\text{event on node } e \text{ next}\mid \mathrm{event})=
+\frac{\lambda^{\mathrm{event}}_e(t)}{\theta_i^{\mathrm{event}}(t)}.
+\]
+
+After the event has been chosen, the local state is updated and only the affected node rates need to be refreshed. This event-driven update is the main advantage of the efficient Gillespie implementation used in \cite{kuryliak2025simulating}: rather than rebuilding the full set of propensities after each event, the simulator updates only those quantities changed by the local state transition. In this way, the micro layer preserves exact stochastic intra-community dynamics while remaining suitable as the local building block of the larger two-scale simulator.
+
+
+\subsection{Macro Layer: Inter-Community Transmission}
+\ReadStatusTwo{Macro Layer: Inter-Community Transmission}{Yulian}{0}{Michael}{0}
+
+At the macro layer, the system is represented as a stochastic process on the graph of communities. Each community is treated as a meta-node, and the microscopic inter-community contacts of the original network are replaced by weighted macro-links that summarize the effective coupling between communities. In this way, the macro graph does not attempt to resolve individual cross-community transmissions one by one. Instead, it describes inter-community transmission through aggregate stochastic events between meta-nodes, while the detailed epidemic evolution inside each community remains delegated to the micro layer.
+
+For every community \(i\), the micro layer exports the normalized state descriptors
+\[
+\bar{i}_i(t)=\frac{i_i(t)}{N_i},
+\qquad
+\bar{s}_i(t)=\frac{s_i(t)}{N_i}.
+\]
+Here \(\bar{i}_i(t)\) denotes the current contagiousness of community \(i\), measured through its infectious fraction, and \(\bar{s}_i(t)\) denotes its current susceptibility, measured through its susceptible fraction. If \(W_{ij}\) is the weight of the macro-link from community \(i\) to community \(j\), then the instantaneous rate at which community \(i\) seeds an infection in community \(j\) is modeled as
+\[
+\lambda_{ij}(t)
+=\beta_{\mathrm{out}}\,W_{ij}\,\bar{i}_i(t)\,\bar{s}_j(t),
+\]
+where \(\beta_{\mathrm{out}}\) is the macro-level infection-rate parameter. If needed, this expression may be supplemented by a calibration factor to align macro-layer transmission with the corresponding micro-layer scale, but the central structure of the model is already captured by the formula above. 
+
+The total macro intensity is
+\[
+\Theta(t)=\sum_{i\neq j}\lambda_{ij}(t).
+\]
+When a macro event fires, the ordered pair \(i\to j\) is selected with probability \(\lambda_{ij}(t)/\Theta(t)\). The destination node is then selected from \(S_j(t)\) according to the import placement distribution \(\Pi_{ij}(\cdot\mid t)\), and the selected susceptible node is changed to state \(I\). This placement rule is part of the simulator definition, because different choices of \(\Pi_{ij}\) can lead to different subsequent local CTMC paths.
+
+\paragraph{Modeling assumption.}
+The macro rate \(\lambda_{ij}(t)\) is treated as an effective inter-community transmission intensity. 
+It is not assumed to be an exact coarse-graining of the full microscopic inter-community edge set unless this is stated explicitly. 
+In particular, the formula assumes that the retained macro variables \(\bar{i}_i(t)\), \(\bar{s}_j(t)\), and \(W_{ij}\) contain enough information to approximate the aggregate transmission pressure from community \(i\) to community \(j\). 
+When inter-community transmission depends on the states of specific boundary or bridge nodes, this assumption may fail and becomes a source of approximation error.
+
+It is important to interpret this rate as an effective macro-level approximation rather than, in general, an exact coarse-graining of the full microscopic network. 
+The exact inter-community intensity depends on which specific boundary nodes are infectious and which cross-community edges are active. 
+By contrast, the macro rate retains only aggregate community-level quantities. 
+This distinction is central for the accuracy analysis in Section~\ref{sec:accuracy_error}.
+
+% Summing over all ordered pairs of distinct communities gives the total macro rate,
+% \[
+% \Theta(t)=\sum_{i\neq j}\lambda_{ij}(t).
+% \]
+
+\michaelreplace{A macro event has a simple interpretation: one imported infection is seeded in the destination community \(j\). Thus, the macro layer does not specify which exact individual transmitted infection across communities; rather, it represents the cumulative effect of inter-community coupling through community-to-community stochastic jumps. A crucial point is that the macro rates are not static. Even if no macro event occurs, the micro-layer states within communities continue to evolve in continuous time. Since the micro layer is a CTMC, the summaries \(\bar{i}_i(t)\) and \(\bar{s}_j(t)\), and hence the rates \(\lambda_{ij}(t)\), are typically piecewise constant between micro events and jump when a local event or import changes a community state. Consequently, the macro-event process should not be described as an ordinary NHPP with deterministic intensity. Conditional on the micro-layer trajectories, and therefore on the predictable path of \(\Theta(t)\), macro events are generated by the cumulative-hazard construction. Unconditionally, the macro layer is a point process with stochastic predictable intensity \(\Theta(t)\). Because \(\Theta(t)\) varies along the sample path, the waiting-time construction must be generalized beyond the classical fixed-rate Gillespie draw, which motivates the next subsection.}
+
+\subsection{Conditional NHPP Construction and Relation to Classical Gillespie}
+\ReadStatusTwo{Hazard-Integral Timing and Relation to Classical Gillespie}{Yulian}{1}{Michael}{0}
+
+The classical Gillespie algorithm generates the waiting time to the next event exactly when the total event rate is constant. If the total rate is \(\theta\), then the waiting time is exponentially distributed with parameter \(\theta\), and may be sampled as
+\[
+\Delta t = \frac{-\ln U}{\theta}, \qquad U\sim\mathcal U(0,1).
+\]
+This formula can also be interpreted through accumulated hazard. In the constant-rate case, the accumulated hazard grows linearly with time, so the event time is obtained by waiting until the linear hazard reaches a random threshold. In this sense, the usual Gillespie draw already has an integral interpretation, even though for constant rates the integral reduces to a simple division.
+
+\michaelreplace{At the macro layer considered here, however, the direct fixed-rate draw is not sufficient over an interval containing micro events. The quantities \(\bar{i}_i(t)\) and \(\bar{s}_j(t)\) evolve along the micro-layer CTMC path, so the inter-community rates \(\lambda_{ij}(t)\), and therefore}
+\[
+\Theta(t)=\sum_{i\neq j}\lambda_{ij}(t),
+\]
+are not constant. Conditional on the realized micro-layer trajectories, and therefore on the predictable path of \(\Theta(t)\), macro events are generated by the usual cumulative-hazard construction. Unconditionally, the macro layer is not an ordinary NHPP with deterministic intensity; it is a point process with stochastic predictable intensity \(\Theta(t)\). Thus, conditionally on the micro-layer paths, we measure elapsed risk through the \textbf{cumulative hazard}
+\[
+H(t)=\int_{t_0}^{t}\Theta(s)\,ds,
+\]
+where \(t_0\) is the time of the previous macro event. We then draw one uniform random variable \(U\sim\mathcal U(0,1)\) and define
+\[
+E=-\ln U,
+\]
+which we interpret as a random \textbf{hazard budget}. \michaelreplace{If \(\Theta(t)=0\) over part of the trajectory, the cumulative hazard is flat on that part; no macro event can occur until positive hazard has accumulated.}
+
+The next macro event occurs at the first time \(t^\ast>t_0\) such that
+\[
+H(t^\ast)=E.
+\]
+Intuitively, the process keeps accumulating hazard over time, and the event fires exactly when this accumulated hazard reaches its random budget. This is the inverse, or integral, form of the usual Gillespie time-generation rule, generalized to dynamically varying rates. The classical formula is recovered as a sanity check: if \(\Theta(t)\equiv \theta\), then
+\[
+H(t)=\theta \cdot (t-t_0),
+\]
+and solving \(H(t^\ast)=E\) gives
+\[
+t^\ast-t_0=\frac{E}{\theta}=\frac{-\ln U}{\theta},
+\]
+which is exactly the standard Gillespie waiting-time expression. This formulation therefore preserves the logic of Gillespie's SSA while extending it to the stochastic, microstate-dependent macro rates required by the two-scale model.
+
+
+\subsection{Synchronization Between Layers}
+\ReadStatusTwo{Synchronization Between Layers}{Yulian}{1}{Michael}{0}
+
+The two layers of the simulator are coupled through a bidirectional handshake. Synchronization is necessary because the macro layer does not possess an autonomous state of its own: its transmission intensities depend on the evolving epidemic state inside the communities, while the micro layer must react whenever the macro layer generates an imported infection. The purpose of synchronization is therefore to keep the aggregate inter-community process and the local intra-community CTMCs consistent in time.
+
+In the forward direction, each community is first advanced at the micro layer over a synchronization interval \(dt\) (or, equivalently, over a micro interval \(\tau_{\mathrm{micro}}\)). At the end of that interval, the community exports refreshed summary quantities \(\bar{i}_i(t)\) and \(\bar{s}_i(t)\).
+
+Thus, after each micro update, the macro layer receives a new snapshot of the current inter-community transmission pressure and continues hazard accumulation using the updated total rate. In the present formulation there is one current macro hazard budget \(E\), associated with the total hazard \(\Theta(t)\), rather than separate budgets for individual macro-links.
+
+If the accumulated macro hazard does not reach the budget during the current synchronization interval, the simulation simply advances to the next synchronization point, where the micro states are refreshed again and the procedure repeats. If, however, the cumulative hazard reaches the budget inside the current interval, then the macro event occurs at an interpolated time \(t^\ast\) within that interval. At that moment, one inter-community transmission is realized, a destination community is selected according to the current macro intensities, and one imported infection is inserted into the corresponding micro model. Conceptually, this means that the current interval is split: the destination community evolves up to \(t^\ast\), receives the external infection at \(t^\ast\), and then continues from the updated state over the remainder of the interval.
+
+This backward coupling requires a consistent update of the local micro-layer clock. Suppose that, before the import, the destination community was evolving from local time \(t_0\) with total internal rate \(\theta_i(t_0)\) and a local random budget
+\[
+E_i=-\ln U_i, \qquad U_i\sim \mathcal U(0,1).
+\]
+\michaelreplace{If \(\theta_i(t_0)>0\), then under the usual Gillespie logic the next internal event would have been scheduled at}
+\[
+t_i^{\mathrm{old}}=t_0+\frac{E_i}{\theta_i(t_0)},
+\]
+\michaelreplace{because the local state, and hence the rate, remain constant between two consecutive local events. If \(\theta_i(t_0)=0\), no internal event is scheduled before an external import changes the state. If \(\theta_i(t_0)>0\) and an imported infection arrives earlier, at time \(t^\ast<t_i^{\mathrm{old}}\), then the previously scheduled local event is interrupted. Up to time \(t^\ast\), the local process has already consumed the hazard}
+\[
+H_i(t^\ast)=\int_{t_0}^{t^\ast}\theta_i(s)\,ds.
+\]
+Since \(\theta_i(s)=\theta_i(t_0)\) on \([t_0,t^\ast)\) in the standard Gillespie setting, this becomes
+\[
+H_i(t^\ast)=\theta_i(t_0)\,(t^\ast-t_0).
+\]
+The remaining local budget after the import is therefore
+\[
+E_i^{\mathrm{res}}=E_i-\theta_i(t_0)\,(t^\ast-t_0).
+\]
+
+\michaelreplace{At time \(t^\ast\), the imported infection changes the local state instantaneously, so the old rate is no longer valid. Let \(\theta_i^{\mathrm{new}}(t^\ast)\) denote the updated total local rate after the import has been applied and the local propensities have been recomputed. If \(\theta_i^{\mathrm{new}}(t^\ast)>0\), the new next-event time, denoted by \(t_i^{\mathrm{new}}\), is obtained by continuing from the remaining budget under the updated rate:}
+\[
+t_i^{\mathrm{new}}=t^\ast+\frac{E_i^{\mathrm{res}}}{\theta_i^{\mathrm{new}}(t^\ast)}.
+\]
+\michaelreplace{If \(\theta_i^{\mathrm{new}}(t^\ast)=0\), the local clock is instead inactive until a later import or state change creates a positive rate.}
+% Equivalently, in integral form, \(t_i^{\mathrm{new}}\) is the first time satisfying
+% \[
+% \int_{t^\ast}^{t_i^{\mathrm{new}}}\theta_i^{\mathrm{new}}(s)\,ds = E_i^{\mathrm{res}}.
+% \]
+\michaelreplace{Thus, in a random-time-change implementation, \(t_i^{\mathrm{new}}\) can be computed by subtracting the already consumed hazard from the original budget and then propagating the local clock forward under the updated state. Because exponential clocks are memoryless, this residual-budget update is distributionally equivalent to resampling a fresh exponential budget after the import; the residual form is useful because it makes the consumed hazard explicit. If another external import arrives before \(t_i^{\mathrm{new}}\), the same residual-budget update is applied again. In this way, the synchronization rule is not only an exchange of summary statistics, but also a time-consistency condition: the macro layer advances by accumulated hazard built from the evolving micro summaries, while each imported macro event instantaneously modifies the destination CTMC and forces a consistent recalculation of its local next-event time.}
+
+
+\ifDEBUG
+\section{--------------In Progress---------------}
+\fi
+
+\section{Accuracy and Error Decomposition}
+\label{sec:accuracy_error}
+
+\subsection{Accuracy Framework and Evaluation Logic}
+\ReadStatusTwo{Accuracy Framework and Evaluation Logic}{Yulian}{1}{Michael}{0}
+
+The key point of the accuracy analysis is that the two-scale approximation does not primarily modify the local stochastic dynamics inside communities. 
+Instead, it modifies the interface between communities. 
+Thus, the central question is not whether the local Gillespie engines are exact, but whether the macro layer contains enough information to reproduce the timing and placement of inter-community events generated by the full-network CTMC.
+
+The purpose of this part of the paper is to assess when the two-scale simulator provides an accurate representation of the underlying continuous-time stochastic dynamics on the original graph, and to identify the mechanisms that govern its approximation error. Throughout this analysis, the full-network CTMC simulated by the Gillespie algorithm is treated as the reference process. The proposed simulator is therefore evaluated as an approximation to this microscopic reference: it preserves explicit intra-community dynamics at the micro layer, while replacing the full set of inter-community infection channels by a macro-level abstraction driven by community-level state summaries.
+
+In this paper, \emph{accuracy} is understood relative to the reference CTMC over a fixed time horizon. The comparison focuses on stochastic observables that are relevant for community-structured dynamics. These include inter-community transmission times, the ordering of arrivals across communities, prevalence trajectories within communities and at the network level, and the variability of these quantities across sample paths. Thus, accuracy is not reduced to agreement of mean trajectories alone. A useful abstraction should also reproduce, within the resolution of its macro state, the uncertainty and event-level stochastic patterns generated by the reference process.
+
+This evaluation logic is motivated by the role of rare and heterogeneous inter-community transmissions in community-structured graphs. Two simulators may produce similar mean prevalence curves while differing in the timing or conditional structure of inter-community infections. Such differences can change the subsequent local trajectories inside affected communities and may therefore alter the distribution of later observables. For this reason, the present work does not restrict attention to deterministic limits or mean-field summaries. Instead, it asks whether the two-scale abstraction captures the relevant stochastic behavior of the full CTMC at the level of event times, community-level paths, and derived quantities such as arrival times and outbreak sizes.
+
+The remainder of this part is organized around benchmark cases designed to expose specific aspects of the approximation. We begin with analytically tractable graph motifs where the inter-community mechanism can be inspected directly at the edge level. We then move to structured community-based graph families in which the interaction between intra-community dynamics and inter-community transmission is shaped by graph topology. These benchmarks provide a controlled setting in which discrepancies between the two-scale simulator and the full-network reference can be attributed to identifiable structural features.
+
+\paragraph{Standing assumptions for the accuracy analysis.}
+Unless stated otherwise, the full-network process is a continuous-time Markov chain on a fixed finite graph \(G=(V,E)\), with node states in \(\{S,I,R\}\) or in \(\{S,I\}\) for the SI benchmark cases. 
+The node set is partitioned into fixed communities
+\[
+V=\bigsqcup_{i=1}^{M}V_i.
+\]
+Within-community transitions are generated by the usual Gillespie/SSA propensities on the induced subgraphs \(G_i=G[V_i]\). 
+Inter-community edges are represented in the full reference process by the sets \(E_{ij}\), while the two-scale simulator replaces these edge-level channels by macro-level import events. 
+All stochastic clocks are exponential conditional on the current state, and all rates are assumed constant between consecutive CTMC events unless a time-dependent macro hazard is explicitly specified. 
+The full-network Gillespie CTMC is used as the reference process for all accuracy statements.
+
+\subsection{Sources of Approximation Error}
+\ReadStatusTwo{Sources of Approximation Error}{Yulian}{1}{Michael}{0}
+
+The two-scale simulator is designed to preserve the local CTMC dynamics within each community while replacing the original inter-community mechanism by a macro-level abstraction and a coupling rule. At the modeling level, it departs from the full-network Gillespie process through the way inter-community transmissions are represented and injected into the micro layer. At the implementation level, additional numerical error may arise from synchronization and hazard evaluation.
+
+Let
+\[
+V=\bigsqcup_{i=1}^{M}V_i
+\]
+be the fixed partition of the original graph into communities. Let \(G_i=G[V_i]\) be the subgraph induced by community \(i\), and let
+\[
+E_{ij}=\{(u,v)\in E:\ u\in V_i,\ v\in V_j\}
+\]
+denote the set of inter-community edges from community \(i\) to community \(j\). Denote by \(X(t)\) the full-network CTMC state and by \(X_i(t)\) its restriction to \(V_i\). In the full-network process, communities are coupled through edge-level inter-community events in the sets \(E_{ij}\). In the two-scale simulator, the same coupling is represented by a macro-generated import process into the local community models.
+
+\paragraph{Proposition (Conditional micro-layer exactness).}
+\michaelreplace{Fix the initial microstate in each community. Also fix the complete import process into every community, including all import times and all susceptible target nodes in the destination communities. Conditional on this import process, the micro layer in the two-scale simulator evolves each \(X_i(t)\) exactly as the Gillespie CTMC on \(G_i\), with the same intra-community transitions and with the specified imports applied as exogenous \(S\to I\) jumps. Consequently, any approximation error relative to the full-network Gillespie reference arises from how the import process is generated and coupled, not from the local CTMC simulation itself.}
+
+\paragraph{Proof.}
+Once the import times and target nodes are fixed, the evolution inside each community is determined by the same local transition rules as in the full-network CTMC restricted to \(G_i\). Between two exogenous imports, the micro layer applies the Gillespie algorithm to the same intra-community reaction channels and propensities. At an import time, the prescribed target node is updated by the same exogenous state transition. Therefore the sample-path law of \(X_i(t)\), conditional on the fixed import process, coincides with the corresponding local CTMC law. The remaining discrepancy can only come from the construction of the import process itself, including its rate, target placement, and any numerical treatment of its timing.
+
+\paragraph{Interpretation.}
+This proposition formalizes the main structural message of the paper: within-community exactness does not imply exactness of the full two-scale process. 
+The local Gillespie engines are exact conditional on the imports they receive, but the imports themselves are generated by a coarse-grained macro mechanism. 
+Therefore, the dominant approximation error is an interface error between the micro and macro layers. In what follows, we decompose this discrepancy into three sources: the rate abstraction that replaces the microscopic inter-community intensity, the import placement rule that replaces the edge-conditioned target choice, and the numerical timing error introduced by synchronization and hazard evaluation.
+
+\subsubsection{Rate Abstraction Error}
+\ReadStatusTwo{Rate Abstraction Error}{Yulian}{1}{Michael}{0}
+
+In the full-network CTMC, the instantaneous inter-community infection intensity from community \(i\) to community \(j\) is determined by the active cross-community infection opportunities in the original graph. For a full microscopic state \(x\), the exact intensity is
+\begin{equation}
+\label{eq:true_inter_intensity_error}
+a^\star_{ij}(x)
+=
+\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}
+w_{uv}\,\mathbf{1}\{x_u=I,\ x_v=S\}.
+\end{equation}
+The two-scale simulator replaces this edge-level quantity by the macro-rate
+\begin{equation}
+\label{eq:macro_inter_intensity_error}
+\lambda_{ij}(x)
+=
+\beta_{\mathrm{out}}\, W_{ij}\,\bar{i}_i(x)\,\bar{s}_j(x),
+\qquad
+\bar{i}_i(x)=\frac{i_i(x)}{N_i},
+\quad
+\bar{s}_j(x)=\frac{s_j(x)}{N_j},
+\end{equation}
+where \(W_{ij}\) is an aggregate weight associated with the meta-edge \((i,j)\). The macro state therefore retains only community-level fractions, not the exact boundary configuration of the original graph.
+
+\paragraph{Proposition (Rate abstraction).}
+Define the rate abstraction error process by
+\[
+\varepsilon_{ij}(t)
+=
+a^\star_{ij}(X(t))-\lambda_{ij}(X(t)).
+\]
+If the macro-rate \(\lambda_{ij}(x)\) is exact for all full-network states in a given state space, then the microscopic cross-community intensity \(a^\star_{ij}(x)\) must be completely determined by the retained aggregates \((\bar{i}_i(x),\bar{s}_j(x),W_{ij})\). Equivalently, if there exist two states \(x\) and \(y\) with
+\[
+\bar{i}_i(x)=\bar{i}_i(y),\qquad
+\bar{s}_j(x)=\bar{s}_j(y),
+\]
+and the same fixed \(W_{ij}\), but with different boundary or bridge configurations such that
+\[
+a^\star_{ij}(x)\neq a^\star_{ij}(y),
+\]
+then no macro-rate of the form \eqref{eq:macro_inter_intensity_error} can be exact for both states.
+
+\paragraph{Proof.}
+The macro-rate \(\lambda_{ij}(x)\) is a function only of \(\bar{i}_i(x)\), \(\bar{s}_j(x)\), \(W_{ij}\), and the parameter \(\beta_{\mathrm{out}}\). Therefore, two full states with identical values of these quantities necessarily receive the same macro-rate. If their microscopic intensities \(a^\star_{ij}\) differ, then the same value of \(\lambda_{ij}\) cannot equal both microscopic intensities. Hence exactness of the macro-rate over the relevant state space requires the true inter-community intensity to be determined by the retained macro variables.
+
+\paragraph{Interpretation.}
+Equation~\eqref{eq:true_inter_intensity_error} depends on which specific nodes in \(V_i\) and \(V_j\) are incident to inter-community edges and on their current states. The macro summary \((\bar{i}_i,\bar{s}_j)\) discards this bridge-level structure. Thus, the approximation is reliable only when the boundary nodes are sufficiently representative of the communities with respect to inter-community exposure, or when the graph structure makes the aggregate summaries informative enough for the true inter-community intensity. When inter-community edges are concentrated on a small subset of boundary nodes, or when infection status is strongly correlated with boundary position, the error process \(\varepsilon_{ij}(t)\) can be substantial.
+
+\subsubsection{Import Placement Error}
+\ReadStatusTwo{Import Placement Error}{Yulian}{1}{Michael}{0}
+
+In the full-network Gillespie process, an inter-community event \(i\to j\) occurs through a specific active edge. Conditional on observing such an event at state \(x\), the target node in \(V_j\) is not chosen only from the community-level susceptible fraction. It is determined by the firing edge \((u,v)\in E_{ij}\). Provided \(a^\star_{ij}(x)>0\), the full CTMC induces the edge-conditioned target distribution
+\begin{equation}
+\label{eq:exact_import_placement}
+\pi^\star_{ij}(v\mid x)
+=
+\frac{
+\mathbf{1}\{x_v=S\}
+\sum_{u\in V_i:\ (u,v)\in E_{ij}}
+\beta_{uv}\,\mathbf{1}\{x_u=I\}
+}
+{a^\star_{ij}(x)},
+\qquad v\in V_j.
+\end{equation}
+Here \(\beta_{uv}=\beta_{\mathrm{out}}w_{uv}\) under the weighted-edge parametrization in \eqref{eq:true_inter_intensity_error}.
+Consequently, the induced distribution over target nodes \(v\in V_j\) depends on the inter-community adjacency of \(v\) and on the states of its cross-community neighbors.
+
+The two-scale simulator instead injects an imported infection into \(V_j\) by an abstracted community-level seeding rule. Let \(\Pi_{ij}(t)\) denote the simulator's conditional distribution over susceptible target nodes in \(V_j\), given that a macro event \(i\to j\) fires at time \(t\). A simple choice is uniform seeding over susceptible nodes in \(V_j\), but the following criterion applies to any abstracted seeding distribution.
+
+\paragraph{Proposition (Import placement).}
+Fix a state \(x\) and condition on the event that an inter-community transmission \(i\to j\) occurs at that state. The import placement mechanism in the two-scale simulator reproduces the immediate post-event microstate law of the full-network CTMC if and only if the seeding distribution \(\Pi_{ij}(\cdot\mid x)\) coincides with the full-network conditional distribution \(\pi^\star_{ij}(\cdot\mid x)\) in \eqref{eq:exact_import_placement}. If these distributions differ, then the two-scale simulator changes the distribution of the destination microstate immediately after import.
+
+\paragraph{Proof.}
+Conditioning on the occurrence of an \(i\to j\) event fixes the event type at the community level but not the target node in \(V_j\). In the full-network CTMC, the post-event state in \(V_j\) is obtained by infecting the node selected by the edge-level firing distribution \(\pi^\star_{ij}(\cdot\mid x)\). In the two-scale simulator, it is obtained by infecting a node sampled from \(\Pi_{ij}(\cdot\mid x)\). The two post-event laws coincide exactly when these two target-node distributions coincide. Otherwise, at least one susceptible node receives different probability under the two mechanisms, and the law of the post-event microstate is perturbed.
+
+\paragraph{Interpretation.}
+Import placement error is a coupling error, not a minor implementation detail. Even if the macro event time were correct, seeding the infection into a uniformly random susceptible node rather than into the edge-conditioned target can modify the early intra-community dynamics after import. This effect is expected to be most visible in motifs where inter-community connectivity is concentrated on a small set of boundary nodes, because the full-network process necessarily targets that subset whereas an abstracted rule may distribute imports more broadly.
+
+\subsubsection{Synchronization and Numerical Approximation Error}
+\ReadStatusTwo{Synchronization and Numerical Approximation Error}{Yulian}{1}{Michael}{0}
+
+The structural errors above arise from the two-scale abstraction itself. A separate, secondary source of error may arise from the numerical realization of synchronization. The macro layer generates inter-community events from the total rate
+\[
+\Theta(t)
+=
+\sum_{i\neq j}
+\lambda_{ij}(t).
+\]
+In the ideal continuous-time formulation, if \(\Theta(t)\) were known exactly and the macro event time \(t^\star\) were obtained from
+\[
+\int_{t_0}^{t^\star}
+\Theta(s)\,ds
+=
+E,
+\qquad
+E\sim \mathrm{Exp}(1),
+\]
+then the event time would be exact conditional on the realized micro-layer trajectories that determine \(\Theta(t)\). Unconditionally, this is a macro point process with stochastic predictable intensity \(\Theta(t)\), not a deterministic-intensity NHPP. In practice, however, \(\Theta(t)\) is updated through synchronization between layers, and the cumulative hazard is accumulated numerically.
+
+\paragraph{Proposition (Synchronization timing error bound).}
+Let
+\[
+H(t)
+=
+\int_{t_0}^{t}
+\Theta(s)\,ds
+\]
+be the exact cumulative hazard, and let \(\widehat{H}(t)\) be the numerically accumulated hazard used by the implementation. Let \(t^\star\) and \(\widehat{t}\) be defined by
+\[
+H(t^\star)=E,
+\qquad
+\widehat{H}(\widehat{t})=E.
+\]
+Assume that, on an interval containing \(t^\star\) and \(\widehat{t}\),
+\[
+|H(t)-\widehat{H}(t)|\le \eta
+\]
+and
+\[
+\Theta(t)\ge \theta_{\min}>0.
+\]
+Then the event-time error is bounded by
+\[
+|\widehat{t}-t^\star|
+\le
+\frac{\eta}{\theta_{\min}}.
+\]
+
+\paragraph{Proof.}
+Since \(H\) is increasing with derivative \(\Theta(t)\ge\theta_{\min}\), we have
+\[
+|H(\widehat{t})-H(t^\star)|
+\ge
+\theta_{\min}|\widehat{t}-t^\star|.
+\]
+On the other hand, \(H(t^\star)=E=\widehat{H}(\widehat{t})\), so
+\[
+|H(\widehat{t})-H(t^\star)|
+=
+|H(\widehat{t})-\widehat{H}(\widehat{t})|
+\le \eta.
+\]
+Combining the two inequalities gives the bound.
+
+\paragraph{Interpretation.}
+The resulting timing discrepancy is controlled by the error in approximating the cumulative hazard \(H\), including quadrature over synchronization intervals, interpolation of the threshold crossing time, and any delay in updating \(\bar{i}_i(t)\) and \(\bar{s}_j(t)\) relative to the underlying micro-layer evolution. Synchronization and numerical timing error is not the primary approximation mechanism of the two-scale simulator. It can, however, add timing error on top of the structural discrepancies described above. For this reason, the benchmark analysis focuses primarily on rate abstraction and import placement, while the numerical implementation of hazard accumulation must remain consistent with the intended stochastic-intensity macro point process.
+
+
+\subsection{Clique--bridge--leaf benchmark}
+\ReadStatusTwo{Clique--bridge--leaf benchmark}{Yulian}{1}{Michael}{0}
+The clique--bridge--leaf benchmark is used as a minimal counterexample to the idea that aggregate community fractions are always sufficient for inter-community transmission. 
+Although the source community is internally well mixed as a clique, the export event depends on the infection status of a small bridge set. 
+This makes the motif analytically simple while still exposing the central interface error of the two-scale approximation.
+
+This benchmark is introduced as a minimal test for identifying exactly what is lost when passing from the full microscopic network to the two-scale abstraction. In the previous sections, the micro layer preserves the exact CTMC/Gillespie dynamics inside each community, while the macro layer describes inter-community transmission through the aggregated intensity
+\[
+\lambda_{ij}(t)=\beta_{\mathrm{out}} W_{ij}\bar{i}_i(t)\bar{s}_j(t).
+\]
+It is precisely this difference between the exact states of individual nodes and the aggregated community-level variables that is central for the present benchmark.
+
+\subsubsection{Graph construction and motivation}
+\ReadStatusTwo{Graph construction and motivation}{Yulian}{1}{Michael}{0}
+
+Consider two communities. Community \(0\) is the infection source and has local graph
+\[
+G_0=(V_0,E_0).
+\]
+In this benchmark, it is a clique
+\[
+K_n,
+\]
+so that
+\[
+N_0=n
+\]
+nodes belong to the source community. Community \(1\) is the receiver and consists of a single leaf node \(A\). This node has no internal dynamics before the import event; it can only become infected through an inter-community contact from community \(0\).
+
+\michaelreplace{For analytical clarity, this benchmark uses the irreversible SI version of the local process, so that once a node becomes infected, it remains infectious. Unless explicitly conditioned otherwise, the analytical bridge-finding formulas below assume that the initial infected node in the clique is chosen uniformly from \(V_0\); if the initial seed lies in \(B\), then \(T_B=0\).}
+
+\michaelreplace{Inside the clique \(K_n\), we distinguish a bridge set of nodes}
+\[
+B\subset V_0,
+\qquad |B|=k.
+\]
+The leaf \(A\) is connected only to the nodes in \(B\). These bridge nodes are therefore the only microscopic nodes of community \(0\) through which infection can reach \(A\). In the full microscopic network, transmission from community \(0\) to community \(1\) is possible not from any infected node of the clique, but only from infected bridge nodes.
+
+Let
+\[
+B_I(t)
+=
+\sum_{b\in B}
+\mathbf{1}\{X_b(t)=I\}
+\]
+be the number of infected bridge nodes at time \(t\). This is the key microscopic quantity for the export event: the leaf is infected by the concrete states of the bridge nodes, not by the average infected fraction in the clique.
+
+\subsubsection{Exact Micro dynamics}
+\ReadStatusTwo{Exact Micro dynamics}{Yulian}{1}{Michael}{0}
+
+\paragraph{Proposition. Exact bridge-dependent micro hazard.}
+In the full Micro model, the instantaneous import intensity into the leaf node \(A\) is
+\[
+a_{01}^{\mathrm{Micro}}(t)
+=
+\beta_{\mathrm{out}} B_I(t),
+\]
+provided that node \(A\) is still susceptible. If \(A\) is already infected, further import into it is not considered.
+
+This statement follows directly from the local graph structure. The leaf node \(A\) has contacts only with bridge nodes. Each infected bridge node creates one active infectious edge to \(A\) with rate \(\beta_{\mathrm{out}}\). If there are \(B_I(t)\) infected bridge nodes, then the total intensity of these parallel edges is \(\beta_{\mathrm{out}}B_I(t)\).
+
+This formula has an important interpretation. Even if many nodes in the clique are already infected, if no bridge node has yet been infected, then
+\[
+B_I(t)=0
+\]
+and therefore
+\[
+a_{01}^{\mathrm{Micro}}(t)=0.
+\]
+Thus, in the exact microscopic model, the leaf node is fully protected until the infection actually reaches at least one bridge node.
+
+Let the time of first bridge activation be denoted by
+\[
+T_B=\inf\{t:B_I(t)>0\}.
+\]
+In this benchmark, it is also convenient to interpret it as the bridge-finding time:
+\[
+T_{\mathrm{find}}=T_B.
+\]
+
+\subsubsection{Two-phase structure of the exact process}
+\ReadStatusTwo{Two-phase structure of the exact process}{Yulian}{1}{Michael}{0}
+
+\paragraph{Proposition. Two-phase structure for a single bridge and a single leaf.}
+Assume \(k=1\), SI dynamics, and no recovery. Let \(T_B\) be the infection time of the bridge node and let \(T_A\) be the infection time of the leaf node. Then the exact Micro process has the decomposition
+\[
+T_A=T_B+Z,
+\qquad
+Z\sim \mathrm{Exp}(\beta_{\mathrm{out}}),
+\]
+where \(Z\) is the post-bridge waiting time, conditionally on the history up to \(T_B\). Consequently,
+\[
+\mathbb{E}[T_A]
+=
+\mathbb{E}[T_B]
++
+\frac{1}{\beta_{\mathrm{out}}}.
+\]
+
+The first phase is the delay phase. The infection spreads inside the clique, but the leaf node still has no active infectious contact. Over the whole interval
+\[
+0\leq t<T_B,
+\]
+the risk to the leaf node is zero.
+
+The second phase begins after the unique bridge node enters state \(I\). From that moment, the leaf node sees exactly one active bridge--leaf edge with intensity \(\beta_{\mathrm{out}}\). Since in the SI model the infected bridge node does not recover, the subsequent dynamics inside the clique no longer change the hazard for this one leaf node. Therefore, after the bridge node becomes infected, the additional waiting time is exponential with mean
+\[
+\frac{1}{\beta_{\mathrm{out}}}.
+\]
+
+This decomposition highlights an important property of the exact Micro model: the size of the clique and its internal dynamics influence the infection time of the leaf node only through the delay phase, that is, through the time needed to infect the bridge node. Once the unique bridge node is already infected, the remaining events inside the clique no longer affect the expected infection time of this one leaf node; it is determined only by a single active edge with rate \(\beta_{\mathrm{out}}\).
+
+For several bridge nodes, this interpretation remains useful, but the second phase may already change. If the leaf node has contacts with several bridge nodes, then after additional bridge nodes become infected, the intensity becomes
+\[
+a_{01}^{\mathrm{Micro}}(t)=\beta_{\mathrm{out}}B_I(t).
+\]
+That is, several infected bridge nodes create several parallel active edges to the leaf node. In that case, the post-bridge time is no longer necessarily equal to \(1/\beta_{\mathrm{out}}\), because the later infection of additional bridge nodes may increase the hazard and shorten the second phase.
+
+Let the import time into the leaf node \(A\) be denoted by
+\[
+T_A.
+\]
+Then the exact infection clock of the leaf node is given through the accumulated hazard:
+\[
+\int_0^{T_A}
+\beta_{\mathrm{out}}B_I(s)\,ds
+=
+-\ln U,
+\qquad
+U\sim\mathcal{U}(0,1).
+\]
+Up to time \(T_B\), this integral does not accumulate, because \(B_I(s)=0\). After the first bridge node becomes infected, it starts growing. If further bridge nodes become infected later, the accumulation speed increases, since \(B_I(t)\) becomes larger.
+
+\subsubsection{Bridge-finding time in a clique}
+\ReadStatusTwo{Bridge-finding time in a clique}{Yulian}{1}{Michael}{0}
+
+\paragraph{Proposition. Expected bridge-finding time in a clique.}
+\michaelreplace{For the case of one bridge node, a simple analytical check can be obtained. Under the uniform initial seeding convention stated above, if \(k=1\), then the expected time until the bridge node becomes infected is}
+\[
+\mathbb{E}[T_B]
+=
+\frac{H_{n-1}}{\beta_{\mathrm{in}} n},
+\]
+where
+\[
+H_{n-1}
+=
+\sum_{m=1}^{n-1}\frac{1}{m}
+\]
+is the harmonic number.
+
+After the bridge node becomes infected, the leaf node receives one active infectious contact with rate \(\beta_{\mathrm{out}}\), so the additional expected time until import is
+\[
+\frac{1}{\beta_{\mathrm{out}}}.
+\]
+Hence,
+\[
+\mathbb{E}[T_A^{\mathrm{Micro}}]
+=
+\frac{H_{n-1}}{\beta_{\mathrm{in}} n}
++
+\frac{1}{\beta_{\mathrm{out}}}.
+\]
+
+\michaelreplace{For an arbitrary number of bridge nodes \(k\), under the same uniform initial seeding convention, it is convenient to consider the time of first activation of the bridge set. Its expected value can be written as a sum over clique states:}
+\[
+\mathbb{E}[T_B]
+=
+\sum_{m=1}^{n-k}
+\frac{\binom{n-k}{m}}{\binom{n}{m}}
+\cdot
+\frac{1}{\beta_{\mathrm{in}} m(n-m)}.
+\]
+Here the factor
+\[
+\frac{\binom{n-k}{m}}{\binom{n}{m}}
+\]
+\michaelreplace{is the probability, under exchangeability of the infected set in the clique, that among the first \(m\) infected nodes there is still no bridge node. If \(k\) increases, this probability decreases rapidly, so the first bridge node is activated earlier. In the limiting case of large \(k\), the exact hazard becomes closer to the macro hazard, because the bridge nodes better represent the whole community. If one instead conditions the initial seed to be outside \(B\), the same calculation uses the corresponding conditional no-bridge probabilities rather than the unconditional factor shown here.}
+
+\subsection{Mean-field versus exact hazard bias}
+\ReadStatusTwo{Mean-field versus exact hazard bias}{Yulian}{1}{Michael}{0}
+
+This subsection explains why an apparently reasonable macro hazard may still distort event timing. 
+The macro hazard can be correct as a conditional mean of the exact microscopic bridge hazard, but event times depend on accumulated hazards and survival probabilities, not only on instantaneous expected rates. 
+Consequently, replacing the random bridge-dependent hazard by its mean-field counterpart can change the distribution of export times.
+
+The clique--bridge--leaf benchmark separates the exact microscopic mechanism from its aggregate approximation. The exact model depends on the state of the bridge nodes, while the macro model sees only the community-level infected fraction \(\bar{i}_0(t)\). This subsection makes this difference explicit and explains why replacing the exact hazard by a mean-field hazard changes the timing of export events.
+
+\subsubsection{Macro approximation of bridge risk}
+\ReadStatusTwo{Macro approximation of bridge risk}{Yulian}{1}{Michael}{0}
+
+\michaelreplace{For comparison with the exact Micro process before the leaf has been infected, the macro layer does not see the specific bridge nodes. It receives only the aggregated infected fraction \(\bar{i}_0(t)\). If we interpret the inter-community weight \(W_{01}\) as corresponding to the number of potential bridge contacts, that is,}
+\[
+W_{01}=k,
+\]
+then the macro rate for import from community \(0\) to community \(1\) takes the form
+\[
+\lambda_{01}^{\mathrm{Macro}}(t)
+=
+\beta_{\mathrm{out}} k \bar{i}_0(t)\bar{s}_1(t).
+\]
+Since in the benchmark community \(1\) consists of a single susceptible leaf node before import, we may take
+\[
+\bar{s}_1(t)=1.
+\]
+Therefore, the macro rate simplifies to
+\[
+\lambda_{01}^{\mathrm{Macro}}(t)
+=
+\beta_{\mathrm{out}} k\frac{i_0(t)}{n}.
+\]
+This is the aggregated version of the bridge risk. It replaces the exact number of infected bridge nodes \(B_I(t)\) by its mean-field estimate:
+\[
+B_I(t)
+\approx
+k\frac{i_0(t)}{n}.
+\]
+
+\michaelreplace{Conditional on the aggregate path \(\{i_0(s):s\ge 0\}\), the corresponding macro clock is given by}
+\[
+\int_0^{T_A^{\mathrm{Macro}}}
+\beta_{\mathrm{out}} k\frac{i_0(s)}{n}\,ds
+=
+-\ln U,
+\qquad U\sim\mathcal U(0,1).
+\]
+
+\subsubsection{Conditional-mean interpretation}
+\ReadStatusTwo{Conditional-mean interpretation}{Yulian}{1}{Michael}{0}
+
+\paragraph{Proposition. Macro hazard is the conditional mean of the exact micro hazard.}
+\michaelreplace{Under the exchangeability convention for the infected set in the clique, and before conditioning on the absence of a previous export event, the macro rate is the conditional mean of the exact micro hazard:}
+\[
+\mathbb{E}
+\left[
+a_{01}^{\mathrm{Micro}}(t)
+\mid i_0(t)
+\right]
+=
+\lambda_{01}^{\mathrm{Macro}}(t).
+\]
+
+\michaelreplace{Indeed, if we only know the number of infected nodes in the clique \(i_0(t)\), but not their identities, and the infected set is exchangeable among all subsets of size \(i_0(t)\), then the probability that a particular bridge node is infected equals}
+\[
+\frac{i_0(t)}{n}.
+\]
+Since there are \(k\) bridge nodes, the expected number of infected bridge nodes is
+\[
+\mathbb{E}[B_I(t)\mid i_0(t)]
+=
+k\frac{i_0(t)}{n}.
+\]
+Then
+\[
+\mathbb{E}
+\left[
+a_{01}^{\mathrm{Micro}}(t)
+\mid i_0(t)
+\right]
+=
+\mathbb{E}
+\left[
+\beta_{\mathrm{out}} B_I(t)
+\mid i_0(t)
+\right]
+=
+\beta_{\mathrm{out}} k\frac{i_0(t)}{n}
+=
+\lambda_{01}^{\mathrm{Macro}}(t).
+\]
+
+Thus, the macro rate is the correct conditional mean of the exact micro hazard. However, this does not mean that the macro model reproduces the exact infection-time distribution. The reason is that the import time is determined not by the hazard itself, but by the exponential of the accumulated hazard.
+
+\subsubsection{Bias in event timing}
+\ReadStatusTwo{Bias in event timing}{Yulian}{1}{Michael}{0}
+
+The early-export bias should be formulated at the level of accumulated hazards, not only at the level of instantaneous hazards. Let
+\[
+X_t
+=
+\int_0^t \beta_{\mathrm{out}}B_I(s)\,ds
+\]
+be the exact accumulated bridge hazard up to time \(t\). Let \(\mathcal F_t^I\) denote the information retained by the macro layer up to time \(t\), for example the aggregate infection-count path \(\{i_0(s):0\le s\le t\}\). Suppose that the macro accumulated hazard is the conditional mean
+\[
+\bar X_t
+=
+\mathbb{E}\!\left[X_t\mid \mathcal F_t^I\right].
+\]
+Under the exchangeability assumptions used above, this corresponds to
+\[
+\bar X_t
+=
+\int_0^t \beta_{\mathrm{out}}k\frac{i_0(s)}{n}\,ds.
+\]
+
+\paragraph{Proposition. Conditional Jensen survival inequality.}
+The exact conditional survival probability satisfies
+\[
+\mathbb{E}\!\left[\exp(-X_t)\mid\mathcal F_t^I\right]
+\geq
+\exp(-\bar X_t).
+\]
+Consequently, after taking expectations,
+\[
+S^{\mathrm{Micro}}(t)
+\geq
+S^{\mathrm{Macro}}(t),
+\]
+where
+\[
+S^{\mathrm{Micro}}(t)
+=
+\mathbb{E}\!\left[\exp(-X_t)\right],
+\qquad
+S^{\mathrm{Macro}}(t)
+=
+\mathbb{E}\!\left[\exp(-\bar X_t)\right].
+\]
+
+\paragraph{Proof.}
+The function \(x\mapsto \exp(-x)\) is convex. Applying Jensen's inequality conditionally on \(\mathcal F_t^I\) gives
+\[
+\mathbb{E}\!\left[\exp(-X_t)\mid\mathcal F_t^I\right]
+\geq
+\exp\!\left(
+-\mathbb{E}[X_t\mid\mathcal F_t^I]
+\right)
+=
+\exp(-\bar X_t).
+\]
+Taking expectations gives the unconditional survival inequality.
+
+\paragraph{Corollary. Expected import-time ordering.}
+If the survival inequality holds for all \(t\ge 0\) and the expectations are finite, then
+\[
+\mathbb{E}[T_A^{\mathrm{Micro}}]
+\geq
+\mathbb{E}[T_A^{\mathrm{Macro}}].
+\]
+
+\paragraph{Proof.}
+Since the expectation of a nonnegative infection time can be represented as the area under the survival curve,
+\[
+\mathbb{E}[T_A]
+=
+\int_0^\infty S(t)\,dt,
+\]
+integrating the survival inequality over time gives the result.
+
+Intuitively, this means that the macro model may create premature leakage of risk. As soon as infected nodes appear in the clique, the quantity \(i_0(t)/n\) becomes positive, and the macro layer begins accumulating hazard for import. But in the full microscopic network, import may still be impossible if the infected nodes are not bridge nodes.
+
+The clique--bridge--leaf benchmark is useful precisely because it isolates structural abstraction error from other sources of error. There is no complicated community structure here, no many-path interaction, and no heterogeneous internal topology. There is only a clique, \(k\) bridge nodes, and one leaf receiver. If even in such a simple system the macro approximation deviates from the full Gillespie reference, then the reason for the deviation is clear: the macro layer does not know the exact states of the bridge nodes.
+
+
+
+\subsection{Numerical benchmark on the clique--bridge--leaf graph}
+\label{sec:clique_leaf_numerical}
+
+\subsubsection{Experimental setup}
+
+We next evaluate the clique--bridge--leaf construction numerically using the corrected production implementations of Full Micro and MicroMacro, with independent random-number streams assigned to the MicroMacro micro engines. The source community is a clique of size $n=100$, with $k=2$ bridge nodes providing the only microscopic transmission routes to the receiving leaf. The transmission parameter is $\beta=0.005$, the simulation horizon is $T_{\mathrm{end}}=1000$, and $10{,}000$ paired replications are generated for each simulator. The benchmark records three timing quantities: the time until the true bridge set is first activated, the difference between bridge activation and export, and the total time from the beginning of the simulation to export into the leaf.
+
+\subsubsection{Timing distributions}
+
+\begin{figure}[h]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/clique_leaf/metric_density_panels.png}
+    \caption{Timing distributions for the clique--bridge--leaf benchmark: bridge activation time, bridge-to-export difference, and total export time. For Full Micro, the middle quantity is a causal waiting time. For MicroMacro, it is a signed diagnostic and can be negative when macro export precedes infection of every true bridge node.}
+    \label{fig:clique_leaf_density_panels}
+\end{figure}
+
+Figure~\ref{fig:clique_leaf_density_panels} shows that the marginal bridge-activation distributions produced by Full Micro and MicroMacro are nearly indistinguishable. The total export-time distributions are also close. For this endpoint, the Wasserstein-1 distance is
+\[
+W_1 = 3.249,
+\]
+which is approximately $2.95\%$ of the mean Full Micro export time, and the Kolmogorov--Smirnov distance is
+\[
+D_{\mathrm{KS}} = 0.0142.
+\]
+These distances establish close agreement at the level of the marginal endpoint distribution, but they do not test whether individual transmission histories respect the microscopic interface mechanism.
+
+The middle panel therefore requires a simulator-specific interpretation. In Full Micro, the leaf can be infected only across an explicit edge from an infected bridge node. Hence
+\[
+D^{\mathrm{Micro}}
+=
+T_{\mathrm{export}}^{\mathrm{Micro}}
+-
+T_{\mathrm{bridge}}^{\mathrm{Micro}}
+\geq 0
+\]
+is a genuine waiting time following bridge activation. In MicroMacro, the export event is generated from an aggregate community-level hazard that is not conditioned on the infection states of those particular interface nodes. Consequently,
+\[
+D^{\mathrm{MM}}
+=
+T_{\mathrm{export}}^{\mathrm{MM}}
+-
+T_{\mathrm{bridge}}^{\mathrm{MM}}
+\]
+is a signed diagnostic difference rather than a physical waiting time. A negative value means that the macro layer exported infection before the source micro engine infected any node in the true bridge set; it does not represent a negative causal delay.
+
+This diagnostic reveals a discrepancy that is nearly invisible in the endpoint distances. In $98$ of the $10{,}000$ MicroMacro replications, or $0.98\%$, the receiving leaf was infected before either true bridge node. This ordering never occurred in Full Micro, where it is prohibited by the explicit graph topology. The aggregate simulator therefore assigns positive probability to transmission histories that are impossible under the microscopic bridge mechanism, even though the overall export-time distributions remain close.
+
+\subsubsection{Interpretation}
+
+The central conclusion of this example is that agreement of an endpoint distribution does not imply preservation of the transmission mechanism. Wasserstein and Kolmogorov--Smirnov distances compare marginal distributions and can remain small when a rare but structurally important pathwise ordering is violated. The bridge-ordering diagnostic supplies complementary information: it directly tests whether an export respects the interface constraint encoded by the microscopic graph.
+
+The mean total export times are $110.18$ for Full Micro and $112.62$ for MicroMacro. The paired mean difference, defined as MicroMacro minus Full Micro, is $+2.43$, with an approximate paired-bootstrap $95\%$ confidence interval of $[-0.46,5.15]$. Since this interval contains zero, these data do not establish a systematic late shift of MicroMacro. Nor does the positive point estimate invalidate the conditional Jensen survival inequality derived above: the empirical sign remains unresolved, while the analytical ordering concerns the conditional-mean hazard construction under its stated assumptions. The statistically robust observation in this experiment is the presence of mechanistically impossible early exports, not the sign of the mean timing shift.
+
+The small aggregate timing discrepancy is nevertheless consistent with the time-scale structure of the benchmark. The source clique mixes rapidly, so its bridge nodes are usually infected early, whereas much of the variability in total export time comes from the long right-tailed wait for a rare inter-community event. This broad waiting-time distribution can mask the effect of replacing the exact bridge-state hazard by an aggregate approximation. Thus, loss of boundary-state information is present by construction, but its effect on a marginal endpoint distribution can remain modest when internal mixing is fast relative to export.
+
+The clique--bridge--leaf experiment consequently separates distributional fidelity from mechanistic fidelity. In this well-mixed configuration, Production MicroMacro approximates the total export-time law closely, but it does not preserve the causal ordering imposed by the explicit interface. This motivates the broader experiments considered later in the study, where interface width, community structure, and internal connectivity are varied to determine when the aggregate interface remains accurate and when missing microscopic boundary information becomes consequential.
+
+\section{Experimental Evaluation and Fidelity Regimes}
+
+\subsection{Experimental protocol and accuracy measures}
+
+We next compare Full Micro with Production MicroMacro using independent random-number streams for its local engines.  The benchmark network is a chain of ten communities.  We vary the community size $n\in\{50,100,250,1000\}$, the number of microscopic links between adjacent communities $k\in\{1,5,10\}$, and the internal topology: a complete graph or a connected random graph with target mean degree $d\in\{6,10\}$.  Both transmission rates are set to the same value, $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}\in\{0.001,0.003\}$; the model is SI, $\gamma=0$, and the synchronization interval is fixed at $\tau_{\mathrm{micro}}=1$.  Each cell contains 100 paired replications.  A pair uses the same generated network, initial infected node, and epidemiological parameters in the two simulators, while their event streams are independent.
+
+The principal endpoint is the first infection time $T_9$ of the last community.  For a fully observed cell, we report the signed relative mean shift
+\[
+\frac{\mathbb E[T_9^{\mathrm{MM}}]-\mathbb E[T_9^{\mathrm{Full}}]}
+     {\mathbb E[T_9^{\mathrm{Full}}]}
+\]
+and the relative Wasserstein distance $W_1(T_9^{\mathrm{Full}},T_9^{\mathrm{MM}})/\mathbb E[T_9^{\mathrm{Full}}]$.  Negative signed values indicate earlier arrival under MicroMacro.  When a cell is censored at the common horizon $\tau=20000$, the corresponding quantities use $\min(T_9,\tau)$ and are denoted restricted RMST and restricted $W_1$; completion probabilities are then reported separately.  Uncertainty intervals are obtained by paired nonparametric bootstrap over the network--replication blocks.  These measures address different questions and are not combined into a single accuracy score.
+
+\subsection{Accuracy depends on topology and regime}
+
+All 36 cells with $\beta=0.003$ reached the last community in both simulators, so this grid provides the cleanest comparison of the uncensored arrival-time laws.  Figure~\ref{fig:accuracy_atlas_beta003} shows that the discrepancy is regime dependent.  Median relative $W_1$ is $4.69\%$ for cliques, $4.44\%$ for random graphs with $d=10$, and $5.54\%$ for the sparser $d=6$ graphs.  The ranges are nevertheless broad: $2.59$--$10.08\%$, $2.01$--$7.28\%$, and $2.19$--$10.89\%$, respectively.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=0.96\linewidth]{Images/fig_accuracy_atlas_beta0p003.pdf}
+    \caption{Terminal-arrival accuracy for the fully observed $\beta=0.003$ grid.  The left column gives the signed relative mean shift, with negative values denoting earlier MicroMacro arrival; the right column gives relative Wasserstein-1 distance.  Rows distinguish complete communities and connected random communities with mean degree $d=10$ and $d=6$.}
+    \label{fig:accuracy_atlas_beta003}
+\end{figure}
+
+The direction of the shift is not universal.  In all twelve $d=6$ cells, MicroMacro arrives earlier on average; the relative shift ranges from $-10.89\%$ to $-1.44\%$, with a median of $-5.48\%$.  By contrast, both clique and $d=10$ cells contain positive and negative shifts.  For example, at $n=100$ and $k=5$, the clique shift is $+4.20\%$ with a $95\%$ bootstrap interval $[-3.58\%,12.67\%]$, whereas the matched $d=6$ cell has a shift of $-4.88\%$ with interval $[-8.51\%,-1.18\%]$.  In the large-community, narrow-interface $d=10$ case $(n=1000,k=1)$, the shift is $+6.20\%$ with interval $[0.95\%,11.76\%]$.  These examples rule out a general claim that the aggregate interface always accelerates or always delays propagation.
+
+Figure~\ref{fig:relative_w1_profiles} further shows that neither increasing $n$ nor increasing $k$ guarantees improvement.  The parameters change several time scales simultaneously.  In a clique, increasing $n$ also increases internal degree and accelerates mixing; in the sparse ensembles, $d$ remains approximately fixed.  Increasing $k$ broadens the boundary sample but also accelerates export, leaving less time for infection to become representative at the boundary.  The observed interactions are therefore more informative than a monotone ``larger is better'' rule.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/fig_relative_w1_profiles.pdf}
+    \caption{Relative terminal-arrival distribution error as a function of community size.  Rows identify internal topology, columns fix the number $k$ of inter-community links, and curves compare the two transmission rates.  Shading denotes paired-bootstrap $95\%$ intervals.  The figure exposes interactions among $n$, $k$, internal density, and the process rate; the slopes should not be read as isolated main effects.}
+    \label{fig:relative_w1_profiles}
+\end{figure}
+
+The slower $\beta=0.001$ grid also demonstrates why completion must remain separate from distributional distance.  Only 26 of its 36 cells have all terminal arrivals observed by $\tau=20000$.  In the most strongly censored cell, $(n=1000,d=6,k=1)$, completion is $18\%$ for Full and $28\%$ for MicroMacro, while the restricted relative $W_1$ is only $0.98\%$.  Most observations in both samples are capped at the same horizon, so the small restricted distance does not establish agreement of the unrestricted arrival-time laws.  Across the 26 cells fully observed at both rates, the cross-rate correlation is moderate rather than exact: $0.47$ for relative $W_1$ and $0.54$ for signed relative bias.  Because $\tau_{\mathrm{micro}}=1$ is fixed in absolute time, changing $\beta$ also changes the process rate relative to the scheduler; this comparison is therefore a rate--synchronization sensitivity check, not a pure biological rescaling experiment.
+
+\subsection{Where the arrival-time discrepancy develops}
+
+Figure~\ref{fig:arrival_error_accumulation} follows three preselected $\beta=0.003$ regimes along the chain.  Absolute timing differences accumulate because later communities are reached at later times.  In the $d=6$, $n=100$, $k=5$ case, the mean MicroMacro--Full shift changes from $-17.94$ at community 1 to $-90.12$ at community 5 and $-139.47$ at community 9.  Relative to the Full arrival time, however, the shift remains approximately stable at $-4.79\%$, $-5.45\%$, and $-4.88\%$.  The clique control similarly has a large relative offset at the first transition ($34.73\%$) that falls to $4.20\%$ at the final community.  The $d=10$, $n=1000$, $k=1$ stress case decreases from $14.24\%$ to $6.20\%$.  Thus, a large terminal discrepancy need not arise from a fixed percentage error repeated at every interface; early offsets and local transition errors are both possible.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/fig_arrival_error_accumulation_beta0p003.pdf}
+    \caption{Layerwise arrival-time discrepancy for three representative $\beta=0.003$ regimes.  The left panel shows signed relative timing shift with paired-bootstrap $95\%$ intervals; the right panel shows relative Wasserstein-1 distance.  Normalization by the Full mean arrival time separates growth in absolute time from growth in relative discrepancy.}
+    \label{fig:arrival_error_accumulation}
+\end{figure}
+
+\subsection{Post-arrival local dynamics}
+
+To distinguish arrival-time error from subsequent within-community evolution, Figure~\ref{fig:arrival_aligned_dynamics} aligns each community trajectory by its own first infection time in each model and replication.  The displayed window retains at least 90 paired trajectories at every time point.  In the clique control, the median curves are almost indistinguishable after alignment: the mean absolute difference between median infected fractions is at most $0.10$ percentage points in communities 1, 5, and 9.  In the $d=6$ graph the remaining mean median-curve difference is larger, between $1.26$ and $2.82$ percentage points, with a maximum local difference of $10.5$ percentage points in community 1.  Arrival timing therefore explains most of the visible clique discrepancy, whereas sparse communities retain a modest difference in post-arrival evolution.  This residual is compatible with effects of import placement, repeated imports, and synchronization, but the production comparison alone does not identify their separate contributions.
+
+\begin{figure}[t]
+    \centering
+    \safeincludegraphics[width=\linewidth]{Images/fig_arrival_aligned_local_dynamics_beta0p003.pdf}
+    \caption{Local infected fractions after alignment by the first infection time of each model, replication, and community.  Lines show medians and bands show interquartile ranges.  The common post-arrival window contains at least 90 paired contributors throughout.}
+    \label{fig:arrival_aligned_dynamics}
+\end{figure}
+
+\subsection{Fidelity regimes and limits of interpretation}
+
+Taken together with the clique--bridge--leaf benchmark, these results show that applicability is observable dependent.  Production MicroMacro can reproduce a terminal arrival distribution within a few percent in many tested cells while still failing to preserve a microscopic interface constraint.  Terminal-arrival error is generally moderate in the present grid, but it reaches approximately $10$--$11\%$ in some regimes and its sign changes outside the sparse $d=6$ ensemble.  The method is therefore most defensible when the required observable has been validated in a matched regime and completion is high; the present experiments do not support a universal threshold based only on $n$, $k$, or $d$.
+
+The evidence is restricted to SI dynamics on chain macro topologies, clique and connected-random micro-graph ensembles, equal within- and between-community transmission rates, a fixed synchronization interval, and 100 paired replications per grid cell.  The comparison measures the combined effect of rate abstraction, uniform import placement, and synchronization.  Separating these mechanisms requires the controlled interface and scheduler ablations described in the accuracy framework; the present grid establishes where discrepancies occur, not a unique causal allocation among error sources.
+
+
+% Elsevier CAS author--year bibliography style.
+% The bibliography file is stored one directory above this manuscript.
+\bibliographystyle{cas-model2-names}
+\bibliography{./references_fixed}
+
+\end{document}

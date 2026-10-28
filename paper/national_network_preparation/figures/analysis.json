@@ -1,0 +1,17 @@
+{
+  "directed_offdiagonal_imbalance": 0.6224227512844267,
+  "raw_rows_under_200_fraction": 0.9818676814928969,
+  "raw_worker_weight_under_200_fraction": 0.48630271006692877,
+  "outside_worker_fraction": 0.01752195108783797,
+  "degree_min": 0,
+  "degree_median": 20.0,
+  "degree_max": 8856,
+  "department_size_min": 1,
+  "department_size_median": 322.5,
+  "department_size_max": 887,
+  "boundary_municipalities": 30899,
+  "top_1percent_nodes_share_of_boundary_strength": 0.6057227022108228,
+  "dense_A_GiB": 9.053052693605423,
+  "sparse_A_MiB": 17.155170440673828,
+  "simulations_run": false
+}

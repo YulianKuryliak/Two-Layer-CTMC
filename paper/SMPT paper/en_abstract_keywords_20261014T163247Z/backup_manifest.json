@@ -1,0 +1,22 @@
+[
+  {
+    "file": "main-SMPT.tex",
+    "sha256": "a52ca8a1915c27a4cb29be098587abf59726203fbee51ad7a0635698946b8286"
+  },
+  {
+    "file": "main-SMPT.pdf",
+    "sha256": "75816c53979f7f5365e02fb858219d3be73c0c4d46601398dc713889c40b2c1f"
+  },
+  {
+    "file": "main-SMPT.txt",
+    "sha256": "414a3cb44309cd4d8a6f1c7aa9179552be771d5e7e9c00330bc659f0423921bd"
+  },
+  {
+    "file": "main-SMPT_editable_figures.zip",
+    "sha256": "94bf46e6f6fcf4017b7765b4edcf26ded61730292e0672dab47c99a745026936"
+  },
+  {
+    "file": "main-SMPT_build_README.md",
+    "sha256": "d5b396bea38871a2cf7e42e5187b9170632e46a2c15f1714f6da3e60e2c5a678"
+  }
+]

@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[a3paper,landscape,margin=0mm]{geometry}
+\usepackage{pdfpages}
+\usepackage{eso-pic}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\pagestyle{empty}
+\newcommand{\bilingualfooter}[1]{%
+  \thispagestyle{empty}%
+  \AddToShipoutPictureFG*{%
+    \AtPageLowerLeft{%
+      \put(0,0){{\color{white}\rule{\paperwidth}{20mm}}}%
+      \put(0,14){\makebox[\paperwidth][c]{\small\textit{Y. Kuryliak and M. T. M. Emmerich: Two-Scale Stochastic Simulation}\quad Page #1 of 14}}%
+    }%
+  }%
+}
+\newcommand{\bilingualresultsfooter}[1]{%
+  \thispagestyle{empty}%
+  \AddToShipoutPictureFG*{%
+    \AtPageLowerLeft{%
+      \put(0,0){{\color{white}\rule{\paperwidth}{20mm}}}%
+      \put(0,14){\makebox[\paperwidth][c]{\small\textit{Y. Kuryliak and M. T. M. Emmerich: Two-Scale Stochastic Simulation}\quad Page #1 of 14}}%
+      \put(452,300){{\color{white}\rule{86pt}{12pt}}}%
+      \put(453,302){{\color{black}\fontsize{7}{9}\selectfont Jensen з Додатка A:}}%
+      \put(956,300){{\color{white}\rule{54pt}{12pt}}}%
+      \put(957,302){{\color{black}\fontsize{7}{9}\selectfont in Appendix A:}}%
+    }%
+  }%
+}
+\begin{document}
+\includepdf[pages=1,pagecommand={\bilingualfooter{1}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=2,pagecommand={\bilingualfooter{2}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=3,pagecommand={\bilingualfooter{3}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=4,pagecommand={\bilingualfooter{4}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=5,pagecommand={\bilingualfooter{5}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=1,pagecommand={\bilingualfooter{6}}]{stage1_bilingual_insert.pdf}
+\includepdf[pages=2,pagecommand={\bilingualfooter{7}}]{stage1_bilingual_insert.pdf}
+\includepdf[pages=12,pagecommand={\bilingualresultsfooter{8}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=13,pagecommand={\bilingualfooter{9}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=14,pagecommand={\bilingualfooter{10}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=15,pagecommand={\bilingualfooter{11}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=16,pagecommand={\bilingualfooter{12}}]{main-SMRT_bilingual_UK_EN.pdf}
+\includepdf[pages=3,pagecommand={\bilingualfooter{13}}]{stage1_bilingual_insert.pdf}
+\includepdf[pages=17,pagecommand={\bilingualfooter{14}}]{main-SMRT_bilingual_UK_EN.pdf}
+\end{document}

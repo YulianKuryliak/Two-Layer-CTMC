@@ -1,0 +1,14 @@
+{
+  "status": "passed_source_only",
+  "backup": "inline_appendix_20261023T194606Z",
+  "operation": "Inline appendices.tex at the existing input position in both main files",
+  "exact_input_expansion_match": true,
+  "manuscript_text_math_and_review_macros_unchanged": true,
+  "appendices_external_dependency_removed": true,
+  "old_appendix_files_moved_to_backup": true,
+  "overleaf_source_matches": true,
+  "main_tex_sha256": "2699726570eb952f78adee0d264f53653436906b800cc10d2c4b8731713feba1",
+  "pdf_zip_rebuilt": false,
+  "bibliography_changed": false,
+  "simulations_run": false
+}

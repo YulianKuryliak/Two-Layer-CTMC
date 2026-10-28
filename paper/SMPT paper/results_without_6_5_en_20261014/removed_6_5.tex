@@ -1,0 +1,34 @@
+\subsection{Differences between the first and subsequent inter-community crossings}
+
+The preceding results showed that the relative discrepancy in arrival time often stabilises along the chain. This does not imply, however, that the first and subsequent crossings have the same shift.
+
+The first crossing starts from the initial community, which has received no imported infections. Its timing is therefore affected mainly by the representation of the source interface and the numerical determination of the export time.
+
+Subsequent crossings may also reflect additional consequences of aggregate modelling: random placement of imported infections and the possibility of repeated imports through interfaces whose physical channels can no longer cause new infections.
+
+To test whether the shifts at these stages differ, we compare the relative shifts in the mean durations of the first crossing, $T_1$, and the subsequent crossings, $T_9-T_1$ (Figure~\ref{fig:descriptor}(c)).
+
+For $k=1$, the subsequent crossings had a stronger negative shift than the first in 15 of the 16 configurations with $\mathrm{ASPL}\geq3$. In nine of them, the block-bootstrap confidence intervals for the difference between the shifts did not contain zero.
+
+For example, at $n=50$ and ASPL 6, the shift in the mean duration of the first crossing was $-27.5\%$, whereas the shift for the subsequent crossings was $-42.5\%$.
+
+For $k=5$, this difference was less pronounced: a stronger negative shift in the subsequent crossings was observed in 14 of the 16 configurations, and the confidence interval for the difference did not contain zero in four of them. The tests were performed without correction for multiple comparisons.
+
+This relationship is consistent with the hypothesis that narrow interfaces are more sensitive to surplus imports. With one physical edge, only one infection of its target node is possible, whereas the aggregate rate can produce further imports. This constraint is less restrictive when more inter-community edges are present.
+
+At the same time, the stronger shift in subsequent crossings does not contradict the slow increase or stabilisation of the relative discrepancy in the cumulative arrival time.
+
+For the mean times,
+\begin{equation}
+\mathbb{E}[T_9]
+=
+\mathbb{E}[T_1]
++
+\mathbb{E}[T_9-T_1].
+\end{equation}
+The relative shift in the mean of $T_9$ is therefore a weighted mean of the relative shifts in these two components, with weights determined by their mean durations in \Full{}.
+
+The absolute lead can therefore accumulate as propagation time increases, while the relative discrepancy approaches the characteristic shift of the subsequent crossings. This explanation applies directly to mean times; it does not establish the behaviour of the medians in Figure~\ref{fig:chain_heatmap} mathematically.
+
+Overall, the results indicate differences between the first and subsequent inter-community crossings. However, comparing their durations alone cannot separately identify the contributions of random import placement, surplus infections, and numerical synchronisation. Additional control experiments that isolate each of these mechanisms are required for this purpose.
+

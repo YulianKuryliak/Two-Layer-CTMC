@@ -12,6 +12,10 @@ from ..engines.micro_model import MicroModel
 class Orchestrator:
     """
     Orchestrates micro and macro layers (susceptibility-aware hazards).
+
+    dense_logs=False retains community change-point logs; their values are
+    held constant until the next logged time. Global times and event logs
+    are unaffected. The default retains the original dense output API.
     """
 
     def __init__(
@@ -29,10 +33,20 @@ class Orchestrator:
         alphas: Optional[List[float]] = None,
         full_graph: Optional[nx.Graph] = None,
         verbose_steps: bool = False,
+        alpha_mode: str = "off",
+        correction_mode: str = "off",
+        dense_logs: bool = True,
+        stop_at_absorption: bool = False,
+        micro_rngs: Optional[List[random.Random]] = None,
     ):
+        if micro_rngs is not None and len(micro_rngs) != len(micro_graphs):
+            raise ValueError("Provide one private RNG per community")
+        if micro_rngs is not None and len({id(rng) for rng in micro_rngs}) != len(micro_rngs):
+            raise ValueError("Community RNGs must be distinct objects")
         self.micro_models: List[MicroModel] = []
-        for G in micro_graphs:
-            m = MicroModel(beta_micro, gamma, model=model)
+        for community, G in enumerate(micro_graphs):
+            rng = None if micro_rngs is None else micro_rngs[community]
+            m = MicroModel(beta_micro, gamma, model=model, rng=rng)
             for node in G.nodes():
                 m.add_node(node)
             for u, v, data in G.edges(data=True):
@@ -45,16 +59,36 @@ class Orchestrator:
         if alphas is None:
             alphas = self._compute_alphas(micro_graphs)
 
+        # NEW: Extract boundary descriptors for error-reduction corrections
+        boundary_counts: Optional[List[int]] = None
+        mu2_values: Optional[List[float]] = None
+        if full_graph is not None:
+            bc = full_graph.graph.get("boundary_counts")
+            mu2 = full_graph.graph.get("mu2_values")
+            if isinstance(bc, list):
+                boundary_counts = [int(x) for x in bc]
+            if isinstance(mu2, list):
+                mu2_values = [float(x) for x in mu2]
+
         self.macro = MacroEngine(
             W=W,
             beta_macro=beta_macro,
             T=macro_T,
             community_sizes=community_sizes,
             alphas=alphas,
+            alpha_mode=alpha_mode,
+            boundary_counts=boundary_counts,
+            mu2_values=mu2_values,
+            correction_mode=correction_mode,
+            beta_in=beta_micro,
+            beta_out=beta_macro,
         )
         self.tau_micro = float(tau_micro)
         self.T_end = float(T_end)
         self.verbose_steps = bool(verbose_steps)
+        self.dense_logs = bool(dense_logs)
+        self.stop_at_absorption = bool(stop_at_absorption)
+        self.run_metadata: Optional[dict] = None
 
         self.times: List[float] = []
         self.I_total: List[int] = []
@@ -77,15 +111,18 @@ class Orchestrator:
             inv_sqrt_deg[nonzero] = 1.0 / np.sqrt(deg[nonzero])
             D_inv_sqrt = np.diag(inv_sqrt_deg)
             L_norm = np.eye(n) - (D_inv_sqrt @ A @ D_inv_sqrt)
-            eigvals = np.linalg.eigvalsh(L_norm)
+            eigvals = np.sort(np.linalg.eigvalsh(L_norm))
             if eigvals.size < 2:
                 alphas.append(1.0)
                 continue
-            lambda2_tilde = float(np.sort(eigvals)[-2])
-            if lambda2_tilde <= 0.0:
+            # Spectral gap = second-smallest eigenvalue (Fiedler value); large
+            # gap (dense) -> alpha ~ 1, small gap (sparse) -> alpha > 1 damps
+            # the over-estimated early macro export. Damping-only clamp.
+            mu2 = float(eigvals[1])
+            if mu2 <= 0.0:
                 alphas.append(1.0)
                 continue
-            alphas.append(1.0 / lambda2_tilde)
+            alphas.append(max(1.0, min(1.0 / mu2, 6.0)))
         return alphas
 
     def _counts_arrays(self) -> Tuple[List[int], List[int], List[int]]:
@@ -105,6 +142,34 @@ class Orchestrator:
         log["S"].append(S)
         log["I"].append(I)
         log["R"].append(R)
+
+    def _natural_stop_reason(self, S_arr: List[int], I_arr: List[int]) -> Optional[str]:
+        """Return a reason only for an absorbing/no-event global state."""
+        if sum(I_arr) == 0:
+            return "no_infected_nodes"
+        if all(model.recovery_rate == 0.0 for model in self.micro_models) and sum(S_arr) == 0:
+            return "all_nodes_infected"
+        if (
+            self.macro.total_hazard <= 0.0
+            and all(
+                model.total_infection_rate + model.total_recovery_rate < 1e-12
+                for model in self.micro_models
+            )
+        ):
+            return "no_enabled_events"
+        return None
+
+    def _set_run_metadata(
+        self, stop_time: float, stop_reason: str, S_arr: List[int], I_arr: List[int], R_arr: List[int]
+    ) -> None:
+        self.run_metadata = {
+            "stop_time": float(stop_time),
+            "stop_reason": stop_reason,
+            "final_state_by_community": [
+                {"community": idx, "S": int(S), "I": int(I), "R": int(R)}
+                for idx, (S, I, R) in enumerate(zip(S_arr, I_arr, R_arr))
+            ],
+        }
 
     def _densify_logs_from_global_times(self) -> None:
         if not self.times:
@@ -160,7 +225,7 @@ class Orchestrator:
         if not pending:
             return last_event_time
         total_hazard_snapshot = float(hazard_matrix.sum())
-        for community, ev_time, etype, node, src in pending:
+        for community, ev_time, etype, node, src in sorted(pending, key=lambda ev: ev[1]):
             self.event_log.append(
                 {
                     "time": ev_time,
@@ -193,12 +258,20 @@ class Orchestrator:
             self._append_comm_log_if_changed(idx, 0.0, S, I, R)
         # <<< end initial snapshot >>>
 
+        if self.stop_at_absorption:
+            reason = self._natural_stop_reason(S0, I0)
+            if reason is not None:
+                self._set_run_metadata(0.0, reason, S0, I0, R0)
+                if self.dense_logs:
+                    self._densify_logs_from_global_times()
+                return self.times, self.I_total, self.logs, self.event_log
+
         # Gillespie integral threshold for macro events
         thresh_int = -math.log(random.random())
         int_accum = 0.0
         clones = [m.clone() for m in self.micro_models]
 
-        while t < self.T_end:
+        while t < self.T_end and self.run_metadata is None:
             t_grid = min(t + self.tau_micro, self.T_end)
 
             while t < t_grid:
@@ -212,7 +285,7 @@ class Orchestrator:
                 rng_state = random.getstate()
                 for clone, source in zip(clones, self.micro_models):
                     clone.refresh_from(source)
-                    clone.simulate_until(t_mid)
+                    clone.simulate_until(t_mid, record_events=False)
                 mid_states = [clone.count_states() for clone in clones]
                 S_mid = [state[0] for state in mid_states]
                 I_mid = [state[1] for state in mid_states]
@@ -241,6 +314,12 @@ class Orchestrator:
                         last_event_time=last_event_time,
                     )
                     t = t_grid
+                    if self.stop_at_absorption:
+                        S_actual, I_actual, R_actual = self._counts_arrays()
+                        reason = self._natural_stop_reason(S_actual, I_actual)
+                        if reason is not None:
+                            self._set_run_metadata(t, reason, S_actual, I_actual, R_actual)
+                            break
                     break
 
                 # midpoint rectangle accumulation: check if threshold crosses in [t, t_grid]
@@ -269,10 +348,10 @@ class Orchestrator:
                     )
 
                     # sample and apply the macro transfer at t_event
+                    hazard_before = self.macro.total_hazard
                     i, j = self.macro.sample_transfer()
                     if j != i:
-                        self.micro_models[j].current_time = t_event
-                        node = self.micro_models[j].import_infection()
+                        node = self.micro_models[j].import_infection(at_time=t_event)
                         S_post = list(S_event)
                         I_post = list(I_event)
                         if node is not None:
@@ -289,7 +368,12 @@ class Orchestrator:
                                 "community": j,
                                 "src": i,
                                 "node": node,
-                                "total_hazard": self.macro.total_hazard,
+                                "successful_import": node is not None,
+                                "destination_S_before": S_event[j],
+                                "destination_I_before": I_event[j],
+                                "repeat_import": node is not None and I_event[j] > 0,
+                                "total_hazard": hazard_before,
+                                "total_hazard_after": self.macro.total_hazard,
                             }
                         )
                         last_event_time = t_event
@@ -301,6 +385,12 @@ class Orchestrator:
                         self._append_comm_log_if_changed(idx, t_event, S, I, R)
 
                     t = t_event
+                    if self.stop_at_absorption:
+                        S_actual, I_actual, R_actual = self._counts_arrays()
+                        reason = self._natural_stop_reason(S_actual, I_actual)
+                        if reason is not None:
+                            self._set_run_metadata(t, reason, S_actual, I_actual, R_actual)
+                            break
                     thresh_int = -math.log(random.random())
                     int_accum = 0.0
                     continue
@@ -327,9 +417,18 @@ class Orchestrator:
                     last_event_time=last_event_time,
                 )
                 t = t_grid
+                if self.stop_at_absorption:
+                    S_actual, I_actual, R_actual = self._counts_arrays()
+                    reason = self._natural_stop_reason(S_actual, I_actual)
+                    if reason is not None:
+                        self._set_run_metadata(t, reason, S_actual, I_actual, R_actual)
                 break
 
-        self._densify_logs_from_global_times()
+        if self.stop_at_absorption and self.run_metadata is None:
+            S_final, I_final, R_final = self._counts_arrays()
+            self._set_run_metadata(t, "max_horizon", S_final, I_final, R_final)
+        if self.dense_logs:
+            self._densify_logs_from_global_times()
         return self.times, self.I_total, self.logs, self.event_log
 
 

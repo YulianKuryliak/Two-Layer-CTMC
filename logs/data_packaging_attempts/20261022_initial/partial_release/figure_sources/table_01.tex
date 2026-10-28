@@ -1,0 +1,19 @@
+\begin{table*}[!t]
+\color{black}
+\centering
+\caption{\textcolor{black}{Data and rules of the two models. In all experiments, \TS{} selects the target node uniformly among susceptible nodes.}}
+\label{tab:information}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}}
+\toprule
+Information or action & \Full{} & \TS{}\\
+\midrule
+Local contacts, rates, and node states & known & known by local simulators\\
+Individual cross-community edges and bridge nodes & known & unknown\\
+Total cross-community weight $W_{ij}$ & obtained from the edges & given directly\\
+Cross-community event rate & uses states of real edge endpoints & uses $\ibar_i$, $\sbar_j$, and $W_{ij}$\\
+Target of a cross-community infection & endpoint of the active edge & a susceptible node drawn by the target rule\\
+Number of possible SI infections through one bundle & at most the number of its channels & at most $s_j$ target infections\\
+\bottomrule
+\end{tabular}
+\end{table*}

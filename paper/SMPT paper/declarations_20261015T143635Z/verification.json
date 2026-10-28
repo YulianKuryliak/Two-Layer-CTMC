@@ -1,0 +1,12 @@
+{
+  "compiler": "pdfLaTeX",
+  "pages": 23,
+  "build": "stable success",
+  "prior_source_preserved": true,
+  "declaration_sections_added": 5,
+  "unknown_facts": "explicit author-completion placeholders",
+  "zip_members": 166,
+  "plot_assets_unchanged": 151,
+  "uk_edited": false,
+  "simulations_run": false
+}

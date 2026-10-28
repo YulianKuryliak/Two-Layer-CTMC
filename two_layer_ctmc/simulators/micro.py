@@ -34,6 +34,7 @@ class MicroSimulator:
         initial_node: Optional[int] = None,
         seed: Optional[int] = None,
         rng: Optional[random.Random] = None,
+        stop_at_absorption: bool = False,
     ) -> MicroSimulationResult:
         if rng is not None and seed is not None:
             raise ValueError("Provide either rng or seed, not both")
@@ -48,7 +49,12 @@ class MicroSimulator:
             model=self.model,
             rng=rng,
         )
-        return orchestrator.run(T_end=T_end, dt_out=dt_out, initial_node=initial_node)
+        return orchestrator.run(
+            T_end=T_end,
+            dt_out=dt_out,
+            initial_node=initial_node,
+            stop_at_absorption=stop_at_absorption,
+        )
 
 
 __all__ = ["MicroSimulator"]

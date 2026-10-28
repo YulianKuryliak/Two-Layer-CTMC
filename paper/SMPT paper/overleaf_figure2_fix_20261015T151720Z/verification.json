@@ -1,0 +1,36 @@
+{
+  "original_zip": "C:\\Users\\UAKuryliYu\\Downloads\\Kuryliak_and_Emmerich_2026_Two_Scale_Stochastic_Simulation_of_Epidemic_Dynamics_in_Community_Networks.zip",
+  "original_sha256": "111823047ff3808fad596784d43adcff04c6bd04f98655870ee614ca5bc1f60b",
+  "original_unchanged": true,
+  "added_files": [
+    "leaf_clique_export_full_path.dat",
+    "leaf_clique_export_twoscale_path.dat",
+    "leaf_clique_signed_delay_full_path.dat",
+    "leaf_clique_signed_delay_twoscale_path.dat"
+  ],
+  "original_entries_preserved": 310,
+  "fixed_entries": 314,
+  "all_figure_dat_references_resolved": 37,
+  "raw_ecdf_tables_identical_to_current": true,
+  "copy_source": "existing verified saved display-coordinate tables; no data regeneration",
+  "build_status": "pdfLaTeX produced PDF; Figure2 panels a/b visually verified on page15",
+  "saved_tables_validation": {
+    "leaf_clique_export_full_path.dat": {
+      "observations": 10000,
+      "vertices_within_visible_axes": 9969
+    },
+    "leaf_clique_export_twoscale_path.dat": {
+      "observations": 10000,
+      "vertices_within_visible_axes": 9980
+    },
+    "leaf_clique_signed_delay_full_path.dat": {
+      "observations": 10000,
+      "vertices_within_visible_axes": 5501
+    },
+    "leaf_clique_signed_delay_twoscale_path.dat": {
+      "observations": 10000,
+      "vertices_within_visible_axes": 5499
+    }
+  },
+  "build_scope": "SMPT subtree extracted into verification workdir; supplied existing project latexmk config for local vendored dependencies. Initial local BibTeX lookup lacked the ZIP-root references_fixed.bib; the bibliography exists in the original archive and was copied for completeness. No full bibliography audit or submission-readiness claim."
+}

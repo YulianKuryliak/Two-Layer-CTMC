@@ -1,0 +1,48 @@
+{
+  "utc": "2026-10-16T14:22:10.469385+00:00",
+  "static_tests": "3/3 PASS; no random epidemic events",
+  "source_archives": "SHA256 PASS; verified fetch skip",
+  "audit": "v2 fingerprint/artifact skip PASS; sparse count conservation and complete ID joins",
+  "data_quality": "4 NA population rows retained; 21 employment/age conflicts flagged; no imputation",
+  "scientific_review": "PASS after caveat clarifications",
+  "pdf_build": "Stable LuaLaTeX via latexmk",
+  "pdf_pages": 10,
+  "pdf_overfull_boxes": 0,
+  "pdf_missing_glyphs": 0,
+  "pdf_font_or_reference_warnings": 0,
+  "visual_review": "pages3/4: precedent text, partition caveats, audit table and caption readable",
+  "main_paper_unchanged": true,
+  "previous_documents": {
+    "network_preparation": {
+      "artifact_hash_checks": 30,
+      "status": "unchanged"
+    },
+    "national_network_preparation": {
+      "artifact_hash_checks": 25,
+      "status": "unchanged"
+    }
+  },
+  "source_diff_review": "Scoped new-file no-index whitespace checks PASS; unrelated working-tree edits excluded",
+  "simulations_run": false,
+  "synthetic_people_generated": 0,
+  "limitations": [
+    "No full national person graph generated",
+    "No epidemic runs or performance benchmarks",
+    "US OSF individual files and public JRC graph not validated",
+    "Household/student/contact calibration still required",
+    "v1 retained; v2 current"
+  ],
+  "artifact_sha256": {
+    "analyze_design.py": "62c3444ecc785ab2978dfa3388837614ea349f9ac26fb29ae27afaf6b4f97023",
+    "contact_algebra.py": "3fbf953302326477ee07eedb402595e107c76413f7dc2d9b31bfe1d9ed1b02d8",
+    "fetch_inputs.py": "51abfbb9ce346b70028a49b0d3a296df83a3fd3bf2fd25b81793bf1c8fa5172b",
+    "test_design.py": "6ab6bfc841fb6600c19e0aaea27d72fcee77fc909194f0ed35c1cabcd94534b3",
+    "article.tex": "40d8cdd37b32e6406e43530737cdd4d2d998b9a875c60778f59cc98a5d55ff49",
+    "article.pdf": "12ad2834dcac75746662f6931a5c1549f4daf85904ae02a48419635eacc7bec8",
+    "article.txt": "543ae06790105fcf00bd06ee368339b0adf3d8fca814abd8dffddb8b465388ea",
+    "README.md": "725d8483695ad6ae5428d8d60bbe3220984a933f9e3b0584df363708fb58618e",
+    "process.md": "b57f7e4b8e389ffc44e421c2dc619a27554270196b7849d40916481b256fd976",
+    "sources.json": "51c1885343e215125c6dac041ad2581ae6c0bc7d1bbe964ceee7f74f3ab0c38f",
+    "analysis/v2/manifest.json": "4267737a18477b754aef35623e97922635c34028b6c670d1eb50e44401d6fd99"
+  }
+}

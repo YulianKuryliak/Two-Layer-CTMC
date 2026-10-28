@@ -1,0 +1,26 @@
+{
+  "source": "C:\\Users\\UAKuryliYu\\Downloads\\main-SMPT (4).tex",
+  "source_sha256": "5897bcaaf82462fd166cf270bd09dc0cd191aa37e8792dfdd662ddd995bb9582",
+  "modified": "Only Figure2 inset and matching caption sentence",
+  "existing_curves_and_axes": "unchanged",
+  "inset_x_limits": [
+    -22,
+    3
+  ],
+  "inset_y_limits_percent": [
+    0,
+    2.5
+  ],
+  "data": "Existing full raw ECDF tables; restrict visible x interval only, no input data edits",
+  "build": "stable pdfLaTeX1page preview; visually checked",
+  "pdftex_memory": [
+    "4713532",
+    "5000000"
+  ],
+  "source_scope_check": "only inset plus one caption sentence",
+  "article_body_unchanged": true,
+  "input_data_changed": false,
+  "rendered_from_all_raw_observations": "visible x window is a plotting filter only",
+  "full_article_recompiled": false,
+  "final_inset_label": "CDF (%) inside top-left of inset; no overlap with main curve"
+}

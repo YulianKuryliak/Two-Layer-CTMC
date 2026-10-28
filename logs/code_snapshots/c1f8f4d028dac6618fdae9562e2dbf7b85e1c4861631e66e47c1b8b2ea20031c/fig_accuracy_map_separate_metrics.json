@@ -1,0 +1,28 @@
+{
+  "kind": "Figure rendering from saved data; no simulation or statistical recomputation",
+  "source": "output/analysis/chain_corrected_figures_20261008/cell_summary.csv",
+  "source_sha256": "f26074b3031142dbd1f27848ce6cc50319571d243b421f3991ef9d15cf2ef0c3",
+  "cells": 48,
+  "pairs_per_cell": 400,
+  "panel_layout": {
+    "rows": [
+      "k=1",
+      "k=5"
+    ],
+    "columns": [
+      "median_shift_pct",
+      "rel_w1_pct"
+    ]
+  },
+  "significance": "Wasserstein panels only: hatching for rel_w1_perm_p >= 0.05",
+  "colour_scales": "Zero-centred diverging median scale; nonnegative Wasserstein scale; shared within each metric",
+  "scripts": {
+    "extrascripts/visualization/restore_smpt_accuracy_map.py": "d7ca39cefb57db9ad52fae50039fc5425d52684ad82372a93098fb76df58e9c5",
+    "extrascripts/visualization/smpt_twoscale_paper_figures.py": "449ad716e8a37fcb0c0779736d21e7db7a813406a1492c236c1defada6ce4df5"
+  },
+  "outputs": {
+    "fig_accuracy_map_separate_metrics.pdf": "d1c5202b513cf4200500457a4450cbfa3a1262270ea13c31d4db78867ac0eece",
+    "fig_accuracy_map_separate_metrics.png": "d14e612e3c4fffdd91e35d32934bc70ad38502ba5303b23b0648628c5d46dc1a"
+  },
+  "simulations_run": false
+}

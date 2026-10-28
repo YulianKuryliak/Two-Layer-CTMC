@@ -1,0 +1,13 @@
+item,label,plot_inputs,supporting_data
+Figure 1,fig:schematic,,conceptual schematic; no empirical dataset
+Figure 2,fig:clique_leaf,leaf_clique_bypass.dat;leaf_clique_export_full_path.dat;leaf_clique_export_twoscale_path.dat;leaf_clique_signed_delay_full_path.dat;leaf_clique_signed_delay_twoscale_path.dat,data/clique_leaf
+Figure 3,fig:source_sweep,leaf_source_sweep_k1.dat;leaf_source_sweep_k1_bypass_ci.dat;leaf_source_sweep_k5.dat;leaf_source_sweep_k5_bypass_ci.dat,data/source_leaf
+Figure 4,fig:chain_cliques,chain_full_cdf.dat;chain_full_trajectory.dat;chain_mm_cdf.dat;chain_mm_trajectory.dat,data/chains
+Figure 5,fig:chain_heatmap,chain_heatmap_k1_median.dat;chain_heatmap_k1_w1.dat;chain_heatmap_k5_median.dat;chain_heatmap_k5_w1.dat,data/chains/median_layer_metrics.csv
+Figure 6,fig:accuracy_map,accuracy_k1_median.dat;accuracy_k1_w1.dat;accuracy_k5_median.dat;accuracy_k5_w1.dat,data/chains/cell_summary.csv
+Figure 7,fig:descriptor,descriptor_cross_n1000_k1.dat;descriptor_cross_n1000_k5.dat;descriptor_cross_n100_k1.dat;descriptor_cross_n100_k5.dat;descriptor_cross_n250_k1.dat;descriptor_cross_n250_k5.dat;descriptor_cross_n50_k1.dat;descriptor_cross_n50_k5.dat;descriptor_n1000_k1.dat;descriptor_n1000_k5.dat;descriptor_n100_k1.dat;descriptor_n100_k5.dat;descriptor_n250_k1.dat;descriptor_n250_k5.dat;descriptor_n50_k1.dat;descriptor_n50_k5.dat,data/chains/cell_summary.csv
+Table 1,tab:information,,figure_sources/table_01.tex; model definitions
+Table 2,tab:design,,figure_sources/table_02.tex; metadata.json
+Table 3 / Appendix A,tab:verification,,data/tables/table_3_clique_verification.csv; data/chains/per_run.csv.gz
+Appendix B,app:floor,,analytical derivation in article/appendices.tex; saved chain permutation floors in data/chains/cell_summary.csv
+Appendix C,app:repro,,data/chains/per_run.csv.gz; raw/chains.tar

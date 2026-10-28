@@ -1,0 +1,204 @@
+\documentclass[10pt]{article}
+\usepackage[a3paper,landscape,margin=15mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\newfontfamily\ukrainianfont{DejaVu Serif}
+\newenvironment{ukrainian}{}{}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{3pt}
+\pagestyle{empty}
+\setlength{\columnsep}{10mm}
+\newcommand{\twocolumnpair}[2]{%
+  \noindent\begin{minipage}[t]{0.485\textwidth}\begin{ukrainian}#1\end{ukrainian}\end{minipage}%
+  \hfill\vrule\hfill
+  \begin{minipage}[t]{0.485\textwidth}#2\end{minipage}%
+}
+\begin{document}
+\fontsize{9.5}{11.2}\selectfont
+
+\twocolumnpair{
+\section*{4. Механізми апроксимації та точність часу}
+\subsection*{4.1. Що визначає точність передачі}
+Передача між спільнотами залежить від того, чи досягає інфекція вузлів, які їх з’єднують. MicroMacro оцінює цей тиск передачі за частками інфікованих і сприйнятливих у спільнотах. Практичне питання полягає в тому, наскільки добре таке спрощене представлення передбачає час експорту та прибуття в мережі.
+
+Наведений аналіз стосується SI-динаміки на фіксованих графах: інфіковані вузли залишаються інфекційними, одужання немає. Full Micro і MicroMacro використовують однакові правила внутрішньоспільнотного зараження. Апроксимація змінює міжспільнотну передачу, що може впливати і на подальше локальне поширення. Ми розглядаємо інформацію, за якою визначається час передачі, вибір вузла-отримувача та чисельну обробку часу події. Ці механізми пояснюють, що саме вимірюють наступні експерименти.
+
+\subsection*{4.2. Три механізми апроксимації}
+\paragraph{Інтенсивність передачі.}
+Стан конкретних міжспільнотних контактів визначає миттєву інтенсивність передачі у Full Micro. Для передачі зі спільноти $i$ до $j$ мікроскопічна й агрегована інтенсивності дорівнюють
+\begin{equation*}
+a^\star_{ij}(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}w_{uv}\,\mathbf{1}\{x_u=I,\ x_v=S\},
+\end{equation*}
+та
+\begin{equation*}
+\lambda_{ij}(x)=\beta_{\mathrm{out}}W_{ij}\bar{i}_i(x)\bar{s}_j(x).
+\end{equation*}
+Тут $W_{ij}$ — сумарна вага міжспільнотних контактів; у тестах з одиничними вагами це кількість з’єднувальних ребер. Агрегована інтенсивність використовує частки інфікованих у джерелі й сприйнятливих в отримувачі, тому втрачає інформацію про конкретні вузли на кінцях ребер. Наприклад, перенесення інфекції з внутрішнього вузла на міст не змінює загальної частки інфікованих, але може активувати ребро експорту. Розбіжність найбільша, коли стан межі відрізняється від стану, передбаченого часткою всієї спільноти.
+
+\paragraph{Вузол-отримувач.}
+Місце імпорту впливає на шлях інфекції до наступного інтерфейсу. Full Micro заражає сприйнятливий кінець фактичного ребра передачі, а Production MicroMacro рівномірно вибирає сприйнятливий вузол спільноти-отримувача. Це може змінити подальше поширення навіть за близьких часів імпорту. У досліді з одним листком отримувач має лише один вузол, тому вибору місця першого імпорту немає. Ланцюги додатково показують наслідки розміщення в більшій спільноті.
+
+\paragraph{Чисельний час.}
+Production оцінює змінну макроінтенсивність за копіями мікромоделей, просунутими до середини інтервалу синхронізації. Інтенсивність накопичується з цією оцінкою, а момент досягнення випадкового порога інтерполюється. Потім фактичні мікромоделі просуваються до цього часу, а передачу обирають за оновленими станами. Отже, крок синхронізації $\tau_{\mathrm{micro}}$ також впливає на часову апроксимацію. В експериментах крок фіксований, і вимірюється сумарна розбіжність Production; окремі чисельні внески трьох механізмів не оцінюються.
+}{
+\section*{4. Approximation mechanisms and timing accuracy}
+\subsection*{4.1. What determines transmission accuracy}
+Transmission between communities depends on infection reaching the nodes that connect them. MicroMacro estimates this transmission pressure from community-wide infected and susceptible fractions. The practical question is how closely this simpler description predicts export and arrival times across the network.
+
+The analysis below concerns SI dynamics on fixed graphs: infected nodes remain infectious and there is no recovery. Full Micro and MicroMacro use the same within-community infection rules. The approximation changes how infections pass between communities, and these changes can also affect later local spread. We examine the information used to time a transmission, the choice of its receiving node, and the numerical treatment of its time. Together, these mechanisms explain what the subsequent experiments measure.
+
+\subsection*{4.2. Three mechanisms of approximation}
+\paragraph{Transmission intensity.}
+The states of the actual inter-community contacts determine the instantaneous transmission rate in Full Micro. For transmission from community $i$ to $j$, the microscopic and aggregate rates are
+\begin{equation*}
+a^\star_{ij}(x)=\beta_{\mathrm{out}}\sum_{(u,v)\in E_{ij}}w_{uv}\,\mathbf{1}\{x_u=I,\ x_v=S\},
+\end{equation*}
+and
+\begin{equation*}
+\lambda_{ij}(x)=\beta_{\mathrm{out}}W_{ij}\bar{i}_i(x)\bar{s}_j(x).
+\end{equation*}
+Here $W_{ij}$ summarizes the inter-community contact weights; in the unit-weight benchmarks it is the number of connecting edges. The aggregate rate describes transmission using the prevalence of infection in the source and susceptibility in the receiver. It therefore loses the identities of the nodes participating in these contacts. For example, moving an infection from an interior node to a bridge node leaves the infected fraction unchanged but can activate an export edge. This distinction matters most while the boundary infection state differs appreciably from the community-wide fraction.
+
+\paragraph{Receiving node.}
+The location of an imported infection affects its route to the next interface. Full Micro infects the susceptible endpoint of the transmitting edge, whereas Production MicroMacro selects a susceptible node uniformly within the receiving community. This can change subsequent propagation even when the import times are similar. In the single-leaf experiments, the receiver has only one node, so the first import has no location choice. Chains additionally expose the consequences of placement within a larger receiver.
+
+\paragraph{Numerical timing.}
+Production estimates the changing macro intensity using copies of the micro models advanced to the midpoint of a synchronization interval. It accumulates intensity using this midpoint estimate and interpolates the time at which a random hazard threshold is reached. The actual micro models are then advanced to that time, and the transfer is selected using their updated states. Thus, the synchronization step $\tau_{\mathrm{micro}}$ also enters the timing approximation. The experiments use a fixed step and measure the combined Production discrepancy; they do not assign separate numerical contributions to the three mechanisms above.
+}
+
+\newpage
+\twocolumnpair{
+\subsection*{4.3. Кліка, з’єднана з одним листком}
+Мікроскопічний експорт можливий лише після зараження хоча б одного справжнього вузла-моста. У конструкції «кліка–міст–листок» це граничне правило легко перевірити: спільнота-джерело є клікою з $n$ вузлів, а сприйнятливий зовнішній листок з’єднаний із $k$ різними вузлами джерела. Це вузли-мости. Нехай $B_I(t)$ — кількість інфікованих мостів, а $i_0(t)$ — кількість усіх інфікованих вузлів джерела. Поки листок сприйнятливий, інтенсивності експорту такі:
+\begin{equation*}
+a^{\mathrm{Full}}_{01}(t)=\beta_{\mathrm{out}}B_I(t),\qquad
+\lambda^{\mathrm{MM}}_{01}(t)=\beta_{\mathrm{out}}k\,\frac{i_0(t)}{n}.
+\end{equation*}
+Агрегована інтенсивність замінює фактичну кількість інфікованих мостів оцінкою за часткою інфікованих. Якщо інфіковані внутрішні вузли, але всі мости ще сприйнятливі, інтенсивність експорту у Full дорівнює нулю, тоді як агрегована інтенсивність уже додатна. Тому експорт до зараження першого справжнього моста прямо виявляє втрату інформації про межу.
+
+Швидке внутрішнє поширення пояснює, чому часові розподіли можуть залишатися близькими попри цю відмінність. Якщо мости заражаються швидко порівняно з подальшим очікуванням передачі листку, період розбіжності на межі короткий. Коли все джерело інфіковане, обидві інтенсивності дорівнюють $\beta_{\mathrm{out}}k$, поки листок залишається сприйнятливим. Чисельний експеримент вимірює часову різницю та частоту раннього експорту.
+
+Для одного моста ($k=1$) час експорту у Full має просте тлумачення. Спочатку інфекція досягає моста в момент $T_B$, потім передача відбувається через єдине активне ребро:
+\begin{equation*}
+T_A=T_B+Z,\qquad Z\sim\mathrm{Exp}(\beta_{\mathrm{out}}).
+\end{equation*}
+За SI міст залишається інфекційним, тому наступні зараження у кліці не змінюють цей годинник. Для $k>1$ нові інфіковані мости можуть збільшувати інтенсивність експорту після $T_B$. Формула для одного моста пояснює механізм; чисельний benchmark «кліка–листок» використовує $k=2$. Параметри $\beta_{\mathrm{in}}$ і $\beta_{\mathrm{out}}$ розрізняють два етапи, хоча в кожній конфігурації експерименту вони однакові.
+
+Усереднення інтенсивності мостів також може змінювати розподіл часу експорту, бо ймовірність очікування нелінійно залежить від накопиченої інтенсивності. Додаток A містить опорні формули й порівняння для ідеального умовного середнього в автономній кліці. Production використовує реалізований midpoint-годинник, а не точний інтеграл цієї ідеальної інтенсивності.
+
+\subsection*{4.4. Від механізмів до експериментів}
+Найсприятливіший режим для точності часу — коли внутрішнє поширення швидко активує межу порівняно з очікуванням експорту. Експеримент із клікою перевіряє цей режим і зіставляє часову відповідність із діагностикою порядку зараження мостів. Заміна кліки на зв’язний випадковий граф показує, що змінюється, коли шлях до межі довший і сильніше залежить від внутрішньої структури.
+
+Ланцюгові експерименти додають повторні переходи. Вони перевіряють, чи зберігається близькість часів прибуття після кількох спільнот і як розбіжність змінюється з розміром спільноти та внутрішньою довжиною шляхів. Розміщення імпорту стає важливим, бо зараження в отримувачі має далі досягти наступної межі.
+
+Для цих задач поширення важливою є кількісна відповідність часів експорту або прибуття на потрібному рівні точності. Тому ми порівнюємо типові часи та їхні розподіли, а діагностика мостів доповнює їх інформацією про порядок передачі. Так механізми апроксимації пов’язуються з виміряною точністю та умовами, за яких агрегований інтерфейс є корисним.
+
+\subsection*{4.5. Чисельний benchmark на графі «кліка–міст–листок»}
+\subsubsection*{4.5.1. Постановка експерименту}
+Далі ми чисельно досліджуємо конструкцію «кліка–міст–листок» на виправлених production-реалізаціях Full Micro і MicroMacro, призначивши незалежні потоки випадкових чисел мікрорушіям MicroMacro. Спільнота-джерело — кліка розміру $n=100$, а $k=2$ вузли-мости задають єдині мікроскопічні шляхи передачі до листка-отримувача. Параметр передачі становить $\beta=0.005$, горизонт симуляції — $T_{\mathrm{end}}=1000$. Для кожного симулятора виконано $10{,}000$ парних повторів. Benchmark реєструє три часові величини: час до першої активації справжнього моста, різницю між активацією моста й експортом та повний час від початку симуляції до експорту в листок.
+
+\subsubsection*{4.5.2. Розподіли часових величин}
+}{
+\subsection*{4.3. A clique connected to one leaf}
+A microscopic export can occur only after at least one true bridge node is infected. The clique--bridge--leaf construction makes this boundary condition easy to inspect: a source clique contains $n$ nodes, and a susceptible external leaf is connected to $k$ distinct source nodes. These are its bridge nodes. Let $B_I(t)$ count the infected bridge nodes and let $i_0(t)$ count all infected source nodes. While the leaf is susceptible, the two export rates are
+\begin{equation*}
+a^{\mathrm{Full}}_{01}(t)=\beta_{\mathrm{out}}B_I(t),\qquad
+\lambda^{\mathrm{MM}}_{01}(t)=\beta_{\mathrm{out}}k\,\frac{i_0(t)}{n}.
+\end{equation*}
+The aggregate rate replaces the actual bridge count by a count estimated from the infected fraction. If some interior nodes are infected but every bridge is susceptible, Full has zero export intensity while the aggregate intensity is already positive. An export before the first true bridge infection is therefore a direct diagnostic of the missing boundary information.
+
+Fast internal spread offers a reason for close timing distributions despite this difference. If the bridges become infected quickly compared with the subsequent wait for transmission to the leaf, the period of boundary mismatch is short. Once the entire source is infected, both rates equal $\beta_{\mathrm{out}}k$ while the leaf remains susceptible. The numerical experiments assess how large a timing difference remains and how frequently the boundary-ordering diagnostic detects an early export.
+
+For one bridge ($k=1$), the Full export time has a particularly simple interpretation. Infection first reaches the bridge at time $T_B$, then crosses its single active edge:
+\begin{equation*}
+T_A=T_B+Z,\qquad Z\sim\mathrm{Exp}(\beta_{\mathrm{out}}).
+\end{equation*}
+Under SI dynamics, the bridge remains infectious, so further infections inside the clique do not change this post-bridge clock. For $k>1$, additional infected bridges can increase the export rate after $T_B$. The single-bridge formula is an explanatory case; the numerical clique--leaf benchmark below uses $k=2$. The rates $\beta_{\mathrm{in}}$ and $\beta_{\mathrm{out}}$ distinguish the two waiting mechanisms here and are equal within each reported experimental configuration.
+
+Averaging a bridge hazard can also change the distribution of export time, because the probability of waiting depends nonlinearly on its accumulated intensity. Appendix A gives reference formulas and the resulting ideal conditional-mean comparison for an autonomous clique source. The Production experiments evaluate the implemented midpoint clock rather than an exact integral of that ideal hazard.
+
+\subsection*{4.4. From mechanisms to experiments}
+The most promising timing regime is one in which internal spread rapidly activates the interface compared with the wait for export. The clique benchmark tests this regime and compares timing agreement with the bridge-ordering diagnostic. Replacing the clique by connected random graphs then examines what changes when access to the interface is slower and more dependent on internal structure.
+
+The chain experiments extend the comparison to repeated crossings. They test whether close export times remain close arrival times after several communities and how the discrepancy changes with community size and internal path length. Import placement becomes relevant because an infection received in one community must subsequently reach another boundary.
+
+For these propagation tasks, the useful outcome is a quantified agreement in export or arrival times at the required level of accuracy. We therefore compare typical times and their distributions, with the bridge diagnostic providing additional information about transmission ordering. This connects the approximation mechanisms to the measured accuracy and to the network conditions in which the aggregate interface is useful.
+
+\subsection*{4.5. Numerical benchmark on the clique--bridge--leaf graph}
+\subsubsection*{4.5.1. Experimental setup}
+We next evaluate the clique--bridge--leaf construction numerically using the corrected production implementations of Full Micro and MicroMacro, with independent random-number streams assigned to the MicroMacro micro engines. The source community is a clique of size $n=100$, with $k=2$ bridge nodes providing the only microscopic transmission routes to the receiving leaf. The transmission parameter is $\beta=0.005$, the simulation horizon is $T_{\mathrm{end}}=1000$, and $10{,}000$ paired replications are generated for each simulator. The benchmark records three timing quantities: the time until the true bridge set is first activated, the difference between bridge activation and export, and the total time from the beginning of the simulation to export into the leaf.
+
+\subsubsection*{4.5.2. Timing distributions}
+}
+
+\newpage
+\twocolumnpair{
+\section*{Додаток A. Аналітичні перевірки для автономного джерела-кліки}
+Ці розрахунки стосуються кліки з $n$ вузлів, початково інфікованим рівномірно вибраним вузлом, SI-динамікою та однаковою внутрішньою інтенсивністю $\beta_{\mathrm{in}}>0$ на кожному ребрі. $k$ різних вузлів-мостів з’єднані з одним листком ребрами з інтенсивністю $\beta_{\mathrm{out}}>0$. До першого зараження листок не може впливати на джерело. Тому розглядаємо автономну траєкторію джерела, включно з її гіпотетичним продовженням після експорту, та незалежний експоненційний поріг експорту.
+
+\subsection*{A.1. Час до першого зараженого моста}
+За рівномірного початкового вузла порядок зараження вузлів є рівномірною перестановкою. Коли заражено $m$ вузлів джерела, загальна інтенсивність наступного зараження становить $\beta_{\mathrm{in}}m(n-m)$, а час очікування не залежить від того, який саме сприйнятливий вузол обрано. Імовірність, що жоден із перших $m$ інфікованих вузлів не є мостом, дорівнює $\binom{n-k}{m}/\binom{n}{m}$. Отже,
+\begin{equation*}
+\mathbb{E}[T_B]=\sum_{m=1}^{n-k}\frac{\binom{n-k}{m}}{\binom{n}{m}}\,\frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+\end{equation*}
+Формула враховує можливість, що початковий вузол уже є мостом і $T_B=0$; при $k=n$ сума порожня і сподівання дорівнює нулю. Для одного моста вона спрощується до
+\begin{equation*}
+\mathbb{E}[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}n},\qquad H_{n-1}=\sum_{m=1}^{n-1}\frac1m.
+\end{equation*}
+Для $k=1$ незалежний експоненційний час переходу дає $\mathbb{E}[T_A]=H_{n-1}/(\beta_{\mathrm{in}}n)+1/\beta_{\mathrm{out}}$. Це аналітичні опорні перевірки за заданого правила початкового зараження, а не валідація Production. Формула для одного моста не описує чисельний benchmark із $k=2$.
+
+\subsection*{A.2. Ідеальне порівняння умовного середнього hazard}
+Для цієї автономної кліки випадковий порядок зараження незалежний від часів переходів між кількостями інфікованих. Якщо зафіксувати всю траєкторію кількості інфікованих джерела до часу $t$, інфікована множина на кожному часі має рівномірний розподіл серед підмножин відповідного розміру. Позначимо цю інформацію через $C_t$ та визначимо потенційний накопичений hazard мостів до зупинки експорту:
+\begin{equation*}
+H_B(t)=\int_0^t\beta_{\mathrm{out}}B_I(s)\,ds.
+\end{equation*}
+Його умовне середнє дорівнює
+\begin{equation*}
+\bar H_B(t)=\mathbb{E}[H_B(t)\mid C_t]=\int_0^t\beta_{\mathrm{out}}k\frac{i_0(s)}n\,ds.
+\end{equation*}
+Це проєкція лише за траєкторією кількості інфікованих. Додаткова умова, що листок досі сприйнятливий, містить інформацію про мости, тому не є тотожністю фактичного hazard з урахуванням виживання.
+
+Оскільки поріг експорту незалежний від автономної траєкторії джерела, імовірність виживання у Full дорівнює $\mathbb{E}[\exp(-H_B(t))]$. Ідеальний агрегований годинник, що точно інтегрує те саме умовне середнє, має виживання $\mathbb{E}[\exp(-\bar H_B(t))]$. Опуклість експоненти дає
+\begin{equation*}
+\mathbb{E}[\exp(-H_B(t))\mid C_t]\geq \exp(-\bar H_B(t)),
+\end{equation*}
+а отже $S_{\mathrm{Full}}(t)\geq S_{\mathrm{ideal}}(t)$. Інтегрування цих функцій виживання дає $\mathbb{E}[T_A^{\mathrm{Full}}]\geq\mathbb{E}[T_A^{\mathrm{ideal}}]$. Сподівання скінченні: інфекція насичує скінченну кліку, після чого листок має додатну інтенсивність зараження.
+
+Цей результат показує, що заміна змінного bridge-hazard його умовним середнім може змінити ідеальний годинник експорту, навіть коли миттєві потенційні інтенсивності збігаються в середньому. Висновок стосується автономної рівномірно засіяної кліки, тієї самої траєкторії кількості інфікованих, незалежного порога експорту й точного інтегрування умовного середнього hazard. Production використовує midpoint, а зв’язані ланцюги мають зворотний вплив імпортів. Тому ця нерівність пояснює ідеалізований приклад, але не задає знак похибки Production.
+}{
+\section*{Appendix A. Analytical checks for an autonomous clique source}
+These calculations concern a uniformly seeded $n$-node clique with SI dynamics, equal per-edge internal rate $\beta_{\mathrm{in}}>0$, and $k$ distinct bridge nodes connected to one leaf at rate $\beta_{\mathrm{out}}>0$ per bridge edge. Before its first infection, the leaf cannot affect the source. We therefore use an autonomous source trajectory, including its hypothetical continuation after export, and an independent exponential threshold for the export clock.
+
+\subsection*{A.1. Time to the first infected bridge}
+Uniform seeding makes the order of node infections a uniform permutation. When $m$ source nodes are infected, the next infection has total rate $\beta_{\mathrm{in}}m(n-m)$, and its waiting time is independent of which susceptible node is selected. The probability that none of the first $m$ infected nodes belongs to the bridge set is $\binom{n-k}{m}/\binom{n}{m}$. Consequently,
+\begin{equation*}
+\mathbb{E}[T_B]=\sum_{m=1}^{n-k}\frac{\binom{n-k}{m}}{\binom{n}{m}}\,\frac{1}{\beta_{\mathrm{in}}m(n-m)}.
+\end{equation*}
+This includes the possibility that the initial seed is a bridge, in which case $T_B=0$; for $k=n$ the sum is empty and the expectation is zero. With one bridge it reduces to
+\begin{equation*}
+\mathbb{E}[T_B]=\frac{H_{n-1}}{\beta_{\mathrm{in}}n},\qquad H_{n-1}=\sum_{m=1}^{n-1}\frac1m.
+\end{equation*}
+For $k=1$, the independent exponential crossing time then gives $\mathbb{E}[T_A]=H_{n-1}/(\beta_{\mathrm{in}}n)+1/\beta_{\mathrm{out}}$. These are analytical reference checks under the specified seed convention, not completed tests of the Production implementation, and the single-bridge formula does not apply to the $k=2$ numerical benchmark.
+
+\subsection*{A.2. Ideal conditional-mean hazard comparison}
+In this autonomous clique construction, the random infection order is independent of the count holding times. Conditional on the entire source count path up to $t$, the infected set at each time is therefore uniformly distributed among subsets of its size. Write $C_t$ for this count-path information and define the potential accumulated bridge hazard, before stopping it at export, by
+\begin{equation*}
+H_B(t)=\int_0^t\beta_{\mathrm{out}}B_I(s)\,ds.
+\end{equation*}
+Its conditional mean is
+\begin{equation*}
+\bar H_B(t)=\mathbb{E}[H_B(t)\mid C_t]=\int_0^t\beta_{\mathrm{out}}k\frac{i_0(s)}n\,ds.
+\end{equation*}
+This projection uses the source count path alone. Conditioning additionally on the leaf still being susceptible supplies information about the bridge history, so it is not an identity for the operational hazard filtered by survival information.
+
+Because the export threshold is independent of the autonomous source trajectory, Full survival is $\mathbb{E}[\exp(-H_B(t))]$. An ideal aggregate clock that integrates the same count-path conditional mean exactly has survival $\mathbb{E}[\exp(-\bar H_B(t))]$. Convexity of the exponential gives
+\begin{equation*}
+\mathbb{E}[\exp(-H_B(t))\mid C_t]\geq \exp(-\bar H_B(t)),
+\end{equation*}
+and hence $S_{\mathrm{Full}}(t)\geq S_{\mathrm{ideal}}(t)$. Integrating these survival curves gives $\mathbb{E}[T_A^{\mathrm{Full}}]\geq\mathbb{E}[T_A^{\mathrm{ideal}}]$. The means are finite: infection saturates the finite clique and the leaf then has positive export rate.
+
+The result shows that replacing a variable bridge hazard by its conditional mean can advance an ideal export clock even when the instantaneous potential hazards agree on average. Its assumptions specify the comparison: an autonomous, uniformly seeded clique; the same source count path; an independent export threshold; and exact integration of the conditional-mean hazard. Production instead uses midpoint quadrature, and coupled chains have feedback through imports. The inequality therefore explains an ideal motif, not a signed-error guarantee for those simulations.
+}
+\end{document}

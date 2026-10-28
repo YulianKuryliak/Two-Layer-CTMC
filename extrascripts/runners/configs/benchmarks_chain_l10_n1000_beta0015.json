@@ -1,0 +1,37 @@
+{
+  "description": "Ten-community, 1000-node chain comparison at a common SI rate",
+  "replications_default": 100,
+  "defaults": {
+    "family": "chain_L10_n1000",
+    "communities": 10,
+    "community_size": 1000,
+    "inter_links": 5,
+    "macro_graph_type": "chain",
+    "beta": 0.0015,
+    "gamma": 0.0,
+    "model": 2,
+    "tau_micro": 1.0,
+    "macro_T": 1.0,
+    "T_end": 2500,
+    "dt_out": 1.0,
+    "initial_node": 0,
+    "store_trajectories": true
+  },
+  "scenarios": [
+    {
+      "name": "chain_cliques_L10_n1000_k5_beta0015",
+      "micro_graph_type": "complete",
+      "base_seed": 141000,
+      "plot_groups": ["topology_comparison"]
+    },
+    {
+      "name": "chain_random_connected_L10_n1000_d6_k5_beta0015",
+      "family": "chain_random_connected_L10_n1000",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 6,
+      "T_end": 4000,
+      "base_seed": 142000,
+      "plot_groups": ["topology_comparison"]
+    }
+  ]
+}

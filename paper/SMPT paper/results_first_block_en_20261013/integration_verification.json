@@ -1,0 +1,21 @@
+{
+  "english_sections": 6,
+  "results_sections": 1,
+  "results_subsections": 5,
+  "results_figures": 6,
+  "previous_sections_1_5": "byte-identical except activating two Results links",
+  "abstract": "byte-identical test placeholder",
+  "plots": "six native plot bodies copied verbatim from first UK Results block",
+  "technical_parity": "150 numeric tokens, all95 inline mathematics expressions, both numbered equations, labels/references identical to selected UK block",
+  "english_main_sha256": "91781d3b1cc1f7321769281334618882156d7022690b611a1e48bd9d832a2b51",
+  "ukrainian_unchanged": true,
+  "english_pdf_sha256": "763e8f4cbfdcc53ed78a392f9d93816342f2657f6c1853b0bf16e6718b4096dd",
+  "english_txt_sha256": "53734cc72a91a4315a284ad7171361f118e11c3df28c711f338f8ca37c93ca92",
+  "compiler": "LuaLaTeX, native CAS template/T1 fonts; default pdfLaTeX memory was exceeded by the complete editable ECDFs",
+  "pdf_pages": 22,
+  "build": "BibTeX and stable-reference final LuaLaTeX pass; no undefined references/citations, duplicate labels, missing glyphs or pending rerun; inherited CAS title117.0831pt and empty-anchor warnings only",
+  "visual_check": "Results start and all six native figures/captions checked on pages14-20",
+  "prior_parity": "Both current UK1-5 and pre-change EN1-5 byte-match the last audited translation baselines",
+  "source_figures": "byte-identical copied first-block plotting code; shared data unchanged",
+  "no_simulations_or_statistical_recomputation": true
+}

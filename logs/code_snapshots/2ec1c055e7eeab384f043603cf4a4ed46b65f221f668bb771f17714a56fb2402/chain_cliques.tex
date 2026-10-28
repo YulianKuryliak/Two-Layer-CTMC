@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+\begin{groupplot}[paper axis,group style={group size=2 by 1,horizontal sep=1.8cm},width=.38\linewidth,height=4.6cm,scale only axis,xmin=0,xmax=6000,xtick={0,2000,4000,6000},xlabel={Time}]
+\nextgroupplot[title={(a) Epidemic propagation},ylabel={Infected nodes},ymin=0,ymax=10300,ytick={0,2500,5000,7500,10000},scaled y ticks=false,legend pos=north west]
+\addplot[draw=none,name path=fulllo,forget plot] table[x=time,y=lower]{figures_pgfplots/chain_full_trajectory.dat};
+\addplot[draw=none,name path=fullhi,forget plot] table[x=time,y=upper]{figures_pgfplots/chain_full_trajectory.dat};
+\addplot[fill=FullBlue,fill opacity=.16,draw=none,forget plot] fill between[of=fulllo and fullhi];
+\addplot[FullBlue,thick] table[x=time,y=median]{figures_pgfplots/chain_full_trajectory.dat};
+\addlegendentry{\Full{}}
+\addplot[draw=none,name path=mmlo,forget plot] table[x=time,y=lower]{figures_pgfplots/chain_mm_trajectory.dat};
+\addplot[draw=none,name path=mmhi,forget plot] table[x=time,y=upper]{figures_pgfplots/chain_mm_trajectory.dat};
+\addplot[fill=ScaleOrange,fill opacity=.16,draw=none,forget plot] fill between[of=mmlo and mmhi];
+\addplot[ScaleOrange,thick] table[x=time,y=median]{figures_pgfplots/chain_mm_trajectory.dat};
+\addlegendentry{\TS{}}
+\nextgroupplot[title={(b) Arrival in the last community},ylabel={Empirical CDF},ymin=0,ymax=1.02,ytick={0,.25,.5,.75,1}]
+\addplot[FullBlue,thick,const plot] table[x=time,y=cdf]{figures_pgfplots/chain_full_cdf.dat};
+\addplot[ScaleOrange,thick,const plot] table[x=time,y=cdf]{figures_pgfplots/chain_mm_cdf.dat};
+\end{groupplot}
+\end{tikzpicture}

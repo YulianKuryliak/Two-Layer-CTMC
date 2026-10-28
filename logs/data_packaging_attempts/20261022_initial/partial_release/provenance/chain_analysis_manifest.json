@@ -1,0 +1,31 @@
+{
+  "status": "complete",
+  "created_utc": "2026-10-08T19:07:34.987804+00:00",
+  "source": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/output/chain_twoscale_residual_midpoint_20261007",
+  "source_manifest_sha256": "03f312321282a37b1fdd03c9cff9985e67aad83a5e17026f3fcaf3077d5d1885",
+  "source_code_fingerprint": "a06353e038c66c0abb0ae93b512dde3a99b184e226e330534642bdbedc83d6a3",
+  "analysis_code_fingerprint": "72a649d51279c43f0db35d0d74481cd79c155c4b1e57a2dafb96ca2048cc16f8",
+  "code_sha256": {
+    "extrascripts/analysis/analyze_corrected_chain_saved.py": "95d232d225c0102cb571bd389d453e0673da6e5473863c854e83fe5f6432f69d",
+    "extrascripts/analysis/smpt_twoscale_paper_metrics.py": "2ffdcfe72891e8ac464cfee4be9e55a2e43b78784b37e88b6a5357d41fcfcf6d",
+    "extrascripts/visualization/plot_l10_aspl_chain_random_initial.py": "13c9390a0b8acc7ff1a8f599daae3192849c48cad01c029ab8d72f497348a369"
+  },
+  "tasks_sha256": "b15b25cf958665f34c70716688129002f3c72962a46017a58e5b670058c727ba",
+  "paired_tasks": 19200,
+  "cells": 48,
+  "pairs_per_cell": 400,
+  "full_rows_exact": 19200,
+  "mm_event_sequences_changed": 17957,
+  "mm_arrival_sequences_changed": 15959,
+  "extended_full_runs": 2,
+  "common_30000_full_T9_observed": 19198,
+  "common_30000_mm_T9_observed": 19200,
+  "old_summary_sha256": "5750565ed0797f4fa53d10f29c83b3a2b9d0e026b7157d4e6b36fa83fce9a405",
+  "baseline_cache_matches_recomputed": true,
+  "summary_parameters": {
+    "N_BOOT": 2000,
+    "N_PERM": 2000,
+    "seed": 20260930
+  },
+  "notes": "Old figure metric definitions retained; two Full40000 extensions explicitly counted. Completion compared at common30000 separately. Trajectory IQR is observation spread, not CI. Runtime changes are not scientific accuracy."
+}

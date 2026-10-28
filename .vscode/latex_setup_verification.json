@@ -1,0 +1,14 @@
+{
+  "EN": {
+    "pdf_text_identical": true,
+    "synctex_contains_editable_source": true
+  },
+  "UK": {
+    "pdf_text_identical": true,
+    "synctex_contains_editable_source": true
+  },
+  "bilingual_pdf_text_identical": true,
+  "backup": "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/archive/latex_editor_setup_20261008T203307Z",
+  "configured_latexmk_recipe_exit": 0,
+  "uk_pdf_text_identical_after_recipe": true
+}

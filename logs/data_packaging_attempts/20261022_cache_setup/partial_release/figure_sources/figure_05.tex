@@ -1,0 +1,118 @@
+\begin{figure*}[!tbp]
+\centering
+% BEGIN EDITABLE FIGURE chain_heatmap
+\begin{tikzpicture}
+\begin{groupplot}[paper axis,group style={group size=2 by 2,horizontal sep=3.4cm,vertical sep=1.7cm},width=.31\linewidth,height=4.25cm,scale only axis]
+\nextgroupplot[title={(a) $k=1$: median shift},xmin=-.5,xmax=8.5,ymin=-.5,ymax=5.5,xtick={0,1,2,3,4,5,6,7,8},xticklabels={1,2,3,4,5,6,7,8,9},ytick={0,1,2,3,4,5},yticklabels={1,2,3,4,5,6},xlabel={Community reached $c$},ylabel={Target internal ASPL},colormap name=paperdiv,point meta min=-14.28295105051232,point meta max=14.28295105051232,colorbar,colorbar style={width=3mm,ylabel={$b_c$ (\%)},ylabel style={font=\scriptsize},scaled y ticks=false},grid=none,tick align=outside]
+\addplot[matrix plot*,mesh/cols=9,point meta=explicit] table[x=x,y=y,meta=value]{figures_pgfplots/chain_heatmap_k1_median.dat};
+\pgfplotstableread{figures_pgfplots/chain_heatmap_k1_median.dat}\heatmapdata
+\pgfplotstableforeachcolumnelement{value}\of\heatmapdata\as\cellvalue{
+\pgfplotstablegetelem{\pgfplotstablerow}{x}\of\heatmapdata\edef\cellx{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{y}\of\heatmapdata\edef\celly{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{hatch}\of\heatmapdata
+\ifnum\pgfplotsretval=1\relax\edef\drawcellhatch{\noexpand\path[pattern=north east lines,pattern color=gray!45] (axis cs:{\cellx-.5},{\celly-.5}) rectangle (axis cs:{\cellx+.5},{\celly+.5});}\drawcellhatch\fi
+\pgfmathparse{abs(\cellvalue)>8.2841116092971454}
+\ifdim\pgfmathresult pt>0pt\def\celltextcolor{white}\else\def\celltextcolor{black}\fi
+\edef\drawcelllabel{\noexpand\node[font=\noexpand\ArrivalCellFont,text=\celltextcolor] at (axis cs:\cellx,\celly) {\noexpand\pgfmathprintnumber[assume math mode=true,fixed,precision=1,fixed zerofill,showpos=false]{\cellvalue}};}\drawcelllabel
+}
+\draw[white,line width=.4pt] (axis cs:0.5,-.5) -- (axis cs:0.5,5.5);
+\draw[white,line width=.4pt] (axis cs:1.5,-.5) -- (axis cs:1.5,5.5);
+\draw[white,line width=.4pt] (axis cs:2.5,-.5) -- (axis cs:2.5,5.5);
+\draw[white,line width=.4pt] (axis cs:3.5,-.5) -- (axis cs:3.5,5.5);
+\draw[white,line width=.4pt] (axis cs:4.5,-.5) -- (axis cs:4.5,5.5);
+\draw[white,line width=.4pt] (axis cs:5.5,-.5) -- (axis cs:5.5,5.5);
+\draw[white,line width=.4pt] (axis cs:6.5,-.5) -- (axis cs:6.5,5.5);
+\draw[white,line width=.4pt] (axis cs:7.5,-.5) -- (axis cs:7.5,5.5);
+\draw[white,line width=.4pt] (axis cs:-.5,0.5) -- (axis cs:8.5,0.5);
+\draw[white,line width=.4pt] (axis cs:-.5,1.5) -- (axis cs:8.5,1.5);
+\draw[white,line width=.4pt] (axis cs:-.5,2.5) -- (axis cs:8.5,2.5);
+\draw[white,line width=.4pt] (axis cs:-.5,3.5) -- (axis cs:8.5,3.5);
+\draw[white,line width=.4pt] (axis cs:-.5,4.5) -- (axis cs:8.5,4.5);
+\nextgroupplot[title={(b) $k=1$: Wasserstein distance},xmin=-.5,xmax=8.5,ymin=-.5,ymax=5.5,xtick={0,1,2,3,4,5,6,7,8},xticklabels={1,2,3,4,5,6,7,8,9},ytick={0,1,2,3,4,5},yticklabels={1,2,3,4,5,6},xlabel={Community reached $c$},ylabel={Target internal ASPL},colormap name=paperseq,point meta min=0,point meta max=13.83377890219645,colorbar,colorbar style={width=3mm,ylabel={$e_W$ (\%)},ylabel style={font=\scriptsize},scaled y ticks=false},grid=none,tick align=outside]
+\addplot[matrix plot*,mesh/cols=9,point meta=explicit] table[x=x,y=y,meta=value]{figures_pgfplots/chain_heatmap_k1_w1.dat};
+\pgfplotstableread{figures_pgfplots/chain_heatmap_k1_w1.dat}\heatmapdata
+\pgfplotstableforeachcolumnelement{value}\of\heatmapdata\as\cellvalue{
+\pgfplotstablegetelem{\pgfplotstablerow}{x}\of\heatmapdata\edef\cellx{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{y}\of\heatmapdata\edef\celly{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{hatch}\of\heatmapdata
+\ifnum\pgfplotsretval=1\relax\edef\drawcellhatch{\noexpand\path[pattern=north east lines,pattern color=gray!45] (axis cs:{\cellx-.5},{\celly-.5}) rectangle (axis cs:{\cellx+.5},{\celly+.5});}\drawcellhatch\fi
+\pgfmathparse{abs(\cellvalue)>8.0235917632739397}
+\ifdim\pgfmathresult pt>0pt\def\celltextcolor{white}\else\def\celltextcolor{black}\fi
+\edef\drawcelllabel{\noexpand\node[font=\noexpand\ArrivalCellFont,text=\celltextcolor] at (axis cs:\cellx,\celly) {\noexpand\pgfmathprintnumber[assume math mode=true,fixed,precision=1,fixed zerofill,showpos=false]{\cellvalue}};}\drawcelllabel
+}
+\draw[white,line width=.4pt] (axis cs:0.5,-.5) -- (axis cs:0.5,5.5);
+\draw[white,line width=.4pt] (axis cs:1.5,-.5) -- (axis cs:1.5,5.5);
+\draw[white,line width=.4pt] (axis cs:2.5,-.5) -- (axis cs:2.5,5.5);
+\draw[white,line width=.4pt] (axis cs:3.5,-.5) -- (axis cs:3.5,5.5);
+\draw[white,line width=.4pt] (axis cs:4.5,-.5) -- (axis cs:4.5,5.5);
+\draw[white,line width=.4pt] (axis cs:5.5,-.5) -- (axis cs:5.5,5.5);
+\draw[white,line width=.4pt] (axis cs:6.5,-.5) -- (axis cs:6.5,5.5);
+\draw[white,line width=.4pt] (axis cs:7.5,-.5) -- (axis cs:7.5,5.5);
+\draw[white,line width=.4pt] (axis cs:-.5,0.5) -- (axis cs:8.5,0.5);
+\draw[white,line width=.4pt] (axis cs:-.5,1.5) -- (axis cs:8.5,1.5);
+\draw[white,line width=.4pt] (axis cs:-.5,2.5) -- (axis cs:8.5,2.5);
+\draw[white,line width=.4pt] (axis cs:-.5,3.5) -- (axis cs:8.5,3.5);
+\draw[white,line width=.4pt] (axis cs:-.5,4.5) -- (axis cs:8.5,4.5);
+\nextgroupplot[title={(c) $k=5$: median shift},xmin=-.5,xmax=8.5,ymin=-.5,ymax=5.5,xtick={0,1,2,3,4,5,6,7,8},xticklabels={1,2,3,4,5,6,7,8,9},ytick={0,1,2,3,4,5},yticklabels={1,2,3,4,5,6},xlabel={Community reached $c$},ylabel={Target internal ASPL},colormap name=paperdiv,point meta min=-14.28295105051232,point meta max=14.28295105051232,colorbar=false,colorbar style={width=3mm,ylabel={$b_c$ (\%)},ylabel style={font=\scriptsize},scaled y ticks=false},grid=none,tick align=outside]
+\addplot[matrix plot*,mesh/cols=9,point meta=explicit] table[x=x,y=y,meta=value]{figures_pgfplots/chain_heatmap_k5_median.dat};
+\pgfplotstableread{figures_pgfplots/chain_heatmap_k5_median.dat}\heatmapdata
+\pgfplotstableforeachcolumnelement{value}\of\heatmapdata\as\cellvalue{
+\pgfplotstablegetelem{\pgfplotstablerow}{x}\of\heatmapdata\edef\cellx{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{y}\of\heatmapdata\edef\celly{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{hatch}\of\heatmapdata
+\ifnum\pgfplotsretval=1\relax\edef\drawcellhatch{\noexpand\path[pattern=north east lines,pattern color=gray!45] (axis cs:{\cellx-.5},{\celly-.5}) rectangle (axis cs:{\cellx+.5},{\celly+.5});}\drawcellhatch\fi
+\pgfmathparse{abs(\cellvalue)>8.2841116092971454}
+\ifdim\pgfmathresult pt>0pt\def\celltextcolor{white}\else\def\celltextcolor{black}\fi
+\edef\drawcelllabel{\noexpand\node[font=\noexpand\ArrivalCellFont,text=\celltextcolor] at (axis cs:\cellx,\celly) {\noexpand\pgfmathprintnumber[assume math mode=true,fixed,precision=1,fixed zerofill,showpos=false]{\cellvalue}};}\drawcelllabel
+}
+\draw[white,line width=.4pt] (axis cs:0.5,-.5) -- (axis cs:0.5,5.5);
+\draw[white,line width=.4pt] (axis cs:1.5,-.5) -- (axis cs:1.5,5.5);
+\draw[white,line width=.4pt] (axis cs:2.5,-.5) -- (axis cs:2.5,5.5);
+\draw[white,line width=.4pt] (axis cs:3.5,-.5) -- (axis cs:3.5,5.5);
+\draw[white,line width=.4pt] (axis cs:4.5,-.5) -- (axis cs:4.5,5.5);
+\draw[white,line width=.4pt] (axis cs:5.5,-.5) -- (axis cs:5.5,5.5);
+\draw[white,line width=.4pt] (axis cs:6.5,-.5) -- (axis cs:6.5,5.5);
+\draw[white,line width=.4pt] (axis cs:7.5,-.5) -- (axis cs:7.5,5.5);
+\draw[white,line width=.4pt] (axis cs:-.5,0.5) -- (axis cs:8.5,0.5);
+\draw[white,line width=.4pt] (axis cs:-.5,1.5) -- (axis cs:8.5,1.5);
+\draw[white,line width=.4pt] (axis cs:-.5,2.5) -- (axis cs:8.5,2.5);
+\draw[white,line width=.4pt] (axis cs:-.5,3.5) -- (axis cs:8.5,3.5);
+\draw[white,line width=.4pt] (axis cs:-.5,4.5) -- (axis cs:8.5,4.5);
+\nextgroupplot[title={(d) $k=5$: Wasserstein distance},xmin=-.5,xmax=8.5,ymin=-.5,ymax=5.5,xtick={0,1,2,3,4,5,6,7,8},xticklabels={1,2,3,4,5,6,7,8,9},ytick={0,1,2,3,4,5},yticklabels={1,2,3,4,5,6},xlabel={Community reached $c$},ylabel={Target internal ASPL},colormap name=paperseq,point meta min=0,point meta max=13.83377890219645,colorbar=false,colorbar style={width=3mm,ylabel={$e_W$ (\%)},ylabel style={font=\scriptsize},scaled y ticks=false},grid=none,tick align=outside]
+\addplot[matrix plot*,mesh/cols=9,point meta=explicit] table[x=x,y=y,meta=value]{figures_pgfplots/chain_heatmap_k5_w1.dat};
+\pgfplotstableread{figures_pgfplots/chain_heatmap_k5_w1.dat}\heatmapdata
+\pgfplotstableforeachcolumnelement{value}\of\heatmapdata\as\cellvalue{
+\pgfplotstablegetelem{\pgfplotstablerow}{x}\of\heatmapdata\edef\cellx{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{y}\of\heatmapdata\edef\celly{\pgfplotsretval}
+\pgfplotstablegetelem{\pgfplotstablerow}{hatch}\of\heatmapdata
+\ifnum\pgfplotsretval=1\relax\edef\drawcellhatch{\noexpand\path[pattern=north east lines,pattern color=gray!45] (axis cs:{\cellx-.5},{\celly-.5}) rectangle (axis cs:{\cellx+.5},{\celly+.5});}\drawcellhatch\fi
+\pgfmathparse{abs(\cellvalue)>8.0235917632739397}
+\ifdim\pgfmathresult pt>0pt\def\celltextcolor{white}\else\def\celltextcolor{black}\fi
+\edef\drawcelllabel{\noexpand\node[font=\noexpand\ArrivalCellFont,text=\celltextcolor] at (axis cs:\cellx,\celly) {\noexpand\pgfmathprintnumber[assume math mode=true,fixed,precision=1,fixed zerofill,showpos=false]{\cellvalue}};}\drawcelllabel
+}
+\draw[white,line width=.4pt] (axis cs:0.5,-.5) -- (axis cs:0.5,5.5);
+\draw[white,line width=.4pt] (axis cs:1.5,-.5) -- (axis cs:1.5,5.5);
+\draw[white,line width=.4pt] (axis cs:2.5,-.5) -- (axis cs:2.5,5.5);
+\draw[white,line width=.4pt] (axis cs:3.5,-.5) -- (axis cs:3.5,5.5);
+\draw[white,line width=.4pt] (axis cs:4.5,-.5) -- (axis cs:4.5,5.5);
+\draw[white,line width=.4pt] (axis cs:5.5,-.5) -- (axis cs:5.5,5.5);
+\draw[white,line width=.4pt] (axis cs:6.5,-.5) -- (axis cs:6.5,5.5);
+\draw[white,line width=.4pt] (axis cs:7.5,-.5) -- (axis cs:7.5,5.5);
+\draw[white,line width=.4pt] (axis cs:-.5,0.5) -- (axis cs:8.5,0.5);
+\draw[white,line width=.4pt] (axis cs:-.5,1.5) -- (axis cs:8.5,1.5);
+\draw[white,line width=.4pt] (axis cs:-.5,2.5) -- (axis cs:8.5,2.5);
+\draw[white,line width=.4pt] (axis cs:-.5,3.5) -- (axis cs:8.5,3.5);
+\draw[white,line width=.4pt] (axis cs:-.5,4.5) -- (axis cs:8.5,4.5);
+\end{groupplot}
+\end{tikzpicture}
+% END EDITABLE FIGURE chain_heatmap
+\caption{%
+Change in discrepancies along a chain of ten communities with $n=1000$ nodes each.
+Rows correspond to target ASPL values, and columns to the community reached ($c=1,\ldots,9$).
+Results for $k=1$ are shown above and those for $k=5$ below.
+Left: relative shift $b_c$ in the median arrival time; negative values mean that \TS{} predicts earlier arrival.
+Right: normalised Wasserstein distance $\eW$.
+Each configuration uses 400 paired runs. Uncertainty is not shown; results for terminal arrivals are presented in Figure~\ref{fig:accuracy_map}.
+}
+\label{fig:chain_heatmap}
+\end{figure*}

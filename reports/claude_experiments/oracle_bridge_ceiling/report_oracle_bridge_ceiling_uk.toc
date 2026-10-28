@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}Статус і походження даних}{2}{section.1}%
+\contentsline {section}{\numberline {2}Наукове питання}{2}{section.2}%
+\contentsline {section}{\numberline {3}Дизайн та оцінювана величина}{2}{section.3}%
+\contentsline {section}{\numberline {4}Кількісні результати}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Термінальний шар}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Накопичення зміщення по шарах}{3}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Графічне резюме}{4}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Аналіз та каузальна інтерпретація}{4}{section.5}%
+\contentsline {section}{\numberline {6}Значення для двошарової апроксимації та статті}{4}{section.6}%
+\contentsline {section}{\numberline {7}Обмеження і твердження, яких слід уникати}{5}{section.7}%
+\contentsline {section}{\numberline {8}Практичні рекомендації}{5}{section.8}%
+\contentsline {section}{\numberline {9}Відтворення}{5}{section.9}%

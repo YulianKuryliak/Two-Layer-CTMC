@@ -1,0 +1,51 @@
+{
+  "scope": "Title/author front matter and English Sections 1--3 only; no abstract",
+  "original_english": {
+    "path": "paper/SMPT paper/claude-version_merged_parallel_EN.tex",
+    "sha256": "40950f16b9967d4ca0cb56373ec391646a3151a77f1a4e97c351e7dee8509f19"
+  },
+  "user_ukrainian": {
+    "path": "paper/SMPT paper/readability_revision_parallel_black_20261008/sections_1_3_UK.tex",
+    "sha256": "a51da9b553b30497be7b493ec992577c34b2de00be31b77e3ce72271b02f9051"
+  },
+  "english_sections_sha256": "93b6d4504782332d7f8597dfd9a5c25f485d8747506908330ed7f521ed38ef9f",
+  "root_sha256": "20039088571e3d7ed151c33a62f719430acf1fe18750cf8baad3c22f04000ce7",
+  "title_unchanged": true,
+  "class": "cas-sc (original SMPT format)",
+  "formatting_template": {
+    "path": "paper/SMPT paper/main-SMPT-twoscale.tex",
+    "sha256": "6eaf889ce7ed02a19ce10b06ed9d8e6c960c872ca121e89af62e48914fabd2d1"
+  },
+  "twoscale_page_geometry_matches": true,
+  "continuous_section_flow": true,
+  "template_link_colours": true,
+  "template_algorithm_float_placement": "tbp",
+  "local_template_files": {
+    "cas-sc.cls": "5030545ed09c770afa31004817bf8626ca7f311cf795e6c2825ecae113bb42e9",
+    "cas-common.sty": "e95a01f4b33531d01ade231669fcc1e42f52193dddcb22ead5b63240eb952f8f",
+    "cas-model2-names.bst": "6f6204eb7670d762042ab363c2d05cf87196052bfbdf6dbee51a1327a8ce479a",
+    "twoscale_references.bib": "e9ed2f47cf9bd11962d2f84904d4e9aa24d446073d0f64c994b01dc5a731c1d4"
+  },
+  "local_template_loading_verified": true,
+  "same_heading_structure": true,
+  "same_label_sequence": true,
+  "same_citation_sequence": true,
+  "numbered_equations": 6,
+  "same_display_equations": true,
+  "tikz_identical": true,
+  "references_to_omitted_sections": {
+    "prop:ordering": "2",
+    "prop:surrogate": "1",
+    "sec:analysis": "4",
+    "sec:design": "5",
+    "sec:discussion": "7",
+    "sec:res_descriptor": "6.6",
+    "sec:results": "6",
+    "sec:surrogate": "4.1"
+  },
+  "latex_blockers": [],
+  "pdf_sha256": "bbae5440f3fc51ad53883ac8f7e8b182fc987474c2748168f514ba5da1e6b285",
+  "build": "pdfLaTeX with recorder, BibTeX, pdfLaTeX twice; pdftotext; local template inputs checked",
+  "simulations_run": false,
+  "translation_policy": "Mirror saved Ukrainian content; no independent scientific additions or changes"
+}

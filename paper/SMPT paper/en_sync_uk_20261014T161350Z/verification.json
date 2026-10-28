@@ -1,0 +1,69 @@
+{
+  "source_uk_sha256": "703f1fa2a34068f015450af267977eafe4ae41306a9d80a2ae6b10c1576ee51b",
+  "source_uk_unchanged": true,
+  "english_sections": 8,
+  "results_subsections": 4,
+  "pages": 22,
+  "compiler": "pdfLaTeX via stable latexmk/BibTeX build",
+  "memory_words": 4643454,
+  "original_title_test_abstract_preserved": true,
+  "section_checks": [
+    {
+      "section": 1,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 2,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 3,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 4,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": false
+    },
+    {
+      "section": 5,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 6,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 7,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    },
+    {
+      "section": 8,
+      "numbers_equal": true,
+      "label_reference_order_equal": true,
+      "inline_math_equal": true
+    }
+  ],
+  "display_equations_exact": true,
+  "inline_math_normalisations_section4": "One repeated node v is expressed by the pronoun its; the UK escaped literal X_0 is typeset as math. Mathematical meaning unchanged.",
+  "new_sections_translation_review": "Scientific reviewer PASS: all active7-8 paragraphs/conditions/limitations preserved; awkward future-work sentence rendered as proposed evaluation; commented paragraph excluded.",
+  "all_six_plot_bodies_and_original_assets_preserved": true,
+  "descriptor_panel_c_retained": true,
+  "visual_check": "Discussion and Conclusions pages20-21 inspected",
+  "zip_members": 166,
+  "no_simulations_or_statistics_recomputed": true,
+  "remaining_limitations": "UK editorial annotations in old headings remain outside published English headings as in prior translation; test abstract and reserved missing appendices remain; inherited CAS title/empty-anchor/prose-underfull warnings."
+}

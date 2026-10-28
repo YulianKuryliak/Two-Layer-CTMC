@@ -1,0 +1,35 @@
+{
+  "scope": "Ukrainian sections 1--5; sections 1--3 prose retained",
+  "originals_sha256": {
+    "paper/SMPT paper/readability_revision_parallel_black_20261008/sections_1_3_UK.tex": "6f0f597712d7c81c57a136017878f05e6cd846602be9ab35d23f130fc14f73a6",
+    "paper/SMPT paper/claude-version_merged_parallel_uk_middle.tex": "3ae42fba5273d454730464bb2250f2336812b88dfc6a2ebe549edc09ba01b2fc"
+  },
+  "reference_inputs_sha256": {
+    "claude-version_merged_plain_sections_1_3_black_UK.aux": "f4f90dce96f7c22e2358aa9f210fc889d8d798867ed4f63c96d45ec8e7225b1a",
+    "claude-version_merged_plain_sections_1_3_black_UK.bbl": "f4bb57a47cc812bc6b48cd72517de7ef377c797780c36a8db9b6780484ecd3a9"
+  },
+  "preserved": {
+    "labels": 33,
+    "citation_commands": 26,
+    "numbered_equations": 10,
+    "tikz_unchanged": true
+  },
+  "aligned_blocks": 75,
+  "segment_blocks": {
+    "before.tex": 41,
+    "before_4_5.tex": 34
+  },
+  "pdfs": {
+    "sections_1_5_UK_before_after": {
+      "pages": 12,
+      "text_chars": 120404,
+      "no_unresolved_references_or_overfull_boxes": true
+    },
+    "sections_1_5_UK_simple": {
+      "pages": 16,
+      "text_chars": 49733,
+      "no_unresolved_references_or_overfull_boxes": true
+    }
+  },
+  "limitations": "Editorial revision of the current manuscript protocol; no experiments or numerical result replacement. Corrected chain-only outputs are a separate provenance."
+}

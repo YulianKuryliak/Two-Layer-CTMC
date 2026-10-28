@@ -1,0 +1,39 @@
+{
+  "utc": "2026-10-16T15:12:39.773416+00:00",
+  "primary_studies": 7,
+  "scope": "Focused literature explanation; not systematic review",
+  "primary_evidence_check": "Claim-level primary-source checks saved in sources.json; Guarino Table6 visually checked against published PDFpage20",
+  "source_agent_check": "Salathe/Eubank data, measurement interpretation and validation scope independently checked read-only",
+  "scientific_review": "PASS; bounded read-only review found no material scientific issue requiring revision",
+  "numeric_table": "2 Guarino Table6 rows transcribed; no recomputation; ASPL averaging-domain limitation disclosed",
+  "references": "7/7 citation keys resolve; all bibliography entries include DOI links",
+  "pdf_build": "Stable LuaLaTeX latexmk",
+  "pdf_pages": 4,
+  "pdf_overfull_boxes": 0,
+  "pdf_missing_glyphs": 0,
+  "pdf_font_or_reference_warnings": 0,
+  "visual_review": "Final source table page inspected; rendered review table and final literature page inspected (pages2/4)",
+  "main_manuscript_unchanged": true,
+  "prior_verified_artifacts_unchanged": {
+    "network_preparation": 5,
+    "national_network_preparation": 5,
+    "people_city_network_design": 11
+  },
+  "source_diff_review": "New-file no-index diff and whitespace checks PASS; old working-tree edits excluded",
+  "no_abstract_or_formal_conclusion": true,
+  "simulations_run": false,
+  "numeric_recomputations": false,
+  "limitations": [
+    "Individual contact reconstruction from OD alone is underdetermined",
+    "Synthetic city graph metrics are not observed city metrics",
+    "Model agreement on empirical contact graphs is distinct from observed-outbreak validation",
+    "ASPL averaging domain in Guarino not independently established"
+  ],
+  "artifact_sha256": {
+    "review.tex": "b023c9b4702035eb6f287694c052c3f62e77c1172b1f598422dbb4df3a70a197",
+    "review.pdf": "7a9cc86e01a1e9059f231b6507a80ec4af9efddfe90b958abac78da0e46b7c4f",
+    "review.txt": "c8130a639017ff7f30f9c1e269636276fd942740c67b7d1144ec38010ffa6d05",
+    "README.md": "96479856e293fed43151fa744a88bb4d3c26c47b2dd0ac21c4e7226092385632",
+    "sources.json": "29d0f1a0b1896d37a5b19d12dafdc6f40712d67560d4032e90769c5d725e2c82"
+  }
+}

@@ -1,0 +1,310 @@
+Rc files read:
+  /etc/LatexMk
+  .latexmkrc
+Latexmk: This is Latexmk, John Collins, 31 Jan. 2024. Version 4.83.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.tex
+Category 'changed_user':
+  main.tex
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -file-line-error -synctex=1 -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(./ieeeaccess.cls (./IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifpdf.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))){/home/uakuryl
+iyu/.texlive2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{t1-times.map}{t1
+-formata.map}{t1-giovannistd.map}
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(./spotcolor.sty (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf))
+(/usr/share/texlive/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texlive/texmf-dist/tex/latex/cite/cite.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty)
+(/home/uakuryliyu/texmf/tex/latex/pgf/frontendlayer/tikz.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgf.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/pgf.revision.tex)))
+(/home/uakuryliyu/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.t
+ex)) (/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgf.cfg)
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.cod
+e.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfunctions.integerarithmetic
+s.code.tex) (/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfint.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.te
+x) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.
+tex) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+) (/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/home/uakuryliyu/texmf/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgffor.sty
+(/home/uakuryliyu/texmf/tex/latex/pgf/utilities/pgfkeys.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/home/uakuryliyu/texmf/tex/latex/pgf/math/pgfmath.sty
+(/home/uakuryliyu/texmf/tex/generic/pgf/math/pgfmath.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/utilities/pgffor.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.t
+ex) (/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ytopaths.code.tex))) (figures_pgfplots/vendor/pgfplots.sty
+(figures_pgfplots/vendor/pgfplots.revision.tex)
+(figures_pgfplots/vendor/pgfplots.code.tex
+(figures_pgfplots/vendor/pgfplotscore.code.tex
+(figures_pgfplots/vendor/pgfplotssysgeneric.code.tex))
+(figures_pgfplots/vendor/pgfplotslibrary.code.tex)
+(figures_pgfplots/vendor/pgfplotsoldpgfsupp_loader.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryfpu.code.tex)
+(figures_pgfplots/vendor/pgfplotsoldpgfsupp_pgfutil-common-lists.tex))
+(figures_pgfplots/vendor/pgfplotsutil.code.tex
+(figures_pgfplots/vendor/pgfplotsliststructure.code.tex)
+(figures_pgfplots/vendor/pgfplotsliststructureext.code.tex)
+(figures_pgfplots/vendor/pgfplotsarray.code.tex)
+(figures_pgfplots/vendor/pgfplotsmatrix.code.tex)
+(figures_pgfplots/vendor/pgfplotstableshared.code.tex)
+(figures_pgfplots/vendor/pgfplotsdeque.code.tex)
+(figures_pgfplots/vendor/pgfplotsbinary.code.tex
+(figures_pgfplots/vendor/pgfplotsbinary.data.code.tex))
+(figures_pgfplots/vendor/pgfplotsutil.verb.code.tex)
+(figures_pgfplots/vendor/pgflibrarypgfplots.surfshading.code.tex
+(figures_pgfplots/vendor/pgflibrarypgfplots.surfshading.pgfsys-pdftex.def)))
+(figures_pgfplots/vendor/pgfplotscolormap.code.tex
+(figures_pgfplots/vendor/pgfplotscolor.code.tex))
+(figures_pgfplots/vendor/pgfplotsstackedplots.code.tex)
+(figures_pgfplots/vendor/pgfplotsplothandlers.code.tex
+(figures_pgfplots/vendor/pgfplotsmeshplothandler.code.tex
+(figures_pgfplots/vendor/pgfplotsmeshplotimage.code.tex)))
+(figures_pgfplots/vendor/pgfplots.scaling.code.tex)
+(figures_pgfplots/vendor/pgfplotscoordprocessing.code.tex)
+(figures_pgfplots/vendor/pgfplots.errorbars.code.tex)
+(figures_pgfplots/vendor/pgfplots.markers.code.tex)
+(figures_pgfplots/vendor/pgfplotsticks.code.tex)
+(figures_pgfplots/vendor/pgfplots.paths.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/modules/pgfmoduledecorations.code.tex))
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathmorphing.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathmorphing.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathreplacing.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathreplacing.code.tex))
+(figures_pgfplots/vendor/tikzlibrarypgfplots.contourlua.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yplotmarks.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryplotmarks.code.tex)
+)) (figures_pgfplots/vendor/tikzlibrarypgfplots.groupplots.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ycalc.code.tex))
+(figures_pgfplots/vendor/tikzlibrarypgfplots.fillbetween.code.tex
+(figures_pgfplots/vendor/tikzlibraryfillbetween.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yintersections.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryintersections.code.
+tex)) (figures_pgfplots/vendor/tikzlibrarydecorations.softclip.code.tex
+(figures_pgfplots/vendor/pgflibraryfillbetween.code.tex)))
+(figures_pgfplots/vendor/tikzlibrarypgfplots.decorations.softclip.code.tex))
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ypatterns.code.tex
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibrarypatterns.code.tex))
+
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ypositioning.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yfit.code.tex)
+(/home/uakuryliyu/texmf/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.te
+x) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/home/uakuryliyu/texmf/tex/latex/xurl/xurl.sty
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./main.aux)
+-- Lines per column: 56 (exact).
+(./t1times.fd)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
+
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+Underfull \vbox (badness 4168) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [1 <./logo
+.png> <./bullet.png>]
+Underfull \vbox (badness 1024) has occurred while \output is active
+Underfull \hbox (badness 1859) in paragraph at lines 176--177
+\T1/times/n/n/10 Metapopulation mod-els rep-re-sent each sub-pop-u-la-tion by
+[2 <./notaglinelogo.png>] [3] [4] [5]
+Underfull \hbox (badness 1776) in paragraph at lines 428--431
+[]\T1/times/m/it/10 Proposition 1 (Equiv-a-lence for a net-work with uni-form
+[6]
+Underfull \hbox (badness 2635) in paragraph at lines 551--552
+ \T1/times/m/it/10 Proof: \T1/times/n/n/10 Be-fore the leaf be-comes in-fected,
+ in-fec-tion
+[7]
+Underfull \hbox (badness 3039) in paragraph at lines 602--603
+[]\T1/times/n/n/10 In ad-di-tion to shift-ing time, ag-gre-ga-tion can vi-o-lat
+e
+
+Underfull \hbox (badness 1735) in paragraph at lines 627--628
+\T1/times/n/n/10 The the-o-ret-i-cal anal-y-sis in the pre-vi-ous sec-tion show
+ed
+
+Underfull \hbox (badness 2229) in paragraph at lines 629--630
+[]\T1/times/n/n/10 To in-ves-ti-gate these ques-tions, we com-pare Full and
+[8] [9] [10] Please use mathrm in math mode instead of rm.
+Please use mathrm in math mode instead of rm.
+Please use mathrm in math mode instead of rm.
+Underfull \hbox (badness 5787) in paragraph at lines 999--1000
+[]\T1/times/n/n/10 Internal spread is there-fore much faster than inter-
+[11]
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 2941) has occurred while \output is active [12]
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [13]
+[14]
+
+LaTeX Warning: Text page 15 contains only floats.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+
+LaTeX Warning: Text page 15 contains only floats.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [15]
+[16]
+Underfull \hbox (badness 1635) in paragraph at lines 1406--1410
+\T1/times/b/n/10 Yulian Kuryliak: \T1/times/n/n/10 Con-cep-tu-al-iza-tion, Meth
+od-ol-ogy, Soft-
+[17] (./main.bbl) [18] (./main.aux) )
+(see the transcript file for additional information)</usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/symbols/msbm7.pfb><./t1-formata-bold.pfb><./t1-formata-condmedium.pfb><./t1-
+formata-italic.pfb><./t1-formata-medium.pfb><./t1-formata-mediumitalic.pfb><./t
+1-formata-regular.pfb><./t1-giovannistd-bookitalic.pfb><./t1-times-bold.pfb><./
+t1-times-italic.pfb><./t1-times.pfb>
+Output written on main.pdf (18 pages, 895644 bytes).
+SyncTeX written on main.synctex.gz.
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Found bibliography file(s):
+  ./references_fixed.bib
+  ./references_missing.bib
+Latexmk: All targets (main.pdf) are up-to-date
+

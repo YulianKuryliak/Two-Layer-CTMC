@@ -4,6 +4,8 @@ from typing import Any, List, Optional, Tuple
 
 import networkx as nx
 
+from .topology import NeighborList
+
 
 class MicroEngine:
     """
@@ -26,6 +28,7 @@ class MicroEngine:
         cache_neighbors: bool = False,
         cache_events: bool = False,
         rng: Optional[random.Random] = None,
+        compact_neighbors: bool = False,
     ):
         self.G = nx.Graph()
         self.model = int(model)  # 1 = SIS, 2 = SIR
@@ -37,6 +40,7 @@ class MicroEngine:
 
         self.track_counts = bool(track_counts)
         self.cache_neighbors = bool(cache_neighbors)
+        self.compact_neighbors = bool(compact_neighbors)
         self.cache_events = bool(cache_events)
         self.rng = random if rng is None else rng
 
@@ -44,7 +48,7 @@ class MicroEngine:
         self.I_count = 0
         self.R_count = 0
 
-        self._neighbors: Optional[dict[int, List[Tuple[int, float]]]] = (
+        self._neighbors: Optional[dict[int, List[Tuple[int, float]] | NeighborList]] = (
             {} if self.cache_neighbors else None
         )
         self._cached_wait: Optional[float] = None
@@ -59,7 +63,7 @@ class MicroEngine:
         if self.cache_neighbors:
             if self._neighbors is None:
                 self._neighbors = {}
-            self._neighbors[node_id] = []
+            self._neighbors[node_id] = NeighborList() if self.compact_neighbors else []
         if self.track_counts:
             self.S_count += 1
 
@@ -71,9 +75,47 @@ class MicroEngine:
         if self.cache_neighbors:
             if self._neighbors is None:
                 self._neighbors = {}
-            self._neighbors.setdefault(node1, []).append((node2, w))
-            self._neighbors.setdefault(node2, []).append((node1, w))
-        self._invalidate_cache()
+            self._append_neighbor(node1, node2, w)
+            self._append_neighbor(node2, node1, w)
+        # Graph construction has no pending event to discard.  Keep the normal
+        # invalidation when an edge is added after an event has been sampled.
+        if self._cached_wait is not None:
+            self._invalidate_cache()
+
+    def _append_neighbor(self, node, neighbor, weight):
+        row = self._neighbors.get(node)
+        if row is None:
+            row = NeighborList() if self.compact_neighbors else []
+            self._neighbors[node] = row
+        row.append((neighbor, weight))
+
+    def bind_static_graph(self, graph: nx.Graph):
+        """Share read-only edges, with private node states and ordered neighbors.
+
+        Input topology/weights must stay fixed for the duration of the run.
+        Replaying edges into the compact cache preserves the neighbor order of
+        the old Graph.add_edge loop (not necessarily the input adjacency order).
+        """
+        if self.G.number_of_nodes() or graph.is_directed() or graph.is_multigraph():
+            raise ValueError("bind_static_graph requires an empty engine and a simple undirected graph")
+        self.cache_neighbors = True
+        self.compact_neighbors = True
+        self._neighbors = {}
+        for node in graph.nodes():
+            self.add_node(node)
+        for u, v, data in graph.edges(data=True):
+            weight = data.get("weight", 1.0)
+            if not (weight >= 0 and math.isfinite(weight)):
+                raise ValueError("Edge weight must be non-negative and finite")
+            w = float(weight)
+            self._append_neighbor(u, v, w)
+            if u != v:  # NetworkX's uncached adjacency visits a self-loop once.
+                self._append_neighbor(v, u, w)
+        # NetworkX graph views share adjacency.  Replace only their node-state
+        # mapping: otherwise infections would mutate the paired input graph.
+        view = nx.graphviews.generic_graph_view(graph)
+        view._node = self.G._node
+        self.G = view
 
     # ---------- RNG helpers ----------
 
@@ -122,7 +164,7 @@ class MicroEngine:
 
     # ---------- neighbor access ----------
 
-    def _neighbors_with_weights(self, node: int) -> List[Tuple[int, float]]:
+    def _neighbors_with_weights(self, node: int) -> List[Tuple[int, float]] | NeighborList:
         if self.cache_neighbors:
             if self._neighbors is None:
                 return []
@@ -255,7 +297,7 @@ class MicroEngine:
 
     # ---------- Gillespie sampling ----------
 
-    def _sample_next_event(self) -> Tuple[float, Optional[Tuple[str, Any]]]:
+    def _sample_next_event(self, *, waiting_time: Optional[float] = None) -> Tuple[float, Optional[Tuple[str, Any]]]:
         if not self.infected_nodes:
             return float("inf"), None
 
@@ -263,7 +305,9 @@ class MicroEngine:
         if total_rate < 1e-12:
             return float("inf"), None
 
-        wait_time = self.rng.expovariate(total_rate)
+        # A changed state may retain the exponential intensity budget while
+        # requiring a fresh event mark. Full SSA leaves waiting_time unset.
+        wait_time = self.rng.expovariate(total_rate) if waiting_time is None else waiting_time
 
         if self.rng.random() < (self.total_infection_rate / total_rate):
             src = self._choose_infected_source()

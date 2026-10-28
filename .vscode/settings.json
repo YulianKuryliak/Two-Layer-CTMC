@@ -1,3 +1,39 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:venv"
+    "python-envs.defaultEnvManager": "ms-python.python:venv",
+    "chat.tools.terminal.autoApprove": {
+        "latexmk": true
+    },
+    "latexVisualEditor.openTexFilesIn": "Previous editor",
+    "workbench.editorAssociations": {
+        "**/readability_revision_parallel_black_20261008/sections_1_3_EN.tex": "latexVisualEditor.editor",
+        "**/readability_revision_parallel_black_20261008/sections_1_3_UK.tex": "latexVisualEditor.editor",
+        "*.tex": "latexVisualEditor.editor"
+    },
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.recipe.default": "latexmk (LuaLaTeX)",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (LuaLaTeX)",
+            "tools": [
+                "lualatexmk"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "lualatexmk",
+            "command": "latexmk",
+            "args": [
+                "-cd",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.outDir": "%DIR%"
 }

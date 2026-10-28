@@ -1,0 +1,44 @@
+# Final English SMPT main
+
+`main-SMPT.tex` contains Sections 1–6 directly. Section 6 translates the **first**
+Results block in the current Ukrainian main: subsections 6.1-6.4 and six figures.
+Subsection 6.5 is omitted by request. All three panels of `fig:descriptor`,
+including panel (c) and its caption, are retained.
+The existing title, Sections 1–5 and the `test` abstract are preserved.
+
+Use **pdfLaTeX**, including in Overleaf's compiler settings. The four large
+ECDF curves retain all 10,000 observations per model and are streamed directly
+through PGF, avoiding PGFPlots' large per-point metadata. No memory-limit
+configuration or shell escape is required.
+
+From `paper/SMPT paper`:
+
+```sh
+latexmk main-SMPT.tex
+```
+
+The local `.latexmkrc` selects pdfLaTeX and supplies the vendored PGFPlots path.
+The resulting files are `main-SMPT.pdf` and, after text export, `main-SMPT.txt`.
+`main-SMPT_editable_figures.zip` contains the main, template, bibliography,
+editable plot data and local plotting dependency for uploading or copying.
+
+Edit the plotting code in the main and its numeric tables in
+`figures_pgfplots/`. The plot sources and data match the first Ukrainian Results
+block; no simulations or statistics were recomputed during translation.
+
+The prior English source/PDF/TXT, the selected Ukrainian source, translation
+and verification records are saved in `results_first_block_en_20261013/`.
+References to later appendices and Discussion keep the existing reserved
+full-paper numbers; those sections are outside this partial document.
+
+The four `*_path.dat` tables are display-coordinate copies of the original
+ECDF tables, verified against every observation. Width, height, colour, line
+style and annotations remain editable in the main. If you change the axis
+bounds or original ECDF observations, regenerate the display copies with:
+
+```sh
+.venv/bin/python extrascripts/visualization/prepare_pdftex_ecdf.py
+```
+
+Run that command from the repository root. The untouched Ukrainian main still
+uses LuaLaTeX: `latexmk -lualatex main-SMPT_UK.tex`.

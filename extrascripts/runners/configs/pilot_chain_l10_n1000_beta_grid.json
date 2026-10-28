@@ -1,0 +1,71 @@
+{
+  "description": "Pilot grid: L=10, n=1000, historical comparison horizons",
+  "replications_default": 100,
+  "defaults": {
+    "family": "chain_L10_n1000",
+    "communities": 10,
+    "community_size": 1000,
+    "inter_links": 5,
+    "macro_graph_type": "chain",
+    "gamma": 0.0,
+    "model": 2,
+    "tau_micro": 1.0,
+    "macro_T": 1.0,
+    "dt_out": 1.0,
+    "initial_node": 0,
+    "store_trajectories": false
+  },
+  "scenarios": [
+    {
+      "name": "chain_cliques_L10_n1000_beta001",
+      "family": "chain_cliques_beta001",
+      "micro_graph_type": "complete",
+      "beta": 0.001,
+      "T_end": 2500,
+      "base_seed": 151000
+    },
+    {
+      "name": "chain_random_connected_L10_n1000_d6_beta001",
+      "family": "chain_random_connected_beta001",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 6,
+      "beta": 0.001,
+      "T_end": 4000,
+      "base_seed": 152000
+    },
+    {
+      "name": "chain_cliques_L10_n1000_beta0015",
+      "family": "chain_cliques_beta0015",
+      "micro_graph_type": "complete",
+      "beta": 0.0015,
+      "T_end": 2500,
+      "base_seed": 153000
+    },
+    {
+      "name": "chain_random_connected_L10_n1000_d6_beta0015",
+      "family": "chain_random_connected_beta0015",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 6,
+      "beta": 0.0015,
+      "T_end": 4000,
+      "base_seed": 154000
+    },
+    {
+      "name": "chain_cliques_L10_n1000_beta003",
+      "family": "chain_cliques_beta003",
+      "micro_graph_type": "complete",
+      "beta": 0.003,
+      "T_end": 2500,
+      "base_seed": 155000
+    },
+    {
+      "name": "chain_random_connected_L10_n1000_d6_beta003",
+      "family": "chain_random_connected_beta003",
+      "micro_graph_type": "random_connected",
+      "mean_internal_degree": 6,
+      "beta": 0.003,
+      "T_end": 4000,
+      "base_seed": 156000
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\providecommand\babel@aux[2]{}
+\@nameuse{bbl@beforestart}
+\orcidauthor{0000-0002-6600-2637}{Yulian Kuryliak}
+\csgdef{mark@corau1}{1}
+\emailauthor{yulian.a.kuryliak@lpnu.ua}{Yulian Kuryliak}
+\orcidauthor{0000-0002-7342-2090}{Michael T. M. Emmerich}
+\emailauthor{michael.t.m.emmerich@jyu.fi}{Michael T. M. Emmerich}
+\citation{keeling2005,pastorsatorras2015,kiss2017}
+\citation{balcan2009,barbosa2018human}
+\citation{eubank2004,danon2011}
+\citation{barbosa2018human,chang2021}
+\citation{gillespie1977exact,gibson2000}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{colizza2007reaction,colizza2008,balcan2010modeling,ajelli2010}
+\babel@aux{english}{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{1}{Introduction}{section.1}{}}
+\citation{kuryliak2025towards}
+\citation{gillespie1977exact}
+\citation{gibson2000}
+\citation{ethier1986}
+\citation{anderson2007}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{kuryliak2025simulating}
+\citation{haseltine2002,cao2005slow}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related work}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Simulation of stochastic events.}{2}{section*.1}\protected@file@percent }
+\citation{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}
+\citation{chang2021}
+\citation{eubank2004,kerr2021}
+\citation{ajelli2010}
+\citation{ball1997}
+\citation{gomes2018cosim}
+\@writefile{toc}{\contentsline {paragraph}{Models with several communities.}{3}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Two levels of mixing and co-simulation.}{3}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The two-scale simulation method}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{The two-scale simulation method}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Full-network reference model}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:reference}{{3.1}{3}{Full-network reference model}{subsection.3.1}{}}
+\newlabel{eq:partition}{{1}{3}{Full-network reference model}{equation.3.1}{}}
+\newlabel{eq:full_generator}{{2}{3}{Full-network reference model}{equation.3.2}{}}
+\citation{kuryliak2025simulating}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textcolor {black}{Data and rules of the two models. In all experiments, \textup  {\textsc  {TwoScale}}{} selects the target node uniformly among susceptible nodes.}}}{4}{table.1}\protected@file@percent }
+\newlabel{tab:information}{{1}{4}{Aggregate interface}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Aggregate interface}{4}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:interface}{{3.2}{4}{Aggregate interface}{subsection.3.2}{}}
+\newlabel{eq:weight}{{3}{4}{Aggregate interface}{equation.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Local simulators}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:local}{{3.3}{4}{Local simulators}{subsection.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textcolor {black}{Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b) Internal nodes and contacts are retained in each community. Individual inter-community contacts are represented by one wide directed edge between $V_i$ and $V_j$, labelled with their total weight $W_{ij}$. (c) The ideal two-scale process is equivalent to a process on a surrogate network with uniform inter-community connections: for each connected community pair, all ordered node pairs have the same contact weight. The connections together have total weight $W_{ij}$. Orange nodes are infected and blue nodes are susceptible.}}}{5}{figure.1}\protected@file@percent }
+\newlabel{fig:schematic}{{1}{5}{Aggregate interface}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Macro layer}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:macro}{{3.4}{5}{Macro layer}{subsection.3.4}{}}
+\newlabel{eq:macro_rate}{{4}{5}{Macro layer}{equation.3.4}{}}
+\citation{ethier1986,anderson2007}
+\citation{kuryliak2025simulating}
+\citation{kuryliak2025towards}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces \textcolor {black}{Grid-synchronised two-scale simulation of one realisation.}}}{6}{algorithm.1}\protected@file@percent }
+\newlabel{alg:scheduler}{{1}{6}{Timing and synchronisation}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Timing and synchronisation}{6}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:timing}{{3.5}{6}{Timing and synchronisation}{subsection.3.5}{}}
+\newlabel{eq:hazard_integral}{{5}{6}{Timing and synchronisation}{equation.3.5}{}}
+\newlabel{eq:interpolation}{{6}{6}{Timing and synchronisation}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Computational structure and intended use}{7}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:cost}{{3.6}{7}{Computational structure and intended use}{subsection.3.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Theoretical analysis of the two-scale method}{7}{section.4}\protected@file@percent }
+\newlabel{sec:analysis}{{4}{7}{Theoretical analysis of the two-scale method}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Equivalence to simulation on a network with uniform inter-community connections}{7}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:surrogate}{{4.1}{7}{Equivalence to simulation on a network with uniform inter-community connections}{subsection.4.1}{}}
+\newlabel{prop:surrogate}{{1}{7}{Equivalence to simulation on a network with uniform inter-community connections}{proposition.1}{}}
+\newlabel{cor:exact}{{1}{8}{Equivalence to simulation on a network with uniform inter-community connections}{corollary.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Mechanisms of discrepancy from the full-network model}{8}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:sources}{{4.2}{8}{Mechanisms of discrepancy from the full-network model}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{1. The states of the real bridge nodes are not used.}{8}{section*.4}\protected@file@percent }
+\newlabel{eq:exact_rate}{{7}{8}{1. The states of the real bridge nodes are not used}{equation.4.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{2. Import location.}{9}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{3. Additional inter-community infections.}{9}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{4. Numerical synchronisation error.}{9}{section*.7}\protected@file@percent }
+\newlabel{rem:placement}{{1}{9}{4. Numerical synchronisation error}{remark.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Effect of contact aggregation on systematic shifts in export time}{9}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:single_export}{{4.3}{9}{Effect of contact aggregation on systematic shifts in export time}{subsection.4.3}{}}
+\newlabel{prop:ordering}{{2}{10}{Effect of contact aggregation on systematic shifts in export time}{proposition.2}{}}
+\newlabel{eq:bypass}{{8}{10}{Effect of contact aggregation on systematic shifts in export time}{equation.4.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Methodology for experimental evaluation}{11}{section.5}\protected@file@percent }
+\newlabel{sec:design}{{5}{11}{Methodology for experimental evaluation}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Experimental networks and parameters}{11}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Clique--leaf.}{11}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Random community--leaf.}{11}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Chain of cliques.}{11}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Chains of random communities.}{11}{section*.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Parameters of the experimental series. ASPL is the target average shortest-path length within a community.}}{12}{table.2}\protected@file@percent }
+\newlabel{tab:design}{{2}{12}{Chains of random communities}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Metrics for comparing the models}{12}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Relative median shift.}{12}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Normalised Wasserstein distance.}{12}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Fraction of premature exports}{13}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Discrepancies along the chain.}{13}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}A measure of the ratio of time scales}{13}{subsection.5.3}\protected@file@percent }
+\newlabel{sec:descriptor}{{5.3}{13}{A measure of the ratio of time scales}{subsection.5.3}{}}
+\newlabel{eq:rho}{{9}{13}{A measure of the ratio of time scales}{equation.5.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Statistical evaluation}{13}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Block bootstrap.}{14}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Permutation test.}{14}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Validation of the Full implementation}{14}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{14}{section.6}\protected@file@percent }
+\newlabel{sec:results}{{6}{14}{Results}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Temporal accuracy and admissibility of inter-community transmission}{14}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:res_clique}{{6.1}{14}{Temporal accuracy and admissibility of inter-community transmission}{subsection.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces First export of infection in the clique--leaf network ($n=100$, $k=2$, $\beta =0.005$, 10\,000 runs of each model). (a) Empirical distribution functions of the export time. (b) Distributions of the difference $T_{\mathrm  {export}}-T_B$; negative values correspond to export before either real bridge node becomes infected. (c) Fraction of runs with this violation of the transmission order and 95\% confidence intervals. }}{15}{figure.2}\protected@file@percent }
+\newlabel{fig:clique_leaf}{{2}{15}{Temporal accuracy and admissibility of inter-community transmission}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Propagation of discrepancies along a chain of communities}{15}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:res_chain_random}{{6.2}{15}{Propagation of discrepancies along a chain of communities}{subsection.6.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Effect of the source's internal structure on the first export to the leaf ($n=1000$, $\beta =0.003$, $k=1$ in the top row and $k=5$ in the bottom row; 400 paired runs for each configuration). Left: mean export time. Centre: normalised Wasserstein distance $e_{W}$ between the export-time distributions. Right: fraction of \textup  {\textsc  {TwoScale}}{} exports occurring before infection of the first real bridge; such events are impossible in \textup  {\textsc  {Full}}{}. Error bars show 95\% block-bootstrap intervals. }}{16}{figure.3}\protected@file@percent }
+\newlabel{fig:source_sweep}{{3}{16}{Temporal accuracy and admissibility of inter-community transmission}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Infection spread along a chain of ten cliques with 1000 nodes each ($k=1$, $\beta =0.003$, 400 runs of each model). Left: median number of infected nodes over time and interquartile bands, which describe variability among runs rather than confidence intervals. Right: empirical distribution functions of the arrival time at the last community, $T_9$. Four \textup  {\textsc  {Full}}{} values and two \textup  {\textsc  {TwoScale}}{} values lie outside the displayed time range; all are included in the analysis. }}{17}{figure.4}\protected@file@percent }
+\newlabel{fig:chain_cliques}{{4}{17}{Propagation of discrepancies along a chain of communities}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Effects of community size and number of inter-community edges}{17}{subsection.6.3}\protected@file@percent }
+\newlabel{sec:res_size}{{6.3}{17}{Effects of community size and number of inter-community edges}{subsection.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Relationship between discrepancies and the ratio of time scales}{17}{subsection.6.4}\protected@file@percent }
+\newlabel{sec:res_descriptor}{{6.4}{17}{Relationship between discrepancies and the ratio of time scales}{subsection.6.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Change in discrepancies along a chain of ten communities with $n=1000$ nodes each. Rows correspond to target ASPL values, and columns to the community reached ($c=1,\ldots  ,9$). Results for $k=1$ are shown above and those for $k=5$ below. Left: relative shift $b_c$ in the median arrival time; negative values mean that \textup  {\textsc  {TwoScale}}{} predicts earlier arrival. Right: normalised Wasserstein distance $e_{W}$. Each configuration uses 400 paired runs. Uncertainty is not shown; results for terminal arrivals are presented in Figure~\ref {fig:accuracy_map}. }}{18}{figure.5}\protected@file@percent }
+\newlabel{fig:chain_heatmap}{{5}{18}{Propagation of discrepancies along a chain of communities}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Discrepancies in the terminal arrival time $T_9$ for 48 configurations of ten-community chains. The left panels show the relative median shift $b_9$ (\%), and the right panels show the normalised Wasserstein distance $e_{W}$ (\%). The top row corresponds to $k=1$ and the bottom row to $k=5$. Within each panel, cell rows correspond to target ASPL values and columns to community size $n$. The colour and number in a cell represent the same metric; the colour scales are shared between the two values of $k$ separately for each metric. A negative median shift means earlier arrival in \textup  {\textsc  {TwoScale}}{}. Hatching in the right panels only marks configurations for which the permutation test for the Wasserstein distance did not detect a difference ($p\geq 0.05$). The tests were performed without correction for multiple comparisons. Each configuration uses 400 paired runs. }}{19}{figure.6}\protected@file@percent }
+\newlabel{fig:accuracy_map}{{6}{19}{Effects of community size and number of inter-community edges}{figure.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{19}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{7}{19}{Discussion}{section.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Relationship between discrepancies in \textup  {\textsc  {Full}}{} and \textup  {\textsc  {TwoScale}}{} and the time-scale ratio $\rho =\beta _{\mathrm  {out}}\sigma _T$ for 48 chain configurations. (a) Normalised Wasserstein distance $e_{W}$ for the terminal arrival time $T_9$. (b) Relative shift in its median, $b_9$. Colours denote community size; filled circles correspond to $k=1$, and open triangles to $k=5$. Lines connect configurations with ASPL from 1 to 6 at fixed $n$ and $k$. Grey marks in (a) show the 95th percentile of the permutation distribution of the distance for the corresponding configuration. (c) Comparison of relative shifts in the mean duration of the first crossing and crossings 2--9 for $\mathrm  {ASPL}\geq 3$. Error bars show 95\% block-bootstrap intervals for the shift in the first crossing. }}{20}{figure.7}\protected@file@percent }
+\newlabel{fig:descriptor}{{7}{20}{Relationship between discrepancies and the ratio of time scales}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{21}{section.8}\protected@file@percent }
+\newlabel{sec:conclusions}{{8}{21}{Conclusions}{section.8}{}}
+\bibstyle{cas-model2-names}
+\bibdata{references_fixed}
+\csxdef{lastpage}{22}
+\gdef \@abspage@last{21}

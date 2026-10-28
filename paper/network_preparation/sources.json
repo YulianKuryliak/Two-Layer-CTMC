@@ -1,0 +1,27 @@
+{
+  "dataset": "SocioPatterns High School 2013",
+  "landing_page": "https://sociopatterns.org/datasets/high-school-contact-and-friendship-networks/",
+  "publication": "https://doi.org/10.1371/journal.pone.0136497",
+  "license": "CC BY-NC-SA 3.0 (dataset landing page); not the separate article license",
+  "license_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "retrieved_utc": "2026-10-16T12:43:49.047706+00:00",
+  "download_note": "Linux trust store rejected enterprise TLS certificate; Windows curl with ssl-revoke-best-effort succeeded, retaining certificate-chain verification.",
+  "sources": [
+    {
+      "file": "raw/HighSchool2013_proximity_net.csv.gz",
+      "url": "https://sociopatterns.org/assets/data/HighSchool2013_proximity_net.csv.gz",
+      "bytes": 653252,
+      "sha256": "ecf4a90312c8d72057f72e936c366b470e63876da7db846300044795f045e2ea"
+    },
+    {
+      "file": "raw/HighSchool2013_metadata.txt",
+      "url": "https://sociopatterns.org/assets/data/HighSchool2013_metadata.txt",
+      "bytes": 3574,
+      "sha256": "b960986186214d2dede8496a6d5c270805d150b88a0b76419815f1b5ccca4dd8"
+    }
+  ],
+  "main_paper": {
+    "path": "paper/SMPT paper/main-SMPT.tex",
+    "sha256": "e51f48673fb28bdac8784ea3728d4398ced30f9c3b0859d62eef796eaea268f1"
+  }
+}

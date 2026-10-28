@@ -1,0 +1,15 @@
+Building /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022
+Traceback (most recent call last):
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 590, in <module>
+    main()
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 481, in main
+    c.archive('clique_leaf', ((p, 'checkpoints/' + p.name) for p in sorted(CLIQUE.glob('*.json.gz'))), c.clique_leaf)
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 309, in archive
+    parents = {p.parent: p.parent.resolve() for p, _ in entries}
+                         ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+KeyboardInterrupt

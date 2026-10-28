@@ -1,0 +1,39 @@
+diff --git a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/verify_transfer.py b/paper/IEEE_version/verify_transfer.py
+index 7f921f1..dfd6649 100755
+--- a/paper/IEEE_version/acknowledgment_backup_20261022T113341Z/verify_transfer.py
++++ b/paper/IEEE_version/verify_transfer.py
+@@ -94,6 +94,15 @@ def main():
+     source_file = manifest_path.parent / "source_main-SMPT.tex"
+     source, target = source_file.read_text(), (HERE / "main.tex").read_text()
+     assert sha(source_file) == manifest["source_sha256"]
++    acknowledgment_changed = (HERE / "acknowledgment_change.json").is_file()
++    if acknowledgment_changed:
++        change = json.loads((HERE / "acknowledgment_change.json").read_text())
++        before = HERE / change["backup"] / "main.tex"
++        assert sha(before) == change["before_main_sha256"]
++        assert before.read_text().count(change["old"]) == 1
++        assert before.read_text().replace(change["old"], change["new"], 1) == target
++        assert source.count(change["old"]) == 1
++        source = source.replace(change["old"], change["new"], 1)
+     assert separate_floats(source) == separate_floats(target), "Scientific body or figure contents changed"
+     assert citation_keys(source) == citation_keys(target), "Citation keys/order changed"
+     appendix = check_appendices() if (HERE / "layout_manifest.json").is_file() else ""
+@@ -132,7 +141,8 @@ def main():
+     info = subprocess.check_output(["pdfinfo", str(HERE / "main.pdf")], text=True)
+     pages = int(re.search(r"Pages:\s+(\d+)", info)[1])
+     print(json.dumps({
+-        "body_preserved_except_citation_and_layout_syntax": True,
++        "body_preserved_except_citation_layout_and_approved_acknowledgment": True,
++        "approved_acknowledgment_replacement": acknowledgment_changed,
+         "labels": len(labels(target + appendix)), "citation_commands": len(citation_keys(target + appendix)),
+         "unique_cited_keys": len(cited), "numbered_equations": (target + appendix).count(r"\begin{equation}"),
+         "figures": target.count(r"\begin{figure*}"), "tables": len(re.findall(r"\\begin\{table\*?\}", target + appendix)),
+@@ -142,7 +152,7 @@ def main():
+         "pages": pages, "latex_warnings_checked": "no undefined refs/cites, missing glyphs, font substitutions or overfull boxes",
+         "pdf_sha256": sha(HERE / "main.pdf"), "main_tex_sha256": sha(HERE / "main.tex"),
+         "appendices_restored": ["A", "B", "C"] if appendix else [],
+-        "limitations": (["Data availability placeholder and missing author biographies remain; declarations were not edited."]
++        "limitations": (["Data availability placeholder and missing author biographies remain; other declarations were not edited."]
+                         if appendix else manifest["limitations"]), "simulations_run": False,
+     }, ensure_ascii=False, indent=2))
+ 

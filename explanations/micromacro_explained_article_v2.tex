@@ -1,0 +1,368 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=20mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}
+\setsansfont{DejaVu Sans}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{caption}
+\usepackage{microtype}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\definecolor{infected}{HTML}{D84A4A}
+\definecolor{susceptible}{HTML}{D9DEE7}
+\definecolor{boundary}{HTML}{3F72C4}
+\definecolor{macro}{HTML}{D98727}
+\definecolor{exact}{HTML}{4F8A5B}
+\definecolor{purple}{HTML}{7C5CB5}
+\definecolor{soft}{HTML}{F5F7FA}
+\definecolor{dark}{HTML}{22252A}
+\newcommand{\I}{\mathbb{I}}
+\tikzset{
+  snode/.style={circle,draw=dark,fill=susceptible,minimum size=7mm,inner sep=0pt},
+  inode/.style={circle,draw=dark,fill=infected,minimum size=7mm,inner sep=0pt},
+  sbnode/.style={circle,draw=boundary,line width=1.1pt,fill=susceptible,minimum size=7mm,inner sep=0pt},
+  ibnode/.style={circle,draw=boundary,line width=1.1pt,fill=infected,minimum size=7mm,inner sep=0pt}
+}
+\title{\textbf{Як насправді працюють Full Micro, MicroMacro та Structural A/U--E/U--E/E}\\[4pt]
+\large Просте послідовне пояснення з однією мережею, формулами та схемами}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\begin{tcolorbox}[colback=soft,colframe=boundary,title=Що треба зрозуміти з цього тексту]
+Усі варіанти нижче описують поширення інфекції в мережі, але вони \textbf{бачать різну кількість інформації про міжспільнотні контакти}. Full Micro бачить кожне ребро. Original MicroMacro бачить детальну мережу всередині кожної community, але між communities працює з агрегатами. Structural A/U, E/U та E/E --- це окремий діагностичний simulator, де ми по одному повертаємо інформацію, втраченою агрегацією.
+\end{tcolorbox}
+
+\section*{1. Почнемо з однієї й тієї самої мережі}
+
+Нехай є дві communities: $A$ і $B$. Усередині кожної є звичайна контактна мережа людей. Між communities існують лише кілька реальних контактів. Червоні вузли вже заражені, сірі --- susceptible. Синя рамка означає boundary/gateway-вузол, який має контакт з іншою community.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.0, every node/.style={font=\small}]
+% A
+\node[inode] (a1) at (0,1.4) {};
+\node[inode] (a2) at (1.2,2.2) {};
+\node[sbnode] (a3) at (2.4,1.4) {};
+\node[snode] (a4) at (0.4,0.0) {};
+\node[ibnode] (a5) at (1.7,0.0) {};
+\draw[gray!65] (a1)--(a2)--(a3)--(a5)--(a4)--(a1);
+\draw[gray!65] (a1)--(a5); \draw[gray!65] (a2)--(a5);
+\node[below=5mm of a4, xshift=11mm] {Community A};
+% B
+\node[sbnode] (b1) at (6.0,1.4) {};
+\node[sbnode] (b2) at (7.2,2.2) {};
+\node[snode] (b3) at (8.4,1.4) {};
+\node[snode] (b4) at (6.4,0.0) {};
+\node[sbnode] (b5) at (7.7,0.0) {};
+\draw[gray!65] (b1)--(b2)--(b3)--(b5)--(b4)--(b1);
+\draw[gray!65] (b1)--(b5); \draw[gray!65] (b2)--(b5);
+\node[below=5mm of b4, xshift=11mm] {Community B};
+% cross edges
+\draw[line width=1.6pt,infected,-{Latex[length=2.5mm]}] (a5)--(b1);
+\draw[line width=1.0pt,gray!65] (a3)--(b2);
+\draw[line width=1.0pt,gray!65] (a3)--(b5);
+\node[align=center,below=2mm] at (4.2,1.35) {міжcommunity\\контакти};
+\end{tikzpicture}
+\caption{Одна фізична мережа. Зараз лише одне міжcommunity ребро є активним $I\to S$: від зараженого boundary-вузла $A$ до susceptible boundary-вузла $B$.}
+\end{figure}
+
+Ця сама мережа буде подана всім симуляторам. Відмінність не в самій картинці, а в тому, \textbf{яку частину цієї картинки алгоритм використовує для міжcommunity передачі}.
+
+\section*{2. Full Micro: алгоритм бачить усе}
+
+Full Micro --- це повний Gillespie на всій мережі. Для нього немає принципової різниці між ``внутрішнім'' і ``міжcommunity'' ребром. Усі контакти --- це звичайні ребра одного графа.
+
+Для кожного ребра $(u,v)$, де $u$ infected, а $v$ susceptible, існує канал зараження з rate
+\[
+ a_{uv}=\beta w_{uv}\,\I[X_u=I,\,X_v=S].
+\]
+Якщо ребра невагові, $w_{uv}=1$. Загальний infection hazard --- це сума rates усіх активних $I\to S$ ребер:
+\[
+ \Theta_{\text{micro}}=\sum_{(u,v)\in E} a_{uv}.
+\]
+
+Тобто Full Micro буквально запитує: ``\textit{Які конкретно заражені люди зараз мають контакт із конкретними susceptible людьми?}''
+
+У мережі на рис. 1 між $A$ і $B$ є три фізичні ребра, але активне зараз тільки одне. Якщо всі мають rate $\beta$, точний міжcommunity hazard дорівнює
+\[
+ \lambda^{\text{exact}}_{AB}=\beta.
+\]
+Коли це ребро спрацьовує, заражається \textbf{саме той susceptible-вузол, який стоїть на його кінці}. Full Micro не вигадує target: його визначає реальне ребро.
+
+\begin{tcolorbox}[colback=white,colframe=exact,title=Інтуїція]
+Full Micro = ``я знаю стан кожної людини, кожне ребро і тому точно знаю, які переходи зараз можливі''.
+\end{tcolorbox}
+
+Це відповідає твоєму попередньому exact Gillespie-підходу на contact network: інтенсивність susceptible-вузла визначається його зараженими сусідами, а наступний event вибирається серед реально доступних transitions.
+
+\section*{3. Original MicroMacro: детально всередині, грубо між communities}
+
+MicroMacro робить головне спрощення: \textbf{усередині community він усе ще запускає локальний Gillespie на конкретних вузлах}, але між communities стискає інформацію.
+
+Для macro-рівня community $A$ перетворюється приблизно на такий запис:
+\[
+ A:\quad I_A,\;S_A,\;N_A,
+\]
+а пара communities $A,B$ має агреговану вагу $W_{AB}$, яка описує силу їхнього зв'язку.
+
+У твоїй MoMLeT-моделі міжcommunity rate записується як
+\[
+ \lambda_{AB}(t)=\beta\,W_{AB}\,C_A(t)\,S_B(t)\,T,
+\]
+де $C_A$ --- агрегована contagiousness source-community, а $S_B$ --- агрегована susceptibility destination-community. Для інтуїції це можна читати як схему
+\[
+ \lambda^{A/U}_{AB}\propto \beta W_{AB}\frac{I_A}{N_A}\frac{S_B}{N_B}.
+\]
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=14mm]
+\node[rounded corners,draw=boundary,fill=blue!5,minimum width=38mm,minimum height=22mm,align=center] (A) {Community A\\$I_A=2$, $S_A=3$};
+\node[rounded corners,draw=boundary,fill=blue!5,minimum width=38mm,minimum height=22mm,align=center,right=45mm of A] (B) {Community B\\$I_B=0$, $S_B=5$};
+\draw[-{Latex[length=3mm]},line width=2pt,macro] (A)--node[above] {$W_{AB}$} (B);
+\node[below=8mm of A,align=center,text width=55mm] {Macro не знає, \textbf{які саме} з двох infected у $A$ стоять на boundary.};
+\node[below=8mm of B,align=center,text width=55mm] {Macro не знає, \textbf{який саме} susceptible у $B$ є endpoint реального cross-edge.};
+\end{tikzpicture}
+\caption{Так macro-рівень ``бачить'' ту саму мережу: не конкретні cross-edge states, а агреговані counts та вагу між communities.}
+\end{figure}
+
+У нашому toy example $W_{AB}=3$ (три міжcommunity ребра), $I_A/N_A=2/5$, а $S_B/N_B=1$. Тоді агрегована формула може дати hazard близько
+\[
+ \lambda^{A/U}_{AB}=3\beta\cdot\frac{2}{5}=1.2\beta,
+\]
+хоча Full Micro бачить лише одне реально активне ребро і дає $\beta$.
+
+Це і є \textbf{структурна апроксимація}: macro-рівень припускає, що infected і susceptible ``розмішані'' відносно boundary приблизно так само, як у всій community.
+
+Коли macro-event відбувся, original MicroMacro не знає точний endpoint cross-edge. Тому він додає infection у \textbf{випадковий susceptible-вузол} destination-community.
+
+\subsection*{3.1. Ще одна різниця: як MicroMacro рухає час}
+
+Original MicroMacro не просто має aggregate hazard. Він має власний production scheduler. Micro communities просуваються блоками довжини $\tau_{\text{micro}}$, а macro-рівень накопичує hazard
+\[
+ H(t)=\int_{t_0}^{t}\Theta(s)\,ds
+\]
+до випадкового порогу $E=-\ln U$. У статті цей інтеграл апроксимується на micro-grid, зокрема через midpoint rate в кожному інтервалі.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[x=1.1cm,y=0.8cm]
+\draw[->] (0,0)--(10.2,0) node[right] {$t$};
+\foreach \x in {0,2,4,6,8,10} {\draw (\x,0.08)--(\x,-0.08);}
+\node[below] at (2,0) {$\tau$}; \node[below] at (4,0) {$2\tau$}; \node[below] at (6,0) {$3\tau$};
+\draw[macro,line width=2pt] (0,1.4)--(2,1.4)--(2,2.1)--(4,2.1)--(4,1.1)--(6,1.1)--(6,2.6)--(8,2.6)--(8,1.8)--(10,1.8);
+\foreach \x/\y in {1/1.4,3/2.1,5/1.1,7/2.6,9/1.8} {\fill[macro] (\x,\y) circle (2.2pt);}
+\node[above,macro] at (5,3.0) {Production MicroMacro: hazard оцінюється на synchronization grid};
+\node[align=center,text width=135mm] at (5,-1.1) {Навіть якщо структурна формула та сама, scheduler може дати додаткову implementation-похибку. Саме тому structural diagnostic simulator був зроблений окремо.};
+\end{tikzpicture}
+\caption{Схематично: MicroMacro має $\tau$-синхронізацію та cumulative-hazard timing.}
+\end{figure}
+
+\section*{4. Structural A/U: ті самі грубі припущення, але інший simulator}
+
+Оце найважливіший момент.
+
+Structural A/U означає:
+\[
+ \boxed{A=\text{Aggregate hazard}},\qquad
+ \boxed{U=\text{Uniform placement}}.
+\]
+
+Тобто за \textbf{структурним змістом} A/U робить те саме грубе припущення, що й original MicroMacro:
+\begin{itemize}[nosep]
+\item міжcommunity hazard рахується з агрегованої інформації, а не зі стану конкретних cross-edges;
+\item після import заражається випадковий susceptible у destination-community.
+\end{itemize}
+
+Але A/U --- \textbf{не той самий executable code}. У diagnostic implementation немає production $\tau$-scheduler у тому самому вигляді. Там micro і macro події конкурують як event-driven stochastic clocks.
+
+\begin{tcolorbox}[colback=soft,colframe=boundary,title=Навіщо взагалі потрібен A/U diagnostic?]
+Від Full Micro original MicroMacro відрізняється одразу у двох місцях. По-перше, він замінює точні міжcommunity active edges на \textbf{aggregate hazard} і після import використовує \textbf{uniform placement}. По-друге, він використовує власний production $\tau$-scheduler замість прямої глобальної конкуренції подій.
+
+A/U diagnostic залишає першу відмінність, але прибирає другу: \textbf{aggregate hazard + uniform placement залишаються, а production $\tau$-scheduler замінено на direct event competition}. Тому порівняння Full Micro з A/U показує переважно структурну похибку самої A/U-апроксимації, без домішки production synchronization mechanics.
+\end{tcolorbox}
+
+Тому різниця така:
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{42mm} >{\raggedright\arraybackslash}p{52mm} >{\raggedright\arraybackslash}p{52mm}}
+\toprule
+ & \textbf{Original MicroMacro} & \textbf{Structural A/U}\\
+\midrule
+Macro information & aggregate & aggregate\\
+Placement & uniform susceptible & uniform susceptible\\
+Hazard idea & та сама A/U approximation & та сама A/U approximation\\
+Time scheduler & production $\tau$ + hazard integral & окремий event-driven scheduler\\
+Executable & original user-facing simulator & окремий diagnostic simulator\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Отже відповідь на питання ``\textit{чи hazard рахується інакше?}'' така:
+
+\begin{tcolorbox}[colback=soft,colframe=macro,title=Коротка відповідь]
+У A/U \textbf{не обов'язково інша structural formula hazard}; за змістом вона така сама aggregate approximation, як у MicroMacro. Головна відмінність A/U від original MicroMacro --- \textbf{не formula, а simulation scheduler та implementation mechanics}. Саме тому A/U потрібен, щоб подивитися на ``чисту'' structural approximation без частини production implementation artifacts.
+\end{tcolorbox}
+
+\section*{5. E/U: виправляємо тільки hazard}
+
+Тепер ми залишаємо uniform placement, але повертаємо точну інформацію про реальні міжcommunity ребра.
+
+Для pair $A\to B$ exact hazard:
+\[
+ \lambda^{E/U}_{AB}
+ =\beta\sum_{(u,v)\in E_{AB}} w_{uv}\,\I[X_u=I,\,X_v=S].
+\]
+
+У toy network з рис. 1 активне тільки одне cross-edge, тому
+\[
+ \lambda^{E/U}_{AB}=\beta,
+\]
+а не $1.2\beta$, як у нашому простому aggregate прикладі.
+
+Але після того, як macro-event відбувся, E/U все ще робить ``U'': вибирає \textbf{будь-який susceptible} у $B$, а не обов'язково endpoint активного ребра.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node[ibnode] (a) at (0,0) {}; \node[above=2mm of a] {infected boundary};
+\node[sbnode] (b1) at (4,0) {}; \node[snode] (b2) at (5.4,0.8) {}; \node[snode] (b3) at (5.4,-0.8) {};
+\draw[exact,line width=2.2pt,-{Latex[length=3mm]}] (a)--(b1);
+\draw[purple,dashed,line width=1.2pt] (3.9,-0.15) .. controls (4.3,-1.3) and (5.0,-1.3) .. (b3);
+\draw[purple,dashed,line width=1.2pt] (3.9,0.15) .. controls (4.3,1.3) and (5.0,1.3) .. (b2);
+\node[align=center,text width=50mm] at (2,-1.5) {Exact hazard: алгоритм знає, що ризик іде через конкретне active edge.};
+\node[align=center,text width=50mm] at (5.1,-1.5) {Uniform placement: після event target може бути обраний серед усіх susceptible.};
+\end{tikzpicture}
+\caption{E/U знає правильно ``скільки ризику'', але ще не обов'язково правильно ``куди саме'' має прийти infection.}
+\end{figure}
+
+Тому перехід A/U $\to$ E/U вимірює насамперед помилку від \textbf{aggregate hazard}. Обидва варіанти запускаються тим самим diagnostic event-driven scheduler і в обох placement залишається uniform. Змінюється лише джерело macro hazard: у A/U він агрегований, а в E/U рахується з реальних active $I\to S$ cross-edges.
+
+\begin{tcolorbox}[colback=white,colframe=purple,title=Що саме перевіряє E/U?]
+Якщо E/U стає помітно ближчим до Full Micro, ніж A/U, це означає, що значна частина structural error виникала через \textbf{втрату інформації про те, які міжcommunity ребра реально активні}. Scheduler тут не міняється, тому його вплив не плутається з ефектом exact hazard.
+\end{tcolorbox}
+
+\section*{6. E/E: виправляємо і hazard, і placement}
+
+E/E означає:
+\[
+ \boxed{E=\text{Exact hazard}},\qquad
+ \boxed{E=\text{Exact placement}}.
+\]
+
+Hazard такий самий exact active-edge sum, як в E/U. Але тепер, якщо event вибрано через конкретне ребро $(u,v)$, заражається саме його endpoint $v$.
+
+Тобто E/E знає обидві речі:
+\begin{enumerate}[nosep]
+\item \textbf{як часто} має відбуватися inter-community transmission;
+\item \textbf{куди саме} він може потрапити.
+\end{enumerate}
+
+Перехід E/U $\to$ E/E ізолює помилку від \textbf{uniform placement}. Scheduler і exact hazard залишаються такими самими, як в E/U; змінюється лише правило вибору target-вузла після міжcommunity event.
+
+\begin{tcolorbox}[colback=white,colframe=exact,title=Що саме перевіряє E/E?]
+E/E відповідає на питання: ``якщо ми вже правильно знаємо \textit{коли} має відбутися міжcommunity зараження, скільки ще похибки дає те, що MicroMacro не знає \textit{який саме} вузол має заразитися?'' Якщо E/E майже збігається з Full Micro, це також є sanity check, що diagnostic event-driven implementation правильно відтворює exact process, коли йому повернули всю потрібну edge-level інформацію.
+\end{tcolorbox}
+
+\section*{7. То яка різниця між E/E і Full Micro?}
+
+Це тонке, але просте питання.
+
+\textbf{Full Micro} має одну глобальну мережу. Для нього internal та cross-community edges --- звичайні ребра одного CTMC. Ніякого спеціального macro-рівня для фізики зараження йому не потрібно.
+
+\textbf{E/E} усе ще написаний як двошаровий diagnostic simulator: internal events і inter-community events організовані окремими блоками логіки. Але для inter-community частини він уже використовує точні active edges та exact endpoint.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=18mm,every node/.style={font=\small}]
+\node[rounded corners,draw=exact,fill=green!4,text width=57mm,minimum height=36mm,align=center] (full) {\textbf{Full Micro}\\один глобальний graph\\усі active $I\to S$ edges --- один набір CTMC channels};
+\node[rounded corners,draw=purple,fill=purple!4,text width=57mm,minimum height=36mm,align=center,right=of full] (ee) {\textbf{E/E diagnostic}\\micro events + exact cross-edge events\\двошарова програмна організація};
+\draw[<->,line width=1.3pt] (full)--node[above=1mm,align=center,text width=41mm,font=\scriptsize] {той самий розподіл, якщо rates і event rules збігаються} (ee);
+\end{tikzpicture}
+\caption{E/E може бути математично еквівалентним Full Micro, хоча кодова архітектура інша.}
+\end{figure}
+
+Якщо одночасно виконуються умови:
+\begin{itemize}[nosep]
+\item internal Gillespie rules однакові;
+\item exact cross-edge rates однакові;
+\item recovery та інші event types однакові;
+\item exact target визначається тим самим active edge;
+\end{itemize}
+то обидва algorithms реалізують той самий CTMC generator. Тоді вони не зобов'язані дати однакову конкретну random trajectory, але повинні давати \textbf{той самий статистичний розподіл} при багатьох replications.
+
+І саме тому E/E --- хороший sanity check. Якщо E/E не збігається з Full Micro статистично, проблема вже не в A/U approximation, а в тому, що diagnostic implementation не відтворює exact process.
+
+\section*{8. Уся логіка A/U $\to$ E/U $\to$ E/E одним ланцюжком}
+
+Перед самим ablation ladder корисно тримати в голові дві різні причини, чому original MicroMacro може відрізнятися від Full Micro:
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{29mm} >{\raggedright\arraybackslash}p{112mm}}
+\textbf{Structural:} & exact boundary edges $\to$ aggregate community hazard.\\[2pt]
+\textbf{Scheduler:} & global event competition $\to$ $\tau$-synchronized hazard integration.
+\end{tabular}
+\end{center}
+A/U diagnostic спеціально прибирає другу різницю, але залишає першу. Далі A/U $\to$ E/U повертає exact hazard, а E/U $\to$ E/E повертає exact placement.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=12mm]
+\node[rounded corners,draw=macro,fill=orange!5,minimum width=42mm,minimum height=19mm,align=center] (au) {\textbf{A/U}\\aggregate hazard\\uniform target};
+\node[rounded corners,draw=purple,fill=purple!5,minimum width=42mm,minimum height=19mm,align=center,right=15mm of au] (eu) {\textbf{E/U}\\exact hazard\\uniform target};
+\node[rounded corners,draw=exact,fill=green!5,minimum width=42mm,minimum height=19mm,align=center,right=15mm of eu] (ee) {\textbf{E/E}\\exact hazard\\exact target};
+\draw[-{Latex[length=3mm]},line width=1.4pt] (au)--node[above=1mm,align=center,text width=28mm,font=\scriptsize] {повертаємо boundary-edge info} (eu);
+\draw[-{Latex[length=3mm]},line width=1.4pt] (eu)--node[above=1mm,align=center,text width=28mm,font=\scriptsize] {повертаємо exact placement} (ee);
+\node[below=12mm of eu,align=center,text width=135mm] {A/U $\to$ E/U показує, скільки похибки дає aggregate hazard.\\E/U $\to$ E/E показує, скільки похибки дає uniform placement.};
+\end{tikzpicture}
+\caption{Structural ablation ladder на одному diagnostic scheduler: A/U прибирає production $\tau$-scheduler із порівняння, A/U $\to$ E/U повертає exact hazard, а E/U $\to$ E/E --- exact placement.}
+\end{figure}
+
+\section*{9. Що вважати основним результатом для статті}
+
+Тут важливе методологічне правило.
+
+Якщо ми хочемо сказати щось саме про \textbf{твій user-facing MicroMacro method}, primary experiments краще робити на original `MicroMacroSimulator` і змінювати мінімально необхідну деталь:
+
+\begin{center}
+\begin{tabular}{p{35mm} p{107mm}}
+\toprule
+\textbf{Experiment} & \textbf{Найчистіша реалізація}\\
+\midrule
+A/U baseline & original MicroMacro без змін\\
+E/U & original MicroMacro + замінити лише macro hazard provider на exact active-edge hazard\\
+E/E & те саме + замінити лише target selector на exact edge endpoint\\
+Gateway near/random/far & simulator взагалі не змінювати; змінювати тільки topology\\
+$d\times k$ grid & simulator не змінювати; змінювати лише параметри мережі\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Окремий `HazardPlacementSimulator` все одно корисний: він дуже добре підходить як \textbf{secondary mechanistic diagnostic}, бо прибирає production scheduler artifacts і дозволяє чисто розкласти structural error. Але його результати краще подавати як підтвердження механізму, а не як єдине свідчення того, що отримає користувач original MicroMacro.
+
+\section*{10. Найкоротше резюме}
+
+\begin{tcolorbox}[colback=soft,colframe=dark]
+\textbf{Full Micro:} бачить кожен вузол і кожне active edge. Exact hazard, exact target.\\[3pt]
+\textbf{Original MicroMacro:} усередині community бачить nodes, між communities бачить aggregate $I,S,W$. Aggregate hazard, uniform target, production $\tau$-scheduler.\\[3pt]
+\textbf{Structural A/U:} ті самі aggregate/uniform structural assumptions, але окремий event-driven diagnostic simulator; тому він прибирає production $\tau$-scheduler і залишає structural A/U approximation.\\[3pt]
+\textbf{E/U:} той самий diagnostic scheduler і той самий uniform placement, але aggregate hazard замінено на exact cross-edge hazard; різниця A/U $\to$ E/U ізолює hazard information loss.\\[3pt]
+\textbf{E/E:} той самий diagnostic scheduler та exact hazard, але uniform placement замінено на exact endpoint; різниця E/U $\to$ E/E ізолює placement error. Якщо решта event rules збігаються з Full Micro, статистично має відтворювати той самий CTMC.
+\end{tcolorbox}
+
+\section*{Примітка про джерела}
+Опис original MicroMacro, його двох рівнів, macro-rate та cumulative-hazard synchronization базується на наданій роботі \textit{Towards complexity reduction of large-scale epidemic simulation in two-scale networks} (MoMLeT-2025). Опис Full Micro спирається на надану роботу \textit{Simulating epidemic peak dynamics on complex networks using efficient Gillespie algorithms}. Розрізнення Structural A/U--E/U--E/E як окремої diagnostic implementation базується на перевіреному source code експериментів у Google Drive в межах поточного аудиту.
+
+\end{document}

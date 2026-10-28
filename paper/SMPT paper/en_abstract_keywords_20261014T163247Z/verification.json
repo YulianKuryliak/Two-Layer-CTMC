@@ -1,0 +1,14 @@
+{
+  "scope": "Translate current UK abstract and seven keywords; replaces test-only abstract by latest explicit request",
+  "uk_source_unchanged": true,
+  "abstract_paragraphs": 4,
+  "keywords": 7,
+  "numeric_and_inline_math_order_parity": true,
+  "title_and_entire_body_from_maketitle_unchanged_bytes": true,
+  "compiler": "pdfLaTeX via stable latexmk/BibTeX",
+  "pages": 22,
+  "visual_check": "Page1 abstract/keyword layout inspected; complete and no new overflow",
+  "zip_members": 166,
+  "inherited_warnings": "CAS title117.0831pt/empty anchors and prose-underfull remain",
+  "no_simulations_or_statistics_recomputed": true
+}

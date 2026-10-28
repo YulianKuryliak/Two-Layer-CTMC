@@ -1,0 +1,29 @@
+--- /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/appendix_revision_20261023T194123Z/main.tex
++++ paper/IEEE_version/main.tex
+@@ -21,6 +21,8 @@
+ % Review replacements: new text is royal blue; original text is retained.
+ \definecolor{RoyalBlue}{RGB}{65,105,225}
+ \newcommand{\michael}[2]{{\color{RoyalBlue}#1}}
++% Yulian uses the same new/previous-text convention, with changes in red.
++\newcommand{\yulian}[2]{{\color{red}#1}}
+ % Use the template blue as process CMYK; PGF also manages PDF colour resources.
+ \definecolor{accessblue}{cmyk}{1,0.3,0,0.2}
+ \definecolor{greycolor}{cmyk}{0,0,0,0.8}
+@@ -663,7 +665,7 @@
+ 
+ For each interface, we select $k$ nodes uniformly without replacement from each community and connect them in pairs. A node can participate in interfaces with both neighbouring communities.
+ 
+-For each configuration, we perform 400 runs of each model with $\beta=0.003$ and a horizon of 30\,000. Two \Full{} runs were extended to 40\,000 to observe infection of the last community (Appendix~\ref*{app:repro}).
++For each configuration, we perform 400 runs of each model with $\beta=0.003$ and a horizon of 30\,000. \yulian{Two \Full{} runs ($n=50$, ASPL 6, $k=1$) were extended to 40\,000 using the same graphs, initial nodes and event seeds, to observe infection of the last community. Arrival-time summaries use the observed event times; unobserved arrivals were not replaced by the horizon.}{Two \Full{} runs were extended to 40\,000 to observe infection of the last community (Appendix~\ref*{app:repro}).}
+ 
+ \begin{table*}[!t]
+ \centering
+@@ -978,7 +980,7 @@
+ 
+ The direction of this shift is consistent with Proposition~\ref{prop:ordering} for the ideal two-scale process: averaging rates over randomly selected bridge nodes can result in systematically earlier export.
+ 
+-Sampling variability must be considered when interpreting the Wasserstein distance. \michael{For independent samples of size $R$ from an exponential distribution with mean $\mu$, the large-$R$ approximation is $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, giving about $8.9\%$ for $R=400$ (Appendix~\ref*{app:floor}). This is an illustrative sampling baseline, not the critical value for our paired permutation tests.}{For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}).} Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.
++\yulian{}{Sampling variability must be considered when interpreting the Wasserstein distance. \michael{For independent samples of size $R$ from an exponential distribution with mean $\mu$, the large-$R$ approximation is $\mathbb{E}[W_1]/\mu\approx\sqrt{\pi/R}$, giving about $8.9\%$ for $R=400$ (Appendix~\ref*{app:floor}). This is an illustrative sampling baseline, not the critical value for our paired permutation tests.}{For nearly exponential export times with $R=400$, the expected normalised distance between two independent samples from the same distribution is approximately $\sqrt{\pi/R}\approx9\%$ (Appendix~\ref*{app:floor}).} Small values of $\eW$ for a single export therefore do not, by themselves, indicate a difference between the models.}
+ 
+ Unlike the temporal distance, every premature export directly indicates a violation of the admissible transmission order. For example, at ASPL 4 and $k=1$, such violations occurred in 19.75\% of runs, although the time distributions remained relatively close.
+ 

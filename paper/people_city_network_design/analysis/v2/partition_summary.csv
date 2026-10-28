@@ -1,0 +1,4 @@
+partition,groups,same_group_worker_fraction,largest_available_population_sum,groups_with_missing_population,dense_macro_lower_bound_gib
+commune,34858,0.3459820302633891,2113705.0,4,45.265263468027115
+urban_rural_commune,29764,0.6235196700296733,10944094.0,4,33.00218641757965
+urban_rural_department,2553,0.6537960427988616,10944094.0,1,0.2428073063492775

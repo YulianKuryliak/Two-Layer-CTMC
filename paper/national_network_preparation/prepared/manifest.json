@@ -1,0 +1,32 @@
+{
+  "source_sha256": "853dbc7cb19790569f5c4dc948002ef3be22f5b1a9cc569b41272af341cb7822",
+  "input_sha256": {
+    "mobility_2022.zip": "e3a4aa5907887fa08ec53ef655b76aac721928961f12bdd65713d1f8a0a4315b",
+    "v_commune_2025.csv": "3f8d2913fb0bdee1f72f54706854dc0cd626ed4089bd5761ec9292db0cb12e7e",
+    "v_departement_2025.csv": "513900ca23edc682ef9b912d7bfc317129eac3a7d71ff19bc22b40ea4838e6eb"
+  },
+  "flow_scale": 1000.0,
+  "start_utc": "2026-10-16T13:03:18.635225+00:00",
+  "end_utc": "2026-10-16T13:03:22.434786+00:00",
+  "numpy": "2.5.0",
+  "pandas": "3.0.3",
+  "scipy": "1.18.0",
+  "source_manifest_sha256": "185a14394d1b995f1c934b720ee6ceae211372357973b25ca22b894a5332b82c",
+  "seeds": null,
+  "simulations_run": false,
+  "artifact_sha256": {
+    "A_proxy.npz": "7a82ac937e7f7fcf388fd232763a3dd30c10d4a31ec3bdfe4299108728aa7718",
+    "F_domestic.npz": "50174bb2a311ee3877916ff0edeec84df371f4042a9a869286425220074d17fc",
+    "W.csv": "aa4286264cc053ce2b6b55e161dfda2b75adc869117094c7366c13f560c3562a",
+    "W.npy": "27875d860c6ff9bec73bb668cbf5c10f9af12d3f7567bcb78c770e68e2b5add6",
+    "components.csv": "6c4554d3ddb12169eb445771bd9c65d8335cc5f571a23b7bc2a076862d6515c0",
+    "department_directed_flows_descriptive.csv": "72ff02c7fd9e4332c03d0549e9ee9b37186ed303645466be6d5d387bf666b16c",
+    "department_directed_flows_descriptive.npy": "515015f2084973a75fdda6441b5a2f5d3eab7ab3863a6970034af8ca83751528",
+    "departments.csv": "87510d34348b9081a6ae104727f5c3ce3c8761b37d1f4831190cd21f7bfcd289",
+    "geography_crosswalk.csv": "1ab653a506520b3226bf8438fd0211dacbfa78200017cbba20270753614489d4",
+    "nodes.csv": "0014c560223d687a0cc51cbd0ac457b04a164bf3a4e2d9e0b71a3546e05efe5a",
+    "outside_scope_flows.csv.gz": "0ec127f872c998d28c1c6a6bf275b2351e8f8d91ef4d674243caafbe047b4342",
+    "summary.json": "114497a782a06e13630b041a51aea57f06be84aed9a6882e09383c8abc20f20e",
+    "top_links.csv": "f47e654c00da89916e60f665f035863535b792e68b969d83ef5c8e21283f1376"
+  }
+}

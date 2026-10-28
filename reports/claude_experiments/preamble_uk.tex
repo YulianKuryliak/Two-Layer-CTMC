@@ -1,0 +1,36 @@
+% ============================================================
+% Shared preamble for Claude Experiments reports (Ukrainian, LuaLaTeX)
+% Compile with: lualatex report_*_uk.tex
+% Include this AFTER \documentclass in each report:
+%   \documentclass[11pt,a4paper]{article}
+%   \input{../preamble_uk}
+% ============================================================
+% Cyrillic via LuaLaTeX + fontspec (pdflatex has no T2A here).
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{microtype}
+\usepackage{float}
+\usepackage{array}
+\microtypesetup{expansion=false}
+
+% Color scheme
+\definecolor{colMicro}{HTML}{222222}
+\definecolor{colExact}{HTML}{2878b5}
+\definecolor{colPlacement}{HTML}{e07a1f}
+\definecolor{colBoundary}{HTML}{429c74}
+\definecolor{colCurrent}{HTML}{c23b55}
+\definecolor{colMM}{HTML}{c23b55}
+
+\providecommand{\SIG}{\textcolor{green!50!black}{\textbf{*}}}
+\providecommand{\NS}{\textcolor{gray}{n.s.}}
+\providecommand{\DRMS}{\Delta\mathrm{RMST}}
+\providecommand{\ci}[2]{$[{#1},\;{#2}]$}

@@ -1,0 +1,32 @@
+--- before/references_outlook.bib
++++ after/references_outlook.bib
+@@ -1,4 +1,4 @@
+-% References for the supervisor's Outlook and the added geographic-data sentence.
++% References for the supervisor's Outlook and the geographic-network extension.
+ 
+ @article{mastrandrea2015,
+   author  = {Mastrandrea, Rossana and Fournet, Julie and Barrat, Alain},
+@@ -41,3 +41,23 @@
+   pages   = {1204},
+   doi     = {10.1038/s41597-024-03970-1}
+ }
++
++@misc{tulchinsky2024networks,
++  author        = {Tulchinsky, Alexander Y. and Haghpanah, Fardad and Hamilton, Alisa and Kipshidze, Nodar and Klein, Eili Y.},
++  title         = {Generating geographically and economically realistic large-scale synthetic contact networks: A general method using publicly available data},
++  year          = {2024},
++  howpublished  = {arXiv preprint arXiv:2406.14698},
++  doi           = {10.48550/arXiv.2406.14698},
++  url           = {https://arxiv.org/abs/2406.14698}
++}
++
++@article{tizzoni2014mobility,
++  author  = {Tizzoni, Michele and Bajardi, Paolo and Decuyper, Adeline and Kon Kam King, Guillaume and Schneider, Christian M. and Blondel, Vincent and Smoreda, Zbigniew and Gonz{\'a}lez, Marta C. and Colizza, Vittoria},
++  title   = {On the Use of Human Mobility Proxies for Modeling Epidemics},
++  journal = {PLOS Computational Biology},
++  year    = {2014},
++  volume  = {10},
++  number  = {7},
++  pages   = {e1003716},
++  doi     = {10.1371/journal.pcbi.1003716}
++}

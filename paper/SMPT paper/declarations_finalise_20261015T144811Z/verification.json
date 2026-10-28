@@ -1,0 +1,13 @@
+{
+  "compiler": "pdfLaTeX",
+  "pages": 23,
+  "build": "stable success",
+  "changes_limited_to": "Funding, CRediT, competing interest, AI declaration",
+  "funding_and_interests": "confirmed by user",
+  "CRediT": "proposed; both authors to confirm",
+  "data_availability": "placeholder retained",
+  "zip_members": 166,
+  "plot_assets_unchanged": 151,
+  "uk_source_edited": false,
+  "simulations_run": false
+}

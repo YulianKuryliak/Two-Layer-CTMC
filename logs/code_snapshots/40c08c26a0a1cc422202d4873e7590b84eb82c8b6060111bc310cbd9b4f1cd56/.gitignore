@@ -1,0 +1,17 @@
+.venv
+plots
+data
+__pycache__/
+build/
+dist/
+*.egg-info/
+simulations.db
+# sim_db.py
+*copy*
+*test*
+!/tests/
+!/tests/test_residual_import_clock.py
+!/optimization/state_events_v1/baseline/tests/
+!/optimization/state_events_v1/optimized/tests/
+!/optimization/state_events_v1/**/test_*.py
+.codex

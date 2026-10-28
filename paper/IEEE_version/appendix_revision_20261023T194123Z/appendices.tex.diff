@@ -1,0 +1,18 @@
+--- /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/appendix_revision_20261023T194123Z/appendices.tex
++++ paper/IEEE_version/appendices.tex
+@@ -37,7 +37,7 @@
+ \end{tabular}
+ \end{table}
+ 
+-\section{Sampling floor of the Wasserstein distance}
++\yulian{}{\section{Sampling floor of the Wasserstein distance}
+ \label{app:floor}
+ 
+ Let $F_R$ and $G_R$ be empirical CDFs of two independent samples of size $R$ from the same continuous law $F$. Then $W_1=\int|F_R-G_R|\,dx$, and $\sqrt{R}\,(F_R-G_R)$ is approximately $\sqrt{2}$ times a Brownian bridge evaluated at $F(x)$ \cite{delbarrio1999}. Since $\mathbb{E}|B(u)|=\sqrt{2u(1-u)/\pi}$ for a Brownian bridge $B$,
+@@ -49,5 +49,4 @@
+ \section{Reproducibility details}
+ \label{app:repro}
+ 
+-Seeds are derived deterministically from the experiment parameters. Each \TS{} engine draws from a private pseudorandom stream; midpoint probes copy the stream state of their engine and do not advance it. Two \Full{} runs ($n=50$, ASPL 6, $k=1$) had not reached the tenth community by $T=30\,000$. They were rerun to $T=40\,000$ with the same graphs, initial nodes and event seeds. Their event histories up to 30\,000 were verified to match the saved runs, and their terminal arrivals occurred at about 31\,059 and 31\,007. No horizon value was substituted for an unobserved event. The permutation and bootstrap analyses of the chain configurations, the descriptor $\sigma_T$ and Figures~\ref{fig:accuracy_map}--\ref{fig:descriptor} were computed from the saved runs by the scripts \path{extrascripts/analysis/smpt_twoscale_paper_metrics.py} and \path{extrascripts/visualization/smpt_twoscale_paper_figures.py}.
+-
++Seeds are derived deterministically from the experiment parameters. Each \TS{} engine draws from a private pseudorandom stream; midpoint probes copy the stream state of their engine and do not advance it. Two \Full{} runs ($n=50$, ASPL 6, $k=1$) had not reached the tenth community by $T=30\,000$. They were rerun to $T=40\,000$ with the same graphs, initial nodes and event seeds. Their event histories up to 30\,000 were verified to match the saved runs, and their terminal arrivals occurred at about 31\,059 and 31\,007. No horizon value was substituted for an unobserved event. The permutation and bootstrap analyses of the chain configurations, the descriptor $\sigma_T$ and Figures~\ref{fig:accuracy_map}--\ref{fig:descriptor} were computed from the saved runs by the scripts \path{extrascripts/analysis/smpt_twoscale_paper_metrics.py} and \path{extrascripts/visualization/smpt_twoscale_paper_figures.py}.}

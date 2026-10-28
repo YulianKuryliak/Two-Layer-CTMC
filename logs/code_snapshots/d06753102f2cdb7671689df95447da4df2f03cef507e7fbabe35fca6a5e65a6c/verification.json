@@ -1,0 +1,28 @@
+{
+  "scope": "User-edited active Sections 1--5 in current Ukrainian main",
+  "english_sha256": "d5d81eb3451262c5ceee9ea9e7607e6374bf55ee2bea15b147944986799dc5a0",
+  "ukrainian_sha256": "aae80f4d98cc99c81fddd360a22607ce2b43bf9b2d16f133ee1ea876a33261f7",
+  "prior_english_sections_1_4_preserved": true,
+  "prior_reference_link_change": "sec:design now links to included Section 5",
+  "sections": 5,
+  "labels": 32,
+  "citations": 25,
+  "numbered_equations": 9,
+  "mathematical_and_heading_parity": true,
+  "tikz_unchanged": true,
+  "external_references": [
+    "app:clique",
+    "app:repro",
+    "sec:discussion",
+    "sec:res_descriptor",
+    "sec:results"
+  ],
+  "warnings": [
+    "Overfull \\hbox (117.0831pt too wide) detected at line 88"
+  ],
+  "editorial_notes": "Two Ukrainian not-sure-needed headings preserved as invisible TEX comments",
+  "source_policy": "Current user wording, including repeated rho paragraphs; no removed methodological details restored",
+  "ukrainian_unchanged": true,
+  "simulations_run": false,
+  "final_semantic_review": "PASS: all active Section5 paragraphs, table values and qualifications present in the same order"
+}

@@ -1,0 +1,235 @@
+--- English main before Section 5
++++ English main with user Section 5
+@@ -41,7 +41,8 @@
+ 
+ % Full-paper numbers for material not yet translated into this partial main.
+ \AtBeginDocument{
+-\newlabel{sec:design}{{5}{13}{}{}{}}
++\newlabel{app:clique}{{A}{25}{}{}{}}
++\newlabel{app:repro}{{C}{28}{}{}{}}
+ \newlabel{sec:discussion}{{7}{22}{}{}{}}
+ \newlabel{sec:res_descriptor}{{6.6}{20}{}{}{}}
+ \newlabel{sec:results}{{6}{15}{}{}{}}
+@@ -106,11 +107,11 @@
+ \begin{enumerate}
+ \item We describe how the simulator works: each community is simulated separately, and a shared scheduler determines infections between them. We explain how it coordinates the local simulators on time intervals of fixed length (Section~\ref{sec:method}, Algorithm~\ref{alg:scheduler}).
+ \item We show which network the method simulates exactly. The ideal process is exact for a \emph{surrogate network with uniform inter-community connections}: for each connected community pair, every node in one community is connected to every node in the other, and the total coupling weight is distributed equally among these node pairs (Proposition~\ref{prop:surrogate}). We then identify the sources of error and analyse a single export of infection (Proposition~\ref{prop:ordering}).
+-\item We compare the two-scale method with full-network Gillespie simulation for transmission to one neighbouring community and for spread along chains of communities. We measure differences using the relative shift in the median time of first infection and the Wasserstein distance between the distributions of these times (Sections~\ref*{sec:design} and~\ref*{sec:results}).
++\item We compare the two-scale method with full-network Gillespie simulation for transmission to one neighbouring community and for spread along chains of communities. We measure differences using the relative shift in the median time of first infection and the Wasserstein distance between the distributions of these times (Sections~\ref{sec:design} and~\ref*{sec:results}).
+ \item We propose an empirical indicator of accuracy for our benchmarks. It compares the spread of infection times inside a community with the typical transmission time through one cross-community edge (Section~\ref*{sec:res_descriptor}).
+ \end{enumerate}
+ 
+-We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref*{sec:design} and~\ref*{sec:results} present the experiments and results. Section~\ref*{sec:discussion} discusses use, cost, and limitations.
++We consider susceptible--infected (SI) dynamics on static synthetic networks and use one fixed synchronisation step. Section~\ref{sec:related} explains the relation to earlier methods. Section~\ref{sec:method} describes the simulator. Section~\ref{sec:analysis} explains what the aggregate interface preserves and loses. Sections~\ref{sec:design} and~\ref*{sec:results} present the experiments and results. Section~\ref*{sec:discussion} discusses use, cost, and limitations.
+ 
+ 
+ %======================================================================
+@@ -566,8 +567,206 @@
+ 
+ For randomly placed bridges, we have therefore established the direction of the stochastic shift in the first export time, but not its magnitude. The next question is which properties of internal spread make this discrepancy small or substantial.
+ 
+-% The temporal-descriptor subsection is commented out in the Ukrainian source
+-% and is intentionally not restored in this translation.
++% The former Section 4 temporal-descriptor drafts are commented out in the
++% Ukrainian source; the active descriptor is now in Section 5 below.
++
++\section{Methodology for experimental evaluation}
++\label{sec:design}
++
++\subsection{Experimental networks and parameters}
++
++The theoretical analysis in the previous section showed how aggregating inter-community contacts changes infection transmission and under which conditions a stochastic shift in the first export time arises. However, it does not determine the magnitude of the discrepancies between the models or their behaviour after successive inter-community crossings.
++
++To investigate these questions, we compare \Full{} and \TS{} in four experimental series. We first consider transmission to a single external node and then infection spread along a chain of communities. In each setting, we examine how internal network structure affects the discrepancies between the models.
++
++All experiments use SI dynamics, unit contact weights, $\beta_{\mathrm{in}}=\beta_{\mathrm{out}}=\beta$, and a synchronisation step of $\tau=1$ (Algorithm~\ref{alg:scheduler}).
++
++\paragraph{Clique--leaf.}
++To compare the first export times of the two methods with minimal influence from internal network structure, we use a complete graph. The receiving community need not be represented in full: for this purpose, it is sufficient to represent export through the bridge nodes and a single external leaf.
++
++We attach one external node (the leaf) to a complete graph (clique) with $n=100$ nodes through $k=2$ distinct bridge nodes in the clique. We perform 10\,000 runs of each model with $\beta=0.005$ and a time horizon of 1000. In this and all other experiments, bridge nodes are selected uniformly without replacement.
++
++\paragraph{Random community--leaf.}
++We next investigate how the internal structure of the source affects infection transmission to the leaf. We replace the clique with a connected random graph of $n=1000$ nodes and attach the leaf through $k\in\{1,5\}$ distinct bridge nodes.
++
++We characterise internal structure by the average shortest-path length (ASPL). To generate the graph, we first construct a uniformly random tree and then add random edges to obtain the target ASPL within a tolerance of 0.1. We vary ASPL from 1 to 6 in steps of 0.25; ASPL 1 corresponds to a complete graph.
++
++As ASPL increases, the mean degree of the generated graphs also decreases. This experiment therefore investigates the effects of internal path length and network sparsity.
++
++The initially infected node is selected uniformly from all source nodes. For each configuration, we perform 400 runs of each model: 40 realisations of the internal graph with 10 replicates of inter-community contacts and random events. We use $\beta=0.003$ and a horizon of 30\,000.
++
++\paragraph{Chain of cliques.}
++The preceding tests consider just one inter-community crossing. To examine how discrepancies change after successive crossings, we connect $L=10$ complete graphs, each with $n=1000$ nodes, in a line, with one edge between neighbouring communities ($k=1$). Infection starts in community 0.
++
++As in the first test, complete graphs provide rapid internal spread. This allows us to assess the effect of successive inter-community crossings in a baseline setting with minimal internal path lengths.
++
++We use $\beta=0.003$, 400 runs of each model, and a horizon of 30\,000.
++
++\paragraph{Chains of random communities.}
++Finally, we combine successive inter-community crossings with variation in internal community structure. This series examines how community size and internal structure affect discrepancies between \Full{} and \TS{}, and how these discrepancies change along the chain.
++
++We connect $L=10$ connected random communities in a line, with $k\in\{1,5\}$ edges between neighbouring communities. Infection starts in community 0.
++
++We consider sizes $n\in\{50,100,250,1000\}$. Internal graphs are generated by the procedure described above, varying ASPL from 1 to 6 in steps of 1.
++
++For each interface, we select $k$ nodes uniformly without replacement from each community and connect them in pairs. A node can participate in interfaces with both neighbouring communities.
++
++For each configuration, we perform 400 runs of each model with $\beta=0.003$ and a horizon of 30\,000. Two \Full{} runs were extended to 40\,000 to observe infection of the last community (Appendix~\ref*{app:repro}).
++
++\begin{table}[tbp]
++\centering
++\caption{Parameters of the experimental series. ASPL is the target average shortest-path length within a community.}
++\label{tab:design}
++\small
++\begin{tabular}{
++>{\raggedright\arraybackslash}p{0.17\linewidth}
++>{\raggedright\arraybackslash}p{0.36\linewidth}
++>{\raggedright\arraybackslash}p{0.06\linewidth}
++>{\raggedright\arraybackslash}p{0.08\linewidth}
++>{\raggedright\arraybackslash}p{0.20\linewidth}}
++\toprule
++Series & Structure & $k$ & $\beta$
++& Runs per cell and model \\
++\midrule
++Clique--leaf
++& Clique $n=100$ and one leaf
++& 2 & 0.005 & 10\,000 \\
++
++Random community--leaf
++& $n=1000$, ASPL 1--6 in steps of 0.25,
++one leaf
++& 1, 5 & 0.003 & 400 (40 $\times$ 10) \\
++
++Chain of cliques
++& $L=10$, $n=1000$
++& 1 & 0.003 & 400 (40 $\times$ 10) \\
++
++Chains of random communities
++& $L=10$, $n\in\{50,100,250,1000\}$,
++ASPL 1--6 in steps of 1
++& 1, 5 & 0.003 & 400 (40 $\times$ 10) \\
++\bottomrule
++\end{tabular}
++\end{table}
++
++Each pair of \Full{} and \TS{} runs uses the same internal graphs, inter-community contacts, and initially infected node, but independent streams of random events. Inter-community contacts are generated independently for different interfaces and replicates.
++
++\subsection{Metrics for comparing the models}
++
++To assess discrepancies between \Full{} and \TS{}, we compare infection propagation times and cases of transmission before the bridge nodes become infected.
++
++In the leaf tests, we measure its first infection time $T_{\mathrm{export}}$. For chains, let $T_c$ be the first infection time of community $c$, where $c=1,\ldots,9$. Since the chain has 10 communities, the arrival time in the last community is denoted by $T_9$.
++
++Because infection spread is stochastic, the time of the same event varies between runs. The first infected nodes and infection paths also differ between runs. Comparing individual realisations is therefore insufficient to assess discrepancies between the models.
++
++For each configuration, we perform repeated runs of \Full{} and \TS{}. Each run yields one time for the corresponding event: infection of the leaf or the first infection of a particular community. From these values, we form separate empirical distributions for the two models and compare them using three metrics.
++
++\paragraph{Relative median shift.}
++To determine how much earlier or later \TS{} transmits infection than \Full{}, we calculate the relative difference between the medians of the corresponding distributions:
++\[
++b_c =
++100\,
++\frac{
++\operatorname{med}(T_c^{\TS})-
++\operatorname{med}(T_c^{\Full})
++}{
++\operatorname{med}(T_c^{\Full})
++}.
++\]
++A negative value means earlier infection arrival in \TS{}, while a positive value means later arrival. The median shift describes the direction and magnitude of the difference in typical times, but does not describe the whole distribution.
++
++\paragraph{Normalised Wasserstein distance.}
++The median shift captures only the difference between the medians and does not account for the rest of the distribution. To assess differences between empirical distributions of event times, we therefore use the Wasserstein-1 distance.
++
++We sort the $R$ observed times of the corresponding event in ascending order separately for each model and calculate
++\[
++W_1 =
++\frac{1}{R}
++\sum_{r=1}^{R}
++\left|
++T_{(r)}^{\TS}-T_{(r)}^{\Full}
++\right|,
++\]
++where $T_{(r)}^{\TS}$ and $T_{(r)}^{\Full}$ are the $r$th values in the ordered \TS{} and \Full{} samples, respectively.
++
++To compare results with different characteristic propagation times, we normalise the distance by the mean time in \Full{}:
++\[
++\eW =
++100\,\frac{W_1}{\overline{T}^{\Full}}.
++\]
++The resulting measure describes the difference between empirical distributions independently of the direction of the shift. The formula compares ordered samples, not individual pairs of runs.
++
++In the leaf tests, both metrics are calculated for $T_{\mathrm{export}}$; in chains, they are calculated for the arrival times $T_c$.
++
++\paragraph{Fraction of premature exports}
++Similar infection-time distributions do not guarantee that an admissible sequence of infection transmission is preserved. In the full network, infection cannot reach a neighbouring community until at least one real bridge node in the source becomes infected. In contrast, \TS{} can transmit infection before any of these nodes becomes infected.
++
++To assess how often this occurs, for each inter-community crossing we consider the set $B$ of real bridge nodes in the source community. Let $\tau_u^{\TS}$ be the infection time of node $u$ in the corresponding \TS{} run. The infection time of the first bridge is then
++\[
++T_B^{\TS}=\min_{u\in B}\tau_u^{\TS}.
++\]
++
++Let $T_{\mathrm{arr}}^{\TS}$ be the first infection time of the recipient community or leaf. We record a premature export if
++\[
++T_{\mathrm{arr}}^{\TS}<T_B^{\TS}.
++\]
++
++The fraction of premature exports is the percentage of such cases among all examined inter-community crossings in \TS{}. This metric describes how often a necessary condition for transmission through real bridge nodes is violated.
++
++\paragraph{Discrepancies along the chain.}
++For chains, we additionally compare the relative shifts in the mean durations of the first crossing, $T_1$, and the subsequent crossings, $T_9-T_1$. The first crossing allows us to assess discrepancies associated with export from the initial community, while later crossings can also reflect the effects of import placement and surplus imports. This comparison tests whether discrepancies become stronger after the first inter-community crossing.
++
++\subsection{A measure of the ratio of time scales}
++\label{sec:descriptor}
++
++Discrepancies between \Full{} and \TS{} may depend not only on network structure, but also on the relative speeds of infection spread within and between communities. In particular, aggregation does not account for when individual bridge nodes become infected, which can matter when internal spread is slow and uneven.
++
++To investigate this relationship, we use the dimensionless measure
++\begin{equation}
++\label{eq:rho}
++\rho=\beta_{\mathrm{out}}\sigma_T,
++\end{equation}
++where $\sigma_T$ is the standard deviation of node infection times within a community. This measure describes the spread of internal infection times relative to the mean transmission time through one continuously active inter-community channel, $1/\beta_{\mathrm{out}}$.
++
++For each configuration, we calculate $\sigma_T$ from node infection times in each source community of the \Full{} runs, then average these values over communities and runs.
++
++We examine how $\rho$ relates to the median shift and normalised Wasserstein distance for the arrival time in the last community, $T_9$. In particular, we compare how well $\rho$ and ASPL explain discrepancies between the models across community sizes and structures.
++
++A small $\rho$ means that the spread of internal infection times is small relative to the transmission time through one channel. We test whether such configurations show smaller discrepancies between the models.
++
++For each configuration, $\sigma_T$ is calculated from node infection times in the source communities of the \Full{} runs and averaged over these communities and runs.
++
++In the results, we compare $\rho$ with the median shift and normalised Wasserstein distance across community sizes, internal structures, and numbers of inter-community edges.
++
++The measure $\rho$ is not a direct error metric. We consider it a possible explanatory characteristic of the discrepancies. Since $\sigma_T$ is calculated from \Full{}, we do not test whether error can be predicted from local simulations alone.
++
++% User's Ukrainian editorial note: not sure whether this subsection is needed.
++\subsection{Statistical evaluation}
++
++Because the simulations are stochastic and the number of runs is limited, the estimated discrepancies between \Full{} and \TS{} have sampling uncertainty. We use a block bootstrap to assess this uncertainty and a permutation test to test differences between infection-time distributions.
++
++\paragraph{Block bootstrap.}
++Replicates on the same graph share its structure and are therefore not independent realisations of a network configuration. To account for this dependence, the bootstrap samples whole network blocks with replacement, keeping all ten replicates and their corresponding pairs of \Full{} and \TS{} runs together.
++
++For chain summary statistics, we form 2000 bootstrap samples and recalculate the measures of interest. The limits of the 95\% confidence intervals are the 2.5th and 97.5th percentiles of the resulting estimates. This assesses uncertainty in the magnitude and direction of discrepancies between the models.
++
++\paragraph{Permutation test.}
++The Wasserstein distance can be positive even for two samples from the same distribution, because each contains a finite number of random observations. We therefore need to test whether the observed distance exceeds the level that can arise from sampling variability.
++
++For each pair of runs, we randomly swap the observed \Full{} and \TS{} infection times with probability $1/2$. We recalculate the normalised Wasserstein distance from the resulting samples. Repeating this procedure 2000 times gives a distribution of distances under random reassignment of results between models.
++
++Under the null hypothesis that \Full{} and \TS{} results are exchangeable within pairs, we use this distribution to assess the statistical significance of the observed distance. Its 95th percentile defines the permutation threshold, and the fraction of permutations with a distance at least as large as the observed one estimates the $p$-value.
++
++Exceeding the threshold indicates a statistically significant discrepancy under the assumed null model.
++
++% User's Ukrainian editorial note: not sure whether this subsection is needed.
++\subsection{Validation of the Full implementation}
++
++To validate the full-network simulator, we compare the simulated mean infection time of the first bridge node, $T_B$, with the analytical value for a clique (Appendix~\ref*{app:clique}). This check uses four clique sizes and two numbers of inter-community edges.
++
++We also check the mean transmission time to the leaf after the single bridge becomes infected. For one continuously active channel, its theoretical value is $1/\beta$.
++
++These checks assess the agreement of the \Full{} implementation with known analytical results, but do not establish the accuracy of the two-scale approximation.
+ 
+ 
+ \bibliographystyle{cas-model2-names}

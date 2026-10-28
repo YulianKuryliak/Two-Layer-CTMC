@@ -1,0 +1,39 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}The Core Comparison Problem}{3}{section.1}%
+\contentsline {section}{\numberline {2}Analyzing Method Differences: Design Before Metrics}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}First decide which question you are asking}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}The isolation principle}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Precondition 1: report completion, then use censoring-aware estimators}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Precondition 2: horizon commensurability}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Choose a normalization independent of the effect}{4}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Separate systematic signal from stochastic noise}{4}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Mechanism attribution: the ablation ladder}{5}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.8}From attribution to a deployable parameter surrogate}{5}{subsection.2.8}%
+\contentsline {subsection}{\numberline {2.9}Disclose the calibration}{5}{subsection.2.9}%
+\contentsline {subsection}{\numberline {2.10}Include a negative control}{5}{subsection.2.10}%
+\contentsline {subsection}{\numberline {2.11}Checklist}{5}{subsection.2.11}%
+\contentsline {section}{\numberline {3}Metric Catalogue}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Completion Rate}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Conditional Mean and Median (completed runs only)}{6}{subsection.3.2}%
+\contentsline {paragraph}{Why it is biased when completion rates differ.}{7}{section*.3}%
+\contentsline {paragraph}{Concrete example.}{7}{section*.4}%
+\contentsline {subsection}{\numberline {3.3}Restricted Mean Survival Time (RMST)}{7}{subsection.3.3}%
+\contentsline {paragraph}{How RMST is computed in this project (code).}{7}{section*.5}%
+\contentsline {paragraph}{Bootstrap confidence interval.}{7}{section*.6}%
+\contentsline {paragraph}{Concrete numbers (calibrated clique benchmark, 100 reps):}{8}{section*.7}%
+\contentsline {subsection}{\numberline {3.4}Wasserstein-1 Distance (W$_1$)}{8}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Kolmogorov--Smirnov Statistic}{9}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Per-Hop Arrival-Time Metrics: W$_1$(T$_i$) and Paired Error}{9}{subsection.3.6}%
+\contentsline {section}{\numberline {4}The I$_{\mathrm {tot}}$(t) Plot: Phase Noise vs.\ Approximation Error}{9}{section.4}%
+\contentsline {paragraph}{What the IQR band on $I_{\mathrm {tot}}(t)$ actually measures.}{9}{section*.8}%
+\contentsline {paragraph}{When the $I_{\mathrm {tot}}(t)$ plot is useful.}{10}{section*.9}%
+\contentsline {section}{\numberline {5}Metric Hierarchy and Recommendations}{10}{section.5}%
+\contentsline {paragraph}{Recommended reporting order for each scenario.}{10}{section*.11}%
+\contentsline {section}{\numberline {6}Worked Example: CE-01 Ablation}{11}{section.6}%
+\contentsline {paragraph}{Primary result table.}{11}{section*.12}%
+\contentsline {paragraph}{Why RMST still matters even at 100\% completion.}{11}{section*.13}%
+\contentsline {section}{\numberline {7}Statistical Power and Sample Size}{11}{section.7}%
+\contentsline {paragraph}{Calibrated clique baseline ($k=5$).}{11}{section*.14}%
+\contentsline {paragraph}{Calibrated clique $k=10$.}{11}{section*.15}%
+\contentsline {paragraph}{CE-01 (paired).}{11}{section*.16}%
+\contentsline {section}{\numberline {8}Summary}{12}{section.8}%

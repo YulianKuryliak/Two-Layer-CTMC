@@ -1,0 +1,38 @@
+\contentsline {section}{\numberline {1}Ядро проблеми порівняння}{3}{section.1}%
+\contentsline {section}{\numberline {2}Аналіз відмінностей методів: дизайн перед метриками}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Спершу вирішіть, яке питання ви ставите}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Принцип ізоляції}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Передумова 1: звітуйте completion, потім використовуйте censoring-aware оцінювачі}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Передумова 2: сумірність горизонтів}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Оберіть нормалізацію, незалежну від ефекту}{4}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Відокремте систематичний сигнал від стохастичного шуму}{5}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Атрибуція механізму: ablation ladder}{5}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.8}Від атрибуції до розгортуваного параметричного сурогату}{5}{subsection.2.8}%
+\contentsline {subsection}{\numberline {2.9}Розкрийте калібрування}{5}{subsection.2.9}%
+\contentsline {subsection}{\numberline {2.10}Включіть negative control}{6}{subsection.2.10}%
+\contentsline {subsection}{\numberline {2.11}Чекліст}{6}{subsection.2.11}%
+\contentsline {section}{\numberline {3}Каталог метрик}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Completion Rate}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Conditional Mean та Median (лише завершені прогони)}{7}{subsection.3.2}%
+\contentsline {paragraph}{Чому воно зміщене, коли completion rates відрізняються.}{7}{section*.3}%
+\contentsline {paragraph}{Конкретний приклад.}{7}{section*.4}%
+\contentsline {subsection}{\numberline {3.3}Restricted Mean Survival Time (RMST)}{8}{subsection.3.3}%
+\contentsline {paragraph}{Як RMST обчислюється в цьому проєкті (код).}{8}{section*.5}%
+\contentsline {paragraph}{Bootstrap довірчий інтервал.}{8}{section*.6}%
+\contentsline {paragraph}{Конкретні числа (калібрований clique benchmark, 100 reps):}{8}{section*.7}%
+\contentsline {subsection}{\numberline {3.4}Відстань Wasserstein-1 (W$_1$)}{9}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Статистика Kolmogorov--Smirnov}{9}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Per-Hop метрики часу прибуття: W$_1$(T$_i$) та парна похибка}{10}{subsection.3.6}%
+\contentsline {section}{\numberline {4}Графік I$_{\mathrm {tot}}$(t): phase noise проти похибки апроксимації}{10}{section.4}%
+\contentsline {paragraph}{Що насправді вимірює IQR-смуга на $I_{\mathrm {tot}}(t)$.}{10}{section*.8}%
+\contentsline {paragraph}{Коли графік $I_{\mathrm {tot}}(t)$ корисний.}{10}{section*.9}%
+\contentsline {section}{\numberline {5}Ієрархія метрик та рекомендації}{11}{section.5}%
+\contentsline {paragraph}{Рекомендований порядок звітування для кожного сценарію.}{11}{section*.11}%
+\contentsline {section}{\numberline {6}Розібраний приклад: абляція CE-01}{12}{section.6}%
+\contentsline {paragraph}{Таблиця первинних результатів.}{12}{section*.12}%
+\contentsline {paragraph}{Чому RMST усе одно має значення навіть за 100\% completion.}{12}{section*.13}%
+\contentsline {section}{\numberline {7}Статистична потужність та обсяг вибірки}{12}{section.7}%
+\contentsline {paragraph}{Калібрований clique baseline ($k=5$).}{12}{section*.14}%
+\contentsline {paragraph}{Калібрований clique $k=10$.}{12}{section*.15}%
+\contentsline {paragraph}{CE-01 (paired).}{12}{section*.16}%
+\contentsline {section}{\numberline {8}Підсумок}{13}{section.8}%

@@ -1,0 +1,77 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Motivation: The Data Asymmetry Problem}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}The Two-Scale Network Abstraction}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Limitations of Existing Approaches}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Research Objective}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Mathematical Model and Architecture of the Two-Scale Stochastic Simulator}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Full-Network CTMC Reference Model}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Two-Scale Simulator}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Micro Layer: Intra-Community CTMC Dynamics}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Macro Layer: Inter-Community Transmission}{7}{subsection.2.4}%
+\contentsline {paragraph}{Modeling assumption.}{8}{section*.2}%
+\contentsline {subsection}{\numberline {2.5}Conditional NHPP Construction and Relation to Classical Gillespie}{8}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Synchronization Between Layers}{9}{subsection.2.6}%
+\contentsline {section}{\numberline {3}--------------In Progress---------------}{11}{section.3}%
+\contentsline {section}{\numberline {4}Accuracy and Approximation Error of the Two-Scale Simulator}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Accuracy Framework and Evaluation Logic}{11}{subsection.4.1}%
+\contentsline {paragraph}{Standing assumptions for the accuracy analysis.}{11}{section*.3}%
+\contentsline {subsection}{\numberline {4.2}Sources of Approximation Error}{12}{subsection.4.2}%
+\contentsline {paragraph}{Proposition (Conditional micro-layer exactness).}{12}{section*.4}%
+\contentsline {paragraph}{Proof.}{12}{section*.5}%
+\contentsline {paragraph}{Interpretation.}{12}{section*.6}%
+\contentsline {subsubsection}{\numberline {4.2.1}Rate Abstraction Error}{13}{subsubsection.4.2.1}%
+\contentsline {paragraph}{Proposition (Rate abstraction).}{13}{section*.7}%
+\contentsline {paragraph}{Proof.}{13}{section*.8}%
+\contentsline {paragraph}{Interpretation.}{13}{section*.9}%
+\contentsline {subsubsection}{\numberline {4.2.2}Import Placement Error}{13}{subsubsection.4.2.2}%
+\contentsline {paragraph}{Proposition (Import placement).}{14}{section*.10}%
+\contentsline {paragraph}{Proof.}{14}{section*.11}%
+\contentsline {paragraph}{Interpretation.}{14}{section*.12}%
+\contentsline {subsubsection}{\numberline {4.2.3}Synchronization and Numerical Approximation Error}{14}{subsubsection.4.2.3}%
+\contentsline {paragraph}{Proposition (Synchronization timing error bound).}{15}{section*.13}%
+\contentsline {paragraph}{Proof.}{15}{section*.14}%
+\contentsline {paragraph}{Interpretation.}{15}{section*.15}%
+\contentsline {subsection}{\numberline {4.3}Clique--bridge--leaf benchmark}{15}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Graph construction and motivation}{16}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Exact Micro dynamics}{16}{subsubsection.4.3.2}%
+\contentsline {paragraph}{Proposition. Exact bridge-dependent micro hazard.}{16}{section*.16}%
+\contentsline {subsubsection}{\numberline {4.3.3}Two-phase structure of the exact process}{17}{subsubsection.4.3.3}%
+\contentsline {paragraph}{Proposition. Two-phase structure for a single bridge and a single leaf.}{17}{section*.17}%
+\contentsline {subsubsection}{\numberline {4.3.4}Bridge-finding time in a clique}{18}{subsubsection.4.3.4}%
+\contentsline {paragraph}{Proposition. Expected bridge-finding time in a clique.}{18}{section*.18}%
+\contentsline {subsection}{\numberline {4.4}Mean-field versus exact hazard bias}{18}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Macro approximation of bridge risk}{19}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Conditional-mean interpretation}{19}{subsubsection.4.4.2}%
+\contentsline {paragraph}{Proposition. Macro hazard is the conditional mean of the exact micro hazard.}{19}{section*.19}%
+\contentsline {subsubsection}{\numberline {4.4.3}Bias in event timing}{20}{subsubsection.4.4.3}%
+\contentsline {paragraph}{Proposition. Conditional Jensen survival inequality.}{20}{section*.20}%
+\contentsline {paragraph}{Proof.}{20}{section*.21}%
+\contentsline {paragraph}{Corollary. Expected import-time ordering.}{20}{section*.22}%
+\contentsline {paragraph}{Proof.}{21}{section*.23}%
+\contentsline {subsection}{\numberline {4.5}Numerical benchmark on the clique--bridge--leaf graph}{21}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}Experimental setup}{21}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}Timing distributions}{21}{subsubsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.3}Implications for the two-scale approximation}{22}{subsubsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.6}Chain--of--cliques benchmark}{23}{subsection.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.1}Arrival times and propagation delays}{23}{subsubsection.4.6.1}%
+\contentsline {paragraph}{Proposition. Arrival time in the last community decomposes into local delays.}{23}{section*.25}%
+\contentsline {subsubsection}{\numberline {4.6.2}Expected time of one exact Micro transition}{24}{subsubsection.4.6.2}%
+\contentsline {paragraph}{Proposition. One exact Micro transition decomposes into a bridge-finding phase and a crossing phase.}{24}{section*.26}%
+\contentsline {paragraph}{Proposition. Exact transition time for a single bridge node.}{24}{section*.27}%
+\contentsline {subsubsection}{\numberline {4.6.3}Several bridge nodes}{25}{subsubsection.4.6.3}%
+\contentsline {paragraph}{Proposition. Expected bridge-finding time for a bridge set.}{25}{section*.28}%
+\contentsline {paragraph}{Proposition. Crossing time for several bridge nodes is bounded by the single-edge and fully active interface cases.}{25}{section*.29}%
+\contentsline {subsubsection}{\numberline {4.6.4}Relation to the MicroMacro approximation}{26}{subsubsection.4.6.4}%
+\contentsline {paragraph}{Proposition. A local timing shift accumulates along a homogeneous chain.}{26}{section*.30}%
+\contentsline {subsubsection}{\numberline {4.6.5}Representative trajectories}{27}{subsubsection.4.6.5}%
+\contentsline {subsubsection}{\numberline {4.6.6}Monte Carlo arrival-time comparison}{28}{subsubsection.4.6.6}%
+\contentsline {subsubsection}{\numberline {4.6.7}Extended chain-of-cliques benchmark}{30}{subsubsection.4.6.7}%
+\contentsline {paragraph}{Baseline scenario.}{31}{section*.38}%
+\contentsline {paragraph}{Interface-width sensitivity.}{31}{section*.44}%
+\contentsline {paragraph}{Chain-length sensitivity.}{31}{section*.47}%
+\contentsline {paragraph}{Community-size sensitivity.}{31}{section*.49}%
+\contentsline {paragraph}{Runtime.}{31}{section*.51}%
+\contentsline {paragraph}{Interpretation.}{31}{section*.52}%
+\contentsline {subsection}{\numberline {4.7}Chain of sparse connected communities benchmark}{32}{subsection.4.7}%
+\contentsline {section}{\numberline {5}Conclusions}{33}{section.5}%

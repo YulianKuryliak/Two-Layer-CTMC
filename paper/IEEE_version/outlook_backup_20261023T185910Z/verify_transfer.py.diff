@@ -1,0 +1,51 @@
+--- before/verify_transfer.py
++++ after/verify_transfer.py
+@@ -94,6 +94,22 @@
+     source_file = manifest_path.parent / "source_main-SMPT.tex"
+     source, target = source_file.read_text(), (HERE / "main.tex").read_text()
+     assert sha(source_file) == manifest["source_sha256"]
++    current_target = target
++    outlook_added = (HERE / "outlook_change.json").is_file()
++    outlook_entries = {}
++    if outlook_added:
++        outlook = json.loads((HERE / "outlook_change.json").read_text())
++        before = HERE / outlook["backup"] / "main.tex"
++        assert sha(before) == outlook["before_main_sha256"]
++        expected = before.read_text()
++        for replacement in outlook["replacements"]:
++            assert expected.count(replacement["old"]) == 1
++            expected = expected.replace(replacement["old"], replacement["new"], 1)
++        assert expected == current_target, "Unexpected edits beyond the approved Outlook insertion"
++        assert sha(HERE / "references_outlook.bib") == outlook["bibliography_sha256"]
++        outlook_entries = bib_entries(HERE / "references_outlook.bib")
++        assert set(outlook_entries) == set(outlook["citation_keys"])
++        target = before.read_text()
+     biographies_added = (HERE / "biographies_change.json").is_file()
+     declaration_target = target
+     if biographies_added:
+@@ -128,11 +144,14 @@
+         assert sha(HERE / name) == expected, name
+     for name, expected in manifest["original_template_sha256"].items():
+         assert sha(HERE / name) == expected, name
++    target = current_target
+     cited = {key for group in citation_keys(target + appendix) for key in group.split(",")}
+     fixed = bib_entries(HERE / "references_fixed.bib")
+     extra = bib_entries(HERE / "references_missing.bib")
+     assert not (fixed.keys() & extra.keys())
+-    assert cited <= fixed.keys() | extra.keys()
++    assert not (outlook_entries.keys() & (fixed.keys() | extra.keys()))
++    assert cited <= fixed.keys() | extra.keys() | outlook_entries.keys()
++    assert outlook_entries.keys() <= cited
+     supplement_source = bib_entries(manifest_path.parent / "source_twoscale_references.bib")
+     assert all(value == supplement_source[key] for key, value in extra.items())
+     abstract = lambda s: re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", s, re.S)[1]
+@@ -153,7 +172,8 @@
+     info = subprocess.check_output(["pdfinfo", str(HERE / "main.pdf")], text=True)
+     pages = int(re.search(r"Pages:\s+(\d+)", info)[1])
+     print(json.dumps({
+-        "body_preserved_except_citation_layout_and_approved_acknowledgment": True,
++        "body_preserved_except_citation_layout_and_approved_acknowledgment_and_outlook": True,
++        "approved_outlook_added": outlook_added,
+         "approved_acknowledgment_replacement": acknowledgment_changed,
+         "approved_author_biographies_added": biographies_added,
+         "labels": len(labels(target + appendix)), "citation_commands": len(citation_keys(target + appendix)),

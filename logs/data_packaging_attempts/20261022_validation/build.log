@@ -1,0 +1,46 @@
+Building /mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022
+clique_leaf: 3000/10000 files; 2.4 MiB
+clique_leaf: 6000/10000 files; 4.8 MiB
+clique_leaf: 9000/10000 files; 7.2 MiB
+clique_leaf: 10000/10000 files; 8.0 MiB
+source_leaf: 3000/17693 files; 127.0 MiB
+source_leaf: 6000/17693 files; 129.4 MiB
+source_leaf: 9000/17693 files; 131.9 MiB
+source_leaf: 12000/17693 files; 134.2 MiB
+source_leaf: 15000/17693 files; 136.6 MiB
+source_leaf: 17693/17693 files; 138.6 MiB
+chains: 3000/27256 files; 1784.5 MiB
+chains: 6000/27256 files; 2916.8 MiB
+chains: 9000/27256 files; 3107.7 MiB
+chains: 12000/27256 files; 3518.1 MiB
+chains: 15000/27256 files; 3933.1 MiB
+chains: 18000/27256 files; 4033.8 MiB
+chains: 21000/27256 files; 4084.8 MiB
+chains: 24000/27256 files; 4104.4 MiB
+chains: 27000/27256 files; 4125.1 MiB
+chains: 27256/27256 files; 4126.8 MiB
+Traceback (most recent call last):
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 590, in <module>
+    main()
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/extrascripts/analysis/package_ieee_article_data.py", line 558, in main
+    validation = verifier.check_data(out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022/scripts/verify_dataset.py", line 47, in check_data
+    curve = pd.read_csv(plots / f'leaf_clique_{stem}_{label}.dat', sep=r'\s+')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 873, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 300, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1645, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1904, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/.venv/lib/python3.12/site-packages/pandas/io/common.py", line 930, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/UAKuryliYu/MyFolder/Personal/Projects/Two-Layer-CTMC/paper/IEEE_version/publication_data_20261022/plot_inputs/leaf_clique_export_full.dat'

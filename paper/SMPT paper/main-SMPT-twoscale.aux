@@ -1,0 +1,180 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\providecommand\babel@aux[2]{}
+\@nameuse{bbl@beforestart}
+\orcidauthor{0000-0002-6600-2637}{Yulian Kuryliak}
+\csgdef{mark@corau1}{1}
+\emailauthor{yulian.a.kuryliak@lpnu.ua}{Yulian Kuryliak}
+\orcidauthor{0000-0002-7342-2090}{Michael T. M. Emmerich}
+\emailauthor{michael.t.m.emmerich@jyu.fi}{Michael T. M. Emmerich}
+\babel@aux{english}{}
+\citation{keeling2005,pastorsatorras2015,kiss2017}
+\citation{balcan2009,barbosa2018human}
+\citation{eubank2004,danon2011}
+\citation{barbosa2018human,chang2021}
+\citation{gillespie1977exact,gibson2000}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{colizza2007reaction,colizza2008,balcan2010modeling,ajelli2010}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{1}{Introduction}{section.1}{}}
+\citation{kuryliak2025towards}
+\citation{gillespie1977exact}
+\citation{gibson2000}
+\citation{ethier1986}
+\citation{anderson2007}
+\citation{vestergaard2015,kuryliak2025simulating}
+\citation{kuryliak2025simulating}
+\citation{haseltine2002,cao2005slow}
+\citation{colizza2007reaction,colizza2008,balcan2009,balcan2010modeling}
+\citation{chang2021}
+\citation{eubank2004,kerr2021}
+\citation{ajelli2010}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related work}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Exact and approximate stochastic simulation.}{2}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Metapopulation and mobility models.}{2}{section*.2}\protected@file@percent }
+\citation{ball1997}
+\citation{gomes2018cosim}
+\citation{kuryliak2025simulating}
+\@writefile{toc}{\contentsline {paragraph}{Two levels of mixing and co-simulation.}{3}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The two-scale simulation method}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{The two-scale simulation method}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Full-network reference model}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:reference}{{3.1}{3}{Full-network reference model}{subsection.3.1}{}}
+\newlabel{eq:full_generator}{{1}{3}{Full-network reference model}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Aggregate interface}{3}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:interface}{{3.2}{3}{Aggregate interface}{subsection.3.2}{}}
+\newlabel{eq:weight}{{2}{3}{Aggregate interface}{equation.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Local engines}{3}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:local}{{3.3}{3}{Local engines}{subsection.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Information used by the full-network reference and by the two-scale simulator.}}{4}{table.1}\protected@file@percent }
+\newlabel{tab:information}{{1}{4}{Aggregate interface}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces (a) Full network: infection crosses between communities only along explicit edges joining bridge nodes (black rings). (b) Two-scale simulator: each community is an exact local Gillespie engine; the macro layer sees only the fractions $(\bar  {y}_i,\bar  {s}_i)$ and the aggregate weights $W_{ij}$, generates inter-community infections at rates $\lambda _{ij}$ and places each import on a uniformly chosen susceptible node. (c) The equivalent surrogate network of Proposition~\ref {prop:surrogate}: every pair of nodes in adjacent communities is joined by a weak edge of weight $W_{ij}/(N_iN_j)$. Orange: infected; blue: susceptible.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:schematic}{{1}{4}{Aggregate interface}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Macro layer}{4}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:macro}{{3.4}{4}{Macro layer}{subsection.3.4}{}}
+\newlabel{eq:macro_rate}{{3}{4}{Macro layer}{equation.3.3}{}}
+\citation{ethier1986,anderson2007}
+\citation{kuryliak2025simulating}
+\citation{kuryliak2025towards}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Grid-synchronised two-scale simulation of one realisation.}}{5}{algorithm.1}\protected@file@percent }
+\newlabel{alg:scheduler}{{1}{5}{Hazard-integral timing and synchronisation}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Hazard-integral timing and synchronisation}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:timing}{{3.5}{5}{Hazard-integral timing and synchronisation}{subsection.3.5}{}}
+\newlabel{eq:hazard_integral}{{4}{5}{Hazard-integral timing and synchronisation}{equation.3.4}{}}
+\newlabel{eq:interpolation}{{5}{5}{Hazard-integral timing and synchronisation}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Computational structure and intended use}{5}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:cost}{{3.6}{5}{Computational structure and intended use}{subsection.3.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}What the aggregate interface preserves and what it loses}{6}{section.4}\protected@file@percent }
+\newlabel{sec:analysis}{{4}{6}{What the aggregate interface preserves and what it loses}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Surrogate-network representation}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:surrogate}{{4.1}{6}{Surrogate-network representation}{subsection.4.1}{}}
+\newlabel{prop:surrogate}{{1}{6}{Surrogate-network representation}{proposition.1}{}}
+\newlabel{cor:exact}{{1}{6}{Surrogate-network representation}{corollary.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sources of discrepancy}{6}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:sources}{{4.2}{6}{Sources of discrepancy}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Boundary-state information (source side).}{6}{section*.4}\protected@file@percent }
+\newlabel{eq:exact_rate}{{6}{6}{Boundary-state information (source side)}{equation.4.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Placement (receiver side).}{6}{section*.5}\protected@file@percent }
+\citation{shaked2007}
+\@writefile{toc}{\contentsline {paragraph}{Interface exhaustion (receiver side).}{7}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Synchronisation.}{7}{section*.7}\protected@file@percent }
+\newlabel{rem:placement}{{1}{7}{Synchronisation}{remark.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Single export: stochastic ordering and bridge bypass}{7}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:single_export}{{4.3}{7}{Single export: stochastic ordering and bridge bypass}{subsection.4.3}{}}
+\newlabel{prop:ordering}{{2}{7}{Single export: stochastic ordering and bridge bypass}{proposition.2}{}}
+\newlabel{eq:hazard_variance}{{7}{7}{Single export: stochastic ordering and bridge bypass}{equation.4.7}{}}
+\newlabel{eq:bypass}{{8}{8}{Single export: stochastic ordering and bridge bypass}{equation.4.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}A time-scale descriptor}{8}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:descriptor}{{4.4}{8}{A time-scale descriptor}{subsection.4.4}{}}
+\newlabel{eq:rho}{{9}{8}{A time-scale descriptor}{equation.4.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental design}{8}{section.5}\protected@file@percent }
+\newlabel{sec:design}{{5}{8}{Experimental design}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Benchmarks}{8}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Experimental series. Each cell of a sweep uses 40 network realisations (blocks) with 10 interface and event replicates each. ASPL: target internal average shortest-path length (1 denotes the complete graph).}}{9}{table.2}\protected@file@percent }
+\newlabel{tab:design}{{2}{9}{Benchmarks}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Observables and metrics}{9}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Statistical procedures}{9}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Verification of the reference}{9}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{9}{section.6}\protected@file@percent }
+\newlabel{sec:results}{{6}{9}{Results}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Single export from a clique}{9}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:res_clique}{{6.1}{9}{Single export from a clique}{subsection.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Clique--leaf benchmark ($n=100$, $k=2$, $\beta =0.005$, 10\,000 runs per model). (a) Empirical CDFs of the export time. (b) Empirical CDFs of $T_{\mathrm  {export}}-T_B$; negative values (shaded) are exports before any bridge node is infected. (c) Percentage of such bridge-bypass runs with 95\% intervals. ``Full Micro'' denotes \textup  {\textsc  {Full}}{} and ``MicroMacro'' denotes \textup  {\textsc  {TwoScale}}{}.}}{10}{figure.2}\protected@file@percent }
+\newlabel{fig:clique_leaf}{{2}{10}{Single export from a clique}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Single export from connected random sources}{10}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:res_source}{{6.2}{10}{Single export from connected random sources}{subsection.6.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Repeated crossings through a chain of cliques}{10}{subsection.6.3}\protected@file@percent }
+\newlabel{sec:res_cliques}{{6.3}{10}{Repeated crossings through a chain of cliques}{subsection.6.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Source--leaf sweep: $n=1000$, $\beta =0.003$, $k=1$ (top) and $k=5$ (bottom), 400 matched runs per point. Left: mean export time. Centre: relative Wasserstein distance $e_{W}$ of the export-time distributions. Right: percentage of \textup  {\textsc  {TwoScale}}{} exports that precede the first bridge infection; \textup  {\textsc  {Full}}{} had none. Whiskers are 95\% block-bootstrap intervals. ``Full Micro'' denotes \textup  {\textsc  {Full}}{} and ``Production MicroMacro'' denotes \textup  {\textsc  {TwoScale}}{}.}}{11}{figure.3}\protected@file@percent }
+\newlabel{fig:source_sweep}{{3}{11}{Single export from connected random sources}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Chains of random communities}{11}{subsection.6.4}\protected@file@percent }
+\newlabel{sec:res_chain_random}{{6.4}{11}{Chains of random communities}{subsection.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Community size and interface width}{11}{subsection.6.5}\protected@file@percent }
+\newlabel{sec:res_size}{{6.5}{11}{Community size and interface width}{subsection.6.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Chain of ten 1000-node cliques with one edge between consecutive cliques ($k=1$, $\beta =0.003$, 400 runs per model). Left: pointwise median number of infected nodes with interquartile bands. Right: empirical CDF of the arrival time in the tenth community ($T_9$). Four \textup  {\textsc  {Full}}{} and two \textup  {\textsc  {TwoScale}}{} arrivals lie beyond the displayed range; all were observed.}}{12}{figure.4}\protected@file@percent }
+\newlabel{fig:chain_cliques}{{4}{12}{Repeated crossings through a chain of cliques}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Cumulative arrival accuracy in ten-community chains with $n=1000$, by target ASPL (rows) and community reached ($c=1,\dots  ,9$, columns), for $k=1$ (top) and $k=5$ (bottom). Left: relative median shift $b_c$ (negative: \textup  {\textsc  {TwoScale}}{} earlier). Right: relative Wasserstein distance. Each cell uses 400 matched runs; no uncertainty is shown (see Figure~\ref {fig:accuracy_map} for the terminal arrivals).}}{12}{figure.5}\protected@file@percent }
+\newlabel{fig:chain_heatmap}{{5}{12}{Chains of random communities}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Terminal-arrival accuracy in ten-community chains for all 48 configurations of the size sweep. Colour and bold numbers: relative Wasserstein distance $e_{W}$ of $T_9$ (\%). Italic numbers: relative median shift $b_9$ (\%; negative means \textup  {\textsc  {TwoScale}}{} earlier). Hatched cells: $e_{W}$ not distinguishable from its within-pair permutation floor ($p\ge 0.05$). Each cell: 400 matched runs.}}{13}{figure.6}\protected@file@percent }
+\newlabel{fig:accuracy_map}{{6}{13}{Community size and interface width}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}A single time-scale ratio organises the discrepancy}{13}{subsection.6.6}\protected@file@percent }
+\newlabel{sec:res_descriptor}{{6.6}{13}{A single time-scale ratio organises the discrepancy}{subsection.6.6}{}}
+\citation{kuryliak2025towards}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces (a) Relative Wasserstein distance and (b) relative median shift of the terminal arrival against $\rho =\beta \sigma _T$, for all 48 chain configurations (colours: community size; filled circles: $k=1$; open triangles: $k=5$; lines connect ASPL 1--6 at fixed $n$ and $k$). Grey ticks in (a): 95th percentile of the within-pair permutation floor of each configuration. (c) Local mean shift of the first crossing against that of crossings 2--9, for configurations with ASPL $\ge 3$, with 95\% block-bootstrap intervals of the first-crossing shift.}}{14}{figure.7}\protected@file@percent }
+\newlabel{fig:descriptor}{{7}{14}{A single time-scale ratio organises the discrepancy}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{14}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{7}{14}{Discussion}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Practical guidance}{14}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Decide which observable matters.}{14}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Estimate the time-scale ratio.}{14}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Check absolute as well as relative errors.}{14}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Calibrate distances against sampling variability.}{14}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Computational cost}{14}{subsection.7.2}\protected@file@percent }
+\newlabel{sec:disc_cost}{{7.2}{14}{Computational cost}{subsection.7.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Limitations}{15}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Possible extensions}{15}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{15}{section.8}\protected@file@percent }
+\newlabel{sec:conclusions}{{8}{15}{Conclusions}{section.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Clique formulas and verification}{15}{appendix.A}\protected@file@percent }
+\newlabel{app:clique}{{A}{15}{Clique formulas and verification}{appendix.A}{}}
+\newlabel{eq:clique_TB}{{10}{15}{Clique formulas and verification}{equation.A.10}{}}
+\citation{delbarrio1999}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Verification of the reference simulator on the first community of the clique chains ($\beta =0.003$, 400 runs per cell): mean bridge-activation time and, for $k=1$, mean wait after activation (exact value $1/\beta =333.3$). Values are mean $\pm $ standard error.}}{16}{table.3}\protected@file@percent }
+\newlabel{tab:verification}{{3}{16}{Clique formulas and verification}{table.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Sampling floor of the Wasserstein distance}{16}{appendix.B}\protected@file@percent }
+\newlabel{app:floor}{{B}{16}{Sampling floor of the Wasserstein distance}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Reproducibility details}{16}{appendix.C}\protected@file@percent }
+\newlabel{app:repro}{{C}{16}{Reproducibility details}{appendix.C}{}}
+\bibstyle{cas-model2-names}
+\bibdata{twoscale_references}
+\bibcite{ajelli2010}{{1}{2010}{{Ajelli et~al.}}{{Ajelli, Gon{\c {c}}alves, Balcan, Colizza, Hu, Ramasco, Merler and Vespignani}}}
+\bibcite{anderson2007}{{2}{2007}{{Anderson}}{{}}}
+\bibcite{balcan2009}{{3}{2009}{{Balcan et~al.}}{{Balcan, Colizza, Gon{\c {c}}alves, Hu, Ramasco and Vespignani}}}
+\bibcite{balcan2010modeling}{{4}{2010}{{Balcan et~al.}}{{Balcan, Colizza, Gon{\c {c}}alves, Hu, Ramasco and Vespignani}}}
+\bibcite{ball1997}{{5}{1997}{{Ball et~al.}}{{Ball, Mollison and Scalia-Tomba}}}
+\bibcite{barbosa2018human}{{6}{2018}{{Barbosa et~al.}}{{Barbosa, Barthelemy, Ghoshal, James, Lenormand, Louail, Menezes, Ramasco, Simini and Tomasini}}}
+\bibcite{delbarrio1999}{{7}{1999}{{del Barrio et~al.}}{{del Barrio, Gin{\'e} and Matr{\'a}n}}}
+\bibcite{cao2005slow}{{8}{2005}{{Cao et~al.}}{{Cao, Gillespie and Petzold}}}
+\bibcite{chang2021}{{9}{2021}{{Chang et~al.}}{{Chang, Pierson, Koh, Gerardin, Redbird, Grusky and Leskovec}}}
+\bibcite{colizza2007reaction}{{10}{2007}{{Colizza et~al.}}{{Colizza, Pastor-Satorras and Vespignani}}}
+\bibcite{colizza2008}{{11}{2008}{{Colizza and Vespignani}}{{}}}
+\bibcite{danon2011}{{12}{2011}{{Danon et~al.}}{{Danon, Ford, House, Jewell, Keeling, Roberts, Ross and Vernon}}}
+\bibcite{ethier1986}{{13}{1986}{{Ethier and Kurtz}}{{}}}
+\bibcite{eubank2004}{{14}{2004}{{Eubank et~al.}}{{Eubank, Guclu, Kumar, Marathe, Srinivasan, Toroczkai and Wang}}}
+\bibcite{gibson2000}{{15}{2000}{{Gibson and Bruck}}{{}}}
+\bibcite{gillespie1977exact}{{16}{1977}{{Gillespie}}{{}}}
+\bibcite{gomes2018cosim}{{17}{2018}{{Gomes et~al.}}{{Gomes, Thule, Broman, Larsen and Vangheluwe}}}
+\bibcite{haseltine2002}{{18}{2002}{{Haseltine and Rawlings}}{{}}}
+\bibcite{keeling2005}{{19}{2005}{{Keeling and Eames}}{{}}}
+\bibcite{kerr2021}{{20}{2021}{{Kerr et~al.}}{{Kerr, Stuart, Mistry, Abeysuriya, Rosenfeld, Hart, N{\'u}{\~n}ez, Cohen, Selvaraj, Hagedorn, George, Jastrzebski, Izzo, Fowler, Palmer, Delport, Scott, Kelly, Bennette, Wagner, Chang, Oron, Wenger, Panovska-Griffiths, Famulare and Klein}}}
+\bibcite{kiss2017}{{21}{2017}{{Kiss et~al.}}{{Kiss, Miller and Simon}}}
+\bibcite{kuryliak2025towards}{{22}{2025}{{Kuryliak and Emmerich}}{{}}}
+\bibcite{kuryliak2025simulating}{{23}{2025}{{Kuryliak et~al.}}{{Kuryliak, Emmerich and Dosyn}}}
+\bibcite{pastorsatorras2015}{{24}{2015}{{Pastor-Satorras et~al.}}{{Pastor-Satorras, Castellano, Van~Mieghem and Vespignani}}}
+\bibcite{shaked2007}{{25}{2007}{{Shaked and Shanthikumar}}{{}}}
+\bibcite{vestergaard2015}{{26}{2015}{{Vestergaard and G{\'e}nois}}{{}}}
+\csxdef{lastpage}{18}
+\gdef \@abspage@last{19}

@@ -1,0 +1,75 @@
+\begin{figure*}[!tbp]
+\color{black}
+\centering
+\begin{tikzpicture}[
+  x=1cm,y=1cm,
+  font=\scriptsize,
+  >=Latex,
+  person/.style={circle,draw=black!60,fill=blue!18,minimum size=4.2mm,inner sep=0pt},
+  infected/.style={person,fill=orange!70},
+  bridge/.style={person,very thick,draw=black},
+  bridgeinf/.style={infected,very thick,draw=black},
+  commbox/.style={draw=black!45,dashed,rounded corners=2pt,inner sep=3pt},
+  macrobox/.style={draw=black!70,rounded corners=2pt,fill=black!5,align=center,inner sep=3pt},
+  link/.style={draw=black!55},
+  weak/.style={draw=black!24,line width=.25pt},
+  flow/.style={-{Latex[length=1.7mm]},draw=black!65}
+]
+% (a) Full microscopic interface
+\node[font=\bfseries] at (0,2.25) {(a) Full network};
+\node[infected] (a1) at (-1.65,1.20) {};
+\node[person]   (a2) at (-1.55,0.35) {};
+\node[bridgeinf](a3) at (-0.75,0.82) {};
+\node[person]   (a4) at (-0.75,1.55) {};
+\node[bridge]   (b1) at (0.65,1.15) {};
+\node[person]   (b2) at (1.45,1.55) {};
+\node[person]   (b3) at (1.55,0.55) {};
+\node[bridge]   (b4) at (0.70,0.30) {};
+\draw[link] (a1)--(a2)--(a3)--(a1) (a1)--(a4)--(a3);
+\draw[link] (b1)--(b2)--(b3)--(b4)--(b1) (b1)--(b3);
+\draw[very thick] (a3)--(b1);
+\draw[very thick] (a3)--(b4);
+\node[commbox,fit=(a1)(a2)(a3)(a4)] {};
+\node[commbox,fit=(b1)(b2)(b3)(b4)] {};
+\node at (-1.2,-0.10) {$V_i$};
+\node at (1.15,-0.10) {$V_j$};
+
+% (b) Aggregate community network with local contacts retained
+\node[font=\bfseries] at (5.0,2.25) {(b) Aggregate network};
+\node[infected] (e1) at (3.35,1.20) {};
+\node[person]   (e2) at (3.45,0.35) {};
+\node[infected] (e3) at (4.25,0.82) {};
+\node[person]   (e4) at (4.25,1.55) {};
+\node[person]   (f1) at (5.65,1.15) {};
+\node[person]   (f2) at (6.45,1.55) {};
+\node[person]   (f3) at (6.55,0.55) {};
+\node[person]   (f4) at (5.70,0.30) {};
+\draw[link] (e1)--(e2)--(e3)--(e1) (e1)--(e4)--(e3);
+\draw[link] (f1)--(f2)--(f3)--(f4)--(f1) (f1)--(f3);
+\node[commbox,fit=(e1)(e2)(e3)(e4)] (agg_i) {};
+\node[commbox,fit=(f1)(f2)(f3)(f4)] (agg_j) {};
+\draw[-{Latex[length=2.5mm,width=2.5mm]},draw=black!65,line width=3pt]
+      (agg_i.east) -- node[above=5pt,text=black] {$W_{ij}$} (agg_j.west);
+\node at (3.8,-0.10) {$V_i$};
+\node at (6.15,-0.10) {$V_j$};
+
+% (c) Surrogate interface
+\node[font=\bfseries] at (10.25,2.25) {(c) Surrogate network};
+\node[infected] (c1) at (8.85,1.45) {};
+\node[person]   (c2) at (8.75,0.55) {};
+\node[person]   (c3) at (9.55,1.05) {};
+\node[person]   (c4) at (9.45,0.20) {};
+\node[person]   (d1) at (11.00,1.45) {};
+\node[person]   (d2) at (10.90,0.55) {};
+\node[person]   (d3) at (11.70,1.05) {};
+\node[person]   (d4) at (11.60,0.20) {};
+\foreach \u in {c1,c2,c3,c4}{\foreach \v in {d1,d2,d3,d4}{\draw[weak] (\u)--(\v);}}
+\draw[link] (c1)--(c2)--(c4)--(c3)--(c1);
+\draw[link] (d1)--(d2)--(d4)--(d3)--(d1);
+\node[commbox,fit=(c1)(c2)(c3)(c4)] {};
+\node[commbox,fit=(d1)(d2)(d3)(d4)] {};
+\node[align=center] at (10.25,-0.35) {$W_{ij}/(N_iN_j)$ per\\cross-community channel};
+\end{tikzpicture}
+\caption{\textcolor{black}{Three views of the interface. (a) In the full network, infection can cross only through the shown physical edges and their bridge nodes. (b) Internal nodes and contacts are retained in each community. Individual inter-community contacts are represented by one wide directed edge between $V_i$ and $V_j$, labelled with their total weight $W_{ij}$. (c) The ideal two-scale process is equivalent to a process on a surrogate network with uniform inter-community connections: for each connected community pair, all ordered node pairs have the same contact weight. The connections together have total weight $W_{ij}$. Orange nodes are infected and blue nodes are susceptible.}}
+\label{fig:schematic}
+\end{figure*}

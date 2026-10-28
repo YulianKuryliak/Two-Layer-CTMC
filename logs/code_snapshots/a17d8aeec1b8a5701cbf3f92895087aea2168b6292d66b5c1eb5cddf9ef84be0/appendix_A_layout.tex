@@ -1,0 +1,178 @@
+% !TeX program = pdflatex
+% IEEE Access adaptation of the current main-SMPT manuscript.
+% The class reuses TeX's \year name; PGF needs the original numeric primitive.
+\let\TeXyear\year
+\documentclass{ieeeaccess}
+\let\AccessYear\year
+\let\year\TeXyear
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+% Permit wide figures at the bottom as well as the top of a text page.
+\usepackage{stfloats}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,fillbetween}
+\usetikzlibrary{patterns,positioning,fit,arrows.meta}
+\usepackage{booktabs,array,float,xcolor}
+% Review replacements: new text is royal blue; original text is retained.
+\definecolor{RoyalBlue}{RGB}{65,105,225}
+\newcommand{\michael}[2]{{\color{RoyalBlue}#1}}
+% Yulian uses the same new/previous-text convention, with changes in red.
+\newcommand{\yulian}[2]{{\color{red}#1}}
+% Use the template blue as process CMYK; PGF also manages PDF colour resources.
+\definecolor{accessblue}{cmyk}{1,0.3,0,0.2}
+\definecolor{greycolor}{cmyk}{0,0,0,0.8}
+\definecolor{grey}{cmyk}{0,0,0,0.1}
+\usepackage{microtype}
+\microtypesetup{expansion=false}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\urlstyle{same}
+\DeclareUrlCommand\path{\urlstyle{same}}
+\setlength{\emergencystretch}{2em}
+\hyphenation{inter-community intra-community Gillespie}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\floatname{algorithm}{Algorithm}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newenvironment{proof}{\begin{IEEEproof}}{\end{IEEEproof}}
+\newcommand{\ibar}{\bar{y}}
+\newcommand{\sbar}{\bar{s}}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\Full}{\textup{Full}}
+\newcommand{\TS}{\textup{TwoScale}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\eW}{e_{W}}
+% Keep the supplied footer's appearance without its overfull zero-width boxes.
+\makeatletter
+\newcommand{\AccessOddFooter}{\hbox to\textwidth{{\footervolfont VOLUME\ \thevol, \theyear}\hfil{\footerpagefont\thepage}}}
+\newcommand{\AccessEvenFooter}{\hbox to\textwidth{{\footerpagefont\thepage}\hfil{\footervolfont VOLUME\ \thevol, \theyear}}}
+\let\AccessTitleStyle\ps@titlepage
+\let\AccessHeadingStyle\ps@headings
+\def\ps@titlepage{\AccessTitleStyle
+  \def\@oddfoot{\raisebox{3pt}{\AccessOddFooter}}
+  \def\@evenfoot{\raisebox{3pt}{\AccessEvenFooter}}}
+\def\ps@headings{\AccessHeadingStyle
+  \def\@oddfoot{\raisebox{8pt}{\AccessOddFooter}}
+  \def\@evenfoot{\raisebox{8pt}{\AccessEvenFooter}}}
+\makeatother
+\pagestyle{headings}
+% Keep float spacing compact while retaining the IEEE page dimensions.
+\setlength{\dbltextfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\dblfloatsep}{10pt plus 2pt minus 2pt}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\dblfloatpagefraction}{0.75}
+% Allow for the bullet and gap in the template's abstract/index-term boxes.
+% The class aliases these two lengths; separate them before adjusting the box.
+\newlength{\AccessAbstractWidth}
+\setlength{\AccessAbstractWidth}{\titlewidth}
+\addtolength{\AccessAbstractWidth}{-10pt}
+\let\abstractwidth\AccessAbstractWidth
+% BEGIN EDITABLE PLOT STYLE
+% Shared plotting style; all text inherits the article font.
+\providecommand{\ArrivalCellFont}{\fontsize{6}{7}\selectfont}
+\pgfplotsset{compat=1.18,paper axis/.style={font=\scriptsize,label style={font=\scriptsize},title style={font=\small},tick label style={font=\scriptsize},legend style={font=\scriptsize,draw=none,fill=none},axis line style={black!65},tick style={black!65},grid=major,grid style={black!10},scaled ticks=false,unbounded coords=jump,clip=true}}
+\definecolor{FullBlue}{HTML}{2878B5}
+\definecolor{ScaleOrange}{HTML}{D45A44}
+\definecolor{Size50}{HTML}{D73027}
+\definecolor{Size100}{HTML}{FC8D59}
+\definecolor{Size250}{HTML}{4575B4}
+\definecolor{Size1000}{HTML}{313695}
+\pgfplotsset{colormap={paperdiv}{rgb=(0.01960784,0.18823529,0.38039216);
+rgb=(0.12725875,0.39584775,0.66874279);
+rgb=(0.26274510,0.57647059,0.76470588);
+rgb=(0.56647443,0.76870434,0.86851211);
+rgb=(0.81960784,0.89803922,0.94117647);
+rgb=(0.96908881,0.96647443,0.96493656);
+rgb=(0.99215686,0.85882353,0.78039216);
+rgb=(0.95455594,0.64175317,0.50572857);
+rgb=(0.83921569,0.37647059,0.30196078);
+rgb=(0.69227220,0.09227220,0.16770473);
+rgb=(0.40392157,0.00000000,0.12156863);}}
+\pgfplotsset{colormap={paperseq}{rgb=(1.00000000,1.00000000,0.89803922);
+rgb=(1.00000000,0.97539408,0.77193387);
+rgb=(0.99764706,0.92156863,0.63607843);
+rgb=(0.99607843,0.84347559,0.46915802);
+rgb=(0.99607843,0.73490196,0.28000000);
+rgb=(0.99497116,0.59747789,0.15949250);
+rgb=(0.93960784,0.47137255,0.09490196);
+rgb=(0.84822760,0.35229527,0.03497116);
+rgb=(0.72000000,0.26039216,0.01098039);
+rgb=(0.55686275,0.19123414,0.01737793);
+rgb=(0.40000000,0.14509804,0.02352941);}}
+% Stream all ECDF vertices to PGF without retaining PGFPlots point metadata.
+% Arguments: display-coordinate file, stroke colour, dash setting.
+\newcommand{\DrawExactECDF}[3]{%
+  \begin{pgfonlayer}{main}%
+  \begin{pgfscope}%
+    \pgftransformshift{\pgfplotsqpointdescriptionxy{0}{0}}%
+    \pgfsetxvec{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{0pt}}%
+    \pgfsetyvec{\pgfpoint{0pt}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\pgfkeysvalueof{/pgfplots/width}}{\pgfkeysvalueof{/pgfplots/height}}}%
+    \pgfusepath{clip}%
+    \pgfsetstrokecolor{#2}%
+    \pgfsetlinewidth{.8pt}%
+    #3%
+    \pgfplothandlerconstantlineto%
+    \pgfplotxyfile{#1}%
+    \pgfusepath{stroke}%
+  \end{pgfscope}%
+  \end{pgfonlayer}%
+}
+% END EDITABLE PLOT STYLE
+
+\begin{document}
+\vol{XX}\AccessYear{XXXX}
+\markboth{Appendix A layout check}{Appendix A layout check}
+\appendices
+\section{\yulian{Verification of Full Gillespie on cliques}{Clique formulas and verification}}
+\label{app:clique}
+
+\yulian{We check the Full Gillespie implementation on clique networks, for which mean infection times can be calculated analytically. A clique is a community in which every pair of nodes is connected. We use the first community of the clique chains: it has $n$ nodes and $k$ contacts with the next community. The $k$ source nodes with these contacts are the bridge nodes. The initially infected node and the set of bridge nodes are selected uniformly and independently.
+
+Two times are distinguished. The bridge infection time, $T_B$, is when the first bridge node becomes infected. The export time, $T_{\mathrm{export}}$, is when infection is first transmitted to the next community. Infection of a bridge makes transmission possible, but transmission need not occur immediately. The last column of Table~\ref{tab:verification} measures the additional waiting time, $T_{\mathrm{export}}-T_B$, in Full Gillespie.}{}
+
+\yulian{Table~\ref{tab:verification} compares analytical means with simulation results. For example, for $n=100$ and $k=1$, the simulated mean bridge infection time is $17.05\pm0.38$, compared with the exact value $17.26$. The simulated mean wait from bridge infection to export is $326.5\pm17.0$, compared with the exact value $333.3$. These comparisons check internal spread and, for one contact, the subsequent transmission to the next community.}{}
+
+\begin{table}[!htbp]
+\centering
+\caption{\yulian{Checks on the first community of the clique chains ($\beta=0.003$, 400 runs per configuration). $T_B$ is the first bridge infection time; $T_{\mathrm{export}}$ is the first transmission time to the next community. Full values are means $\pm$ standard errors. Dashes indicate that the one-contact waiting-time check is not reported for $k=5$.}{Verification of the reference simulator on the first community of the clique chains ($\beta=0.003$, 400 runs per cell): mean bridge-activation time and, for $k=1$, mean wait after activation (exact value $1/\beta=333.3$). Values are mean $\pm$ standard error.}}
+\label{tab:verification}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $k$ & \yulian{\shortstack{Exact mean\\$T_B$}}{Exact $\mathbb{E}[T_B]$} & \yulian{\shortstack{\Full{} mean\\$T_B$}}{\Full{} $T_B$} & \yulian{\shortstack{\Full{} mean wait\\$T_{\mathrm{export}}-T_B$}}{\Full{} wait}\\
+\midrule
+50 & 1 & 29.86 & $29.72\pm0.71$ & $354.0\pm16.9$\\
+100 & 1 & 17.26 & $17.05\pm0.38$ & $326.5\pm17.0$\\
+250 & 1 & 8.13 & $7.84\pm0.15$ & $347.4\pm16.6$\\
+1000 & 1 & 2.49 & $2.51\pm0.04$ & $353.8\pm17.9$\\
+50 & 5 & 15.97 & $15.96\pm0.55$ & --\\
+100 & 5 & 10.31 & $9.64\pm0.29$ & --\\
+250 & 5 & 5.35 & $5.16\pm0.12$ & --\\
+1000 & 5 & 1.80 & $1.77\pm0.03$ & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\yulian{For $k=1$, the delay after bridge infection is an independent $\Exp(\beta)$ waiting time, with mean $1/\beta=333.3$ at $\beta=0.003$. For $k=5$, other bridge nodes may become infected before the first export, increasing the total transmission rate. The same constant-rate waiting-time check therefore does not apply. The waiting time is still defined, but this table reports it only for $k=1$; the dashes do not indicate missing runs.}{where $H_{n-1}$ is the harmonic number; the case of a bridge seed ($T_B=0$) is included. For $k=1$, the export time in \Full{} is $T_B$ plus an independent $\Exp(\beta)$ waiting time. The expected time to infect the whole clique is $2H_{n-1}/(\beta n)$. Table~\ref{tab:verification} compares~\eqref{eq:clique_TB} with the first community of the clique chains.}
+
+\yulian{The analytical bridge infection time follows from the SI process on a clique. With $m$ infected and $n-m$ susceptible nodes, there are $m(n-m)$ possible transmitting contacts, each with rate $\beta$. The mean wait for the next internal infection is therefore $1/[\beta m(n-m)]$. The probability that no bridge is among the first $m$ infected nodes is $\binom{n-k}{m}/\binom{n}{m}$. Adding the waiting times weighted by these probabilities gives}{Consider an $n$-node clique with SI dynamics, per-edge rate $\beta$, a uniformly placed seed and a uniformly placed set of $k$ bridge nodes. When $m$ nodes are infected, the next internal infection occurs at rate $\beta m(n-m)$, independently of which nodes are infected, and the infected set is a uniform $m$-subset. The probability that none of the first $m$ infected nodes is a bridge is $\binom{n-k}{m}/\binom{n}{m}$, hence}
+\begin{equation}
+\label{eq:clique_TB}
+\mathbb{E}[T_B]=\sum_{m=1}^{n-k}\frac{\binom{n-k}{m}}{\binom{n}{m}}\frac{1}{\beta m(n-m)},
+\end{equation}
+\yulian{The case in which the initial infected node is already a bridge has $T_B=0$ and is included in this expectation. For one bridge, the expression simplifies to}{For one bridge this simplifies to}
+\begin{equation}
+\mathbb{E}[T_B]=\frac{H_{n-1}}{\beta n}\ \ (k=1),
+\end{equation}
+\yulian{where $H_{n-1}=\sum_{r=1}^{n-1}1/r$ is the harmonic number. The mean time to infect the entire clique is $2H_{n-1}/(\beta n)$.}{}
+
+
+\EOD\end{document}
