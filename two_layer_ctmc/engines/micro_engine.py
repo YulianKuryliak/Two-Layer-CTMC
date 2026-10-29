@@ -277,7 +277,7 @@ class MicroEngine:
         total_rate = self.total_infection_rate + self.total_recovery_rate
         if not math.isfinite(total_rate):
             raise ValueError("Total event rate overflows; reduce rates or weights")
-        if total_rate < 1e-12:
+        if total_rate <= 0.0:
             return float("inf"), None
 
         # A changed state may retain the exponential intensity budget while

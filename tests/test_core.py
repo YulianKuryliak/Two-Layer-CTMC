@@ -161,3 +161,20 @@ class WeightedGraphTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             simulate_micro(network=network, beta=1e308, gamma=0, T_end=1,
                            dt_out=0.5, initial_node=0, seed=123)
+
+
+class SmallRateTests(unittest.TestCase):
+    def test_small_positive_rates_remain_enabled(self):
+        from two_layer_ctmc.engines.micro_model import MicroModel
+        for engine_type in (MicroEngine, MicroModel):
+            with self.subTest(engine=engine_type.__name__):
+                engine = engine_type(0.0, 1e-15, model=2, rng=random.Random(123))
+                engine.add_node(0)
+                engine._infect_node(0)
+                wait, event = engine._sample_next_event()
+                self.assertEqual(event, ("recovery", 0))
+                self.assertAlmostEqual(wait / 1e15, random.Random(123).expovariate(1.0))
+                if engine_type is MicroModel:
+                    cached_wait, cached_event, _, _ = engine._ensure_next_event()
+                    self.assertGreater(cached_wait, 0)
+                    self.assertEqual(cached_event, ("recovery", 0))

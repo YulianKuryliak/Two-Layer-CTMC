@@ -53,7 +53,7 @@ class MicroModel(MicroEngine):
             rate = self.total_infection_rate + self.total_recovery_rate
             if not math.isfinite(rate):
                 raise ValueError("Total event rate overflows; reduce rates or weights")
-            if rate < 1e-12 or not self.infected_nodes:
+            if rate <= 0.0 or not self.infected_nodes:
                 # A zero hazard consumes no integrated intensity. Retain any
                 # outstanding threshold in case a future import reactivates it.
                 return float("inf"), None, None, None
