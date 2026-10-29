@@ -1,12 +1,8 @@
-.venv
-plots
-data
+.venv/
 __pycache__/
+*.py[cod]
 build/
 dist/
 *.egg-info/
-simulations.db
-sim_db.py
-*copy*
-test.py
-test.ipynb
+simulation.csv
+results/

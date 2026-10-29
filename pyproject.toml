@@ -1,32 +1,22 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "two-layer-ctmc"
-version = "0.1.0"
-description = "Event-driven SIR/SIS simulators for two-layer (community + inter-community) networks."
+version = "1.1"
+description = "Gillespie and TwoScale SIR/SIS simulation on community networks."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Proprietary"}
-dependencies = [
-  "numpy>=1.21",
-  "networkx>=2.8",
-]
-classifiers = [
-  "Programming Language :: Python :: 3",
-  "License :: Other/Proprietary",
-  "Operating System :: OS Independent",
-]
+dependencies = ["numpy>=1.21", "networkx>=2.8"]
 
-[project.optional-dependencies]
-analysis = ["pandas>=1.5", "matplotlib>=3.7", "seaborn>=0.13"]
+[project.scripts]
+two-layer-ctmc = "two_layer_ctmc.__main__:main"
 
 [tool.setuptools]
-packages = [
-  "two_layer_ctmc",
-  "two_layer_ctmc.engines",
-  "two_layer_ctmc.orchestrators",
-  "two_layer_ctmc.simulators",
-]
-py-modules = ["MicroEngine", "MicroMacroEngine"]
+py-modules = []
+
+[tool.setuptools.packages.find]
+include = ["two_layer_ctmc*"]
+namespaces = false
